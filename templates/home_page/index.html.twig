@@ -1,0 +1,188 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+	{# css #}
+	<link rel="stylesheet" href={{asset("css/home.css")}}>
+	<div
+		class="example-wrapper">
+
+		<!-- Header -->
+		<header>
+			<div class="div-header">
+				<div class="scrolling-text">
+					<div class="ads-wrapper">
+						{% for ads in adss %}
+							{% if ads.title == 'ads' %}
+								<a href="{{ ads.urlAds }}" class="ads-item">{{ ads.description }}</a>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				{# <span>Alimentação & Qualidade. Conexão direta com os comerciantes locais em Cabo Verde!</span> #}
+
+				<select id="category-select" class="category-menu">
+					<option disabled selected>Escolhe un Kategoria</option>
+					{% for category in categories %}
+						{% if category.name is defined and category.name is not empty %}
+							<option value="{{ path('products_by_category', {'name': category.name}) }}">
+								{{ category.name }}
+							</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<a href="{{ path('app_shop_all') }}" class="btn btn-primary">
+					<span>Nos Lojas</span>
+				</a>
+				{#-----------------------Carousel Controls------------------------------------------------------- #}
+				<div
+					id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+					{# Les indicateurs (petits ronds) #}
+					<div class="carousel-indicators">
+						{% set index = 0 %}
+						{% for ads in adss %}
+							{% if ads.title == 'img' %}
+								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ index }}" {% if index == 0 %} class="active" {% endif %} aria-label="Slide {{ index + 1 }}"></button>
+								{% set index = index + 1 %}
+							{% endif %}
+						{% endfor %}
+					</div>
+
+					{# Les images du carousel #}
+					<div class="carousel-inner">
+						{% set first = true %}
+						{% for ads in adss %}
+							{% if ads.title == 'img' %}
+								<div class="carousel-item {% if first %}active{% endif %}">
+									{% if ads.urlAds is not null %}
+										<a href="{{ ads.urlAds }}" target="_blank" rel="noopener">
+											<img src="{{ asset('upload/images/ads/' ~ ads.img) }}" class="d-block w-100" alt="Slide {{ loop.index }}">
+										</a>
+									{% elseif ads.shop is not null %}
+										<a href="{{ path('app_shop_loja', {'id': ads.shop.id}) }}">
+											<img src="{{ asset('upload/images/ads/' ~ ads.img) }}" class="d-block w-100" alt="Slide {{ loop.index }}">
+										</a>
+									{% else %}
+										<img src="{{ asset('upload/images/ads/' ~ ads.img) }}" class="d-block w-100" alt="Slide {{ loop.index }}">
+									{% endif %}
+								</div>
+								{% set first = false %}
+							{% endif %}
+						{% endfor %}
+					</div>
+
+					{# Boutons de navigation #}
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+				{#------------FIN de Carousel Controls------------------------------------------------------------------ #}
+
+			</div>
+
+
+		</header>
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+const select = document.getElementById("category-select");
+select.addEventListener("change", function () {
+if (this.value) {
+window.location.href = this.value;
+}
+});
+});
+		</script>
+		<!-- Fin du header -->
+
+		<!-- Section principale -->
+		<section
+			class="main">
+			{# ----bootstrap card #}
+			<div class="dvgeneralCardsP">
+
+				<div class="cards">
+					{% for produit in products %}
+						{% if produit.active == true and produit.stock > 4 %}
+							<div class="card" style="width: 18rem;">
+								<a href="{{ path('app_product_show', {'id': produit.id}) }}">
+									<img class="card-img-top" src="{{asset('upload/images/products/' ~ produit.img )}}" alt="Card image cap">
+								</a>
+								<div class="card-body">
+									<h5 class="card-title">{{ produit.name }}</h5>
+									{# <p class="card-text">{{ produit.label }}.</p> #}
+									{# <a href="#" class="btn btn-primary"> #}
+
+									<div class="prix">
+										<h4>
+											{# {{ produit.price/100 }} #}
+											{{ (produit.getFinalPrice/ 100)|number_format(2, ',', '.') }}
+											CVE
+										</h4>
+									</div>
+
+									{% if produit.stock > 0 %}
+										{% if app.user %}
+											{% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles %}
+												<p class="p_a_c">para compras - criar uma conta simplis
+												</p>
+											{% else %}
+												<a href="{{ path('app_add', {'id': produit.id}) }}">
+													<button type="button" class="btn btn-success">adicionar ao Carrinho
+														<i class="fas fa-shopping-cart"></i>
+													</button>
+												</a>
+											{% endif %}
+										{% else %}
+											<a href="{{ path('app_add', {'id': produit.id}) }}">
+												<button type="button" class="btn btn-success">adicionar ao Carrinho
+													<i class="fas fa-shopping-cart"></i>
+												</button>
+											</a>
+										{% endif %}
+									{% else %}
+										<p class="ruptureStock">Rupture de stock</p>
+									{% endif %}
+									{% if produit.getShop() %}
+										<p class="loja">
+											<a href="{{ path('app_shop_loja', {'id': produit.getShop().id}) }}">
+												<strong>Loja:</strong>
+												{{ produit.getShop().getName() }}
+											</a>
+										</p>
+									{% endif %}
+									<p class="city">
+										<strong>Localidade:</strong>
+										{{ produit.getShop().getCity() }}</p>
+
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+			{# fim de bootstrap card #}
+
+		</section>
+		<!-- Fin de la section principale -->
+
+	<!-- Pied de page -->
+		{# <footer>
+																																													 <p>&copy; Contactez-nous au 07 00 77 90 00</p>
+																																													 <div class="social-media">
+																																													   <p><i class="fab fa-facebook-f"></i></p>
+																																													   <p><i class="fab fa-twitter"></i></p>
+																																													   <p><i class="fab fa-instagram"></i></p>
+																																													   <p><i class="fab fa-linkedin-in"></i></p>
+																																													 </div>
+																																													</footer> #}
+		<!-- Fin du pied de page -->
+
+	</div>
+{% endblock %}

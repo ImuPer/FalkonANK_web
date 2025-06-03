@@ -1,0 +1,12 @@
+twig:
+    file_name_pattern: '*.twig'
+
+    globals:
+        basket_service: '@App\Service\Service'
+
+when@test:
+    twig:
+        strict_variables: true
+
+    
+

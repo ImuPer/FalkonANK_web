@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sobre Nós{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <section class="about-us">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Sobre Nós</h1>
+                    <p>
+                        Somos uma organização sediada em Paris, França, criada pela diáspora cabo-verdiana com o objetivo de fortalecer a conexão entre a comunidade cabo-verdiana no exterior e os comerciantes locais em Cabo Verde. Nosso site e-commerce foi projetado para facilitar o comércio direto entre os membros da diáspora e os vendedores locais, promovendo uma experiência única de compras para nossos clientes.
+                    </p>
+                    <p>
+                        Focamos principalmente no setor alimentar, permitindo que a diáspora cabo-verdiana compre produtos diretamente de comerciantes locais em Cabo Verde. Nosso sistema possibilita que os clientes façam compras e instruam seus familiares ou destinatários a irem buscar os produtos nos pontos de venda, ou optem por uma entrega ao domicílio, garantindo maior conveniência e flexibilidade.
+                    </p>
+                    <p>
+                        O nosso compromisso é com a qualidade, a autenticidade e o apoio à economia local, promovendo o crescimento e desenvolvimento do comércio em Cabo Verde através de uma plataforma digital inovadora e acessível.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ asset('image/backg/sobre-nos.png') }}" alt="Imagem Sobre Nós" class="img-fluid">
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

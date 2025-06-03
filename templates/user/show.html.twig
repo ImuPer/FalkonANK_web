@@ -1,0 +1,221 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User
+{% endblock %}
+
+{% block body %}
+	<link rel="stylesheet" href="{{ asset('css/profil.css') }}">
+
+	<div class="container-fluid mt-4">
+		<div class="row justify-content-center">
+			<div class="col-lg-8 col-md-10 col-sm-12">
+				<h3 class="mb-4">Dados Pessoais</h3>
+
+				<div class="table-responsive">
+					<table class="table table-light">
+						<tbody>
+							<tr>
+								<th>Email</th>
+								<td>{{ user.email }}</td>
+							</tr>
+							<tr>
+								<th>Name</th>
+								<td>{{ user.firstName }}
+									{{ user.lastName }}</td>
+							</tr>
+							<tr>
+								<th>Adress</th>
+								<td>{{ user.adress }}</td>
+							</tr>
+							<tr>
+								<th>
+									<a class="btn btn-secondary" href="{{ path('app_user_edit', {'id': app.user.id}) }}">
+										Modificar
+									</a>
+								</th>
+								<td class="text-danger">
+									{{ include('user/_delete_form.html.twig') }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+				{% if message is defined and message is not empty %}
+					<div class="alert alert-success">{{ message }}</div>
+				{% endif %}
+
+				{% if is_granted('ROLE_MERCHANT') and (shops is not defined or shops != []) %}
+					<a href="{{ path('admin') }}" class="btn btn-primary mb-3">Comerciante</a>
+				{% endif %}
+
+				<div class="mt-4">
+					{% if merchant is null and not is_granted('ROLE_MERCHANT') %}
+						<!-- Icône Marchand -->
+						<span class="icon-merchant" title="Torne-se um comerciante">
+							<a href="#" data-bs-toggle="modal" data-bs-target="#merchantModal" title="Torne-se um comerciante">
+								<i class="fas fa-store fa-2x text-primary"></i>
+							</a>
+						</span>
+
+						<!-- Modal -->
+						<div class="modal fade" id="merchantModal" tabindex="-1" aria-labelledby="merchantModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="merchantModalLabel">Torne-se um comerciante</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<form method="post" action="{{ path('merchant_register') }}" enctype="multipart/form-data">
+											<div class="mb-3">
+												<label for="city" class="form-label">Cidade</label>
+												<select class="form-select" id="city" name="city_id" required>
+													<option value="">Seleciona uma cidade</option>
+													{% for city in cities %}
+														<option value="{{ city.id }}">{{ city.name }}</option>
+													{% endfor %}
+												</select>
+											</div>
+											<div class="mb-3">
+												<label for="shopName" class="form-label">Nome da loja</label>
+												<input type="text" class="form-control" id="shopName" name="shop_name" placeholder="Entra o nome loja" required>
+											</div>
+											<div class="mb-3">
+												<label for="shopAddress" class="form-label">Endereço</label>
+												<input type="text" class="form-control" id="shopAddress" name="shop_address" placeholder="Entra o adereço da loja" required>
+											</div>
+											<div class="mb-3">
+												<label for="shopLicense" class="form-label">Licença légal (pdf, jpg, jpeg, png)</label>
+												<input type="file" class="form-control" id="shopLicense" name="shop_license" required>
+											</div>
+											<div class="mb-3">
+												<label for="shopDescription" class="form-label">Descrição</label>
+												<textarea class="form-control" id="shopDescription" name="shop_description" rows="4" placeholder="Descreve a tua loja"></textarea>
+											</div>
+											{# Infos Bancaire #}
+											<h5 class="mt-4">Informações Bancárias</h5>
+
+											<div class="row">
+												<div class="row">
+													<div class="col-md-6 mb-3">
+														<label for="bankHolder" class="form-label">Nome do titular da conta</label>
+														<input type="text" class="form-control" id="bankHolder" name="bank_holder" placeholder="Entra o Nome completo" required>
+													</div>
+													<div class="col-md-6 mb-3">
+														<label for="bankName" class="form-label">Nome do banco</label>
+														<input type="text" class="form-control" id="bankName" name="bank_name" placeholder="Entra o Nome do banco" required>
+													</div>
+												</div>
+
+											</div>
+
+											<div class="row">
+												<div class="col-md-6 mb-3">
+													<label for="bankIban" class="form-label">Número da conta / IBAN</label>
+													<input type="text" class="form-control" id="bankIban" name="bank_iban" required pattern="CV\d{2}\d{21}" maxlength="25" placeholder="Ex: CV64000500000020108215144">
+													<div class="form-text text-muted small" style="font-size: 0.75em;">
+														O IBAN em Cabo Verde tem 25 caracteres e começa por “CV”
+													</div>
+												</div>
+
+												<div class="col-md-6 mb-3">
+													<label for="bankSwift" class="form-label">Código BIC/SWIFT</label>
+													<input type="text" class="form-control" id="bankSwift" name="bank_swift" required pattern="[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?" maxlength="11" placeholder="Ex: BCVVCVCV">
+													<div class="form-text text-muted small" style="font-size: 0.75em;">
+														O código SWIFT tem 8 ou 11 caracteres
+													</div>
+												</div>
+											</div>
+
+											<div class="mb-3">
+												<label for="bankCountry" class="form-label">País da conta bancária</label>
+												<input type="text" class="form-control" id="bankCountry" name="bank_country" placeholder="Entra o País" required>
+											</div>
+
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annular</button>
+												<button type="submit" class="btn btn-primary">Enviar</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% elseif merchant is not null and merchant.isApproved is defined and merchant.isApproved == false and merchant.reponse is null %}
+						<div class="alert alert-info">
+							<strong>Seu pedido está sendo processado.</strong>
+							<hr>
+							<p>
+								<strong>Nome da loja :</strong>
+								{{ merchant.name }}</p>
+							<p>
+								<strong>Cidade :</strong>
+								{{ merchant.city.name }}</p>
+							<p>
+								<strong>Endereço :</strong>
+								{{ merchant.address }}</p>
+							<p>
+								<strong>Descrição :</strong>
+								{{ merchant.description }}</p>
+							<p>
+								<strong>Data de envio :</strong>
+								{{ merchant.createdAt|date('d/m/Y H:i') }}</p>
+							<p>
+								<strong>Licença da loja :</strong>
+								<a href="{{ asset('/' ~ merchant.licenseFile) }}" target="_blank">Ver o ficheiro</a>
+							</p>
+
+							<hr>
+							<h5>Informações Bancárias</h5>
+							<p>
+								<strong>Nome do titular:</strong>
+								{{ merchant.bankHolder }}</p>
+							<p>
+								<strong>Banco:</strong>
+								{{ merchant.bankName }}</p>
+							<p>
+								<strong>IBAN:</strong>
+								{{ merchant.iban }}</p>
+							<p>
+								<strong>SWIFT / BIC:</strong>
+								{{ merchant.swift }}</p>
+
+							<p>
+								<a class="btn btn-warning mt-2" href="{{ path('merchant_edit', {'id': merchant.id}) }}">
+									Modificar dados da loja
+								</a>
+							</p>
+						</div>
+					{% elseif merchant is not null and merchant.isApproved is defined and merchant.isApproved == false and merchant.reponse is not null %}
+						<div class="alert alert-danger">
+							<strong>Sua solicitação foi recusada.</strong>
+							<p>
+								<strong>Razão :</strong>
+								{{ merchant.reponse }}</p>
+							<hr>
+							<p>Para mais informação :</p>
+							<a href="{{ path('contact_nous') }}">
+								<button class="btn btn-primary">Nus-Contactar</button>
+							</a>
+						</div>
+
+					{% elseif merchant is not null and merchant.isApproved is defined and merchant.isApproved == true %}
+						<div class="alert alert-success">
+							<strong>Felicitações! O seu pedido foi aprovado.</strong>
+							{% if merchant.reponse is not null %}
+								<p>
+									<strong>Mensagem do administrador :</strong>
+									{{ merchant.reponse }}</p>
+							{% endif %}
+						</div>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,113 @@
+{# css #}
+<link rel="stylesheet" href={{asset("css/header.css")}}>
+
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.2/css/all.css"/>
+		<title>Falkon Alimentação</title>
+	</head>
+
+	<body>
+		<!--Barre de Navegation-->
+		<nav>
+			<a class="navbar-brand" href="{{path('app_home_page')}}"><img class="logo" src="{{asset("image/FalkonANK/logo-transparent-png.png")}}"></a>
+			{# <h1>Alimentason e Qualidade!</h1> #}
+			<div class="onglets">
+				<a href="{{path('app_home_page')}}">
+					<i class="fas fa-home"></i>
+				</a>
+				<a href="{{path('app_about_page')}}">Sobre Nos</a>
+				<a href="{{path('contact_nous')}}">Contacto</a>
+
+				{% if app.user %}
+					<li style="position: relative;">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Meu espaço
+						</a>
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+							<li>
+								<a class="dropdown-item" href="{{ path('app_user_show') }}">Profile</a>
+							</li>
+							{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+								<li>
+									<a class="dropdown-item" href="{{ path('app_user_orders') }}">Compras</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('user_basket') }}">Cesta</a>
+								</li>
+							{% endif %}
+						</ul>
+					</li>
+
+					<a class="nav-item nav-link " href="{{path('app_logout')}}">Sair</a>
+
+				{% else %}
+					<p>
+						<a href="{{path('app_register')}}">Criar conta</a>
+					</p>
+					<p>
+						<a href="{{path('app_login')}}">Login</a>
+					</p>
+				{% endif %}
+
+
+				{#------Role merchant------------------------- #}
+				{% if is_granted('ROLE_MERCHANT') %}
+					<li class="link_employe">
+						<a style="color: blue;" href="{{path('admin')}}">
+							<i class="fas fa-user-edit"></i>
+						</a>
+					</li>
+				{% endif %}
+
+				{#------Role Admin------------------------- #}
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="link_admin">
+						<a href="{{path('admin')}}" class="btn btn-danger">Administrateur</a>
+					</li>
+				{% endif %}
+
+				{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+					<a class="shoping_header" href="{{path('user_basket')}}">
+						<i class="fas fa-shopping-cart">
+							{% if is_granted('ROLE_USER') %}
+								{% set userId = app.user is not null ? app.user.id : null %}
+								{% set totalQuantity = userId is not null ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
+								<label>{{ totalQuantity }}</label>
+							{% endif %}
+						</i>
+					</a>
+				{% endif %}
+
+				<a class="insta" href="">
+					<i class="fab fa-instagram"></i>
+				</a>
+
+				<div class="busca">
+					<form class="d-flex" role="search" method="get" action="{{ path('product_search') }}">
+						<div class="input-group">
+							<input type="search" class="form-control" name="search" placeholder="Busca" aria-label="Search">
+							<button class="btn btn-secondary" type="submit">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+
+
+				<div>
+					{% if cities is defined %}
+						{% include 'layout/city_menu.html.twig' with { cities: cities } %}
+					{% endif %}
+				</div>
+
+
+			</div>
+		</nav>
+		<!--Fim de barre de Navegation-->
+
+	</body>
+</html>

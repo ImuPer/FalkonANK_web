@@ -1,0 +1,50 @@
+.order-container {
+    max-width: 600px;
+    margin: 2px auto;
+    padding: 20px;
+    background-color: #3c4044;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(183, 3, 3, 0.1);
+}
+.item-info{
+    color: #ddd;
+}
+.basket-total{
+    color: greenyellow;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;  /* Ajoute la barre de défilement horizontale */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+@media screen and (max-width: 600px) {
+    th, td {
+        font-size: 12px;  /* Réduire la taille de la police sur petits écrans */
+    }
+}
+.general_order{
+    /* margin-left: 10%;
+    margin-right: 10%; */
+    text-align: center;
+}
+h1{
+    margin-top:2%;
+    /* margin-bottom:1%; */
+    color:green;
+}
+.div_refund{
+    color: white;
+    background-color: black;
+}

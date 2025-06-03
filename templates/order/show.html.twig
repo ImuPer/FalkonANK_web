@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order
+{% endblock %}
+
+{% block body %}
+	<link rel="stylesheet" href={{asset("css/order.css")}}>
+	<link rel="stylesheet" href={{asset("css/basket.css")}}>
+
+	<div style="text-align: center;">
+		<h1>Compra Numero :
+			{{order.ref}}</h1>
+
+
+		<div class="order-container">
+			<div style="margin-left: 50%;">
+				<a class="btn btn-dark" href="{{ path('app_user_orders') }}">Voltar a lista</a>
+			</div>
+
+			{% for basketP in basketPs %}
+				<div class="basket-item" data-id="{{ basketP.getId() }}">
+					<div class="item-image">
+						<img src="{{ asset('upload/images/products/' ~ basketP.getProduct().getImg()) }}" alt="">
+					</div>
+					<div class="item-info">
+						<h2 class="item-name">{{ basketP.getProduct().getName() }}</h2>
+						<p class="item-price">{{ (basketP.getProduct().getPrice())/100 | number_format(0, '.', ',') }}
+							CVE</p>
+					</div>
+				</div>
+			{% endfor %}
+
+
+			{% if basketPs|length > 0 %}
+				{% set totalPrice = order.totalAmount %}
+				<div class="basket-total">
+					<h3>Total :
+						{{ totalPrice/100 | number_format(2, '.', ',') }}
+						CVE</h3>
+
+					{% set conversionRate = 110 %}
+					{# 1 EUR = 110 CVE #}
+					{% set conversionRateDolar = 100 %}
+					{# 1 USD = 100 CVE #}
+
+					{# Conversion de CVE en EURO #}
+					{{ ((totalPrice/100) / conversionRate)|number_format(2, ',', '.') }}
+					€ (euro)
+
+						<p>
+						{# Conversion de CVE en USD #}
+						{{ ((totalPrice/100) / conversionRateDolar)|number_format(2, ',', '.') }}
+					$ (usa)
+				</p>
+			</div>
+		{% endif %}
+
+
+		</div>
+
+
+			<div class"order_table"> <table class="table table-dark">
+				<tbody>
+					<tr>
+						<th>Data</th>
+						<td>{{ order.orderDate ? order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+					</tr>
+					<tr>
+						<th>Total</th>
+						<td>{{ order.totalAmount }}
+							CVE - Escudos de Cabo Verde</td>
+					</tr>
+					<tr>
+						<th>Stado de Encomenda :
+						</th>
+						<td>{{ order.orderStatus }}</td>
+					</tr>
+
+					{% if order.internalNote %}
+						<tr>
+							<th>Notificação da loja</th>
+							<td>{{ order.internalNote }}</td>
+						</tr>
+					{% endif %}
+
+					{% if order.isRefund() %}
+						<tr>
+							<th>Reembolso :</th>
+							<td>{{ order.refundStatus }}
+								-
+								{{ order.refundNote }}</td>
+						</tr>
+					{% endif %}
+
+
+					<tr>
+						<th>Seu comentário atual</th>
+						<td>{{ order.customerNote ?: 'Nenhum comentário ainda.' }}</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<form method="post" action="{{ path('app_order_comment', {'id': order.id}) }}">
+								<div class="form-group">
+									<label for="customer_note">Editar comentário:</label>
+									<textarea name="customer_note" id="customer_note" rows="4" class="form-control" placeholder="Escreva seu comentário...">{{ order.customerNote }}</textarea>
+								</div>
+								<button type="submit" class="btn btn-primary mt-2">Salvar Comentário</button>
+							</form>
+						</td>
+					</tr>
+
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

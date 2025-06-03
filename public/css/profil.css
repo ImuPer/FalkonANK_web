@@ -1,0 +1,116 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+/* font- roboto - Remove regular 400 */
+body{
+    /* background-image: url(../image/backg/); */
+}
+h3{
+    text-align: center;
+}
+
+.dpInfo{
+    margin: auto;
+    width: 50%;
+    color: white;
+    text-align: center;
+    background-color: rgba(45, 84, 84, 0.562);
+    
+}
+.infos{
+    margin-top: 3rem;
+}
+.editDel{
+    display: flex;
+}
+.edit{
+    margin-top: 10px;
+    color: red;
+    text-decoration: none;
+    padding: 20px;
+    background-color: black;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    
+}
+.del{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.354);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+/*------------- forme activer Compte Merchant -------*/
+.form_M{
+    margin-top: 3rem;
+    background-color: white;
+    color: black;
+}
+.form_M h3{
+    color: green;
+    font-size: large;
+}
+.form_M br{
+    color: green;
+}
+input[type="text"], input[type="email"]{
+    padding: 10px 15px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    /* margin-top: 20px; */
+    border-radius: 10px;
+}
+input[type="textarea"]{
+    padding: 50px 15px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    /* margin-top: 20px; */
+    border-radius: 10px;
+}
+input[type="submit"]{
+    background-color: green;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    border-radius: 10px;
+}
+.icon-merchant {
+    color: #4CAF50; /* Vert pour symboliser le commerce */
+    font-size: 1.5em; /* Taille de l'icône */
+    margin-right: 5px;
+}
+
+
+@media (max-width: 576px) {
+    .container-fluid, .row, .col-sm-12, .table-responsive {
+        padding: 0 5px;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    th, td {
+        word-break: break-word;
+    }
+
+    input[type="text"], input[type="email"], input[type="submit"], textarea, select {
+        width: 100% !important;
+    }
+
+    .modal-dialog {
+        margin: 1rem auto;
+        width: 98%;
+    }
+}
+
+
+

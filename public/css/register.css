@@ -1,0 +1,114 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url(theme_colors.css);
+
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#d_head {
+    background-color: rgba(0, 0, 0, 0.144);
+}
+
+h1 {
+    color: red;
+}
+
+.hr1 {
+    border-top: 5px solid red;
+}
+
+.container_register {
+    text-align: center;
+    margin: auto;
+    width: 60%;
+    max-width: 600px;
+    border: 3px solid red;
+    padding: 10px;
+    background-color: rgba(45, 84, 84, 0.762);
+    color: var(--black);
+    border-radius: 10px;
+}
+
+.text {
+    margin-top: 2%;
+}
+
+input[type="password"], 
+input[type="text"] {
+    width: 100%;  /* Make sure the input fields occupy the full width of the container */
+    height: 3rem;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    padding-right: 30px;  /* Ensure there's space for the icon */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+input[type="checkbox"] {
+    width: 20%;
+    height: 1rem;
+    margin-top: 0px;
+}
+
+input[type="submit"] {
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.form_errors {
+    color: red;
+}
+
+input.is-invalid {
+    border: 1px solid red;
+}
+
+.my-password-field {
+    position: relative;
+}
+
+/* input reste simple */
+input[type="password"], 
+input[type="text"] {
+    width: 100%;
+    height: 3rem;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+    padding-right: 40px; /* espace pour l’icône */
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #333;
+    z-index: 2;
+}
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .container_register {
+        width: 95%;
+    }
+
+    input[type="password"],
+    input[type="text"],
+    input[type="submit"] {
+        width: 95%;
+    }
+}

@@ -1,0 +1,5 @@
+{% if value %}
+    <a href="{{ asset('/' ~ value) }}" target="_blank">View File</a>
+{% else %}
+    <span>No file uploaded</span>
+{% endif %}

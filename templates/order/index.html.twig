@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order index{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('css/order.css') }}">
+
+<style>
+/* Ajoutons un peu de CSS de base ici si ce n'est pas déjà dans order.css */
+.responsive-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-container {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+    .table thead {
+        display: none;
+    }
+
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+
+    .table tr {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-left: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+}
+</style>
+
+{% if orders is empty %}
+    <p>{{ message }}</p>
+{% else %}
+    <div class="general_order container mt-4">
+        <h1 class="mb-4">As Minhas Compras</h1>
+
+        <div class="table-container">
+            <table class="table table-striped responsive-table">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Data</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Beneficiario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr onclick="window.location.href='{{ path('app_order_show', {'id': order.id}) }}';" style="cursor: pointer;">
+                        <td data-label="Numero">{{ order.ref }}</td>
+                        <td data-label="Data">{{ order.orderDate ? order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+                        <td data-label="Total">{{ order.totalAmount / 100 }} CVE</td>
+                        <td data-label="Status">{{ order.orderStatus }}</td>
+                        <td data-label="Beneficiario">{{ order.beneficiaryName }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Nenhum registro de compra!</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <h1>Détails du Shop</h1>
+    <ul>
+        <li><strong>Nom:</strong> {{ shop.name }}</li>
+        <li><strong>Adresse:</strong> {{ shop.address }}</li>
+        <li><strong>Email:</strong> {{ shop.email }}</li>
+        <li><strong>Téléphone fixe:</strong> {{ shop.phone }}</li>
+        <li><strong>Téléphone portable:</strong> {{ shop.mobile_phone }}</li>
+        <li><strong>Description:</strong> {{ shop.description }}</li>
+        <li><strong>Horaires:</strong> {{ shop.horario }}</li>
+    </ul>
+{% endblock %}

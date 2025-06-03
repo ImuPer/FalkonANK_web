@@ -1,0 +1,105 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+body {
+    background-image: url(../image/backg/cv.jpg);
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#d_head {
+    background-color: rgba(0, 0, 0, 0.144);
+}
+
+h1 {
+    color: red;
+}
+
+#global {
+    margin: auto;
+    width: 50%;
+    max-width: 600px;
+    color: white;
+    text-align: center;
+}
+
+.error {
+    color: red;
+}
+
+#global hr {
+    border-top: 5px solid red;
+}
+
+#container form {
+    padding: 15px;
+    border: 3px solid red;
+    border-radius: 10px;
+    background-color: rgba(45, 84, 84, 0.762);
+}
+
+#container a {
+    text-decoration: none;
+}
+
+.mdp a {
+    text-align: center;
+}
+
+input {
+    text-align: center;
+    width: 70%;
+}
+
+#global input[type=email],
+input[type=password] {
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: green;
+    color: #53af57;
+    border: 1px solid #53af57;
+}
+
+.inscr {
+    text-align: center;
+}
+
+.inscr a {
+    color: green;
+}
+
+label {
+    color: white;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #global {
+        width: 95%;
+    }
+
+    input,
+    #global input[type=email],
+    input[type=password],
+    input[type=submit] {
+        width: 95%;
+    }
+}

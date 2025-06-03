@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    {# css #}
+<link rel="stylesheet" href={{asset("css/home.css")}}>
+
+    <div class="general_showP">
+        <h1 style="margin: 5% 0; color:green">{{ product.name }}</h1>
+        <div class="img_showP">
+            <img src="{{asset('upload/images/products/' ~ product.img )}}" style="width: 300px; height: 400px">
+        </div>
+        <div class="desc_showP">
+            
+            <p class="label">{{ product.label }}</p>
+            <h4 style="color:green;"> {{ (product.price/ 100)|number_format(0, ',', '.') }} CVE</h4>
+
+
+            {% if product.stock > 0 %}
+                {% if app.user %}
+                    {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles %}
+                        <p class="p_a_c">para compras - criar uma conta simplis
+                        </p>
+                    {% else %}
+                        <a href="{{ path('app_add', {'id': product.id}) }}">
+                            <button type="button" class="btn btn-success">adicionar ao Carrinho
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ path('app_add', {'id': product.id}) }}">
+                        <button type="button" class="btn btn-success">adicionar ao Carrinho
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </a>
+                {% endif %}
+            {% else %}
+                <p class="ruptureStock">Rupture de stock</p>
+            {% endif %}
+
+            
+            <h3 style="margin-top: 1%;">Descrição</h3>
+            <p>{{ product.description }}</p>
+        </div>
+       {# div shop #}
+        <div class="shop_dv container">
+            <h3 class="text-center mb-4">Loja</h3>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <p><strong>Nome da Loja:</strong> {{ product.getShop().getName() }}</p>
+                    <p><strong>Localidade:</strong> {{ product.getShop().getCity() }}</p>
+                    <p><strong>Endereço:</strong> {{ product.getShop().getAdress() }}</p>
+                    <p><strong>Email:</strong> {{ product.getShop().getEmail() }}</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <p><strong>Telefone:</strong> {{ product.getShop().getPhone() }}</p>
+                    <p><strong>Movel:</strong> {{ product.getShop().getMobilePhone() }}</p>
+                    <p><strong>Horário:</strong> {{ product.getShop().getHorario() }}</p>
+                </div>
+            </div>
+        </div>
+
+</div>
+{% endblock %}

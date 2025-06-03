@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ status == 'success' ? 'Payment Successful' : 'Payment Canceled' }}
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5">
+		{% if status == 'success' %}
+			<div class="alert alert-success text-center">
+				<h1 class="display-4">Obrigado !</h1>
+				<p class="lead">O seu pagamento foi realizado com sucesso.</p>
+				<hr>
+				<p>Você receberá uma confirmação em breve no e-mail
+					(<strong>{{customerEmail}}</strong>).
+					<small>Se não encontrar, verifique sua pasta de spam ou lixo eletrônico 😉</small>
+				</p>
+			</div>
+		{% else %}
+			<div class="alert alert-warning text-center">
+				<h1 class="display-4">Pagamento Cancelado</h1>
+				<p class="lead">O seu pagamento não foi concluído.</p>
+				<hr>
+				<p>Se encontrar algum problema, tente novamente ou contacte o nosso suporte : </p>
+				<p><a href="{{path('contact_nous')}}"><strong> * Contacto</strong></a></p>
+			</div>
+		{% endif %}
+		<a href="{{ path('app_home_page') }}" class="btn btn-primary mt-3">Voltar a Loja !</a>
+		{% if status != 'success' %}
+			<a href="{{ path('user_basket') }}" class="btn btn-secondary mt-3 text-warning">Tentar novamente o pagamento</a>
+
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.logo{
+    width: 150px;
+    height: 150px;
+}
+a{
+    text-decoration: none;
+    color: black;
+    margin-left: 30px;
+}
+li {
+    list-style-type: none; /* Retire le point ou le numéro des éléments de liste */
+    padding-left: 0; /* Retire le retrait par défaut pour aligner les éléments de liste */
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+/* Barre de navegation*/
+nav{
+    display: flex;/*aligne les elements*/
+    flex-wrap: wrap; /* empiler si la resolulation ne permet pas*/
+    justify-content: space-between; /* mettre space entre les element*/
+    padding: 20px; /*margin interior*/
+    background-color: #f10606;
+    position: sticky; /* bloquer la barre*/
+    top: 0;
+}
+nav h1{
+    font-size: 20px;
+}
+nav .onglets{
+    display: flex;
+    flex-wrap: wrap;
+}
+nav .onglets p{
+    font-size: 17px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+nav .onglets input{
+    margin: 8px 20px;
+    border-radius: 30px;
+    padding: 10px;
+    text-align: center;
+}
+/*Fim barre de navegation*/
+
+
+/*Fim header*/
+
+/* section main*/
+.cards{
+    display: grid;
+    border-radius: 10px;
+    text-align: center;
+    grid-template-columns: repeat(3, 1fr);       
+    gap: 5px;
+}
+.cards img{
+    width: 15vw;
+    height: 20vw;
+}
+/*Fim de setion main*/
+
+/*div Vidio*/
+.vidio{
+    align-items: center;
+    background-color: #f10606;
+}
+/*Fim d div Vidio*/
+
+/*footeur Pied de page */
+footer{
+    display: flex;
+    justify-content: space-between;
+    background-color: #f10606;
+    padding: 20px;
+}
+footer p{
+    margin-left: 20px;
+}
+.social-media{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 20%;    
+}
+.social-media i{
+    margin-right: 10px;
+}
+
+.shoping_header i{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 17px;
+}
+label{
+    color: green;
+}
+a{
+    text-decoration: none;
+}
