@@ -64,7 +64,7 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install public": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -80,7 +80,8 @@
         "symfony": {
             "allow-contrib": false,
             "require": "7.1.*"
-        }
+        },
+        "public-dir": "public"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.60",
