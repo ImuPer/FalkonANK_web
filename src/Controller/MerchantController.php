@@ -86,7 +86,7 @@ final class MerchantController extends AbstractController
         $user = $this->getUser();
 
         $userEmail = $user->getEmail();
-        $userName = $user->getFirstName()." ".$user->getLastName();
+        $userName = $user->getFirstName() . " " . $user->getLastName();
         $userID = $user->getId();
 
         $dateNow = new DateTime();
@@ -161,12 +161,19 @@ final class MerchantController extends AbstractController
         $entityManager->flush();
 
         //-----------Envoyer l’email avec le PDF en pièce jointe------------------------------------------
-        
+        $logoPath = $_SERVER['DOCUMENT_ROOT'] . '/image/FalkonANK/logo-transparent-png.png';
+        if (file_exists($logoPath)) {
+            $logoData = base64_encode(file_get_contents($logoPath));
+            $logoSrc = 'data:image/png;base64,' . $logoData;
+        } else {
+            $logoSrc = ''; // fallback: no logo
+        }
+
         $contractEmailContent = <<<EOD
 <html>
   <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
     <div style="text-align: center; margin-bottom: 20px;">
-      <img class="logo" src="{{asset("image/FalkonANK/logo-transparent-png.png")}}">
+      <img class="logo" src="$logoSrc" style="max-width: 200px;">
     </div>
 
     <p>Olá <strong>{$userName}</strong>,</p>
@@ -255,10 +262,10 @@ EOD;
     public function contract(Request $request): Response
     {
         // $name = $request->query->get('name');
-         $user = $this->getUser();
+        $user = $this->getUser();
 
         $userEmail = $user->getEmail();
-        $userName = $user->getFirstName()." ".$user->getLastName();
+        $userName = $user->getFirstName() . " " . $user->getLastName();
         $address = $request->query->get('address');
         $nif = $request->query->get('nif');
 
