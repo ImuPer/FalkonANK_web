@@ -374,14 +374,12 @@ class StripeController extends AbstractController
 
         // Envoi du mail au client
         $emailClient = (new Email())
-            ->from(new Address('no-reply@tonsite.com', 'FalkonANK Alimentason'))
+            ->from(new Address('no-reply@FalkonANK.com', 'FalkonANK Alimentason'))
             ->to($customerEmail)
             ->subject('Votre reçu de commande')
             ->html($receiptContent); // ✅ maintenant en HTML avec images
 
-
-        //-------Reçu d'achat--------------------
-
+            //-------Reçu d'achat--------------------
         $options = new Options();
         $options->set('defaultFont', 'Arial');
 
@@ -397,8 +395,6 @@ class StripeController extends AbstractController
 
         // Attacher le fichier PDF à l'e-mail
         $emailClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
-
-
 
         $mailer->send($emailClient);
         unlink($tempPdfPath);

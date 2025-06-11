@@ -113,4 +113,18 @@ input[type="submit"]{
 }
 
 
+/* Ajoute une bordure de 1px et une couleur de bordure grise */
+.form-control, .form-select {
+    border: 1px solid #ccc;
+    border-radius: 4px; /* arrondir légèrement les bords */
+}
+
+/* Style supplémentaire pour les champs de texte quand on entre un texte */
+.form-control:focus, .form-select:focus {
+    border-color: #0056b3; /* Change la couleur de la bordure lorsqu'il est sélectionné */
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Ombre douce pour l'élément sélectionné */
+}
+
+
+
 

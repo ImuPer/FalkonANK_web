@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exemplo de Contrato de Parceria Comercial
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-5 mb-5">
+		<h1 class="mb-4">📄 Exemplo de Contrato de Parceria Comercial</h1>
+
+		<div style="text-align: center; margin-bottom: 20px;">
+			<img class="logo" src="{{asset("image/FalkonANK/logo-transparent-png.png")}}">
+		</div>
+
+		<p>
+			<strong>Número do Contrato:</strong>
+			CT-USER-{{ '%05d'|format(app.user.id) }}-{{ "now"|date("Ymd") }}</p>
+		<p></p>
+		<p>
+			<strong>Entre:</strong>
+		</p>
+		<p>
+			<strong>A Plataforma:</strong>
+			FalkonANK Alimentason (nome legal:
+			<em>Pereira Mascarenhas Milton Mario</em>), com sede em 60 rue François 1er, 75008 Paris, França.</p>
+		<p>
+			<strong>E:</strong>
+		</p>
+
+		<form method="post" action="/contract/download">
+			<div class="mb-3">
+				<label for="nomeComerciante" class="form-label">Comerciante :
+				</label>
+				{{ name|e }}
+				<input type="hidden" class="form-control" id="nomeComerciante" name="nomeComerciante" value="{{ name|e }}" placeholder="{{ name|e }}">
+			</div>
+
+			<div class="mb-3">
+				<label for="nifComerciante" class="form-label">NIF (Número de Identificação Fiscal):</label>
+				{{ nif|e }}
+				<input type="hidden" class="form-control" id="nifComerciante" name="nifComerciante" value="{{ nif|e }}" placeholder="{{ nif|e }}">
+			</div>
+
+			<div class="mb-3">
+				<label for="moradaComerciante" class="form-label">Morada do Estabelecimento:</label>
+				{{ address|e }}
+				<input type="hidden" class="form-control" id="moradaComerciante" name="moradaComerciante" value="{{ address|e }}" placeholder="{{ address|e }}">
+			</div>
+
+			<div class="mb-3">
+				<label for="emailComerciante" class="form-label">E-mail :
+				</label>
+				{{ app.user.email|e }}
+				<input type="hidden" class="form-control" id="emailComerciante" name="emailComerciante" value="{{ app.user.email|e }}">
+			</div>
+
+			<hr>
+
+			<h3>Cláusulas do Contrato</h3>
+
+			<p>
+				<strong>1. Objeto:</strong>
+				Este contrato estabelece os termos da parceria para venda e entrega de produtos através da plataforma FalkonANK Alimentason, que conecta a diáspora cabo-verdiana aos comerciantes locais em Cabo Verde.</p>
+
+			<p>
+				<strong>2. Obrigações da Plataforma:</strong>
+				Divulgar os produtos, processar pagamentos, encaminhar pedidos ao Comerciante, fornecer suporte básico ao cliente.</p>
+
+			<p>
+				<strong>3. Obrigações do Comerciante:</strong>
+				Garantir a disponibilidade e qualidade dos produtos, entregar ou disponibilizar os pedidos conforme acordado, manter informações atualizadas e colaborar em casos de reclamações.</p>
+
+			<p>
+				<strong>4. Preços e Pagamentos:</strong>
+			</p>
+			<ul>
+				<li>O Comerciante define o preço base (sem comissões).</li>
+				<li>A Plataforma adiciona a sua comissão + taxas Stripe ao valor final mostrado ao cliente.</li>
+				<li>Pagamentos ao Comerciante serão feitos entre 7 a 10 dias úteis após a entrega ou levantamento.</li>
+				<li>O custo da transferência bancária internacional será deduzido do montante transferido.</li>
+				<li>Os pagamentos são centralizados pela conta Stripe da Plataforma, uma vez que o Comerciante não pode utilizar uma conta Stripe própria.</li>
+			</ul>
+
+			<p>
+				<strong>5. Duração e Rescisão:</strong>
+				O contrato é por tempo indeterminado, podendo ser rescindido com aviso prévio de 15 dias. Em caso de violação grave, a rescisão pode ser imediata.</p>
+
+			<p>
+				<strong>6. Responsabilidade:</strong>
+				O Comerciante é o único responsável pelos produtos entregues. A Plataforma atua apenas como intermediária.</p>
+
+			<p>
+				<strong>7. Proteção de Dados:</strong>
+				Ambas as partes se comprometem a respeitar o RGPD.</p>
+
+			<p>
+				<strong>8. Foro:</strong>
+				Para dirimir quaisquer litígios, fica eleito o foro da Comarca de Praia, Cabo Verde.</p>
+
+			<hr>
+
+			<h4 class="mt-4">Assinatura</h4>
+
+			{# <div class="mb-3">
+				<label for="localAssinatura" class="form-label">Local:</label>
+				<input type="text" class="form-control" id="localAssinatura" name="localAssinatura" placeholder="Cidade" required>
+			</div> #}
+
+			<div class="mb-3">
+				<label for="dataAssinatura" class="form-label">Data :
+				</label>
+				{{ "now"|date("d/m/Y") }}
+				<input type="hidden" class="form-control" id="dataAssinatura" name="dataAssinatura" value={{ "now"|date("d/m/Y") }}>
+			<p> {{ name|e }}</p><hr>
+            </div>
+            
+
+
+
+			{# <div class="mb-3">
+				<label for="assinaturaFile" class="form-label">Carregue a sua assinatura (imagem ou PDF):</label>
+				<input type="file" class="form-control" id="assinaturaFile" name="assinaturaFile" accept=".png, .jpg, .jpeg, .pdf" required>
+				<small class="form-text text-muted">Formatos aceites: .png, .jpg, .jpeg ou .pdf</small>
+			</div> #}
+
+			<div class="mb-3">
+				{# <button type="submit" class="btn btn-primary">Aceitar e Enviar Contrato</button> #}
+				<button type="button" class="btn btn-secondary ms-2" onclick="window.close()">OK</button>
+			</div>
+		</form>
+	</div>
+{% endblock %}

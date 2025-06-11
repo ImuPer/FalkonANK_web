@@ -65,6 +65,9 @@ class Merchant
     #[ORM\Column(nullable: true)]
     private ?string $swift = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nifManeger = null;
+
      
     public function __construct()
     {
@@ -191,7 +194,18 @@ class Merchant
     
     public function getSwift(): ?string { return $this->swift; }
     public function setSwift(?string $value): self { $this->swift = $value; return $this; }
-    
+
+    public function getnifManeger(): ?string
+    {
+        return $this->nifManeger;
+    }
+
+    public function setnifManeger(?string $nifManeger): static
+    {
+        $this->nifManeger = $nifManeger;
+
+        return $this;
+    }   
 
 
 }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product
+{% block title %}Loja
 {% endblock %}
 
 {% block body %}
@@ -54,6 +54,7 @@
 		{% else %}
 			{# Liste de toutes les boutiques #}
 			{% for shop in shops_lojas %}
+				<h2>{{ shop.getName() }}</h2>
 				<div class=" container mb-5 shop_dv">
 					<a href="{{ path('shop_products', {'id': shop.getId()}) }}" class="text-decoration-none text-dark">
 						{% if shop.img is not null %}
@@ -91,7 +92,9 @@
 							</div>
 						</div>
 					</a>
+					<hr>
 				</div>
+			
 
 			{% endfor %}
 		{% endif %}

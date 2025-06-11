@@ -110,17 +110,18 @@ public function configureAssets(): Assets
             
                 yield MenuItem::linkToCrud('Minha Loja', ' fas fa-store fa-2x text-primary', Shop::class);
 
-                yield MenuItem::linkToCrud(
+                yield MenuItem::subMenu('Encomendas', 'fas fa-box')->setSubItems([
+                    MenuItem::linkToCrud(
+                    'Ver encomendas',
+                    'fas fa-eye',
+                    Order::class
+                    ),
+                    MenuItem::linkToCrud(
                     'Artigos da Encomendas',
                     'fas fa-eye',
                     BasketProduct::class
-                );
-
-                yield MenuItem::linkToCrud(
-                    'Encomendas',
-                    'fas fa-eye',
-                    Order::class
-                );
+                    ),
+                ]);
 
                 // 🔽 Lien vers /merchant/accounting
                 yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');

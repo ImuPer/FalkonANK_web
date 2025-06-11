@@ -80,6 +80,7 @@ class MerchantCrudController extends AbstractCrudController
             return[
                                
                 TextareaField::new('reponse'),
+                BooleanField::new('is_approved', 'Aprovado')->onlyOnIndex(),
             ];
         }
     }

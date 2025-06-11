@@ -11,7 +11,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ShopCrudController extends AbstractCrudController
@@ -51,10 +54,10 @@ class ShopCrudController extends AbstractCrudController
             TextField::new('phone', 'Téléfone fixo'),
             TextField::new('mobile_phone', 'Movel'),
             TextField::new('email', 'Email da loja'),
-            TextField::new('description', 'Descriçao'),
-            TextField::new('horario', 'Horario '),
-            TextField::new('city.name', 'Cidade')->hideOnForm(),
-            TextField::new('user.email', 'Email du Gerente'),
+            TextareaField::new('description', 'Descriçao'),
+            TextareaField::new('horario', 'Horario '),
+            AssociationField::new('city', 'Cidade'),
+            TextField::new('user.email', 'Email du Gerente')->hideOnForm(),
             ImageField::new('img', 'imagem')
                 ->setBasePath(self::SHOP_BASE_PATH)
                 ->setUploadDir(self::SHOP_UPLOAD_DIR)

@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 
 class MerchantType extends AbstractType
@@ -56,8 +58,30 @@ class MerchantType extends AbstractType
                 ],
                 'help' => 'O código SWIFT (ou BIC) tem 8 ou 11 caracteres, por ex.: BCVVCVCV',
                 'help_attr' => ['class' => 'form-text text-muted small-text'],
-            ]);
-            
+            ])->add('nifManeger', TextType::class, [
+                    'label' => 'NIF do Comerciante',
+                    'required' => true,
+                    'attr' => [
+                        'placeholder' => 'Ex: 123456789',
+                        'maxlength' => 9,
+                        'class' => 'form-control border',
+                    ],
+                    'help' => 'O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5.',
+                    'help_attr' => ['class' => 'form-text text-muted small-text'],
+                    'constraints' => [
+                        new Length([
+                            'min' => 9,
+                            'max' => 9,
+                            'exactMessage' => 'O NIF deve ter exatamente {{ limit }} dígitos.',
+                        ]),
+                        new Regex([
+                            'pattern' => '/^[1235]\d{8}$/',
+                            'message' => 'O NIF deve começar por 1, 2, 3 ou 5 e ter 9 dígitos no total.',
+                        ]),
+                    ],
+                    ]);
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
