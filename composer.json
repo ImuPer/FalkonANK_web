@@ -14,6 +14,7 @@
         "dompdf/dompdf": "^3.1",
         "easycorp/easyadmin-bundle": "4.10",
         "lexik/jwt-authentication-bundle": "3.0",
+        "presta/sitemap-bundle": "^4.1",
         "stripe/stripe-php": "^15.7",
         "symfony/asset": "7.1.*",
         "symfony/console": "7.1.*",
