@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {# css #}
-    <link rel="stylesheet" href={{asset("css/newslatterFootear.css")}}>
-    
-    <title>Document</title>
-</head>
-<body>
-      
-   <div class="p-3 mb-2 bg-danger text-white">
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-        <li class="nav-item"><a href="{{path('app_home_page')}}" class="nav-link px-2 text-white">Home</a></li>
-        <li class="nav-item"><a href="{{path('contact_nous')}}" class="nav-link px-2 text-white">Contacto</a></li>
-        <li class="nav-item"><a href="{{path('app_about_page')}}" class="nav-link px-2 text-white">Sobre nos</a></li>
-      </ul>
-      
-      <ul class="i_footear">
-        <a class="link .facebook" href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info"><i class="fab fa-facebook-f"></i></a>
-        <a class="link .intagram" href=""><i class="fab fa-instagram"></i></a>
-        <p class="text-center text-white">© 2024 FalkonANK Alimentason</p>
-      </ul>      
-    </footer>
-  
-   </div>
-   
+	<head>
+		<meta charset="UTF-8">
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1.0">
+		{# css #}
+		<link rel="stylesheet" href={{asset("css/newslatterFootear.css")}}>
 
-</body>
+		<title>Document</title>
+	</head>
+	<body>
+
+		<div class="p-3 mb-2 bg-danger text-white">
+			<footer class="py-3 my-4">
+				<ul class="nav justify-content-center border-bottom pb-3 mb-3">
+					<li class="nav-item">
+						<a href="{{path('app_home_page')}}" class="nav-link px-2 text-white">Home</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{path('contact_nous')}}" class="nav-link px-2 text-white">Contacto</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{path('app_about_page')}}" class="nav-link px-2 text-white">Sobre nos</a>
+					</li>
+				</ul>
+
+				<ul class="i_footear">
+					<a class="link .facebook" href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info">
+						<i class="fab fa-facebook-f"></i>
+					</a><br>
+					{# <a class="link .intagram" href=""><i class="fab fa-instagram"></i></a> #}
+					<a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download style="display: inline-flex; align-items: center; text-decoration: none;">
+						<img class="logo" src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" style="width: 33px; height: 33px; margin-right: 8px;">
+					</a>
+					<p class="text-center text-white">© 2025 FalkonANK Alimentason</p>
+				</ul>
+			</footer>
+
+		</div>
+
+
+	</body>
+</html>

@@ -36,68 +36,13 @@
 					<span>Nos Lojas</span>
 				</a>
 				{#-----------------------Carousel Controls------------------------------------------------------- #}
-				<div
-					id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-					{# Les indicateurs (petits ronds) #}
-					<div class="carousel-indicators">
-						{% set index = 0 %}
-						{% for ads in adss %}
-							{% if ads.title == 'img' %}
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ index }}" {% if index == 0 %} class="active" {% endif %} aria-label="Slide {{ index + 1 }}"></button>
-								{% set index = index + 1 %}
-							{% endif %}
-						{% endfor %}
-					</div>
-
-					{# Les images du carousel #}
-					<div class="carousel-inner">
-						{% set first = true %}
-						{% for ads in adss %}
-							{% if ads.title == 'img' %}
-								<div class="carousel-item {% if first %}active{% endif %}">
-									{% if ads.urlAds is not null %}
-										<a href="{{ ads.urlAds }}" target="_blank" rel="noopener">
-											<img src="{{ asset('upload/images/ads/' ~ ads.img) }}" class="d-block w-100" alt="Slide {{ loop.index }}">
-										</a>
-									{% elseif ads.shop is not null %}
-										<a href="{{ path('app_shop_loja', {'id': ads.shop.id}) }}">
-											<img src="{{ asset('upload/images/ads/' ~ ads.img) }}" class="d-block w-100" alt="Slide {{ loop.index }}">
-										</a>
-									{% else %}
-										<img src="{{ asset('upload/images/ads/' ~ ads.img) }}" class="d-block w-100" alt="Slide {{ loop.index }}">
-									{% endif %}
-								</div>
-								{% set first = false %}
-							{% endif %}
-						{% endfor %}
-					</div>
-
-					{# Boutons de navigation #}
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
-				</div>
+				{# {% include "layout/carousel.html.twig" %} #}
 				{#------------FIN de Carousel Controls------------------------------------------------------------------ #}
 
 			</div>
 
 
 		</header>
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-const select = document.getElementById("category-select");
-select.addEventListener("change", function () {
-if (this.value) {
-window.location.href = this.value;
-}
-});
-});
-		</script>
 		<!-- Fin du header -->
 
 		<!-- Section principale -->
