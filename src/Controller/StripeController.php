@@ -215,6 +215,12 @@ class StripeController extends AbstractController
         //infos de beneficiario
         $orderData = $request->getSession()->get('order_info');
 
+        if (!$orderData || !isset($orderData['city_id'])) {
+            return $this->render('stripe/index.html.twig', [
+                'status' => 'error',
+                'message' => 'A sessão expirou ou está incompleta. Por favor, tente novamente.',
+            ]);
+        }
         $order->setRef($ref_order);
         $order->setOrderDate(new \DateTime());
         $order->setTotalAmount((float) $orderData['totalAmountSansComission']);//envoier total amonut sans commissions

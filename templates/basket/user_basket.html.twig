@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Minha Cesta{% endblock %}
+{% block title %}Minha Cesta
+{% endblock %}
 
 {% block body %}
 	<link rel="stylesheet" href={{asset("css/basket.css")}}>
@@ -12,6 +13,12 @@
 
 		{% if basketPs is empty %}
 			<p>{{ message }}</p>
+			<div class="d-inline-flex p-3">
+				<a href="{{path('app_home_page')}}">
+					<button type="button" class="btn btn-dark">Voltar a loja</button>
+				</a>
+			</div>
+
 		{% else %}
 			{% for basketP in basketPs %}
 				<div class="basket-item" data-id="{{ basketP.getId() }}">
@@ -40,6 +47,11 @@
 				{% set totalPrice = totalPrice + (productPrice * quantity) %}
 			{% else %}
 				<p class="empty-basket">A sua cesta está vazia !</p>
+				<div class="d-inline-flex p-3">
+					<a href="{{path('app_home_page')}}">
+						<button type="button" class="btn btn-dark">Voltar a loja</button>
+					</a>
+				</div>
 			{% endfor %}
 		{% endif %}
 
