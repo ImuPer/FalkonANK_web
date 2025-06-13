@@ -322,12 +322,16 @@ class StripeController extends AbstractController
     ";
 
             $productsListBeneficiary .= "
-        <tr>
-            <td style='padding: 8px;'><img src='{$imageBase64}' alt='{$product->getName()}' style='width: 80px; height: auto;'></td>
-            <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
-            <td style='padding: 8px;'>{$shop}, {$shopAddress}</td>
-        </tr>
-    ";
+                <tr>
+                    <td style='padding: 8px;'>
+                        <img src='https://falkon.click/upload/images/products/" . rawurlencode($product->getImg()) . "' 
+                            alt='" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "' 
+                            style='width: 80px; height: auto;'>
+                    </td>
+                    <td style='padding: 8px;'>" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . " x{$quantity}</td>
+                    <td style='padding: 8px;'>" . htmlspecialchars($shop, ENT_QUOTES, 'UTF-8') . ", " . htmlspecialchars($shopAddress, ENT_QUOTES, 'UTF-8') . "</td>
+                </tr>
+            ";
         }
 
         $productsList .= "</tbody></table>";
