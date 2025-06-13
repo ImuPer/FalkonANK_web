@@ -1,0 +1,61 @@
+/* Estilos gerais */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+footer {
+  background-color: #dc3545;
+  color: white;
+}
+
+.social-links {
+  margin: 20px 0;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 2px solid #1877F2;
+  border-radius: 50%;
+  background-color: white;
+  color: #1877F2;
+  font-size: 18px;
+  margin: 0 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.social-icon:hover {
+  background-color: #1877F2;
+  color: white;
+}
+
+.app-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+}
+
+.footer-logo {
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .social-links {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .social-icon {
+    margin: 5px;
+  }
+
+  .footer-logo {
+    height: 15px;
+  }
+}

@@ -1,63 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta
-		name="viewport" content="width=device-width, initial-scale=1.0">
-		{# css #}
-		<link rel="stylesheet" href={{asset("css/newslatterFootear.css")}}>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ asset('css/newslatterFootear.css') }}">
+  <title>Rodapé Responsivo</title>
+</head>
+<body>
+  <footer class="footer bg-danger text-white py-3 my-4">
+    <div class="container">
+      <!-- Links de navegação -->
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item">
+          <a href="{{ path('app_home_page') }}" class="nav-link px-2 text-white">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ path('contact_nous') }}" class="nav-link px-2 text-white">Contacto</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ path('app_about_page') }}" class="nav-link px-2 text-white">Sobre nós</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ path('privacy_policy') }}" class="nav-link px-2 text-white">Política</a>
+        </li>
+      </ul>
 
-		<title>Document</title>
-	</head>
-	<body>
+      <!-- Ícones sociais e links -->
+      <div class="social-links text-center">
+        <a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" class="social-icon">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download class="social-icon">
+          <img src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" class="app-icon">
+          <span>Download APK</span>
+        </a>
+      </div>
 
-		<div class="p-3 mb-2 bg-danger text-white">
-			<footer class="py-3 my-4">
-				<ul class="nav justify-content-center border-bottom pb-3 mb-3">
-					<li class="nav-item">
-						<a href="{{path('app_home_page')}}" class="nav-link px-2 text-white">Home</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{path('contact_nous')}}" class="nav-link px-2 text-white">Contacto</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{path('app_about_page')}}" class="nav-link px-2 text-white">Sobre nos</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{path('privacy_policy')}}" class="nav-link px-2 text-white">Política</a>
-					</li>
-				</ul>
-
-				<ul class="i_footear">
-					<a class="link facebook" href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" style="display: inline-flex; align-items: center; justify-content: center;
-														          width: 36px; height: 36px; text-decoration: none;
-														          border: 2px solid #1877F2; border-radius: 50%;
-														          background-color: #ffffff; color: #1877F2;
-														          font-size: 18px; transition: background-color 0.3s, color 0.3s;">
-
-						<i class="fab fa-facebook-f"></i>
-					</a>
-
-					{# <br> #}
-					{# <a class="link .intagram" href=""><i class="fab fa-instagram"></i></a> #}
-					<a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download style="display: inline-flex; align-items: center; text-decoration: none;
-																					          border: 2px solid #4CAF50; border-radius: 8px; padding: 6px 10px;
-																					          background-color: #f9fff9; color: #333; transition: 0.3s;">
-
-						<img class="logo" src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" style="width: 25px; height: 25px; margin-right: 8px;">
-						<br><span style="font-weight: 500;">Download APK</span>
-					</a>
-
-					<p class="text-center text-white" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-						<img class="logo" src="{{ asset('image/FalkonANK/logo-transparent-png.png') }}" alt="Logo FalkonANK" style="height: 20px;">
-						© 2025 FalkonANK Alimentason
-					</p>
-
-				</ul>
-			</footer>
-
-		</div>
-
-
-	</body>
+      <!-- Copyright -->
+      <div class="text-center">
+        <img src="{{ asset('image/FalkonANK/logo-transparent-png.png') }}" alt="Logo FalkonANK" class="footer-logo">
+        <p>© 2025 FalkonANK Alimentason</p>
+      </div>
+    </div>
+  </footer>
+</body>
 </html>
