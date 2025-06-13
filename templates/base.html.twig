@@ -10,8 +10,24 @@
 			{% block title %}FalkonAnk : Alimentation
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/png+xml,<png xmlns=%22https://falkon.click/image/FalkonANK/logo-transparent-png.png%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>FAA</text></png>">
 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		{% block meta_description %}
+			<meta name="description" lang="fr" content="FalkonANK : plateforme de mise en relation entre la diaspora capverdienne et les commerçants locaux au Cap-Vert. Achetez et faites livrer des produits à vos proches.">
+			<meta name="description" lang="pt" content="FalkonANK: plataforma de ligação entre a diáspora cabo-verdiana e os comerciantes locais em Cabo Verde. Compre e faça entregar produtos aos seus entes queridos.">
+			<meta name="description" lang="en" content="FalkonANK: connecting the Cape Verdean diaspora with local merchants in Cape Verde. Purchase and have products delivered to your loved ones.">
+			<meta name="description" lang="es" content="FalkonANK: plataforma que conecta a la diáspora caboverdiana con los comerciantes locales en Cabo Verde. Compra y haz que los productos sean entregados a tus seres queridos.">
+		{% endblock %}
+
+		{% block alternate_links %}
+			<link rel="alternate" hreflang="fr" href="https://falkon.click/fr/accueil"/>
+			<link rel="alternate" hreflang="pt" href="https://falkon.click/pt/inicio"/>
+			<link rel="alternate" hreflang="en" href="https://falkon.click/en/home"/>
+			<link rel="alternate" hreflang="es" href="https://falkon.click/es/inicio"/>
+		{% endblock %}
+
+		<link rel="icon" href="data:image/png+xml,<png xmlns=%22https://falkon.click/image/FalkonANK/logo-transparent-png.png%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>FAA</text></png>">
 		{# <link rel="icon" type="image/png" href="{{asset("image/FalkonANK/logo-transparent-png.png")}}"> #}
 		{# <link rel="icon" type="image/png" href="/image/FalkonANK/logo-transparent-png.png"> #}
 
