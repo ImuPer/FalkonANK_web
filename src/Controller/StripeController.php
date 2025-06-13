@@ -46,14 +46,14 @@ class StripeController extends AbstractController
 
         // Calcul du montant total
         $totalAmount = 0;
-        $totalAmountSansComission = 0; 
+        $totalAmountSansComission = 0;
         foreach ($basketProducts as $bp) {
             $totalAmount += $bp->getProduct()->getFinalPrice() * $bp->getQuantity();
             $totalAmountSansComission += $bp->getProduct()->getPrice() * $bp->getQuantity();
         }
         $totalAmount = $totalAmount / 100;
-        $totalAmountSansComission = (float)$totalAmountSansComission;
-       
+        $totalAmountSansComission = (float) $totalAmountSansComission;
+
         // Vérifie si le montant est inférieur à 0,150 €
         if ($totalAmount < 250) { // 250 centimes en centimes
             $this->addFlash('error', "O valor total da compra deve ser superior a 250 CVE(escudos).");
@@ -97,7 +97,7 @@ class StripeController extends AbstractController
             'beneficiary_address' => $deliveryAddress,
             'beneficiary_email' => $beneficiary_email,
             'phone' => $phone,
-            'totalAmountSansComission' =>$totalAmountSansComission,
+            'totalAmountSansComission' => $totalAmountSansComission,
         ]);
 
 
@@ -217,11 +217,11 @@ class StripeController extends AbstractController
 
         $order->setRef($ref_order);
         $order->setOrderDate(new \DateTime());
-        $order->setTotalAmount((float)$orderData['totalAmountSansComission']);//envoier total amonut sans commissions
+        $order->setTotalAmount((float) $orderData['totalAmountSansComission']);//envoier total amonut sans commissions
         $order->setAmountFinal($amount);
         $order->setOrderStatus("Em processamento");
         $order->setRefund(false);
-        
+
         $cityId = $request->getSession()->get('order_info')['city_id'];
         $city = $cityRepository->find($cityId); // 👈 convertit l'ID en objet City
 
@@ -279,6 +279,7 @@ class StripeController extends AbstractController
 <table style='width: 100%; border-collapse: collapse;'>
     <thead>
         <tr>
+            <th style='text-align: left; padding: 8px;'>Imagem</th>
             <th style='text-align: left; padding: 8px;'>Produto</th>
             <th style='text-align: left; padding: 8px;'>Loja</th>
         </tr>
@@ -316,7 +317,7 @@ class StripeController extends AbstractController
 
             $productsListBeneficiary .= "
         <tr>
-            
+            <td style='padding: 8px;'><img src='{$imageBase64}' alt='{$product->getName()}' style='width: 80px; height: auto;'></td>
             <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
             <td style='padding: 8px;'>{$shop}, {$shopAddress}</td>
         </tr>
@@ -336,41 +337,45 @@ class StripeController extends AbstractController
 
 
         $receiptContent = <<<EOD
-        <html>
-          <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-            <p>Olá <strong>{$customerName}</strong>,</p>
-        
-            <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
-        
-            <p>
-              <strong>Número da encomenda:</strong> {$ref_order}<br>
-              <strong>Valor total:</strong> {$amountFormatted} {$currency}
-              (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
-            </p>
-        
-            <p style="color: #a00;">
-              <em>O beneficiário deverá apresentar seu documento de identidade e o número (referência) da encomenda. </em>
-              <strong>Deves envia-lo essa referência : {$ref_order}</strong>
-            </p>
-            <br>
-        
-            <div style="text-align: center;">
-                <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
-                {$productsList}
-            </div>
-        
-            <h3>Entrega para:</h3>
-            <p>
-              <strong>Nome:</strong> {$beneficiaryName}<br>
-              <strong>Endereço:</strong> {$beneficiaryAddress}
-            </p>
-        
-            <p style="margin-top: 30px;">Atenciosamente,<br>
-            <strong>FALKON-ANK Alimentason</strong></p>
+<html>
+  <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 200px; height: auto;">
+    </div>
 
-          </body>
-        </html>
-        EOD;
+    <p>Olá <strong>{$customerName}</strong>,</p>
+
+    <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
+
+    <p>
+      <strong>Número da encomenda:</strong> {$ref_order}<br>
+      <strong>Valor total:</strong> {$amountFormatted} {$currency}
+      (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
+    </p>
+
+    <p style="color: #a00;">
+      <em>O beneficiário deverá apresentar seu documento de identidade e o número (referência) da encomenda. </em>
+      <strong>Deves envia-lo essa referência : {$ref_order}</strong>
+    </p>
+    <br>
+
+    <div style="text-align: center;">
+        <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
+        {$productsList}
+    </div>
+
+    <h3>Entrega para:</h3>
+    <p>
+      <strong>Nome:</strong> {$beneficiaryName}<br>
+      <strong>Endereço:</strong> {$beneficiaryAddress}
+    </p>
+
+    <p style="margin-top: 30px;">Atenciosamente,<br>
+    <strong>FALKON-ANK Alimentason</strong></p>
+
+  </body>
+</html>
+EOD;
 
         // Envoi du mail au client
         $emailClient = (new Email())
@@ -379,7 +384,7 @@ class StripeController extends AbstractController
             ->subject('Votre reçu de commande')
             ->html($receiptContent); // ✅ maintenant en HTML avec images
 
-            //-------Reçu d'achat--------------------
+        //-------Reçu d'achat--------------------
         $options = new Options();
         $options->set('defaultFont', 'Arial');
 
@@ -400,7 +405,10 @@ class StripeController extends AbstractController
         unlink($tempPdfPath);
         //----------------------------------------------------------------------------------------------------------------
 
+
+
         //------------send email to benef.(Message e liste de products Order)---------------------------------------------------
+
         $beneficiaryEmail = $orderData['beneficiary_email'] ?? null;
 
         // Será entregue para você neste endereço:
@@ -414,6 +422,10 @@ class StripeController extends AbstractController
             $recapContent = <<<EOD
         <html>
           <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+             <div style="text-align: center; margin-bottom: 20px;">
+                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 200px; height: auto;">
+            </div>
+          
             <p>Olá <strong>{$orderData['beneficiary_name']}</strong>,</p>
         
             <p>Uma encomenda para voçe:</p>
@@ -435,6 +447,23 @@ class StripeController extends AbstractController
                 ->to($beneficiaryEmail)
                 ->subject('Récapitulatif de votre entrega')
                 ->html($recapContent);
+
+            //------Lista de artigos--pdf
+            $options = new Options();
+            $options->set('defaultFont', 'Arial');
+
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($recapContent);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Enregistrement temporaire
+            $pdfOutput = $dompdf->output();
+            $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
+            file_put_contents($tempPdfPath, $pdfOutput);
+
+            // Attacher le fichier PDF à l'e-mail
+            $emailBenef->attachFromPath($tempPdfPath, 'lista_artigos.pdf');
 
 
             try {
