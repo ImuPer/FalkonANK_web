@@ -2,30 +2,33 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="FalkonANK : plateforme de mise en relation entre la diaspora capverdienne et les commerçants locaux au Cap-Vert. Achetez et faites livrer des produits à vos proches.">
+		<meta name="keywords" content="FalkonANK, Cap-Vert, diaspora, commerçants locaux, livraison, produits alimentaires">
+		<meta name="author" content="Imuhotepu">
 		<title>
 			{% block title %}FalkonAnk : Alimentation
 			{% endblock %}
 		</title>
-		<link
-		rel="icon" href="data:image/png+xml,<png xmlns=%22https://falkon.click/image/FalkonANK/logo-transparent-png.png%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>FAA</text></png>">
+		<link rel="icon" href="data:image/png+xml,<png xmlns=%22https://falkon.click/image/FalkonANK/logo-transparent-png.png%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>FAA</text></png>">
 
 		{# <link rel="icon" type="image/png" href="{{asset("image/FalkonANK/logo-transparent-png.png")}}"> #}
 		{# <link rel="icon" type="image/png" href="/image/FalkonANK/logo-transparent-png.png"> #}
 
 
 		{# bootstrap #}
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 		{% block stylesheets %}{% endblock %}
-            {{ encore_entry_link_tags('app') }}
+		{{ encore_entry_link_tags('app') }}
 
 		{% block javascripts %}{% endblock %}
-            {{ encore_entry_script_tags('app') }}
+		{{ encore_entry_script_tags('app') }}
 	</head>
 
 	<body>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1">
 
 		{# {{ render(controller('App\\Controller\\CityMenuController::menu')) }} #}
 
@@ -50,50 +53,50 @@
 	{# JS pour gérer le hover (ou le clic) #}
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			const submenus = document.querySelectorAll('.dropdown-submenu');
-		
-			submenus.forEach(function (submenu) {
-				const toggleLink = submenu.querySelector('.dropdown-toggle');
-				const dropdown = submenu.querySelector('.dropdown-menu');
-		
-				// Hover (desktop)
-				submenu.addEventListener('mouseenter', function () {
-					if (window.innerWidth >= 992) {
-						dropdown.classList.add('show');
-						adjustSubmenuPosition(dropdown);
-					}
-				});
-		
-				submenu.addEventListener('mouseleave', function () {
-					if (window.innerWidth >= 992) {
-						dropdown.classList.remove('show');
-					}
-				});
-		
-				// Click (mobile)
-				toggleLink.addEventListener('click', function (e) {
-					if (window.innerWidth < 992) {
-						e.preventDefault();
-						e.stopPropagation();
-						dropdown.classList.toggle('show');
-					}
-				});
-			});
-		
-			function adjustSubmenuPosition(dropdown) {
-				const rect = dropdown.getBoundingClientRect();
-				const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-		
-				if (rect.right > viewportWidth) {
-					dropdown.style.left = 'auto';
-					dropdown.style.right = '100%';
-				} else {
-					dropdown.style.left = '100%';
-					dropdown.style.right = 'auto';
-				}
-			}
-		});
-	</script>	
-		
+const submenus = document.querySelectorAll('.dropdown-submenu');
+
+submenus.forEach(function (submenu) {
+const toggleLink = submenu.querySelector('.dropdown-toggle');
+const dropdown = submenu.querySelector('.dropdown-menu');
+
+// Hover (desktop)
+submenu.addEventListener('mouseenter', function () {
+if (window.innerWidth >= 992) {
+dropdown.classList.add('show');
+adjustSubmenuPosition(dropdown);
+}
+});
+
+submenu.addEventListener('mouseleave', function () {
+if (window.innerWidth >= 992) {
+dropdown.classList.remove('show');
+}
+});
+
+// Click (mobile)
+toggleLink.addEventListener('click', function (e) {
+if (window.innerWidth < 992) {
+e.preventDefault();
+e.stopPropagation();
+dropdown.classList.toggle('show');
+}
+});
+});
+
+function adjustSubmenuPosition(dropdown) {
+const rect = dropdown.getBoundingClientRect();
+const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+if (rect.right > viewportWidth) {
+dropdown.style.left = 'auto';
+dropdown.style.right = '100%';
+} else {
+dropdown.style.left = '100%';
+dropdown.style.right = 'auto';
+}
+}
+});
+	</script>
+
 
 </html>
