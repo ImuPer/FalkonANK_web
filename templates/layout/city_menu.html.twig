@@ -26,11 +26,13 @@
 								</a>
 								<ul class="dropdown-menu">
 									{% for shop in city.shops %}
-										<li>
-											<a class="dropdown-item" href="{{ path('shop_products', {id: shop.id}) }}">
-												{{ shop.name }}
-											</a>
-										</li>
+										{% if shop.active == true %}
+											<li>
+												<a class="dropdown-item" href="{{ path('shop_products', {id: shop.id}) }}">
+													{{ shop.name }}
+												</a>
+											</li>
+										{% endif %}	
 									{% endfor %}
 								</ul>
 							</li>

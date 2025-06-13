@@ -53,7 +53,7 @@
 
 				<div class="cards">
 					{% for produit in products %}
-						{% if produit.active == true and produit.stock > 4 %}
+						{% if produit.shop.active == true and produit.active == true and produit.stock > 4 %}
 							<div class="card" style="width: 18rem;">
 								<a href="{{ path('app_product_show', {'id': produit.id}) }}">
 									<img class="card-img-top" src="{{asset('upload/images/products/' ~ produit.img )}}" alt="Card image cap">

@@ -52,6 +52,7 @@ class MerchantCrudController extends AbstractCrudController
                 TextEditorField::new('description', 'Description')->hideOnForm(),
                 DateTimeField::new('createdAt', 'Data')->hideOnForm(),
                 BooleanField::new('is_approved', 'Aprovado'),
+                TextEditorField::new('nifManeger', 'NIF')->hideOnForm(),
 
                 // bank infos 
                 TextEditorField::new('bankName', 'Banco')->hideOnForm(),  

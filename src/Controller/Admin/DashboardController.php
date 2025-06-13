@@ -91,9 +91,9 @@ public function configureAssets(): Assets
                 ),
             ]);
             yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
+            yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
             yield MenuItem::linkToCrud('Merchant request', 'fa-solid fa-shop-lock', Merchant::class);
             yield MenuItem::linkToCrud('Shops', ' fas fa-store fa-2x text-primary', Shop::class);
-            yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
             yield MenuItem::linkToCrud('BasketProducts', 'fas fa-eye', BasketProduct::class);
             yield MenuItem::linkToCrud('Orders', 'fas fa-shopping-cart', Order::class);
 
@@ -110,10 +110,10 @@ public function configureAssets(): Assets
             
                 yield MenuItem::linkToCrud('Minha Loja', ' fas fa-store fa-2x text-primary', Shop::class);
 
-                yield MenuItem::subMenu('Encomendas', 'fas fa-box')->setSubItems([
+                yield MenuItem::subMenu('Encomendas', 'fas fa-shopping-cart')->setSubItems([
                     MenuItem::linkToCrud(
                     'Ver encomendas',
-                    'fas fa-eye',
+                    'fas fa-box',
                     Order::class
                     ),
                     MenuItem::linkToCrud(

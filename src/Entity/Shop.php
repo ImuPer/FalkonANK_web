@@ -7,8 +7,11 @@ use App\Repository\ShopRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ShopRepository::class)]
+#[UniqueEntity('name', message: '👉 "Este nome de loja já foi utilizado.')]
+    
 class Shop
 {
     #[ORM\Id]
@@ -16,10 +19,10 @@ class Shop
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique:true)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,)]
     private ?string $adress = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -62,11 +65,15 @@ class Shop
     #[ORM\OneToMany(targetEntity: Ads::class, mappedBy: 'shop')]
     private Collection $ads;
 
+    #[ORM\Column()]
+    private ?bool $active = null;
+
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->ads = new ArrayCollection();
+        $this->active = true; // ➕ valeur par défaut
     }
 
 
@@ -278,6 +285,18 @@ class Shop
                 $ad->setShop(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): static
+    {
+        $this->active = $active;
 
         return $this;
     }
