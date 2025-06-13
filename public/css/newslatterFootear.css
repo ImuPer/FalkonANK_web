@@ -46,16 +46,17 @@ footer {
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .social-links {
-    text-align: center;
-    margin-top: 10px;
+  a[download] {
+    padding: 4px 8px;
   }
 
-  .social-icon {
-    margin: 5px;
+  a[download] .logo {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
   }
 
-  .footer-logo {
-    height: 15px;
+  a[download] span {
+    font-size: 14px;
   }
 }
