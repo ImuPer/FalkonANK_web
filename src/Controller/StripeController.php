@@ -396,6 +396,8 @@ EOD;
 
         //-------Reçu d'achat--------------------
         $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
+        $options->set('isRemoteEnabled', true);   
         $options->set('defaultFont', 'Arial');
 
         $dompdf = new Dompdf($options);
@@ -460,6 +462,8 @@ EOD;
 
             //------Lista de artigos--pdf
             $options = new Options();
+            $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
+            $options->set('isRemoteEnabled', true);   
             $options->set('defaultFont', 'Arial');
 
             $dompdf = new Dompdf($options);
