@@ -1,11 +1,23 @@
 {% extends 'base.html.twig' %}
 
-<meta name="description" lang="fr" content="FalkonANK : plateforme de mise en relation entre la diaspora capverdienne et les commerçants locaux au Cap-Vert. Achetez et faites livrer des produits à vos proches.">
-<meta name="description" lang="pt" content="FalkonANK: plataforma de ligação entre a diáspora cabo-verdiana e os comerciantes locais em Cabo Verde. Compre e faça entregar produtos aos seus entes queridos.">
-<meta name="description" lang="en" content="FalkonANK: connecting the Cape Verdean diaspora with local merchants in Cape Verde. Purchase and have products delivered to your loved ones.">
-<meta name="description" lang="es" content="FalkonANK: plataforma que conecta a la diáspora caboverdiana con los comerciantes locales en Cabo Verde. Compra y haz que los productos sean entregados a tus seres queridos.">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="FalkonANK : plateforme de mise en relation entre la diaspora capverdienne et les commerçants locaux au Cap-Vert. Achetez et faites livrer des produits à vos proches.">
+	<meta name="keywords" content="FalkonANK, Cap-Vert, diaspora, commerçants locaux, livraison, produits alimentaires">
+	<meta name="author" content="Imuhotepu">
+	<title>FalkonANK : Alimentation</title>
 
-{% block title %}FalkonANK{% endblock %}
+	<!-- Liens alternatifs pour le référencement multilingue -->
+	<link rel="alternate" hreflang="fr" href="https://falkon.click/fr/accueil"/>
+	<link rel="alternate" hreflang="pt" href="https://falkon.click/pt/inicio"/>
+	<link rel="alternate" hreflang="en" href="https://falkon.click/en/home"/>
+	<link rel="alternate" hreflang="es" href="https://falkon.click/es/inicio"/>
+
+	{% block title %}FalkonANK
+	{% endblock %}
+
+</head>
 
 {% block body %}
 	{# css #}
@@ -41,7 +53,7 @@
 					<span>Nos Lojas</span>
 				</a>
 				{#-----------------------Carousel Controls------------------------------------------------------- #}
-				{# {% include "layout/carousel.html.twig" %} #}
+			{# {% include "layout/carousel.html.twig" %} #}
 				{#------------FIN de Carousel Controls------------------------------------------------------------------ #}
 
 			</div>
@@ -124,14 +136,14 @@
 
 	<!-- Pied de page -->
 		{# <footer>
-																																													 <p>&copy; Contactez-nous au 07 00 77 90 00</p>
-																																													 <div class="social-media">
-																																													   <p><i class="fab fa-facebook-f"></i></p>
-																																													   <p><i class="fab fa-twitter"></i></p>
-																																													   <p><i class="fab fa-instagram"></i></p>
-																																													   <p><i class="fab fa-linkedin-in"></i></p>
-																																													 </div>
-																																													</footer> #}
+																																															 <p>&copy; Contactez-nous au 07 00 77 90 00</p>
+																																															 <div class="social-media">
+																																															   <p><i class="fab fa-facebook-f"></i></p>
+																																															   <p><i class="fab fa-twitter"></i></p>
+																																															   <p><i class="fab fa-instagram"></i></p>
+																																															   <p><i class="fab fa-linkedin-in"></i></p>
+																																															 </div>
+																																															</footer> #}
 		<!-- Fin du pied de page -->
 
 	</div>
