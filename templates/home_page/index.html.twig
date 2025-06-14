@@ -30,7 +30,7 @@
 				{# <span>Alimentação & Qualidade. Conexão direta com os comerciantes locais em Cabo Verde!</span> #}
 
 				<select id="category-select" class="category-menu">
-					<option disabled selected>Escolhe un Kategoria</option>
+					<option disabled selected>Kategoria de Artigos</option>
 					{% for category in categories %}
 						{% if category.name is defined and category.name is not empty %}
 							<option value="{{ path('products_by_category', {'name': category.name}) }}">
@@ -45,8 +45,17 @@
 				{#-----------------------Carousel Controls------------------------------------------------------- #}
 				{# {% include "layout/carousel.html.twig" %} #}
 				{#------------FIN de Carousel Controls------------------------------------------------------------------ #}
-
 			</div>
+			<script>
+				document.addEventListener("DOMContentLoaded", function () {
+				const select = document.getElementById("category-select");
+				select.addEventListener("change", function () {
+				if (this.value) {
+				window.location.href = this.value;
+				}
+				});
+				});
+			</script>
 
 
 		</header>

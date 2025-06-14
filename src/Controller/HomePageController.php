@@ -84,7 +84,7 @@ class HomePageController extends AbstractController
         $products = $productRepository->findByCategoryName($name);
 
         if (empty($products)) {
-            $this->addFlash('warning', "Aucun produit trouvé pour la catégorie '$name'.");
+            $this->addFlash('warning', "Nenhum produto encontrado para a categoria '$name'.");
         }
 
         return $this->render('home_page/index.html.twig', [
