@@ -37,8 +37,8 @@ class Order
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $internal_note = null;
 
-    #[ORM\Column]
-    private ?bool $refund = null;
+    #[ORM\Column(type:Types::BOOLEAN)]
+    private ?bool $refund = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $refund_status = null;
@@ -71,6 +71,12 @@ class Order
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $amount_final = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $autoSecretCode = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $merchantSecretCode = null;
 
 
     public function __construct()
@@ -321,6 +327,30 @@ public function getAmountFinal(): ?string
 public function setAmountFinal(?string $amount_final): static
 {
     $this->amount_final = $amount_final;
+
+    return $this;
+}
+
+public function getAutoSecretCode(): ?string
+{
+    return $this->autoSecretCode;
+}
+
+public function setAutoSecretCode(?string $autoSecretCode): static
+{
+    $this->autoSecretCode = $autoSecretCode;
+
+    return $this;
+}
+
+public function getMerchantSecretCode(): ?string
+{
+    return $this->merchantSecretCode;
+}
+
+public function setMerchantSecretCode(?string $merchantSecretCode): static
+{
+    $this->merchantSecretCode = $merchantSecretCode;
 
     return $this;
 }

@@ -50,11 +50,12 @@ class DashboardController extends AbstractDashboardController
         return $this->redirect($url);
     }
 
-    public function configureDashboard(): Dashboard
-    {
-        return Dashboard::new()
-            ->setTitle('FalkonAnk');
-    }
+   public function configureDashboard(): Dashboard
+{
+    return Dashboard::new()
+        ->setTitle('<img src="/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK" style="max-height: 40px; vertical-align: middle;"> <span style="margin-left:10px;">FalkonANK</span>');
+}
+
 
 
 public function configureAssets(): Assets
@@ -117,7 +118,7 @@ public function configureAssets(): Assets
                     Order::class
                     ),
                     MenuItem::linkToCrud(
-                    'Artigos da Encomendas',
+                    'Produtos das Encomendas',
                     'fas fa-eye',
                     BasketProduct::class
                     ),

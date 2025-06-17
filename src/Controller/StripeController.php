@@ -193,15 +193,19 @@ class StripeController extends AbstractController
         $amount = $customer->amount_total;
         $currency = $customer->currency;
 
+        
         // Logique pour enregistrer la commande et les produits
         $user = $this->getUser();
         $basket = $basketRepository->findOneBy(['user' => $user]);
         $basketPs = $basketProductRepository->findBasketProductsByBasketId($basket);
 
+        //
+        $userId = $this->getUser()->getId();
+        $secretCode = $orderRepository->generateUniqueOrderSecretCode($userId);
+
         // Créer une nouvelle commande
         $order = new Order();
         $order->setBasket($basket);
-
         // Initialiser le numéro de commande
         $ref_order = 'ClientNr01';
         while ($orderRepository->refOrderExists($ref_order)) {
@@ -238,6 +242,7 @@ class StripeController extends AbstractController
             $order->setBeneficiaryEmail($orderData['beneficiary_email']);
         }
         $order->setPhone($orderData['phone']);
+        $order->setAutoSecretCode($secretCode);
         $entityManager->persist($order);
         $entityManager->flush();
 
@@ -345,6 +350,9 @@ class StripeController extends AbstractController
         $amountEUR = number_format(($amount / 100) * $cveToEur, 2, ',', ' ');
         $amountUSD = number_format(($amount / 100) * $cveToUsd, 2, ',', ' ');
 
+        
+
+
 
         $receiptContent = <<<EOD
 <html>
@@ -364,8 +372,8 @@ class StripeController extends AbstractController
     </p>
 
     <p style="color: #a00;">
-      <em>O beneficiário deverá apresentar seu documento de identidade e o número (referência) da encomenda. </em>
-      <strong>Deves envia-lo essa referência : {$ref_order}</strong>
+      <em>O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o codigo secreto. </em>
+      <strong>Deves envia-lo essa referência : {$ref_order}</strong> e o <strong>codigo secreto : {$secretCode}</strong>
     </p>
     <br>
 

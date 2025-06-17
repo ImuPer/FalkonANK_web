@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use Doctrine\ORM\QueryBuilder;
@@ -23,19 +24,32 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Bundle\SecurityBundle\Security;
+
+use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Form\FormBuilderInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 
 class OrderCrudController extends AbstractCrudController
 {
     private Security $security;
 
     private ManagerRegistry $doctrine;
+    private RequestStack $requestStack;
+    private RouterInterface $router;
 
-    public function __construct(Security $security, ManagerRegistry $doctrine)
+    public function __construct(Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router)
     {
         $this->security = $security;
         $this->doctrine = $doctrine;
+        $this->requestStack = $requestStack;
+        $this->router = $router;
     }
 
     public static function getEntityFqcn(): string
@@ -46,14 +60,19 @@ class OrderCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            // Modifier le titre qui s'affiche sur la page de l'entité BasketProduct
-            ->setPageTitle('index', 'Encomendas')
-            ->setPageTitle('edit', 'Modificar o Estado da Encomenda');
+            ->setEntityLabelInPlural('Encomendas')
+            ->setEntityLabelInSingular('Encomenda')
+            ->setPageTitle(Crud::PAGE_INDEX, 'Encomendas')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Finalizar encomenda')
+            ->setPageTitle(Crud::PAGE_DETAIL, fn(Order $order) => (string) $order->getRef());
     }
+
+
 
     public function configureAssets(Assets $assets): Assets
     {
         return Assets::new()
+            ->addCssFile('build/app.css')  // chemin relatif au dossier public/build
             ->addJsFile('build/refund_toggle.js');
     }
 
@@ -72,7 +91,8 @@ class OrderCrudController extends AbstractCrudController
                 ->join('bp.product', 'p')
                 ->join('p.shop', 's')
                 ->where('s.user = :merchant')
-                ->setParameter('merchant', $user);
+                ->setParameter('merchant', $user)
+                ->orderBy('o.order_date', 'DESC'); // Tri par date décroissante
 
             return $qb;
         }
@@ -81,10 +101,21 @@ class OrderCrudController extends AbstractCrudController
         return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
     }
 
+
     // Facultatif : Si tu veux ajouter des champs dans l'index
     public function configureFields(string $pageName): iterable
     {
         $user = $this->getUser();
+        $refundStatus = ([
+                    'Em curso' => 'Em curso',
+                    // 'Reembolsado' => 'Reembolsado',
+        ]);
+        if (in_array("ROLE_ADMIN", $user->getRoles())) {
+           $refundStatus = ([
+                    'Em curso' => 'Em curso',
+                    'Reembolsado' => 'Reembolsado',
+        ]);  
+        }
         // Vérifier les rôles de l'utilisateur
         // if (in_array("ROLE_ADMIN", $user->getRoles())) {
         //     // Ajouter les champs spécifiques pour les utilisateurs avec les rôles ADMIN ou USER
@@ -92,7 +123,7 @@ class OrderCrudController extends AbstractCrudController
         //         MoneyField::new('total_amount', 'Total')->setRequired(true)->setCurrency('CVE')->hideOnForm(),
         //MoneyField::new('amountFinal', 'Total Final')->setFormTypeOption('attr', ['readonly' => true])->setCurrency('CVE')->setHelp('👉 CVE (escudos de Cabo Verde)'),
         //         TextField::new('basketProductsList', 'Todos artigos'),
-        
+
         //         TextField::new('order_status', 'Estatus'),
         //         TextField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
         //         TextField::new('beneficiary_email', 'Email do Beneficiario')->hideOnForm(),
@@ -105,53 +136,91 @@ class OrderCrudController extends AbstractCrudController
         //         TextareaField::new('refund_note', 'Notificaçõ do reembolso')->hideOnForm(),
         //     ];
         // } else {
+
+
+        // Champ virtuel pour la classe CSS
+
         return [
+
+            Field::new('cssClass')->onlyOnIndex()
+                ->formatValue(function ($value, $entity) {
+                    if ($entity->getMerchantSecretCode() !== null && $entity->getOrderStatus() === 'Entregue e finalizado') {
+                        return 'row-entregue-finalizado';
+                    }
+                    return '';
+                })
+                ->setCssClass('hidden')
+                ->hideOnIndex(),
+
             TextField::new('ref', 'Referencia')
                 ->setFormTypeOption('attr', ['readonly' => true]),
+
             DateTimeField::new('orderDate', 'Data')
                 ->hideOnForm()
                 ->formatValue(function ($value) {
-                    // Vérifier si la valeur est valide avant de la formater
-                    return $value ? $value->format('d/m/Y') : ''; // Format français : jour/mois/année
+                    return $value ? $value->format('d/m/Y') : '';
                 }),
-            MoneyField::new('totalAmount', 'Total')->setFormTypeOption('attr', ['readonly' => true])->setCurrency('CVE')->setHelp('👉 CVE (escudos de Cabo Verde)'),
-            TextField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
-            TextField::new('beneficiary_email', 'Email do Beneficiario')->hideOnForm(),
-            TextField::new('beneficiary_address', 'adereço do Beneficiario')->hideOnForm(),
-            TextField::new('basketProductsList', 'Artigos')->setFormTypeOption('attr', ['readonly' => true]),
 
+            MoneyField::new('totalAmount', 'Total')
+                ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
+                ->setCurrency('CVE')
+                ->setHelp('👉 CVE (escudos de Cabo Verde)'),
 
-            ChoiceField::new('orderStatus', 'Estado da encomenda')
+            TextEditorField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
+            TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
+            TextEditorField::new('beneficiary_address', 'adereço')->hideOnForm(),
+
+            TextField::new('basketProductsList', 'Artigos')
+                ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
+
+            ChoiceField::new('orderStatus', 'Estado')
                 ->setChoices([
-                    'Em processamento' => 'Em processamento',
                     'Reenbolso' => 'Reembolso',
                     'Entregue e finalizado' => 'Entregue e finalizado',
-                    // 'Reembolso' => 'Reembolso'
-
                 ])
-                ->setRequired(true),
-            TextareaField::new('internal_note', 'Notificação da loja')->setRequired(true),
-            TextField::new('customer_note', 'Comentário do cliente')->hideOnForm(),
+                ->setRequired(true)
+                ->setFormTypeOption('attr', ['id' => 'Order_orderStatus']),
+
+            TextareaField::new('internal_note', 'Notificação da loja')
+                ->hideOnIndex()
+                ->setRequired(true)
+                ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
+
+            TextEditorField::new('customer_note', 'Comentário do cliente')
+                ->hideOnForm(),
+
+            TextField::new('merchantSecretCode', 'Código Secreto')
+                ->setHelp('👉 Obrigatório para finalizar a encomenda.')
+                ->setRequired(true)
+                ->setFormTypeOptions([
+                    'required' => true,
+                    'constraints' => [],
+                    'mapped' => true,
+                ])
+                ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
+                ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
 
             BooleanField::new('refund', 'Reembolso')
-                ->hideOnIndex(),
+                ->hideOnIndex()
+                ->setFormTypeOption('attr', ['id' => 'Order_refund']),
 
             TextField::new('refund_amount', 'Montante')
-                ->hideOnIndex(),
+                ->hideOnIndex()
+                ->setFormTypeOption('attr', ['id' => 'Order_refund_amount']),
 
             ChoiceField::new('refund_status', 'Estado do reembolso')
-                ->setChoices([
-                    'Em curso' => 'Em curso',
-                    'Reembolsado' => 'Reembolsado',
-                ])
-                ->hideOnIndex(),
+                ->setChoices($refundStatus)
+                ->hideOnIndex()
+                ->setFormTypeOption('attr', ['id' => 'Order_refund_status']),
 
             TextareaField::new('refund_note', 'Notificação - reembolso')
-                ->hideOnIndex(),
-
+                ->hideOnIndex()
+                ->setFormTypeOption('attr', ['id' => 'Order_refund_note']),
         ];
+
         // }
     }
+
 
 
     public function configureActions(Actions $actions): Actions
@@ -176,6 +245,108 @@ class OrderCrudController extends AbstractCrudController
 
         // ✅ Ajoute ce return final, obligatoire
         return $actions;
+    }
+
+
+   public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+{
+    if (!$entityInstance instanceof Order) {
+        return;
+    }
+
+    $status = $entityInstance->getOrderStatus();
+    $internalNote = $entityInstance->getInternalNote();
+
+    // Si livré, on préremplit la note s'il n'y en a pas
+    if ($status === 'Entregue e finalizado') {
+        $entityInstance->setRefund(false);
+        $entityInstance->setRefundAmount(null);
+        $entityInstance->setRefundStatus('');
+        if(empty($internalNote)){
+            $entityInstance->setInternalNote('Todos os produtos foram entregues com sucesso.');
+        }
+    }
+
+    // Si remboursement
+    if ($status === 'Reembolso') {
+        $entityInstance->setRefund(true);
+        $entityInstance->setInternalNote('A encomenda foi cancelada.');
+
+        // Validation obligatoire
+        if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
+            $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
+            
+            $request = $this->requestStack->getCurrentRequest();
+            $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+
+            (new RedirectResponse($referer))->send();
+            exit;
+        }
+        if(empty($entityInstance->getRefundNote())){
+            $entityInstance->setRefundNote('o reenbolso esta en courso.');
+        }
+    }
+
+    // Vérifie le code secret pour les merchants
+    if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
+        $merchantCode = $entityInstance->getMerchantSecretCode();
+        $autoCode = $entityInstance->getAutoSecretCode();
+
+        if ($merchantCode === null || $merchantCode !== $autoCode) {
+            $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
+
+            $request = $this->requestStack->getCurrentRequest();
+            $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+
+            (new RedirectResponse($referer))->send();
+            exit;
+        } else {
+            $this->addFlash('success', 'Registrado com sucesso');
+        }
+    }
+
+    parent::updateEntity($entityManager, $entityInstance);
+}
+
+ 
+
+
+
+    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+//     {
+//         if (!$entityInstance instanceof Order) {
+//             return;
+//         }
+
+    //         if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
+//             $merchantCode = $entityInstance->getMerchantSecretCode();
+//             $autoCode = $entityInstance->getAutoSecretCode();
+
+    //             if ($merchantCode === null || $merchaantCode !== $autoCode) {
+//                 $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
+
+    //                 // Redirige proprement vers la même page
+//                 $request = $this->requestStack->getCurrentRequest();
+//                 $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+
+    //                 // Envoi d'une réponse de redirection
+//                 (new RedirectResponse($referer))->send();
+//                 exit;
+//             } else {
+//                 $this->addFlash('success', ' Registrado com sucesso');
+
+    //             }
+//         }
+
+    //         parent::updateEntity($entityManager, $entityInstance);
+//     }
+
+
+
+
+    public function createEditFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
+    {
+        return parent::createEditFormBuilder($entityDto, $formOptions, $context);
     }
 
 

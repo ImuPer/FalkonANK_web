@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href={{asset("css/basket.css")}}>
 
 	<div style="text-align: center;">
-		<h1>Compra Numero :
+		<h1>Referência :
 			{{order.ref}}</h1>
 
 
@@ -20,7 +20,9 @@
 			{% for basketP in basketPs %}
 				<div class="basket-item" data-id="{{ basketP.getId() }}">
 					<div class="item-image">
-						<img src="{{ asset('upload/images/products/' ~ basketP.getProduct().getImg()) }}" alt="">
+						<a href="{{ path('app_product_show', {'id': basketP.getProduct().getId()}) }}">
+							<img src="{{ asset('upload/images/products/' ~ basketP.getProduct().getImg()) }}" alt="">
+						</a>
 					</div>
 					<div class="item-info">
 						<h2 class="item-name">{{ basketP.getProduct().getName() }}</h2>
@@ -74,6 +76,11 @@
 						<th>Stado de Encomenda :
 						</th>
 						<td>{{ order.orderStatus }}</td>
+					</tr>
+					<tr>
+						<th>Seu codigo secreto :
+						</th>
+						<td>{{ order.autoSecretCode }}</td>
 					</tr>
 
 					{% if order.internalNote %}

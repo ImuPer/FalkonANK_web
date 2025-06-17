@@ -1,36 +1,39 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
+    const statusField = document.querySelector('#Order_orderStatus');
+    const internalNote = document.querySelector('#Order_internal_note');
     const refundCheckbox = document.querySelector('#Order_refund');
+    const refundAmountField = document.querySelector('#Order_refund_amount');
+    const refundStatusField = document.querySelector('#Order_refund_status');
+    const refundNoteField = document.querySelector('#Order_refund_note');
 
-    const selectors = [
-        '#Order_refund_amount',
-        '#Order_refund_status',
-        '#Order_refund_note'
-    ];
-
-    const toggleRefundFields = (visible) => {
-        selectors.forEach(selector => {
-            const element = document.querySelector(selector);
-            if (element) {
-                const wrapper = element.closest('.form-group, .form-widget, .field'); // s'adapte à EasyAdmin
-                if (wrapper) {
-                    if (visible) {
-                        wrapper.classList.remove('refund-hidden');
-                    } else {
-                        wrapper.classList.add('refund-hidden');
-                    }
-                }
-            }
+    const toggleRefundFields = (enabled) => {
+        [refundAmountField, refundStatusField, refundNoteField].forEach(field => {
+            if (field) field.closest('.form-group').style.display = enabled ? 'block' : 'none';
         });
     };
 
-    if (refundCheckbox) {
-        // Masque au chargement si non coché
-        toggleRefundFields(refundCheckbox.checked);
+    if (statusField) {
+        const updateFromStatus = () => {
+            const value = statusField.value;
 
-        refundCheckbox.addEventListener('change', () => {
-            toggleRefundFields(refundCheckbox.checked);
-        });
+            if (value === "Reembolso") {
+                if (refundCheckbox) refundCheckbox.checked = true;
+                toggleRefundFields(true);
+                if (internalNote) internalNote.value = "A encomenda foi cancelada e reembolsada.";
+            } else if (value === "Entregue e finalizado") {
+                if (refundCheckbox) refundCheckbox.checked = false;
+                toggleRefundFields(false);
+                if (internalNote) internalNote.value = "Todos os produtos foram entregues com sucesso.";
+            } else {
+                if (refundCheckbox) refundCheckbox.checked = false;
+                toggleRefundFields(false);
+                if (internalNote) internalNote.value = "";
+            }
+        };
+
+        statusField.addEventListener('change', updateFromStatus);
+        updateFromStatus(); // exécution initiale
     } else {
-        console.warn('⚠️ Élément #Order_refund introuvable');
+        console.warn('⚠️ #Order_orderStatus introuvable');
     }
 });

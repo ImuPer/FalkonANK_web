@@ -7,6 +7,7 @@ use App\Form\OrderType;
 use App\Repository\BasketProductRepository;
 use App\Repository\BasketRepository;
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,28 +23,28 @@ class OrderController extends AbstractController
         $user = $this->getUser();
         $timezone = date_default_timezone_get();
         $basket = $basketRepository->findOneBy(['user' => $user]); //recuperer le basket user
-        if ($basket){
-            $ordersUser = $basket->getOrders();
-        
-      
-         
+        if ($basket) {
+            $criteria = Criteria::create()
+                ->orderBy(['order_date' => Criteria::DESC]);
+
+            $ordersUser = $basket->getOrders()->matching($criteria);
+
             return $this->render('order/index.html.twig', [
                 'orders' => $ordersUser,
                 'timezone_variable' => $timezone, // Passer le fuseau horaire à Twig
             ]);
-        }
-        else{
-             // Pas de panier pour cet utilisateur
-             $message = "Você ainda não fez compras, adicione produtos ao carrinho e realiza bu primeru kompra !";
+        } else {
+            // Pas de panier pour cet utilisateur
+            $message = "Você ainda não fez compras, adicione produtos ao carrinho e realiza bu primeru kompra !";
 
-             return $this->render('order/index.html.twig', [
-                 'orders' => null, // Pas de produits à afficher
-                 'timezone_variable' => $timezone, // Passer le fuseau horaire à Twig
-                 'message' => $message,
-             ]);
+            return $this->render('order/index.html.twig', [
+                'orders' => null, // Pas de produits à afficher
+                'timezone_variable' => $timezone, // Passer le fuseau horaire à Twig
+                'message' => $message,
+            ]);
         }
-        
-      
+
+
     }
     #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
     public function show(Order $order, BasketProductRepository $basketProductRepository): Response
@@ -79,7 +80,7 @@ class OrderController extends AbstractController
     #[Route('/{id}', name: 'app_order_delete', methods: ['POST'])]
     public function delete(Request $request, Order $order, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$order->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $order->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($order);
             $entityManager->flush();
         }
