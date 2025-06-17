@@ -150,7 +150,6 @@ class StripeController extends AbstractController
     }
 
 
-
     // ------------success--------------------
     #[Route('/success', name: 'app_success')]
     public function success(
@@ -193,7 +192,10 @@ class StripeController extends AbstractController
         $amount = $customer->amount_total;
         $currency = $customer->currency;
 
-        
+        // récupérer l'ID du paiement associé (payment_intent)
+        $paymentIntentId = $customer->payment_intent;
+
+
         // Logique pour enregistrer la commande et les produits
         $user = $this->getUser();
         $basket = $basketRepository->findOneBy(['user' => $user]);
@@ -243,6 +245,7 @@ class StripeController extends AbstractController
         }
         $order->setPhone($orderData['phone']);
         $order->setAutoSecretCode($secretCode);
+        $order->setStripePayId($paymentIntentId);
         $entityManager->persist($order);
         $entityManager->flush();
 
@@ -350,7 +353,7 @@ class StripeController extends AbstractController
         $amountEUR = number_format(($amount / 100) * $cveToEur, 2, ',', ' ');
         $amountUSD = number_format(($amount / 100) * $cveToUsd, 2, ',', ' ');
 
-        
+
 
 
 
@@ -405,7 +408,7 @@ EOD;
         //-------Reçu d'achat--------------------
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-        $options->set('isRemoteEnabled', true);   
+        $options->set('isRemoteEnabled', true);
         $options->set('defaultFont', 'Arial');
 
         $dompdf = new Dompdf($options);
@@ -471,7 +474,7 @@ EOD;
             //------Lista de artigos--pdf
             $options = new Options();
             $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-            $options->set('isRemoteEnabled', true);   
+            $options->set('isRemoteEnabled', true);
             $options->set('defaultFont', 'Arial');
 
             $dompdf = new Dompdf($options);

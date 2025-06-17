@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contabilidade
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+
+		<h2>📅 Encomendas mensal</h2>
+		<style>
+			tr.clickable-row {
+				cursor: pointer;
+			}
+		</style>
+
+		{% set groupedOrders = {} %}
+		{% for order in orders %}
+			{% set month = order.month %}
+			{% if groupedOrders[month] is not defined %}
+				{% set groupedOrders = groupedOrders|merge({ (month): [order] }) %}
+			{% else %}
+				{% set groupedOrders = groupedOrders|merge({ (month): groupedOrders[month]|merge([order]) }) %}
+			{% endif %}
+		{% endfor %}
+
+		<style>
+			.month-section {
+				margin-top: 30px;
+			}
+
+			.month-header {
+				background-color: #f8f9fa;
+				padding: 15px;
+				border-radius: 5px;
+				font-size: 1.2em;
+				font-weight: bold;
+				border-left: 5px solid #007bff;
+				margin-bottom: 10px;
+			}
+
+			table.order-table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+
+			table.order-table th,
+			table.order-table td {
+				padding: 10px;
+				border: 1px solid #dee2e6;
+			}
+
+			table.order-table th {
+				background-color: #e9ecef;
+				text-align: left;
+			}
+
+			tr:nth-child(even) {
+				background-color: #f9f9f9;
+			}
+
+			.badge-status {
+				font-size: 0.85em;
+				padding: 5px 10px;
+				border-radius: 5px;
+				color: white;
+			}
+
+			.badge-status.Em\ processamento {
+				background-color: #ffc107;
+			}
+
+			.badge-status.Cancelado {
+				background-color: #dc3545;
+			}
+
+			.badge-status.Pendente {
+				background-color: #17a2b8;
+			}
+
+			.badge-status.Outro {
+				background-color: #6c757d;
+			}
+		</style>
+
+        <br>
+		<div style="text-align: center;">
+			<h3 style="color: Green;">Finalizadas</h3>
+		</div>
+		<div class="container">
+			{% if groupedOrders is empty %}
+				<div class="alert alert-info">Nenhuma encomenda pendente ou em processamento.</div>
+			{% endif %}
+
+			{% for month, orders in groupedOrders %}
+				<div class="month-section">
+					<div class="month-header">📅
+						{{ month|date("F \\d\\e Y") }}</div>
+					<table class="order-table">
+						<thead>
+							<tr>
+								<th>Ref da Encomenda</th>
+								<th>Data</th>
+								<th>Status</th>
+								<th>Reembolso</th>
+								<th>Total</th>
+								<th>Final</th>
+								<th>StripePayID</th>
+								<th>Email da loja</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for order in orders %}
+								<tr>
+									<td>{{ order.order_ref }}</td>
+									<td>{{ order.order_date|date('d/m/Y H:i') }}</td>
+									<td>
+										<span class="badge-success {{ order.order_status|replace({' ': '\\ '}) }}">
+											{{ order.order_status }}
+										</span>
+									</td>
+									<td>
+										{{ (order.refund_amount ?? 0) / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>
+										{{ order.total_amount / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>
+										{{ order.amount_final / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>{{ order.stripe_pay_id }}</td>
+									<td>{{ order.customer_email }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% endfor %}
+		</div>
+
+		{# ------- MENSAL NAO FINALIZADA #}
+		{% set groupedOrders = {} %}
+		{% for order in ordersN %}
+			{% set month = order.month %}
+			{% if groupedOrders[month] is not defined %}
+				{% set groupedOrders = groupedOrders|merge({ (month): [order] }) %}
+			{% else %}
+				{% set groupedOrders = groupedOrders|merge({ (month): groupedOrders[month]|merge([order]) }) %}
+			{% endif %}
+		{% endfor %}
+        <br>
+		<div style="text-align: center;">
+			<h3 style="color: red;">Não finalizadas</h3>
+		</div>
+		<div class="container">
+			{% if groupedOrders is empty %}
+				<div class="alert alert-info">Nenhuma encomenda pendente ou em processamento.</div>
+			{% endif %}
+
+			{% for month, ordersN in groupedOrders %}
+				<div class="month-section">
+					<div class="month-header">📅
+						{{ month|date("F \\d\\e Y") }}</div>
+					<table class="order-table">
+						<thead>
+							<tr>
+								<th>Ref da Encomenda</th>
+								<th>Data</th>
+								<th>Status</th>
+								<th>Reembolso</th>
+								<th>Total</th>
+								<th>Final</th>
+								<th>StripePayID</th>
+								<th>Email da loja</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for order in ordersN %}
+								<tr>
+									<td>{{ order.order_ref }}</td>
+									<td>{{ order.order_date|date('d/m/Y H:i') }}</td>
+									<td>
+										<span class="badge-success {{ order.order_status|replace({' ': '\\ '}) }}">
+											{{ order.order_status }}
+										</span>
+									</td>
+									<td>
+										{{ (order.refund_amount ?? 0) / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>
+										{{ order.total_amount / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>
+										{{ order.amount_final / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>{{ order.stripe_pay_id }}</td>
+									<td>{{ order.customer_email }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% endfor %}
+		</div>
+
+	</div>
+{% endblock %}

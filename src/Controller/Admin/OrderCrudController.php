@@ -81,11 +81,13 @@ class OrderCrudController extends AbstractCrudController
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, \EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection $filters): QueryBuilder
     {
         $user = $this->security->getUser();
+        $qb = $this->doctrine->getRepository(Order::class)->createQueryBuilder('o');
 
-        // Si l'utilisateur est un "MERCHANT", on filtre en fonction du Shop
-        if (in_array("ROLE_MERCHANT", $user->getRoles())) {
-            $qb = $this->doctrine->getRepository(Order::class)->createQueryBuilder('o');
-
+        if (in_array("ROLE_ADMIN", $user->getRoles())) {
+            $qb->orderBy('o.order_date', 'DESC');
+            return $qb;
+        }elseif(in_array("ROLE_MERCHANT", $user->getRoles())) {
+            
             // Joindre la table BasketProduct pour obtenir les produits
             $qb->join('o.basketProducts', 'bp')
                 ->join('bp.product', 'p')
@@ -186,9 +188,6 @@ class OrderCrudController extends AbstractCrudController
                 ->setRequired(true)
                 ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
 
-            TextEditorField::new('customer_note', 'Comentário do cliente')
-                ->hideOnForm(),
-
             TextField::new('merchantSecretCode', 'Código Secreto')
                 ->setHelp('👉 Obrigatório para finalizar a encomenda.')
                 ->setRequired(true)
@@ -199,6 +198,9 @@ class OrderCrudController extends AbstractCrudController
                 ])
                 ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
                 ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
+
+            TextEditorField::new('customer_note', 'Comentário do cliente')
+                ->hideOnForm(),
 
             BooleanField::new('refund', 'Reembolso')
                 ->hideOnIndex()

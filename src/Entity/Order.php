@@ -78,6 +78,9 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $merchantSecretCode = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $stripePayId = null;
+
 
     public function __construct()
     {
@@ -351,6 +354,18 @@ public function getMerchantSecretCode(): ?string
 public function setMerchantSecretCode(?string $merchantSecretCode): static
 {
     $this->merchantSecretCode = $merchantSecretCode;
+
+    return $this;
+}
+
+public function getStripePayId(): ?string
+{
+    return $this->stripePayId;
+}
+
+public function setStripePayId(string $stripePayId): static
+{
+    $this->stripePayId = $stripePayId;
 
     return $this;
 }

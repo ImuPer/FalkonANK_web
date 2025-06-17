@@ -3,7 +3,9 @@
 namespace App\Controller\Merchant;
 
 use App\Entity\Merchant;
+use App\Entity\Shop;
 use App\Repository\BasketProductRepository;
+use App\Repository\OrderRepository;
 use App\Repository\ShopRepository;
 use App\Service\AccountingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,4 +58,28 @@ class AccountingController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    #[Route('/{id}', name: 'orders_shop')]
+    public function ordersShop(Shop $shop, AccountingService $accountingService)
+    {
+
+        $user = $this->getUser();
+        $isAdmin = in_array('ROLE_ADMIN', $user->getRoles());
+
+        if ($isAdmin) {
+            $ordersfinalizedMontly = $accountingService->getFinalizedOrdersByShopGroupedByMonth($shop->getId());
+            $ordersNfinalizedMontly = $accountingService->getNonFinalizedOrdersByShopGroupedByMonth($shop->getId());
+            $ordersShopFinalise = $accountingService->getOrdersByShop($shop->getId());
+            $ordersShopNfinalise = $accountingService->getNonFinalizedOrdersByShop($shop->getId());
+            // dd($ordersNfinalizedMontly);
+
+            return $this->render('merchant/accounting/shop_orders.html.twig', [
+                'orders' => $ordersfinalizedMontly,
+                'ordersN' => $ordersNfinalizedMontly,
+            ]);
+        } else {
+            return $this->redirectToRoute('merchant_accounting');
+        }
+    }
+
 }
