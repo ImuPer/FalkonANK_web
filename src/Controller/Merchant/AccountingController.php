@@ -24,7 +24,13 @@ class AccountingController extends AbstractController
         ShopRepository $shopRepository
     ): Response {
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login'); // Ou une autre route de ton login
+        }
+
         $isAdmin = in_array('ROLE_ADMIN', $user->getRoles());
+
 
         if ($isAdmin) {
             return $this->render('merchant/accounting/index.html.twig', [
@@ -64,22 +70,39 @@ class AccountingController extends AbstractController
     {
 
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login'); // Ou une autre route de ton login
+        }
+
         $isAdmin = in_array('ROLE_ADMIN', $user->getRoles());
 
         if ($isAdmin) {
-            $ordersfinalizedMontly = $accountingService->getFinalizedOrdersByShopGroupedByMonth($shop->getId());
-            $ordersNfinalizedMontly = $accountingService->getNonFinalizedOrdersByShopGroupedByMonth($shop->getId());
-            $ordersShopFinalise = $accountingService->getOrdersByShop($shop->getId());
-            $ordersShopNfinalise = $accountingService->getNonFinalizedOrdersByShop($shop->getId());
-            // dd($ordersNfinalizedMontly);
-
-            return $this->render('merchant/accounting/shop_orders.html.twig', [
-                'orders' => $ordersfinalizedMontly,
-                'ordersN' => $ordersNfinalizedMontly,
-            ]);
+            $isAdmin = true;
         } else {
-            return $this->redirectToRoute('merchant_accounting');
+            $isAdmin = false;
         }
+        $ordersfinalizedMontly = $accountingService->getFinalizedOrdersByShopGroupedByMonth($shop->getId());
+        $ordersRembousedOrdersByShop = $accountingService->getRembursedOrdersByShopGroupedByMonth($shop->getId());
+        $ordersEmCousoRembousOrdersByShop = $accountingService->getCourRembursOrdersByShopGroupedByMonth($shop->getId());
+
+        $ordersNfinalizedMontly = $accountingService->getNonFinalizedOrdersByShopGroupedByMonth($shop->getId());
+
+        $ordersShopFinalise = $accountingService->getOrdersByShop($shop->getId());
+        $ordersShopNfinalise = $accountingService->getNonFinalizedOrdersByShop($shop->getId());
+        // dd($ordersRembousedOrdersByShop);
+
+        return $this->render('merchant/accounting/shop_orders.html.twig', [
+            'isAdmin' => $isAdmin,
+            'orders' => $ordersfinalizedMontly,
+            'ordersR' => $ordersRembousedOrdersByShop,
+            'ordersCR' => $ordersEmCousoRembousOrdersByShop,
+            'ordersN' => $ordersNfinalizedMontly,
+        ]);
+        // }
+        //  else {
+        //     return $this->redirectToRoute('merchant_accounting');
+        // }
     }
 
 }

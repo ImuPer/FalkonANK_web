@@ -86,8 +86,8 @@ class OrderCrudController extends AbstractCrudController
         if (in_array("ROLE_ADMIN", $user->getRoles())) {
             $qb->orderBy('o.order_date', 'DESC');
             return $qb;
-        }elseif(in_array("ROLE_MERCHANT", $user->getRoles())) {
-            
+        } elseif (in_array("ROLE_MERCHANT", $user->getRoles())) {
+
             // Joindre la table BasketProduct pour obtenir les produits
             $qb->join('o.basketProducts', 'bp')
                 ->join('bp.product', 'p')
@@ -109,14 +109,14 @@ class OrderCrudController extends AbstractCrudController
     {
         $user = $this->getUser();
         $refundStatus = ([
-                    'Em curso' => 'Em curso',
-                    // 'Reembolsado' => 'Reembolsado',
+            'Em curso' => 'Em curso',
+            // 'Reembolsado' => 'Reembolsado',
         ]);
         if (in_array("ROLE_ADMIN", $user->getRoles())) {
-           $refundStatus = ([
-                    'Em curso' => 'Em curso',
-                    'Reembolsado' => 'Reembolsado',
-        ]);  
+            $refundStatus = ([
+                'Em curso' => 'Em curso',
+                'Reembolsado' => 'Reembolsado',
+            ]);
         }
         // Vérifier les rôles de l'utilisateur
         // if (in_array("ROLE_ADMIN", $user->getRoles())) {
@@ -206,8 +206,10 @@ class OrderCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_refund']),
 
-            TextField::new('refund_amount', 'Montante')
+            MoneyField::new('refund_amount', 'Montante')
+                ->setCurrency('CVE')
                 ->hideOnIndex()
+                ->setHelp('👉 CVE (escudos de Cabo Verde)')
                 ->setFormTypeOption('attr', ['id' => 'Order_refund_amount']),
 
             ChoiceField::new('refund_status', 'Estado do reembolso')
@@ -250,67 +252,75 @@ class OrderCrudController extends AbstractCrudController
     }
 
 
-   public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-{
-    if (!$entityInstance instanceof Order) {
-        return;
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Order) {
+            return;
+        }
+
+        $status = $entityInstance->getOrderStatus();
+        $internalNote = $entityInstance->getInternalNote();
+
+        // Si livré, on préremplit la note s'il n'y en a pas
+        if ($status === 'Entregue e finalizado') {
+            $entityInstance->setRefund(false);
+            $entityInstance->setRefundAmount(null);
+            $entityInstance->setRefundStatus('');
+            if (empty($internalNote)) {
+                $entityInstance->setInternalNote('Todos os produtos foram entregues com sucesso.');
+            }
+        }
+
+        // Si remboursement
+        if ($status === 'Reembolso') {
+            $entityInstance->setRefund(true);
+            $entityInstance->setInternalNote('A encomenda foi cancelada.');
+
+            // Validation obligatoire
+            if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
+                $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
+
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            }
+            if (empty($entityInstance->getRefundNote())) {
+                $entityInstance->setRefundNote('o reenbolso esta en courso.');
+            }
+
+            if ($entityInstance->getRefundStatus() === "Reembolsado") {
+                $entityInstance->setRefundNote(
+                    'O reembolso foi concluído em ' . (new \DateTime())->format('d/m/Y H:i') .
+                    '. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco.'
+                );
+            }
+
+        }
+
+        // Vérifie le code secret pour les merchants
+        if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
+            $merchantCode = $entityInstance->getMerchantSecretCode();
+            $autoCode = $entityInstance->getAutoSecretCode();
+
+            if ($merchantCode === null || $merchantCode !== $autoCode) {
+                $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
+
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            } else {
+                $this->addFlash('success', 'Registrado com sucesso');
+            }
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 
-    $status = $entityInstance->getOrderStatus();
-    $internalNote = $entityInstance->getInternalNote();
 
-    // Si livré, on préremplit la note s'il n'y en a pas
-    if ($status === 'Entregue e finalizado') {
-        $entityInstance->setRefund(false);
-        $entityInstance->setRefundAmount(null);
-        $entityInstance->setRefundStatus('');
-        if(empty($internalNote)){
-            $entityInstance->setInternalNote('Todos os produtos foram entregues com sucesso.');
-        }
-    }
-
-    // Si remboursement
-    if ($status === 'Reembolso') {
-        $entityInstance->setRefund(true);
-        $entityInstance->setInternalNote('A encomenda foi cancelada.');
-
-        // Validation obligatoire
-        if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
-            $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
-            
-            $request = $this->requestStack->getCurrentRequest();
-            $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
-
-            (new RedirectResponse($referer))->send();
-            exit;
-        }
-        if(empty($entityInstance->getRefundNote())){
-            $entityInstance->setRefundNote('o reenbolso esta en courso.');
-        }
-    }
-
-    // Vérifie le code secret pour les merchants
-    if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
-        $merchantCode = $entityInstance->getMerchantSecretCode();
-        $autoCode = $entityInstance->getAutoSecretCode();
-
-        if ($merchantCode === null || $merchantCode !== $autoCode) {
-            $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
-
-            $request = $this->requestStack->getCurrentRequest();
-            $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
-
-            (new RedirectResponse($referer))->send();
-            exit;
-        } else {
-            $this->addFlash('success', 'Registrado com sucesso');
-        }
-    }
-
-    parent::updateEntity($entityManager, $entityInstance);
-}
-
- 
 
 
 

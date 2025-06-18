@@ -27,6 +27,7 @@ class AccountingService
     $sql = "
         SELECT 
             DATE_FORMAT(o.order_date, '%Y-%m') AS month,
+            s.id AS shop_id,
             SUM(bp.quantity * p.price) AS revenue,
             IFNULL(SUM(o.refund_amount), 0) AS refund_amount,  -- Ajout du montant du remboursement
             s.name AS shop_name,
@@ -226,8 +227,7 @@ public function getGlobalMonthlyRevenue(): array{
 
 
 //Tout les commandes finalisé d'un shop par mois
-public function getFinalizedOrdersByShopGroupedByMonth(int $shopId): array
-{
+public function getFinalizedOrdersByShopGroupedByMonth(int $shopId): array{
     $conn = $this->em->getConnection();
 
     $sql = "
@@ -247,6 +247,66 @@ public function getFinalizedOrdersByShopGroupedByMonth(int $shopId): array
         JOIN `user` u ON s.user_id = u.id
         JOIN `order` o ON bp.order_c_id = o.id
         WHERE o.order_status = 'Entregue e finalizado'
+          AND s.id = :shopId
+        GROUP BY month, o.id, o.order_date, o.order_status, o.refund_amount, u.email
+        ORDER BY month DESC, o.order_date DESC
+    ";
+
+    return $conn->executeQuery($sql, ['shopId' => $shopId])->fetchAllAssociative();
+}
+
+//Tout les commandes remboursé d'un shop par mois
+public function getRembursedOrdersByShopGroupedByMonth(int $shopId): array{
+    $conn = $this->em->getConnection();
+
+    $sql = "
+        SELECT 
+            DATE_FORMAT(o.order_date, '%Y-%m') AS month,
+            o.ref AS order_ref,
+            o.stripe_pay_id AS stripe_pay_id,
+            o.amount_final AS amount_final,
+            o.order_date,
+            o.order_status,
+            o.refund_amount,
+            SUM(bp.quantity * p.price) AS total_amount,
+            u.email AS customer_email
+        FROM basket_product bp
+        JOIN product p ON bp.product_id = p.id
+        JOIN shop s ON p.shop_id = s.id
+        JOIN `user` u ON s.user_id = u.id
+        JOIN `order` o ON bp.order_c_id = o.id
+        WHERE o.order_status = 'Reembolso'
+          AND o.refund_status = 'Reembolsado'
+          AND s.id = :shopId
+        GROUP BY month, o.id, o.order_date, o.order_status, o.refund_amount, u.email
+        ORDER BY month DESC, o.order_date DESC
+    ";
+
+    return $conn->executeQuery($sql, ['shopId' => $shopId])->fetchAllAssociative();
+}
+
+//Tout les commandes remboursé d'un shop par mois
+public function getCourRembursOrdersByShopGroupedByMonth(int $shopId): array{
+    $conn = $this->em->getConnection();
+
+    $sql = "
+        SELECT 
+            DATE_FORMAT(o.order_date, '%Y-%m') AS month,
+            o.ref AS order_ref,
+            o.stripe_pay_id AS stripe_pay_id,
+            o.amount_final AS amount_final,
+            o.order_date,
+            o.order_status,
+            o.refund_amount,
+            SUM(bp.quantity * p.price) AS total_amount,
+            u.email AS customer_email
+        FROM basket_product bp
+        JOIN product p ON bp.product_id = p.id
+        JOIN shop s ON p.shop_id = s.id
+        JOIN `user` u ON s.user_id = u.id
+        JOIN `order` o ON bp.order_c_id = o.id
+        WHERE o.order_status = 'Reembolso'
+          AND o.refund_status = 'Em curso'
           AND s.id = :shopId
         GROUP BY month, o.id, o.order_date, o.order_status, o.refund_amount, u.email
         ORDER BY month DESC, o.order_date DESC
@@ -276,7 +336,7 @@ public function getNonFinalizedOrdersByShopGroupedByMonth(int $shopId): array
         JOIN shop s ON p.shop_id = s.id
         JOIN `user` u ON s.user_id = u.id
         JOIN `order` o ON bp.order_c_id = o.id
-        WHERE o.order_status != 'Entregue e finalizado'
+        WHERE o.order_status = 'Em processamento'
           AND s.id = :shopId
         GROUP BY month, o.id, o.order_date, o.order_status, o.refund_amount, u.email
         ORDER BY month DESC, o.order_date DESC
@@ -313,6 +373,37 @@ public function getOrdersByShop(int $shopId): array
     return $conn->executeQuery($sql, ['shopId' => $shopId])->fetchAllAssociative();
 }
 
+/**
+ * Retourne toutes les commandes remboursées d'une boutique donnée.
+ * (order_status = 'Reembolso' ET refund_status = 'Reembolsado')
+ */
+public function getRembursedOrdersByShop(int $shopId): array
+{
+    $conn = $this->em->getConnection();
+
+    $sql = "
+        SELECT 
+            o.ref AS order_ref,
+            o.order_date,
+            o.order_status,
+            o.refund_amount,
+            SUM(bp.quantity * p.price) AS total_amount,
+            u.email AS customer_email
+        FROM basket_product bp
+        JOIN product p ON bp.product_id = p.id
+        JOIN shop s ON p.shop_id = s.id
+        JOIN `user` u ON s.user_id = u.id
+        JOIN `order` o ON bp.order_c_id = o.id
+        WHERE o.order_status = 'Reembolso'
+          AND o.refund_status = 'Reembolsado'
+          AND s.id = :shopId
+        GROUP BY o.id, o.ref, o.order_date, o.order_status, o.refund_amount, u.email
+        ORDER BY o.order_date DESC
+    ";
+
+    return $conn->executeQuery($sql, ['shopId' => $shopId])->fetchAllAssociative();
+}
+
 
 // Funtion retourner toutes les commandes d'une boutique donnée, sauf celles qui sont finalisées (order_status != 'Entregue e finalizado'), 
 public function getNonFinalizedOrdersByShop(int $shopId): array
@@ -332,7 +423,7 @@ public function getNonFinalizedOrdersByShop(int $shopId): array
         JOIN shop s ON p.shop_id = s.id
         JOIN `user` u ON s.user_id = u.id
         JOIN `order` o ON bp.order_c_id = o.id
-        WHERE o.order_status != 'Entregue e finalizado'
+        WHERE o.order_status = 'Em processamento'
           AND s.id = :shopId
         GROUP BY o.id, o.order_date, o.order_status, o.refund_amount, u.email
         ORDER BY o.order_date DESC
@@ -340,6 +431,5 @@ public function getNonFinalizedOrdersByShop(int $shopId): array
 
     return $conn->executeQuery($sql, ['shopId' => $shopId])->fetchAllAssociative();
 }
-
 
 }

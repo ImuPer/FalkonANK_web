@@ -1,0 +1,74 @@
+/* En-tête de chaque section mensuelle */
+.month-header {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-left: 5px solid #007bff;
+    margin-bottom: 10px;
+}
+
+/* Badge générique */
+.badge-status {
+    font-size: 0.85em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #0e0101;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+/* Couleurs spécifiques par statut */
+.badge-status.em-processamento {
+    background-color: #ce8404; /* jaune */
+}
+
+.badge-status.cancelado {
+    background-color: #dc3545; /* rouge */
+}
+
+.badge-status.pendente {
+    background-color: #17a2b8; /* bleu clair */
+}
+
+.badge-status.reembolso {
+    background-color: #6c757d; /* gris foncé */
+}
+
+.badge-status.entregue-e-finalizado {
+    background-color: #28a745; /* vert */
+}
+
+/* ⚠️ Supprime ou modifie cette règle pour ne pas écraser */
+.badge-status {
+    font-size: 0.85em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+
+/* --------------------------------------------------------------------------------------------- */
+.clickable-row {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    h1, h2 {
+        font-size: 1.25rem;
+    }
+
+    table {
+        font-size: 0.85rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
