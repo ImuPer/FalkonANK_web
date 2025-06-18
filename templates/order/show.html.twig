@@ -28,6 +28,7 @@
 						<h2 class="item-name">{{ basketP.getProduct().getName() }}</h2>
 						<p class="item-price">{{ (basketP.getProduct().getPrice())/100 | number_format(0, '.', ',') }}
 							CVE</p>
+						<p class="item-info">X {{ (basketP.getQuantity()) }}</p>
 					</div>
 				</div>
 			{% endfor %}
