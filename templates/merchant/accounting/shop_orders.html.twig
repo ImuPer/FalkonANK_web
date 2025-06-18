@@ -169,9 +169,9 @@
 								<th>Ref da Encomenda</th>
 								<th>Data</th>
 								<th>Status</th>
-								<th>Reembolso</th>
 								<th>Total</th>
 								<th>Final</th>
+								<th>Reembolso</th>
 								<th>StripePayID</th>
 								<th>Email da loja</th>
 							</tr>
@@ -187,15 +187,15 @@
 										</span>
 									</td>
 									<td>
-										{{ (order.refund_amount ?? 0) / 100 | number_format(0, ',', ' ') }}
-										escudos
-									</td>
-									<td>
 										{{ order.total_amount / 100 | number_format(0, ',', ' ') }}
 										escudos
 									</td>
 									<td>
 										{{ order.amount_final / 100 | number_format(0, ',', ' ') }}
+										escudos
+									</td>
+									<td>
+										{{ (order.refund_amount ?? 0) | number_format(0, ',', ' ') }}
 										escudos
 									</td>
 									<td>{{ order.stripe_pay_id }}</td>
