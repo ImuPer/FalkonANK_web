@@ -185,7 +185,6 @@ class OrderCrudController extends AbstractCrudController
 
             TextareaField::new('internal_note', 'Notificação da loja')
                 ->hideOnIndex()
-                ->setRequired(true)
                 ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
 
             TextField::new('merchantSecretCode', 'Código Secreto')
@@ -267,8 +266,8 @@ class OrderCrudController extends AbstractCrudController
             $entityInstance->setRefundAmount(null);
             $entityInstance->setRefundStatus('');
             if (empty($internalNote)) {
-                $entityInstance->setInternalNote('Todos os produtos foram entregues com sucesso.');
-            }
+                $entityInstance->setInternalNote("Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!");
+             }
         }
 
         // Si remboursement
