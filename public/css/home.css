@@ -50,31 +50,36 @@ header p button {
 }
 
 /* --------------------- Cards Produits --------------------- */
+/* ----- Cards Section ------ */
 .dvgeneralCardsP {
   margin: 1rem auto;
   width: 95%;
+  display: flex;             /* Ajout de flex pour centrer le contenu */
+  justify-content: center;   /* Centrer horizontalement */
+  flex-wrap: wrap;
 }
 
+/* ----- Style des cartes ------ */
 .cards {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+  padding: 1rem;
 }
 
-/* Les cartes sont flexibles et alignées */
 .card {
-  flex: 1 1 calc(100% - 1rem);
+  flex: 1 1 calc(25% - 1rem); /* 4 par ligne avec espace */
   max-width: 300px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
+
 
 .card img {
   width: 100%;
@@ -85,7 +90,7 @@ header p button {
 }
 
 
-/* Contenu de la carte */
+
 .card-body {
   padding: 1rem;
   flex-grow: 1;
@@ -93,6 +98,64 @@ header p button {
   flex-direction: column;
   justify-content: space-between;
 }
+
+/* ----- Responsivité ------ */
+@media (max-width: 768px) {
+  .card {
+    flex: 0 1 90%;
+    max-width: 90%;
+    font-size: 0.85rem;
+    margin: 0.5rem auto;
+  }
+
+  .card img {
+  width: 100%;
+  height: 70px;
+  object-fit: contain; /* <- au lieu de cover */
+  background-color: #f9f9f9; /* optionnel pour un fond propre */
+  display: block;
+  margin: 0 auto;
+}
+
+
+  .card-body {
+    padding: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .prix h4 {
+    font-size: 0.9rem;
+  }
+
+  .ruptureStock,
+  .loja,
+  .city {
+    font-size: 0.75rem;
+  }
+
+  .btn {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  .card .fas.fa-shopping-cart {
+    font-size: 0.8rem;
+    margin-left: 5px;
+  }
+
+  .p_a_c {
+    font-size: 0.75rem;
+  }
+}
+
+
+
+
+
 
 /* Titres et autres textes */
 .card-title {
@@ -127,58 +190,6 @@ header p button {
   font-size: small;
   color: #000;
 }
-
-
-/* --------------------- Responsivité --------------------- */
-
-@media (max-width: 992px) {
-  .card {
-    flex: 1 1 calc(50% - 1rem);
-  }
-}
-
-@media (max-width: 768px) {
-  .card {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-
-  .div-header h1 {
-    font-size: 0.2rem;
-  }
-
-  header p button {
-    font-size: 0.9rem;
-    padding: 0.5rem 0.8rem;
-    margin-bottom: 1%;
-  }
-
-  .dvgeneralCardsP {
-    width: 95%;
-    margin: 0 auto;
-  }
-
-  .cards {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  header {
-    margin: 10px auto;
-    width: 95%;
-    padding: 10px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .card img {
-    max-height: 200px;
-    height: auto;
-    width: 100%;
-    object-fit: cover;
-  }
-}
-
 
 
 

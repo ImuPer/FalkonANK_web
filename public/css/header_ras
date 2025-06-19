@@ -20,66 +20,34 @@ body{
     margin: 0px;
     padding: 0px;
 }
-
-
-
 /* Barre de navegation*/
-
-/* ===== Barre de navigation ===== */
-nav {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	flex-wrap: wrap;
-	padding: 20px;
-	background-color: #f10606;
-	position: sticky;
-	top: 0;
+nav{
+    display: flex;/*aligne les elements*/
+    flex-wrap: wrap; /* empiler si la resolulation ne permet pas*/
+    justify-content: space-between; /* mettre space entre les element*/
+    padding: 20px; /*margin interior*/
+    background-color: #f10606;
+    position: sticky; /* bloquer la barre*/
+    top: 0;
 }
-
-
-.hamburger {
-	display: none;
-	font-size: 24px;
-	background: rgba(255, 255, 255, 0.066);
-	border: none;
-	color: black;
-	cursor: pointer;
-	margin-left: auto;
+nav h1{
+    font-size: 20px;
 }
-
-/* Onglets - affichage normal (desktop) */
-#navMenu {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 15px;
+nav .onglets{
+    display: flex;
+    flex-wrap: wrap;
 }
-
-/* Responsive - écran <= 768px */
-@media screen and (max-width: 768px) {
-	.hamburger {
-		display: block;
-	}
-
-	#navMenu {
-		display: none; /* cache le menu mobile par défaut */
-		flex-direction: flex;
-		width: 100%;
-		background-color: #ffffff00;
-		padding: 10px;
-	}
-
-	#navMenu.active {
-		display: flex; /* s'affiche quand on clique */
-	}
-
-	nav {
-		flex-direction: column;
-		align-items: flex-start;
-	}
+nav .onglets p{
+    font-size: 17px;
+    margin-right: 10px;
+    cursor: pointer;
 }
-
+nav .onglets input{
+    margin: 8px 20px;
+    border-radius: 30px;
+    padding: 10px;
+    text-align: center;
+}
 /*Fim barre de navegation*/
 
 

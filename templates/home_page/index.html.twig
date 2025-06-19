@@ -70,7 +70,7 @@
 				<div class="cards">
 					{% for produit in products %}
 						{% if produit.shop.active == true and produit.active == true and produit.stock > 4 %}
-							<div class="card" style="width: 18rem;">
+							<div class="card">
 								<a href="{{ path('app_product_show', {'id': produit.id}) }}">
 									<img class="card-img-top" src="{{asset('upload/images/products/' ~ produit.img )}}" alt="Card image cap">
 								</a>
@@ -114,12 +114,14 @@
 											<a href="{{ path('app_shop_loja', {'id': produit.getShop().id}) }}">
 												<strong>Loja:</strong>
 												{{ produit.getShop().getName() }}
+												<br><strong class="city">Localidade:</strong>
+										{{ produit.getShop().getCity() }}
 											</a>
 										</p>
 									{% endif %}
-									<p class="city">
+									{# <p class="city">
 										<strong>Localidade:</strong>
-										{{ produit.getShop().getCity() }}</p>
+										{{ produit.getShop().getCity() }}</p> #}
 
 								</div>
 							</div>
