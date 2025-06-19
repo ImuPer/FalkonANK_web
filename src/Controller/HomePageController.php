@@ -172,9 +172,11 @@ public function shopShow(?Shop $shop): Response
      public function showAppPage(): Response
 {
     $captures = [
-        'screen1.png',
-        'screen2.png',
-        'screen3.png',
+        'screen1.jpg',
+        'screen2.jpg',
+        'screen3.jpg',
+        'screen4.jpg',
+        'screen5.jpg',
         // etc.
     ];
 
