@@ -26,8 +26,8 @@
 					</div>
 					<div class="item-info">
 						<h2 class="item-name">{{ basketP.getProduct().getName() }}</h2>
-						<p class="item-price">{{ (basketP.getProduct().getPrice())/100 | number_format(0, '.', ',') }}
-							CVE</p>
+						<p class="item-price">{{ (basketP.getProduct().getFinalPrice())/100 | number_format(0, '.', ',') }}
+							escudos</p>
 						<p class="item-info">X {{ (basketP.getQuantity()) }}</p>
 					</div>
 				</div>
@@ -35,11 +35,11 @@
 
 
 			{% if basketPs|length > 0 %}
-				{% set totalPrice = order.totalAmount %}
+				{% set totalPrice = order.amountFinal %}
 				<div class="basket-total">
 					<h3>Total :
 						{{ totalPrice/100 | number_format(2, '.', ',') }}
-						CVE</h3>
+						CVE (escudos)</h3>
 
 					{% set conversionRate = 110 %}
 					{# 1 EUR = 110 CVE #}

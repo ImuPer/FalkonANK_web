@@ -165,5 +165,25 @@ public function shopShow(?Shop $shop): Response
     // }
 
 
+    
+
+    //-------------APP ImuhotepuVideos---------------------------------------------------
+    #[Route('/imuhotepu', name: 'app_presentation')]
+     public function showAppPage(): Response
+{
+    $captures = [
+        'screen1.png',
+        'screen2.png',
+        'screen3.png',
+        // etc.
+    ];
+
+    return $this->render('home_page/app_presentation.html.twig', [
+        'captures' => $captures,
+    ]);
+}
+
+
+
 
 }

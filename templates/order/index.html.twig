@@ -87,8 +87,8 @@
 							<tr onclick="window.location.href='{{ path('app_order_show', {'id': order.id}) }}';" style="cursor: pointer;">
 								<td data-label="Numero">{{ order.ref }}</td>
 								<td data-label="Data">{{ order.orderDate ? order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
-								<td data-label="Total">{{ order.totalAmount / 100 }}
-									CVE</td>
+								<td data-label="Total">{{ order.amountFinal / 100 }}
+									escudos</td>
 								<td data-label="Status">{{ order.orderStatus }}</td>
 								<td data-label="Beneficiario">{{ order.beneficiaryName }}</td>
 							</tr>
