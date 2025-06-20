@@ -50,10 +50,13 @@ nav {
 
 /* Onglets - affichage normal (desktop) */
 #navMenu {
-	display: flex;
+	display: none;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 15px;
+}
+#navMenu.active {
+	display: flex;
 }
 
 /* Responsive - écran <= 768px */

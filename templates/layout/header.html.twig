@@ -1,5 +1,5 @@
 {# css #}
-<link rel="stylesheet" href={{asset("css/header.css")}}>
+<link rel="stylesheet" href="{{ asset('css/header.css') }}">
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -7,7 +7,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.2/css/all.css"/>
-		<title>Falkon Alimentação</title>
+		<title>Falkon-ANK</title>
 	</head>
 
 	<body>
@@ -117,16 +117,16 @@
 		</nav>
 		<!--Fim de barre de Navegation-->
 
-	</body>
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
-const menuButton = document.querySelector('.hamburger');
-const navMenu = document.getElementById('navMenu');
+			const menuButton = document.querySelector('.hamburger');
+			const navMenu = document.getElementById('navMenu');
 
-menuButton.addEventListener('click', function () {
-navMenu.classList.toggle('active');
-});
-});
+			menuButton.addEventListener('click', function () {
+				navMenu.classList.toggle('active');
+			});
+		});
 	</script>
-
+</body>
 </html>
+
