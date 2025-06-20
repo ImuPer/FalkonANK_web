@@ -64,7 +64,7 @@ nav {
 
 	#navMenu {
 		display: none; /* cache le menu mobile par défaut */
-		flex-direction: flex;
+		flex-direction: column;
 		width: 100%;
 		background-color: #ffffff00;
 		padding: 10px;

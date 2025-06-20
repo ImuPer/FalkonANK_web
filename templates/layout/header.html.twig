@@ -15,9 +15,10 @@
 		<nav>
 			<a class="navbar-brand" href="{{path('app_home_page')}}"><img class="logo" src="{{asset("image/FalkonANK/logo-transparent-png.png")}}"></a>
 			{# <h1>Alimentason e Qualidade!</h1> #}
-			<button class="hamburger" onclick="toggleMenu()">
+			<button class="hamburger">
 				<i class="fas fa-bars"></i>
 			</button>
+
 			<div class="onglets" id="navMenu">
 				<a href="{{path('app_home_page')}}">
 					<i class="fas fa-home"></i>
@@ -86,8 +87,8 @@
 				{% endif %}
 
 				{# <a class="insta" href="">
-													<i class="fab fa-instagram"></i>
-												</a> #}
+																	<i class="fab fa-instagram"></i>
+																</a> #}
 				<a class="link .facebook" href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info">
 					<i class="fab fa-facebook-f"></i>
 				</a>
@@ -118,9 +119,14 @@
 
 	</body>
 	<script>
-		function toggleMenu() {
-		const navMenu = document.getElementById('navMenu');
-		navMenu.classList.toggle('active');
-	}
+		document.addEventListener("DOMContentLoaded", function () {
+const menuButton = document.querySelector('.hamburger');
+const navMenu = document.getElementById('navMenu');
+
+menuButton.addEventListener('click', function () {
+navMenu.classList.toggle('active');
+});
+});
 	</script>
+
 </html>
