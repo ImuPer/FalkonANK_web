@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\Contact;
 use App\Entity\Merchant;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -20,6 +21,8 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use function Symfony\Component\Clock\now;
+use App\Entity\Response as ResponseEntity; // attention au nom pour éviter conflit
 
 class RegistrationController extends AbstractController
 {
@@ -133,7 +136,7 @@ class RegistrationController extends AbstractController
 
 
     #[Route('/contact_form_submit', name: 'contact_form_submit', methods: ['POST'])]
-    public function submit(Request $request, MailerInterface $mailer): Response
+    public function submit(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         // Récupération des données du formulaire
         $name = $request->request->get('name');
@@ -153,20 +156,29 @@ class RegistrationController extends AbstractController
         }
 
         try {
-            // Envoi de l'e-mail
-            $emailMessage = (new Email())
-                ->from($email)
-                ->to('falkon674@gmail.com') // Adresse de destination
-                ->subject($subject)
-                ->text("Nom: $name\nEmail: $email\nMessage:\n$message")
-                ->html("
-                    <p><strong>Nom:</strong> $name</p>
-                    <p><strong>Email:</strong> $email</p>
-                    <p><strong>Message:</strong></p>
-                    <p>$message</p>
-                ");
+            //Cree et enregistrer sur contact
+            $contact = new Contact();
+            $contact->setName($name);
+            $contact->setEmail($email);
+            $contact->setSubject($subject);
+            $contact->setMessage($message);
+            $contact->setDatAct(new \DateTime());
+            $entityManager->persist($contact);
+            $entityManager->flush();
 
-            $mailer->send($emailMessage);
+            // Envoi de l'e-mail
+            // $emailMessage = (new Email())
+            //     ->from($email)
+            //     ->to('falkon674@gmail.com') // Adresse de destination
+            //     ->subject($subject)
+            //     ->text("Nom: $name\nEmail: $email\nMessage:\n$message")
+            //     ->html("
+            //         <p><strong>Nom:</strong> $name</p>
+            //         <p><strong>Email:</strong> $email</p>
+            //         <p><strong>Message:</strong></p>
+            //         <p>$message</p>
+            //     ");
+            // $mailer->send($emailMessage);
 
             // Message de confirmation
             $this->addFlash('success', 'Sua mensagem foi enviada com sucesso. Obrigado por nos contatar!');
@@ -178,6 +190,64 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('contact_nous');
     }
 
+    //---------------Response---------------------------------------------------------------------------------
+    #[Route('/reponse/{id}', name: 'reponse', methods: ['GET', 'POST'])]
+    public function show(
+        int $id,
+        Request $request,
+        EntityManagerInterface $em,
+        MailerInterface $mailer
+    ): Response {
+        $contact = $em->getRepository(Contact::class)->find($id);
+        if (!$contact) {
+            throw $this->createNotFoundException('Contact non trouvé');
+        }
+
+        // Chercher si une réponse existe déjà pour ce contact
+        $responseRepo = $em->getRepository(ResponseEntity::class);
+        $response = $responseRepo->findOneBy(['contact' => $contact]);
+
+        if (!$response) {
+            $response = new ResponseEntity();
+            $response->setContact($contact);
+            $response->setDate(new \DateTime());
+        }
+
+        if ($request->isMethod('POST')) {
+            $reponseText = $request->request->get('reponse');
+
+            if (!empty($reponseText)) {
+                $response->setResponse($reponseText);
+                $response->setDate(new \DateTime());
+
+                $em->persist($response);
+                $em->flush();
+
+                // Envoi mail
+                $email = (new Email())
+                    ->from('no-reply@tondomaine.com')
+                    ->to($contact->getEmail())
+                    ->subject('Re: ' . $contact->getSubject())
+                    ->text($reponseText);
+
+                $mailer->send($email);
+
+                $this->addFlash('success', 'Réponse sauvegardée et envoyée avec succès !');
+
+                return $this->redirectToRoute('reponse', ['id' => $id]);
+            } else {
+                $this->addFlash('error', 'Veuillez écrire une réponse.');
+            }
+        }
+
+        return $this->render('contact/response.html.twig', [
+            'contact' => $contact,
+            'reponse' => $response->getResponse(),
+        ]);
+    }
+
+    //------------------------- Fin de Pesponse---------------------------------------------------------
+
 
     //---GOTO Conditions Générales d'Utilisation-------------------------------------------
     #[Route('/conditions-generales', name: 'agree_terms')]
@@ -186,8 +256,8 @@ class RegistrationController extends AbstractController
         return $this->render('registration/agreeTerms.html.twig');
     }
 
-     //---GOTO politique-de-confidentialite-------------------------------------------
-     #[Route('/politique-de-confidentialite', name: 'privacy_policy')]
+    //---GOTO politique-de-confidentialite-------------------------------------------
+    #[Route('/politique-de-confidentialite', name: 'privacy_policy')]
     public function privacyPolicy(): Response
     {
         return $this->render('registration/privacy_policy.html.twig');

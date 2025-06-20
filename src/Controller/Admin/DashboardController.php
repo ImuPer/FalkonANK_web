@@ -7,6 +7,7 @@ use App\Entity\Ads;
 use App\Entity\BasketProduct;
 use App\Entity\Category;
 use App\Entity\City;
+use App\Entity\Contact;
 use App\Entity\Merchant;
 use App\Entity\Order;
 use App\Entity\Product;
@@ -73,6 +74,9 @@ public function configureAssets(): Assets
         // Vérifie le rôle USER
         $user = $this->getUser();
         if ($user->getRoles() === [0 => "ROLE_ADMIN", 1 => "ROLE_USER"]) {
+
+            // 🔽 Contact
+            yield MenuItem::linkToCrud('Contactos', 'fas fa-envelope', Contact::class);
 
             yield MenuItem::subMenu('Users', 'fas fa-users')->setSubItems([
                 MenuItem::linkToCrud('Add User', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),

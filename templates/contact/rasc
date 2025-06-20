@@ -1,0 +1,30 @@
+<!-- Formulaire de Contact com comboBox -->
+			<div class="col-lg-6 mb-4">
+				<form action="{{ path('contact_form_submit') }}" method="post">
+					<div class="mb-3">
+						<label for="name" class="form-label">Nome</label>
+						<input type="text" class="form-control" id="name" name="name" placeholder="Seu nome" required>
+					</div>
+					<div class="mb-3">
+						<label for="email" class="form-label">E-mail</label>
+						<input type="email" class="form-control" id="email" name="email" placeholder="Seu e-mail" required>
+					</div>
+					<div class="mb-3">
+						<label for="subject" class="form-label">Assunto</label>
+						<select class="form-select" id="subject" name="subject" required>
+							<option value="" disabled selected>Escolha uma opção</option>
+							<option value="comerciante">Eu sou um Comerciante em Cabo Verde, quero inscrever na plataforma.</option>
+							<option value="cliente_utilizacao">Eu sou um Cliente, quero saber como utilizar e finalizar a minha compra.</option>
+							<option value="autre">Autre</option>
+							<option value="diaspora_info">Sou da diáspora, quero saber como ajudar um familiar.</option>
+							<option value="problema_tecnico">Tenho um problema técnico ou dúvida específica.</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="message" class="form-label">Mensagem</label>
+						<textarea class="form-control" id="message" name="message" rows="6" placeholder="Sua mensagem" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary w-100">Enviar</button>
+				</form>
+
+			</div>

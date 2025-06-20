@@ -1,9 +1,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
 .logo{
     width: 150px;
-    height: 150px;
+    /* height: 150px; */
 }
 a{
     text-decoration: none;
@@ -50,13 +49,10 @@ nav {
 
 /* Onglets - affichage normal (desktop) */
 #navMenu {
-	display: none;
+	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 15px;
-}
-#navMenu.active {
-	display: flex;
 }
 
 /* Responsive - écran <= 768px */

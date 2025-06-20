@@ -26,6 +26,9 @@ class Contact
     #[ORM\Column(type: Types::TEXT)]
     private ?string $message = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $datAct = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Contact
     public function setMessage(string $message): static
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getDatAct(): ?\DateTimeInterface
+    {
+        return $this->datAct;
+    }
+
+    public function setDatAct(\DateTimeInterface $datAct): static
+    {
+        $this->datAct = $datAct;
 
         return $this;
     }
