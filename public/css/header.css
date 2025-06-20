@@ -63,15 +63,15 @@ nav {
 	}
 
 	#navMenu {
-		display: none;
-		flex-direction: column; /* ✅ CORRIGÉ ICI */
+		display: none; /* cache le menu mobile par défaut */
+		flex-direction: flex;
 		width: 100%;
 		background-color: #ffffff00;
 		padding: 10px;
 	}
 
 	#navMenu.active {
-		display: flex;
+		display: flex; /* s'affiche quand on clique */
 	}
 
 	nav {
@@ -79,7 +79,6 @@ nav {
 		align-items: flex-start;
 	}
 }
-
 
 /*Fim barre de navegation*/
 
