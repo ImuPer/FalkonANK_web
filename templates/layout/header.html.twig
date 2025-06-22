@@ -87,22 +87,11 @@
 				{% endif %}
 
 				{# <a class="insta" href="">
-																					<i class="fab fa-instagram"></i>
-																				</a> #}
-				<div class="social-links text-center">
-					<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" class="social-icon">
-						<i class="fab fa-facebook-f"></i>
-					</a>
-					<a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download style="display: inline-flex; align-items: center; justify-content: center;
-							          border: 2px solid #4CAF50; border-radius: 8px; padding: 6px 10px;
-							          background-color: #f9fff9; color: #333; text-decoration: none;
-							          font-weight: 500; transition: 0.3s;">
-						<img class="logo" src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" style="width: 25px; height: 25px; margin-right: 8px;">
-						<span>Download APK</span>
-					</a>
-				</div>
-
-
+																									<i class="fab fa-instagram"></i>
+																								</a> #}
+				<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" class="social-icon">
+					<i class="fab fa-facebook-f"></i>
+				</a>
 				<div class="busca">
 					<form class="d-flex" role="search" method="get" action="{{ path('product_search') }}">
 						<div class="input-group">
@@ -128,13 +117,13 @@
 
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
-				const menuButton = document.querySelector('.hamburger');
-				const navMenu = document.getElementById('navMenu');
+const menuButton = document.querySelector('.hamburger');
+const navMenu = document.getElementById('navMenu');
 
-				menuButton.addEventListener('click', function () {
-					navMenu.classList.toggle('active');
-				});
-			});
+menuButton.addEventListener('click', function () {
+navMenu.classList.toggle('active');
+});
+});
 		</script>
 	</body>
 </html>
