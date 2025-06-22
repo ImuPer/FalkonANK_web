@@ -70,17 +70,7 @@
 					</li>
 				{% endif %}
 
-				{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
-					<a class="shoping_header" href="{{path('user_basket')}}">
-						<i class="fas fa-shopping-cart">
-							{% if is_granted('ROLE_USER') %}
-								{% set userId = app.user is not null ? app.user.id : null %}
-								{% set totalQuantity = userId is not null ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
-								<label>{{ totalQuantity }}</label>
-							{% endif %}
-						</i>
-					</a>
-				{% endif %}
+				
 
 				{# <a class="insta" href="">
 																													<i class="fab fa-instagram"></i>
@@ -106,6 +96,17 @@
 				</div>
 
 			</div>
+			{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+					<a class="shoping_header" href="{{path('user_basket')}}">
+						<i class="fas fa-shopping-cart">
+							{% if is_granted('ROLE_USER') %}
+								{% set userId = app.user is not null ? app.user.id : null %}
+								{% set totalQuantity = userId is not null ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
+								<label>{{ totalQuantity }}</label>
+							{% endif %}
+						</i>
+					</a>
+				{% endif %}
 		</nav>
 		<!--Fim de barre de Navegation-->
 
