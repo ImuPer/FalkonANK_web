@@ -195,6 +195,11 @@ class StripeController extends AbstractController
         // récupérer l'ID du paiement associé (payment_intent)
         $paymentIntentId = $customer->payment_intent;
 
+        $paymentIntent = $this->gateway->paymentIntents->retrieve($paymentIntentId);
+        $timestamp = $paymentIntent->created; // UNIX timestamp
+        $paymentDate = (new \DateTime())->setTimestamp($timestamp);
+
+
 
         // Logique pour enregistrer la commande et les produits
         $user = $this->getUser();
@@ -210,14 +215,33 @@ class StripeController extends AbstractController
         $order->setBasket($basket);
         // Initialiser le numéro de commande
         $ref_order = 'ClientNr01';
-        while ($orderRepository->refOrderExists($ref_order)) {
-            $length = 10;
-            $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $ref_order = '';
-            for ($i = 0; $i < $length; $i++) {
-                $ref_order .= $chars[rand(0, strlen($chars) - 1)];
+        function generateCustomRefOrder()
+        {
+            $lettersDigits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $digits = '0123456789';
+
+            $part1 = '';
+            for ($i = 0; $i < 3; $i++) {
+                $part1 .= $lettersDigits[rand(0, strlen($lettersDigits) - 1)];
             }
+
+            $part2 = '';
+            for ($i = 0; $i < 3; $i++) {
+                $part2 .= $digits[rand(0, strlen($digits) - 1)];
+            }
+
+            $part3 = '';
+            for ($i = 0; $i < 4; $i++) {
+                $part3 .= $lettersDigits[rand(0, strlen($lettersDigits) - 1)];
+            }
+
+            return $part1 . '-' . $part2 . '-' . $part3;
         }
+
+        do {
+            $ref_order = $userId . "-" . generateCustomRefOrder();
+        } while ($orderRepository->refOrderExists($ref_order));
+
         //infos de beneficiario
         $orderData = $request->getSession()->get('order_info');
 
@@ -252,7 +276,7 @@ class StripeController extends AbstractController
         // Mettre à jour les produits du panier
         foreach ($basketPs as $basketP) {
             $basketP->setPayment(true);
-            $basketP->setDatePay(new \DateTime());
+            $basketP->setDatePay($paymentDate);
             $basketP->setPaymentMethod("Carta Bancario");
             $basketP->setPaymentStatus($payment_status);
             $basketP->setOrderC($order);
