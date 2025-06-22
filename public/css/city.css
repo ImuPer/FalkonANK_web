@@ -1,0 +1,58 @@
+/* Style général de la navbar */
+.navbar {
+	border-radius: 12px;
+	background-color: #f0f0f045; /* Couleur de fond personnalisée */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 10px 20px;
+	margin: 10px;
+}
+
+/* Bouton hamburger */
+.navbar-toggler {
+	border-radius: 8px;
+	border: 1px solid #ccc;
+}
+
+/* Menu principal */
+.navbar-nav .nav-link {
+	color: #333;
+	font-weight: 500;
+}
+
+/* Menu principal au survol */
+.navbar-nav .nav-link:hover {
+	color: #007BFF;
+}
+
+/* Dropdown principal */
+.dropdown-menu {
+	border-radius: 10px;
+	background-color: #ffffff;
+	border: 1px solid #ddd;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Sous-menu (shops dans chaque ville) */
+.dropdown-submenu > .dropdown-menu {
+	left: 100%;
+	top: 0;
+	margin-left: 0.1rem;
+	border-radius: 10px;
+}
+
+/* Flèches dropdown personnalisées */
+.dropdown-toggle::after {
+	margin-left: 0.5em;
+	vertical-align: 0.2em;
+}
+
+/* Lien dropdown */
+.dropdown-item {
+	border-radius: 5px;
+	transition: background-color 0.3s ease;
+}
+
+/* Survol dropdown */
+.dropdown-item:hover {
+	background-color: #ed0a0a;
+}
