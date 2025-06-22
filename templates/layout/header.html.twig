@@ -83,8 +83,8 @@
 				{% endif %}
 
 				{# <a class="insta" href="">
-																									<i class="fab fa-instagram"></i>
-																								</a> #}
+																													<i class="fab fa-instagram"></i>
+																												</a> #}
 				<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" class="social-icon">
 					<i class="fab fa-facebook-f"></i>
 				</a>
@@ -99,27 +99,26 @@
 					</form>
 				</div>
 
-
 				<div>
 					{% if cities is defined %}
 						{% include 'layout/city_menu.html.twig' with { cities: cities } %}
 					{% endif %}
 				</div>
 
-
 			</div>
 		</nav>
 		<!--Fim de barre de Navegation-->
 
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-const menuButton = document.querySelector('.hamburger');
-const navMenu = document.getElementById('navMenu');
-
-menuButton.addEventListener('click', function () {
-navMenu.classList.toggle('active');
-});
-});
-		</script>
 	</body>
 </html>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	const menuButton = document.querySelector('.hamburger');
+	const navMenu = document.getElementById('navMenu');
+
+	menuButton.addEventListener('click', function () {
+	navMenu.classList.toggle('active');
+	});
+	});
+</script>
