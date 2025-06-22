@@ -60,46 +60,42 @@
 		}
 	</style>
 
-	{% if orders is empty %}
-		<p>{{ message }}</p>
-	{% else %}
-		<div class="d-inline-flex p-3">
-			<a href="{{path('app_home_page')}}">
-				<button type="button" class="btn btn-dark">Voltar a loja</button>
-			</a>
-		</div>
-		<div class="general_order container mt-4">
-			<h1 class="mb-4">As Minhas Compras</h1>
+	<div class="d-inline-flex p-3">
+		<a href="{{path('app_home_page')}}">
+			<button type="button" class="btn btn-dark">Voltar a loja</button>
+		</a>
+	</div>
+	<div class="general_order container mt-4">
+		<h1 class="mb-4">As Minhas Compras</h1>
 
-			<div class="table-container">
-				<table class="table table-striped responsive-table">
-					<thead>
-						<tr>
-							<th>Referência</th>
-							<th>Data (hora de CV)</th>
-							<th>Total</th>
-							<th>Status</th>
-							<th>Beneficiario</th>
+		<div class="table-container">
+			<table class="table table-striped responsive-table">
+				<thead>
+					<tr>
+						<th>Referência</th>
+						<th>Data (hora de CV)</th>
+						<th>Total</th>
+						<th>Status</th>
+						<th>Beneficiario</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for order in orders %}
+						<tr onclick="window.location.href='{{ path('app_order_show', {'id': order.id}) }}';" style="cursor: pointer;">
+							<td data-label="Numero">{{ order.ref }}</td>
+							<td data-label="Data">{{ order.orderDate ? order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+							<td data-label="Total">{{ order.amountFinal / 100 }}
+								escudos</td>
+							<td data-label="Status">{{ order.orderStatus }}</td>
+							<td data-label="Beneficiario">{{ order.beneficiaryName }}</td>
 						</tr>
-					</thead>
-					<tbody>
-						{% for order in orders %}
-							<tr onclick="window.location.href='{{ path('app_order_show', {'id': order.id}) }}';" style="cursor: pointer;">
-								<td data-label="Numero">{{ order.ref }}</td>
-								<td data-label="Data">{{ order.orderDate ? order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
-								<td data-label="Total">{{ order.amountFinal / 100 }}
-									escudos</td>
-								<td data-label="Status">{{ order.orderStatus }}</td>
-								<td data-label="Beneficiario">{{ order.beneficiaryName }}</td>
-							</tr>
-						{% else %}
-							<tr>
-								<td colspan="4">Nenhum registro de compra!</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
+					{% else %}
+						<tr>
+							<td colspan="4">Nenhum registro de compra!</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
-	{% endif %}
+	</div>
 {% endblock %}

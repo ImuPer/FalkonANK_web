@@ -46,6 +46,7 @@ class OrderController extends AbstractController
 
 
     }
+    
     #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
     public function show(Order $order, BasketProductRepository $basketProductRepository): Response
     {
