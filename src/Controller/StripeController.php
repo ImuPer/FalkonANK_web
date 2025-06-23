@@ -119,15 +119,13 @@ class StripeController extends AbstractController
         }
 
         // Générer les URLs de succès et d'annulation avec un placeholder
+        $baseUrl = $_ENV['APP_BASE_URL'];
+
         $checkoutSession = $this->gateway->checkout->sessions->create([
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => $this->generateUrl('app_success', [
-                'id_sessions' => '{CHECKOUT_SESSION_ID}'
-            ], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->generateUrl('app_cancel', [
-                'id_sessions' => '{CHECKOUT_SESSION_ID}'
-            ], UrlGeneratorInterface::ABSOLUTE_URL),
+            'success_url' => $baseUrl . '/success?id_sessions={{CHECKOUT_SESSION_ID}}',
+            'cancel_url' => $baseUrl . '/cancel?id_sessions={{CHECKOUT_SESSION_ID}}',
         ]);
 
         // Rediriger l'utilisateur vers Stripe
@@ -148,15 +146,16 @@ class StripeController extends AbstractController
     ): Response {
         // Récupérer l'ID de la session depuis la requête
         $id_sessions = $request->query->get('id_sessions');
-        // dd($id_sessions);
-        if (!$id_sessions) {
+        $id_sessions = trim($id_sessions, '{}'); // Nettoie les accolades autour de l'ID
 
+        if (!$id_sessions) {
             // Si l'ID de session est manquant ou invalide, afficher une erreur
             return $this->render('stripe/index.html.twig', [
                 'status' => 'error',
                 'message' => 'ID de session invalide ou manquant',
             ]);
         }
+
 
         try {
             // Récupérer les informations de la session Stripe
@@ -525,7 +524,7 @@ EOD;
     #[Route('/cancel', name: 'app_cancel')]
     public function cancel(Request $request): Response
     {
-        dd($request->query->all());
+        dd('cancel called', $request->query->all());
         return $this->render('stripe/index.html.twig', [
             'status' => 'cancelled',
         ]);
