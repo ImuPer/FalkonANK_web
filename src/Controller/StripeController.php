@@ -479,38 +479,34 @@ EOD;
                 ->subject('Récapitulatif de votre entrega')
                 ->html($recapContent);
 
-            //------Lista de artigos--pdf
-            $options = new Options();
-            $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-            $options->set('isRemoteEnabled', true);
-            $options->set('defaultFont', 'Arial');
+            //------Lista de artigos--pdf-------------------------------------------------------------------------------
+        //     $options = new Options();
+        //     $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
+        //     $options->set('isRemoteEnabled', true);
+        //     $options->set('defaultFont', 'Arial');
 
-            $dompdf = new Dompdf($options);
-            $dompdf->loadHtml($recapContent);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
+        //     $dompdf = new Dompdf($options);
+        //     $dompdf->loadHtml($recapContent);
+        //     $dompdf->setPaper('A4', 'portrait');
+        //     $dompdf->render();
 
-            // Enregistrement temporaire
-            $pdfOutput = $dompdf->output();
-            $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
-            file_put_contents($tempPdfPath, $pdfOutput);
+        //     // Enregistrement temporaire
+        //     $pdfOutput = $dompdf->output();
+        //     $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
+        //     file_put_contents($tempPdfPath, $pdfOutput);
 
-            // Attacher le fichier PDF à l'e-mail
-            $emailBenef->attachFromPath($tempPdfPath, 'lista_artigos.pdf');
-
-
-            try {
-                $mailer->send($emailBenef);
-            } catch (\Exception $e) {
-                dump("Erro ao enviar email ao beneficiário: " . $e->getMessage());
-            }
-
-            // $mailer->send($emailBenef);
-        }
+        //     // Attacher le fichier PDF à l'e-mail
+        //     $emailBenef->attachFromPath($tempPdfPath, 'lista_artigos.pdf');
 
 
+        //     try {
+        //         $mailer->send($emailBenef);
+        //     } catch (\Exception $e) {
+        //         dump("Erro ao enviar email ao beneficiário: " . $e->getMessage());
+        //     }
 
-
+        //     // $mailer->send($emailBenef);
+         }
         // ----------------------------------------------------------------------------------------------------------------
 
         // Afficher un message de succès
