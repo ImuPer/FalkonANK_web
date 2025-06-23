@@ -24,9 +24,10 @@ class GlobalVariables extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'cities' => $this->cityRepository->findAll(),
-            'adss' => $this->adsRepository->findAll(),
-            'shops_lojas' =>$this->shopRepository->findAll(),
+            'cities' => $this->cityRepository->findBy([], null, 50),
+            'adss' => $this->adsRepository->findBy([], null, 50),
+            'shops_lojas' => $this->shopRepository->findBy([], null, 50),
         ];
     }
+
 }
