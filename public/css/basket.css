@@ -94,76 +94,85 @@
 @media screen and (max-width: 768px) {
     .basket-container {
         width: 95%;
-        padding: 15px;
-        margin: 20px auto;
+        padding: 10px;
+        margin: 15px auto;
     }
 
     .basket-item {
         flex-direction: column;
         align-items: flex-start;
+        padding: 10px 0;
     }
 
     .item-image {
-        width: 100%;
-        height: auto;
-        margin: 0 0 10px 0;
-        overflow: hidden;
-        /* Ajoute cette ligne */
+        width: 60px;
+        height: 60px;
+        margin-bottom: 8px;
+        flex-shrink: 0;
     }
 
     .item-image img {
         width: 100%;
-        height: auto;
-        /* important pour la responsivité */
-        max-width: 100%;
-        /* évite tout débordement */
+        height: 100%;
         object-fit: cover;
         border-radius: 4px;
         display: block;
-        /* retire les marges internes involontaires */
     }
-
 
     .item-info {
         width: 100%;
-        margin-bottom: 10px;
+        margin-top: 15px;
+    }
+
+    .item-name {
+        font-size: 14px;
+        margin: 0 0 4px 0;
+    }
+
+    .item-price {
+        font-size: 13px;
     }
 
     .item-controls {
         width: 100%;
-        justify-content: space-between;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         flex-wrap: wrap;
+        gap: 5px;
     }
 
     .quantity-btn {
-        padding: 8px 12px;
-        font-size: 16px;
-        margin: 5px 5px 5px 0;
+        padding: 6px 10px;
+        font-size: 14px;
+        margin: 0;
     }
 
     .item-quantity {
-        width: auto;
+        font-size: 14px;
+        width: 25px;
+        text-align: center;
         margin: 0 5px;
     }
 
     .basket-total {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 15px;
     }
 
     .basket-total h3,
     .basket-total p {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .btn-success,
     .btn-dark {
         width: 100%;
-        margin-top: 10px;
+        margin-top: 8px;
     }
 
     .modal-dialog {
         max-width: 95%;
-        margin: 1.75rem auto;
+        margin: 1rem auto;
     }
 }
