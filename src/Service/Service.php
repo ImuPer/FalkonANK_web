@@ -17,6 +17,7 @@ class Service
     private $validator;
     private $basketRepository;
     private $basketProductRepository;
+     private $cacheTotalQuantity = [];
 
     public function __construct(UserRepository $userRepository, ValidatorInterface $validator,
      BasketRepository $basketRepository, BasketProductRepository $basketProductRepository)
@@ -86,10 +87,45 @@ class Service
         return $errors;
     }
 
-    public function getTotalQuantityForUserWherePaymentFalse($userId): int
+    // public function getTotalQuantityForUserWherePaymentFalse($userId): int
+    // {
+    //     $user = $this->userRepository->find($userId);
+    //     $basketId = $this->basketRepository->findOneBy(['user' => $user]); //recuperer le basket user
+    //     return $this->basketProductRepository->getTotalQuantityForBasketWherePaymentFalse($basketId);
+    // }
+
+
+      public function getTotalQuantityForUserWherePaymentFalse($userId): int
     {
-        $user = $this->userRepository->find($userId);
-        $basketId = $this->basketRepository->findOneBy(['user' => $user]); //recuperer le basket user
-        return $this->basketProductRepository->getTotalQuantityForBasketWherePaymentFalse($basketId);
+        // Cache simple par userId
+        if (isset($this->cacheTotalQuantity[$userId])) {
+            return $this->cacheTotalQuantity[$userId];
+        }
+
+        try {
+            $user = $this->userRepository->find($userId);
+            if (!$user) {
+                return 0;
+            }
+
+            $basket = $this->basketRepository->findOneBy(['user' => $user]);
+            if (!$basket) {
+                return 0;
+            }
+
+            $total = $this->basketProductRepository->getTotalQuantityForBasketWherePaymentFalse($basket);
+            
+            // Mise en cache
+            $this->cacheTotalQuantity[$userId] = $total;
+
+            return $total;
+
+        } catch (\Exception $e) {
+            // Log l'erreur ici si tu as un logger (optionnel)
+            // Par exemple : $this->logger->error($e->getMessage());
+
+            // En cas d'erreur, renvoyer 0 pour ne pas bloquer le template
+            return 0;
+        }
     }
 }
