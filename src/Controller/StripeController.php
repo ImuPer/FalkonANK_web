@@ -131,10 +131,10 @@ class StripeController extends AbstractController
         $checkoutSession = $this->gateway->checkout->sessions->create([
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => $successUrl, // URL de succès avec le placeholder
-            'cancel_url' => $cancelUrl, // URL d'annulation avec le placeholder
-            // 'success_url' => 'https://127.0.0.1:8000/success?id_sessions={CHECKOUT_SESSION_ID}',
-            // 'cancel_url' => 'https://127.0.0.1:8000/cancel?id_sessions={CHECKOUT_SESSION_ID}'
+            // 'success_url' => $successUrl, // URL de succès avec le placeholder
+            // 'cancel_url' => $cancelUrl, // URL d'annulation avec le placeholder
+            'success_url' => 'https://falkon.click/success?id_sessions={CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'https://falkon.click/cancel?id_sessions={CHECKOUT_SESSION_ID}'
         ]);
 
         // Remplacer le placeholder par l'ID de session réel dans les URLs
