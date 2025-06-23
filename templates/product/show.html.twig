@@ -14,7 +14,7 @@
         <div class="desc_showP">
             
             <p class="label">{{ product.label }}</p>
-            <h4 style="color:green;"> {{ (product.price/ 100)|number_format(0, ',', '.') }} CVE</h4>
+            <h4 style="color:green;"> {{ (product.getFinalPrice()/ 100)|number_format(0, ',', '.') }} CVE</h4>
 
 
             {% if product.stock > 0 %}
