@@ -119,22 +119,27 @@ class StripeController extends AbstractController
         }
 
         // Générer les URLs de succès et d'annulation avec un placeholder
-        $successUrl = $this->generateUrl('app_success', [
-            'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        // $successUrl = $this->generateUrl('app_success', [
+        //     'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
+        // ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $cancelUrl = $this->generateUrl('app_cancel', [
-            'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        // $cancelUrl = $this->generateUrl('app_cancel', [
+        //     'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
+        // ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $host = $request->getSchemeAndHttpHost(); // détecte automatiquement https://falkon.click ou http://127.0.0.1:8000
+        $successUrl = $host . $this->generateUrl('app_success', ['id_sessions' => '{CHECKOUT_SESSION_ID}']);
+        $cancelUrl = $host . $this->generateUrl('app_cancel', ['id_sessions' => '{CHECKOUT_SESSION_ID}']);
+
 
         // Créer la session de paiement Stripe
         $checkoutSession = $this->gateway->checkout->sessions->create([
             'line_items' => $lineItems,
             'mode' => 'payment',
-            // 'success_url' => $successUrl, // URL de succès avec le placeholder
-            // 'cancel_url' => $cancelUrl, // URL d'annulation avec le placeholder
-            'success_url' => 'https://127.0.0.1:8000/success?id_sessions={CHECKOUT_SESSION_ID}',
-            'cancel_url' => 'https://127.0.0.1:8000/cancel?id_sessions={CHECKOUT_SESSION_ID}'
+            'success_url' => $successUrl, // URL de succès avec le placeholder
+            'cancel_url' => $cancelUrl, // URL d'annulation avec le placeholder
+            // 'success_url' => 'https://127.0.0.1:8000/success?id_sessions={CHECKOUT_SESSION_ID}',
+            // 'cancel_url' => 'https://127.0.0.1:8000/cancel?id_sessions={CHECKOUT_SESSION_ID}'
         ]);
 
         // Remplacer le placeholder par l'ID de session réel dans les URLs
