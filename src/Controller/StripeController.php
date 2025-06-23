@@ -119,18 +119,13 @@ class StripeController extends AbstractController
         }
 
         // Générer les URLs de succès et d'annulation avec un placeholder
-        // $successUrl = $this->generateUrl('app_success', [
-        //     'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
-        // ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $successUrl = $this->generateUrl('app_success', [
+            'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        // $cancelUrl = $this->generateUrl('app_cancel', [
-        //     'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
-        // ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        $host = $request->getSchemeAndHttpHost(); // détecte automatiquement https://falkon.click ou http://127.0.0.1:8000
-        $successUrl = $host . $this->generateUrl('app_success', ['id_sessions' => '{CHECKOUT_SESSION_ID}']);
-        $cancelUrl = $host . $this->generateUrl('app_cancel', ['id_sessions' => '{CHECKOUT_SESSION_ID}']);
-
+        $cancelUrl = $this->generateUrl('app_cancel', [
+            'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
         // Créer la session de paiement Stripe
         $checkoutSession = $this->gateway->checkout->sessions->create([
