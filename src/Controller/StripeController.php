@@ -119,31 +119,16 @@ class StripeController extends AbstractController
         }
 
         // Générer les URLs de succès et d'annulation avec un placeholder
-        $successUrl = $this->generateUrl('app_success', [
-            'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        $cancelUrl = $this->generateUrl('app_cancel', [
-            'id_sessions' => '{CHECKOUT_SESSION_ID}' // Placez le placeholder pour l'ID ici
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        // Créer la session de paiement Stripe
         $checkoutSession = $this->gateway->checkout->sessions->create([
             'line_items' => $lineItems,
             'mode' => 'payment',
-            // 'success_url' => $successUrl, // URL de succès avec le placeholder
-            // 'cancel_url' => $cancelUrl, // URL d'annulation avec le placeholder
-            'success_url' => 'https://falkon.click/success?id_sessions={CHECKOUT_SESSION_ID}',
-            'cancel_url' => 'https://falkon.click/cancel?id_sessions={CHECKOUT_SESSION_ID}'
+            'success_url' => $this->generateUrl('app_success', [
+                'id_sessions' => '{CHECKOUT_SESSION_ID}'
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('app_cancel', [
+                'id_sessions' => '{CHECKOUT_SESSION_ID}'
+            ], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
-
-        // Remplacer le placeholder par l'ID de session réel dans les URLs
-        $successUrl = str_replace('{CHECKOUT_SESSION_ID}', $checkoutSession->id, $successUrl);
-        $cancelUrl = str_replace('{CHECKOUT_SESSION_ID}', $checkoutSession->id, $cancelUrl);
-
-        // Mettre à jour les URLs dans la session Stripe
-        $checkoutSession->success_url = $successUrl;
-        $checkoutSession->cancel_url = $cancelUrl;
 
         // Rediriger l'utilisateur vers Stripe
         return $this->redirect($checkoutSession->url);
@@ -540,6 +525,7 @@ EOD;
     #[Route('/cancel', name: 'app_cancel')]
     public function cancel(Request $request): Response
     {
+        dd($request->query->all());
         return $this->render('stripe/index.html.twig', [
             'status' => 'cancelled',
         ]);
