@@ -375,7 +375,7 @@ class StripeController extends AbstractController
 <html>
   <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
     <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 200px; height: auto;">
+      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
     </div>
 
     <p>Olá <strong>{$customerName}</strong>,</p>
@@ -460,7 +460,7 @@ EOD;
         <html>
           <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
              <div style="text-align: center; margin-bottom: 20px;">
-                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 200px; height: auto;">
+                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
             </div>
           
             <p>Olá <strong>{$orderData['beneficiary_name']}</strong>,</p>
