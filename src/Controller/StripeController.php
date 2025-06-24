@@ -133,9 +133,22 @@ class StripeController extends AbstractController
     }
 
 
-    // ------------success--------------------
+
+
+    // ------------success----------------------------------------------------------------------------------
     #[Route('/success', name: 'app_success')]
-    public function success(
+    public function success(Request $request): Response
+    {
+        $id = $request->query->get('id_sessions');
+        return $this->render('stripe/loading.html.twig', [
+            'id_sessions' => $id,
+        ]);
+    }
+
+
+    // ------------success FINAL----------------------------------------------------------------------------
+    #[Route('/success/final', name: 'app_success_final')]
+    public function successFinal(
         Request $request,
         BasketRepository $basketRepository,
         BasketProductRepository $basketProductRepository,
@@ -317,20 +330,13 @@ class StripeController extends AbstractController
             $priceCVE = $product->getFinalPrice();
             $priceCVEformatted = number_format($priceCVE / 100, 2, ',', ' ');
 
-            $imageFilename = $product->getImg();
-            $imagePath = $this->getParameter('kernel.project_dir') . '/public/upload/images/products/' . $imageFilename;
-
-            if (file_exists($imagePath)) {
-                $imageData = base64_encode(file_get_contents($imagePath));
-                $imageMime = mime_content_type($imagePath);
-                $imageBase64 = 'data:' . $imageMime . ';base64,' . $imageData;
-            } else {
-                $imageBase64 = ''; // ou une image par défaut
-            }
-
             $productsList .= "
         <tr>
-            <td style='padding: 8px;'><img src='{$imageBase64}' alt='{$product->getName()}' style='width: 80px; height: auto;'></td>
+            <td style='padding: 8px;'>
+                 <img src='https://falkon.click/upload/images/products/" . rawurlencode($product->getImg()) . "' 
+                            alt='" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "' 
+                            style='width: 80px; height: auto;'>
+            </td>
             <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
             <td style='padding: 8px;'>{$priceCVEformatted} CVE</td>
             <td style='padding: 8px;'>{$shop}, {$shopAddress}</td>
@@ -480,33 +486,34 @@ EOD;
                 ->html($recapContent);
 
             //------Lista de artigos--pdf-------------------------------------------------------------------------------
-        //     $options = new Options();
-        //     $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-        //     $options->set('isRemoteEnabled', true);
-        //     $options->set('defaultFont', 'Arial');
+            //     $options = new Options();
+            //     $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
+            //     $options->set('isRemoteEnabled', true);
+            //     $options->set('defaultFont', 'Arial');
 
-        //     $dompdf = new Dompdf($options);
-        //     $dompdf->loadHtml($recapContent);
-        //     $dompdf->setPaper('A4', 'portrait');
-        //     $dompdf->render();
+            //     $dompdf = new Dompdf($options);
+            //     $dompdf->loadHtml($recapContent);
+            //     $dompdf->setPaper('A4', 'portrait');
+            //     $dompdf->render();
 
-        //     // Enregistrement temporaire
-        //     $pdfOutput = $dompdf->output();
-        //     $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
-        //     file_put_contents($tempPdfPath, $pdfOutput);
+            //     // Enregistrement temporaire
+            //     $pdfOutput = $dompdf->output();
+            //     $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
+            //     file_put_contents($tempPdfPath, $pdfOutput);
 
-        //     // Attacher le fichier PDF à l'e-mail
-        //     $emailBenef->attachFromPath($tempPdfPath, 'lista_artigos.pdf');
+            //     // Attacher le fichier PDF à l'e-mail
+            //     $emailBenef->attachFromPath($tempPdfPath, 'lista_artigos.pdf');
 
 
-        //     try {
-        //         $mailer->send($emailBenef);
-        //     } catch (\Exception $e) {
-        //         dump("Erro ao enviar email ao beneficiário: " . $e->getMessage());
-        //     }
+            //     try {
+            //         $mailer->send($emailBenef);
+            //     } catch (\Exception $e) {
+            //         dump("Erro ao enviar email ao beneficiário: " . $e->getMessage());
+            //     }
 
-        //     // $mailer->send($emailBenef);
-         }
+            // envoier l'email sans pdf
+            $mailer->send($emailBenef);
+        }
         // ----------------------------------------------------------------------------------------------------------------
 
         // Afficher un message de succès
@@ -520,7 +527,6 @@ EOD;
     #[Route('/cancel', name: 'app_cancel')]
     public function cancel(Request $request): Response
     {
-        dd('cancel called', $request->query->all());
         return $this->render('stripe/index.html.twig', [
             'status' => 'cancelled',
         ]);

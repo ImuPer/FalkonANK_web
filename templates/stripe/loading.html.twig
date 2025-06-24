@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de pagamento...</title>
+    <style>
+        /* Styles de base */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        /* Spinner de chargement */
+        .spinner {
+            width: 80px;
+            height: 80px;
+            margin: 50px auto;
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Texte central */
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* Section de publicité */
+        .advertisement {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .advertisement img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Media Queries pour mobile */
+        @media (max-width: 600px) {
+            .spinner {
+                width: 60px;
+                height: 60px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .advertisement {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+    <script>
+        // Redirige après un court délai
+        setTimeout(() => {
+            window.location.href = "/success/final?id_sessions={{ id_sessions }}";
+        }, 1000); // 1s de pause
+    </script>
+</head>
+<body>
+    <div class="spinner"></div>
+    <p>Tratando o pagamento... aguarde um momento.</p>	
+
+    <!-- Section publicitaire -->
+    <div class="advertisement">
+        {# <p>Confira as nossas promoções especiais:</p>
+        <a href="https://www.exemplo.com/promocoes" target="_blank">
+            <img src="https://via.placeholder.com/600x100/3498db/ffffff?text=Promoções+Especiais" alt="Promoções especiais">
+        </a> #}
+        
+
+        <p>Confira os nossos livros na amazon : </p>
+        <a href="https://www.amazon.fr/stores/To-Imuhotepu/author/B0DQPK6XMM?ref=ap_rdr&isDramIntegrated=true&shoppingPortalEnabled=true" target="_blank">
+            <img src="https://falkon.click/image/slideShow/falkon.jpg/600x100/3498db/ffffff?text=To+Imuhotepu" alt="To Imuhotepu">
+        </a>
+
+        {#-----------------------Carousel Controls------------------------------------------------------- #}
+        {# {% include "layout/carousel.html.twig" %} #}
+        {#------------FIN de Carousel Controls------------------------------------------------------------------ #}
+            
+        
+    </div>
+</body>
+</html>
