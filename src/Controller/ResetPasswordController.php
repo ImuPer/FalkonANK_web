@@ -44,7 +44,10 @@ class ResetPasswordController extends AbstractController
             /** @var string $email */
             $email = $form->get('email')->getData();
 
-            return $this->processSendingPasswordResetEmail($email, $mailer, $translator
+            return $this->processSendingPasswordResetEmail(
+                $email,
+                $mailer,
+                $translator
             );
         }
 
@@ -136,9 +139,14 @@ class ResetPasswordController extends AbstractController
         ]);
 
         // Do not reveal whether a user account was found or not.
+        // if (!$user) {
+        //     return $this->redirectToRoute('app_check_email');
+        // }
         if (!$user) {
-            return $this->redirectToRoute('app_check_email');
+            $this->addFlash('danger', 'Email incorrecto !');
+            return $this->redirectToRoute('app_forgot_password_request');
         }
+
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
