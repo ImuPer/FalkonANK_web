@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Redefinir sua senha{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        {% for flash_error in app.flashes('reset_password_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+        
+        <h1 class="mb-4 text-center">Redefinir sua senha</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-12">
+                {{ form_start(requestForm) }}
+                    <div class="mb-3">
+                        {{ form_row(requestForm.email) }}
+                        <small class="form-text text-muted">
+                            Digite seu endereço de e-mail e enviaremos um
+                            link para redefinir sua senha.
+                        </small>
+                    </div>
+
+                    <button class="btn btn-primary w-100">Enviar e-mail de redefinição de senha</button>
+                {{ form_end(requestForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

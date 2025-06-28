@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ 'reset_password.check_email.title'|trans({}, 'ResetPasswordBundle') }}
+{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.check-email-container {
+			max-width: 600px;
+			margin: 5% auto;
+			padding: 2rem;
+			background-color: #f8f9fa;
+			border-radius: 10px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			text-align: center;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.check-email-container h1 {
+			font-size: 1.8rem;
+			margin-bottom: 1rem;
+			color: #2c3e50;
+		}
+
+		.check-email-container p {
+			font-size: 1.1rem;
+			margin-bottom: 1.5rem;
+			color: #333;
+		}
+
+		.check-email-container a {
+			color: #007bff;
+			text-decoration: none;
+		}
+
+		.check-email-container a:hover {
+			text-decoration: underline;
+		}
+
+		@media(max-width: 576px) {
+			.check-email-container {
+				padding: 1rem;
+			}
+
+			.check-email-container h1 {
+				font-size: 1.5rem;
+			}
+
+			.check-email-container p {
+				font-size: 1rem;
+			}
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<div class="check-email-container">
+		<h1>{{ 'reset_password.check_email.title'|trans({}, 'ResetPasswordBundle') }}</h1>
+
+		<p>
+			{{ 'reset_password.check_email.message'|trans({
+        '%time%': resetToken.expirationMessageKey|trans(
+            resetToken.expirationMessageData,
+            'ResetPasswordBundle'
+        )
+    }, 'ResetPasswordBundle') }}
+		</p>
+
+
+		<p>
+			{{ 'reset_password.check_email.retry'|trans({
+            '%link%': '<a href="' ~ path('app_forgot_password_request') ~ '">' ~ 'reset_password.check_email.try_again'|trans({}, 'ResetPasswordBundle') ~ '</a>'
+        }, 'ResetPasswordBundle')|raw }}
+		</p>
+	</div>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Redefinir sua senha{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .reset-password-container {
+        max-width: 400px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-error-message {
+        color: red;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+    }
+
+    .form-error-message ul {
+        padding-left: 0;
+        list-style: none;
+        margin: 0;
+    }
+
+    @media (max-width: 576px) {
+        .reset-password-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+    }
+
+    .password-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .password-input-wrapper {
+        position: relative;
+    }
+
+    .password-input-wrapper input {
+        padding-right: 2.5rem;
+    }
+
+    .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 0.75rem;
+        transform: translateY(-50%);
+        cursor: pointer;
+        user-select: none;
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="reset-password-container">
+    <h1 class="mb-4 text-center">Redefinir sua senha</h1>
+
+    {{ form_start(resetForm) }}
+
+    <div class="password-wrapper">
+        {{ form_label(resetForm.plainPassword.first) }}
+        <div class="password-input-wrapper">
+            {{ form_widget(resetForm.plainPassword.first, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Digite sua nova senha',
+                    'type': 'password'
+                }
+            }) }}
+            <span class="toggle-password" onclick="togglePassword(this)">👁️</span>
+        </div>
+        <div class="form-error-message">
+            {{ form_errors(resetForm.plainPassword.first) }}
+        </div>
+    </div>
+
+    <div class="password-wrapper">
+        {{ form_label(resetForm.plainPassword.second) }}
+        <div class="password-input-wrapper">
+            {{ form_widget(resetForm.plainPassword.second, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Repita a nova senha',
+                    'type': 'password'
+                }
+            }) }}
+            <span class="toggle-password" onclick="togglePassword(this)">👁️</span>
+        </div>
+        <div class="form-error-message">
+            {{ form_errors(resetForm.plainPassword.second) }}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 mt-3">Redefinir senha</button>
+
+    {{ form_end(resetForm) }}
+</div>
+
+<script>
+    function togglePassword(eyeIcon) {
+        const input = eyeIcon.parentNode.querySelector('input');
+        if (input && input.type === 'password') {
+            input.type = 'text';
+            eyeIcon.textContent = '🙈';
+        } else if (input) {
+            input.type = 'password';
+            eyeIcon.textContent = '👁️';
+        }
+    }
+</script>
+{% endblock %}

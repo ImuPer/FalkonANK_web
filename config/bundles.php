@@ -1,21 +1,5 @@
 <?php
 
-// return [
-//     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
-//     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
-//     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-//     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
-//     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
-//     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
-//     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
-//     SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
-//     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
-//     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
-//     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
-//     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
-//     Presta\SitemapBundle\PrestaSitemapBundle::class => ['all' => true],
-// ];
-
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
@@ -28,8 +12,7 @@ return [
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Presta\SitemapBundle\PrestaSitemapBundle::class => ['all' => true],
-
-    // Only in dev and test
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
+    SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
 ];
