@@ -7,26 +7,29 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
+	<div
+		class="container mt-4">
 
-		{% set orderGroups = {
-        'Finalizadas': orders,
-        'Reembolsado': ordersR,
-        'Em curso de reembolso': ordersCR,
-        'Não finalizadas': ordersN
-    } %}
-
+			{% set orderGroups = {
+			'Finalizadas por Semana': ordersWk,
+			'Finalizadas': orders,
+			'Reembolsado': ordersR,
+			'Em curso de reembolso': ordersCR,
+			'Não finalizadas': ordersN
+		} %}
+		{# Boucle sur chaque type de section #}
 		{% for sectionTitle, ordersList in orderGroups %}
 			{% set groupedOrders = {} %}
+			{# Regroupement par mois ou semaine #}
 			{% for order in ordersList %}
-				{% set month = order.month %}
+				{% set groupKey = sectionTitle == 'Finalizadas por Semana' ? order.year_week : order.month %}
 				{% set groupedOrders = groupedOrders|merge({
-                (month): (groupedOrders[month] ?? [])|merge([order])
-            }) %}
+					(groupKey): (groupedOrders[groupKey] ?? [])|merge([order])
+				}) %}
 			{% endfor %}
 
 			<div class="text-center mt-5 mb-3">
-				<h3 style="color: {{ sectionTitle == 'Finalizadas' ? 'green' : sectionTitle == 'Reembolsado' ? 'black' : sectionTitle == 'Em curso de reembolso' ? 'orange' : 'red' }};">
+				<h3 style="color: {{ sectionTitle == 'Finalizadas' ? 'green' : sectionTitle == 'Reembolsado' ? 'black' : sectionTitle == 'Em curso de reembolso' ? 'orange' : sectionTitle == 'Finalizadas por Semana' ? '#007bff' : 'red' }};">
 					{{ sectionTitle }}
 				</h3>
 			</div>
@@ -38,7 +41,13 @@
 				{% for month, orders in groupedOrders %}
 					<div class="month-section mb-4">
 						<div class="month-header">📅
-							{{ month|date("F \\d\\e Y") }}</div>
+							{% if sectionTitle == 'Finalizadas por Semana' %}
+								Semana:
+								{{ month }}
+							{% else %}
+								{{ month|date("F \\d\\e Y") }}
+							{% endif %}
+						</div>
 
 						<div class="table-responsive">
 							<table class="table table-bordered table-hover table-sm">
@@ -91,7 +100,6 @@
 											{% endif %}
 											<td>{{ order.customer_email }}</td>
 										</tr>
-
 									{% endfor %}
 								</tbody>
 							</table>

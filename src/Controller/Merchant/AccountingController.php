@@ -3,6 +3,7 @@
 namespace App\Controller\Merchant;
 
 use App\Entity\Merchant;
+use App\Entity\Order;
 use App\Entity\Shop;
 use App\Repository\BasketProductRepository;
 use App\Repository\OrderRepository;
@@ -83,6 +84,7 @@ class AccountingController extends AbstractController
             $isAdmin = false;
         }
         $ordersfinalizedMontly = $accountingService->getFinalizedOrdersByShopGroupedByMonth($shop->getId());
+        $ordersfinalizedWeek = $accountingService->getFinalizedOrdersByShopGroupedByWeek($shop->getId());
         $ordersRembousedOrdersByShop = $accountingService->getRembursedOrdersByShopGroupedByMonth($shop->getId());
         $ordersEmCousoRembousOrdersByShop = $accountingService->getCourRembursOrdersByShopGroupedByMonth($shop->getId());
 
@@ -94,6 +96,7 @@ class AccountingController extends AbstractController
 
         return $this->render('merchant/accounting/shop_orders.html.twig', [
             'isAdmin' => $isAdmin,
+            'ordersWk' => $ordersfinalizedWeek,
             'orders' => $ordersfinalizedMontly,
             'ordersR' => $ordersRembousedOrdersByShop,
             'ordersCR' => $ordersEmCousoRembousOrdersByShop,
@@ -103,6 +106,20 @@ class AccountingController extends AbstractController
         //  else {
         //     return $this->redirectToRoute('merchant_accounting');
         // }
+    }
+
+    //-----------Recu commende finalsé---------------------------------------------------
+    #[Route('/recibo/{id}', name: 'recibo_show')]
+    public function show(Order $order, BasketProductRepository $basketProductRepository): Response
+    {
+        // logique pour afficher le reçu
+        $basketProducts = $basketProductRepository->findBasketProductsByOrderId(['order' => $order]);
+        // dd($basketProducts);
+
+        return $this->render('merchant/recibo.html.twig', [
+            'order' => $order,
+            'basketProducts' => $basketProducts,
+        ]);
     }
 
 }

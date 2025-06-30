@@ -167,6 +167,11 @@ class OrderCrudController extends AbstractCrudController
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
                 ->setCurrency('CVE')
                 ->setHelp('👉 CVE (escudos de Cabo Verde)'),
+            MoneyField::new('amountFinal', 'Preço Final (Total + commição plataforma)')
+                ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
+                ->setCurrency('CVE')
+                ->hideOnIndex()
+                ->setHelp('👉 CVE (escudos de Cabo Verde)'),
 
             TextEditorField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
             TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
@@ -177,6 +182,7 @@ class OrderCrudController extends AbstractCrudController
 
             ChoiceField::new('orderStatus', 'Estado')
                 ->setChoices([
+                    'Em processamento' =>'Em processamento',
                     'Reenbolso' => 'Reembolso',
                     'Entregue e finalizado' => 'Entregue e finalizado',
                 ])
@@ -228,26 +234,22 @@ class OrderCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        // if (!$this->isGranted('ROLE_ADMIN')) {
-        // Si pas admin, on désactive aussi EDIT et INDEX
-        $actions = $actions
-            ->disable(Action::DELETE)
-            ->disable(Action::NEW);
+        $verRecibo = Action::new('verRecibo', 'Ver Recibo')
+        ->linkToRoute('recibo_show', function (Order $order) {
+            return ['id' => $order->getId()];
+        })
+        ->displayIf(function (Order $order) {
+            return $order->getOrderStatus() !== 'Em processamento';
+        })
+        ->setCssClass('btn btn-success');
 
-        // ->disable(Action::INDEX); // 🚫 "Back to list"
-        // }
-        //  else {
-        //     // Si admin, on redéfinit l'action EDIT avec un dialogue de confirmation
-        //     $editAction = Action::new(Action::EDIT)
-        //         ->linkToCrudAction('edit') // indique que c’est bien une action CRUD standard
-        //         ->setCssClass('btn btn-warning') // facultatif
-        //         ->setConfirmation('Tem a certeza de que pretende editar esta Encomenda?');
+    return $actions
+        ->disable(Action::DELETE)
+        ->disable(Action::NEW)
+        ->add(Crud::PAGE_INDEX, $verRecibo)
+        ->add(Crud::PAGE_DETAIL, $verRecibo);
+        
 
-        //     $actions = $actions->add(Crud::PAGE_INDEX, $editAction);
-        // }
-
-        // ✅ Ajoute ce return final, obligatoire
-        return $actions;
     }
 
 
