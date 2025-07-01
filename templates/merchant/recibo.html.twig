@@ -1,18 +1,18 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
-
+	{# .no-print {
+		display: none !important;
+	}
+	a[href]:after {
+		content: "";
+	}
+	body * {
+		visibility: hidden;
+	} #}
 {% block content %}
 
 	<style>
 		@media print {
-			.no-print {
-				{# display: none !important; #}
-			}
-			a[href]:after {
-				content: "";
-			}
-			body * {
-				visibility: hidden;
-			}
+			
 			#recibo-content,
 			#recibo-content * {
 				visibility: visible;
