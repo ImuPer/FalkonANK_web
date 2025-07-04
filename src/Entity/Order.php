@@ -47,7 +47,7 @@ class Order
     private ?string $refund_note = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Basket $Basket = null;
 
     #[ORM\OneToMany(mappedBy: 'orderC', targetEntity: BasketProduct::class)]

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conta eliminada com sucesso{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <h1 class="card-title text-success mb-4">A sua conta foi eliminada</h1>
+                        <p class="card-text fs-5">
+                            A sua conta foi removida com sucesso da nossa plataforma.<br>
+                            Obrigado pela sua confiança em nós.
+                        </p>
+
+                        <a href="{{ path('app_home_page') }}" class="btn btn-outline-primary mt-4">
+                            Voltar à página inicial
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

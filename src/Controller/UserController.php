@@ -6,7 +6,11 @@ use App\Entity\Merchant;
 use App\Entity\Shop;
 use App\Entity\User;
 use App\Entity\City;
+use App\Entity\UserDeletionLog;
 use App\Form\UserType;
+use App\Repository\BasketRepository;
+use App\Repository\MerchantRepository;
+use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\ShopRepository;
 use App\Repository\UserRepository;
 use App\Service\Service;
@@ -15,7 +19,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -74,7 +81,7 @@ class UserController extends AbstractController
         $shops = $shopRepository->findAllShopsByUser($this->getUser());
         $merchant = $entityManager->getRepository(Merchant::class)->findOneBy(['user' => $user]);
         $cities = $entityManager->getRepository(City::class)->findAll();
-        
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'shops' => $shops,
@@ -145,17 +152,121 @@ class UserController extends AbstractController
 
     }
 
-
-
-
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_user_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+            return $this->redirectToRoute('app_user_confirm_delete', ['id' => $user->getId()]);
+
         }
 
         return $this->redirectToRoute('app_user_show', [], Response::HTTP_SEE_OTHER);
     }
+
+    //--Confirmation de Merchant suppression---------------
+    #[Route('/{id}/confirm-delete', name: 'app_user_confirm_delete', methods: ['GET'])]
+    public function confirmDelete(Request $request, User $user): Response
+    {
+        // Afficher une page de confirmation
+        return $this->render('user/confirm_delete.html.twig', [
+            'user' => $user,
+            'isMerchant' => in_array('ROLE_MERCHANT', $user->getRoles()),
+        ]);
+    }
+    #[Route('/{id}/delete', name: 'app_user_deleteConf', methods: ['POST'])]
+    public function deleteConf(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager,
+        MerchantRepository $merchantRepository,
+        ShopRepository $shopRepository,
+        BasketRepository $basketRepository,
+        ResetPasswordRequestRepository $resetPasswordRequestRepository,
+        TokenStorageInterface $tokenStorage,
+        SessionInterface $session,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
+        if (!$this->isCsrfTokenValid('delete' . $user->getId(), $request->get('_token'))) {
+            return $this->redirectToRoute('app_user_show');
+        }
+
+        $password = $request->request->get('password');
+
+        if (!$passwordHasher->isPasswordValid($user, $password)) {
+            $this->addFlash('error', 'Palavra-passe incorreta.');
+            return $this->redirectToRoute('app_user_delete', ['id' => $user->getId()]);
+        }
+
+        $reason = $request->request->get('reason');
+
+        if ($reason) {
+            // Créer un log
+            $log = new UserDeletionLog();
+            $log->setReason($reason);
+            $entityManager->persist($log);
+        }
+
+
+        $replacementUserId = 1; // l’ID du super admin
+        $replacementUser = $entityManager->getRepository(User::class)->find($replacementUserId);
+
+        if (!$replacementUser) {
+            throw $this->createNotFoundException('Utilisateur de remplacement introuvable.');
+        }
+
+        // Dissocier les marchands liés à l'utilisateur
+        $merchants = $merchantRepository->findBy(['user' => $user]);
+        foreach ($merchants as $merchant) {
+            $merchant->setUser($replacementUser);
+        }
+
+        // Dissocier les shops liés à l'utilisateur
+        $shops = $shopRepository->findBy(['user' => $user]);
+        foreach ($shops as $shop) {
+            $shop->setActive(false);
+            $shop->setMerchant($replacementUser);
+        }
+
+        // Dissocier le panier lié à l'utilisateur
+        $basket = $basketRepository->findOneBy(['user' => $user]);
+        //$adminBasket = $basketRepository->findOneBy(['user' => $replacementUser]);
+        if ($basket) {
+            // Vider les produits liés
+            foreach ($basket->getBasketProducts() as $basketProduct) {
+                $basket->removeBasketProduct($basketProduct);
+            }
+            foreach ($basket->getOrderC() as $order) {
+                $order->setBasket(null);
+            }
+            $entityManager->flush();
+
+            // Dissocier le panier de l'utilisateur (ou supprimer le panier si tu préfères)
+            // $basket->setUser(null);
+            // $entityManager->flush();
+
+            // Optionnel : supprimer complètement le panier
+            $entityManager->remove($basket);
+            $entityManager->flush();
+        }
+
+        // Dissocier ou remove les reset password liés à l'utilisateur
+        $resets = $resetPasswordRequestRepository->findBy(['user' => $user]);
+        foreach ($resets as $reset) {
+            $entityManager->remove($reset);
+        }
+
+        // Supprimer l'utilisateur
+        $entityManager->remove($user);
+
+        // Appliquer toutes les modifications en une seule fois
+        $entityManager->flush();
+
+        $this->addFlash('success', 'A sua conta foi eliminada com sucesso.');
+
+        // Déconnexion : vider le token et la session
+        $tokenStorage->setToken(null);
+        $session->invalidate();
+        return $this->render('user/goodbye.html.twig');
+    }
+
 }
