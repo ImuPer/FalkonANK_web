@@ -41,6 +41,7 @@ class Shop
     private ?string $photo = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     /**

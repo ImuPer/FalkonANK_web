@@ -33,7 +33,7 @@ class Merchant
     private ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'merchants')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     #[ORM\Column(type: 'boolean')]

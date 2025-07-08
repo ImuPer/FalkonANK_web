@@ -10,6 +10,7 @@ use App\Entity\UserDeletionLog;
 use App\Form\UserType;
 use App\Repository\BasketRepository;
 use App\Repository\MerchantRepository;
+use App\Repository\ProductRepository;
 use App\Repository\ResetPasswordRequestRepository;
 use App\Repository\ShopRepository;
 use App\Repository\UserRepository;
@@ -108,14 +109,17 @@ class UserController extends AbstractController
         //     return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         // }
 
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
 
+        $userEmail = $user->getEmail();
         $email = $request->request->get('email');
         $fName = $request->request->get('firstName');
         $lName = $request->request->get('lastName');
         $adress = $request->request->get('adress');
 
-        if ($email && $fName && $lName && $adress) {
-
+        if ($email || $fName || $lName || $adress) {
 
             // $email = $request->get('email');
             // $errors = $service->validateEmail($email);
@@ -127,20 +131,34 @@ class UserController extends AbstractController
 
 
             // verifier si l'email exist deja
-            if ($userRepository->isEmailTaken($email)) {
+            if ($userRepository->isEmailTaken($email) && ($userEmail != $email)) {
                 $error = "Cette email est deja utilisé !";
                 return $this->render('user/edit.html.twig', [
                     'error' => $error,
                 ]);
             }
 
-            $user->setEmail($email);
-            $user->setFirstName($fName);
-            $user->setLastName($lName);
-            $user->setAdress($adress);
+            // Si le champ n'est pas vide, on met à jour la valeur, sinon on garde l'existant
+            if (!empty($email)) {
+                $user->setEmail($email);
+            }
+
+            if (!empty($fName)) {
+                $user->setFirstName($fName);
+            }
+
+            if (!empty($lName)) {
+                $user->setLastName($lName);
+            }
+
+            if (!empty($adress)) {
+                $user->setAdress($adress);
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
-            // dd($user->getId());
+
+            $this->addFlash('success', 'Dados modificados com sucesso.');
             return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
 
@@ -180,6 +198,7 @@ class UserController extends AbstractController
         EntityManagerInterface $entityManager,
         MerchantRepository $merchantRepository,
         ShopRepository $shopRepository,
+        ProductRepository $productRepository,
         BasketRepository $basketRepository,
         ResetPasswordRequestRepository $resetPasswordRequestRepository,
         TokenStorageInterface $tokenStorage,
@@ -207,24 +226,28 @@ class UserController extends AbstractController
         }
 
 
-        $replacementUserId = 1; // l’ID du super admin
-        $replacementUser = $entityManager->getRepository(User::class)->find($replacementUserId);
+        // $replacementUserId = 1; // l’ID du super admin
+        // $replacementUser = $entityManager->getRepository(User::class)->find($replacementUserId);
 
-        if (!$replacementUser) {
-            throw $this->createNotFoundException('Utilisateur de remplacement introuvable.');
-        }
+        // if (!$replacementUser) {
+        //     throw $this->createNotFoundException('Utilisateur de remplacement introuvable.');
+        // }
 
         // Dissocier les marchands liés à l'utilisateur
         $merchants = $merchantRepository->findBy(['user' => $user]);
         foreach ($merchants as $merchant) {
-            $merchant->setUser($replacementUser);
+            $merchant->setUser(null);
         }
 
         // Dissocier les shops liés à l'utilisateur
         $shops = $shopRepository->findBy(['user' => $user]);
         foreach ($shops as $shop) {
             $shop->setActive(false);
-            $shop->setMerchant($replacementUser);
+            $shop->setMerchant(null);
+            $shopProducts = $productRepository->findBy(['shop' => $shop]);
+            foreach($shopProducts as $product){
+                $product->setActive(false);
+            }
         }
 
         // Dissocier le panier lié à l'utilisateur

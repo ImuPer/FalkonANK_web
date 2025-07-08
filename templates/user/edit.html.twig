@@ -3,46 +3,50 @@
 {% block title %}Modificar Dados Pessoais{% endblock %}
 
 {% block body %}
-{# css #}
-<link rel="stylesheet" href={{asset("css/register.css")}}>
+<link rel="stylesheet" href="{{ asset('css/register.css') }}">
 
-    <div class="container_register" style="background-color: white;">
-        <div id="d_head">
-    <p ><a style="background-color: black; color: white; border-radius:10px; padding:12px" href="{{ path('app_user_show') }}">voltar atrás</a></p>
-    <h1>Modificar os Dados Pessoais</h1>
+<div class="container_register">
+    <div id="d_head">
+        <p>
+            <a class="btn-voltar" href="{{ path('app_user_show') }}">Voltar Atrás</a>
+        </p>
+        <h1>Modificar os Dados Pessoais</h1>
+    </div>
+
+    <hr class="hr1">
+
+    {% if error is defined and error is not empty %}
+        <div class="errors" style="color: oronge;">
+            <ul>
+                <li>{{ error }}</li>
+            </ul>
         </div>
+    {% endif %}
 
-		<hr class="hr1">           
+    <form action="{{ path('app_user_edit', {'id': app.user.id}) }}" method="post">
+        <p>
+            <label for="email">Email:</label><br>
+            <input type="text" id="email" name="email" placeholder="{{ app.user.email }}">
+        </p>
 
-        {% if error is defined and error is not empty %}
-            <div class="errors" style=" color: white;">
-                <ul>
-                    <li>{{ error }}</li>
-                </ul>
-            </div>
-        {% endif %}
+        <p>
+            <label for="firstName">Nome:</label><br>
+            <input type="text" id="firstName" name="firstName" placeholder="{{ app.user.firstName }}">
+        </p>
 
-        <form action="{{ path('app_user_edit', {'id': app.user.id}) }}" method="post">
-            <p><input type="text" id="email" name="email" placeholder="{{app.user.email}}" required></p>
-            
-            <p><input type="text" id="firstName" name="firstName" placeholder="{{app.user.firstName}}" required></p>
+        <p>
+            <label for="lastName">Sobrenome (apelidos):</label><br>
+            <input type="text" id="lastName" name="lastName" value placeholder="{{ app.user.lastName }}">
+        </p>
 
-            <p><input type="text" id="lastName" name="lastName" placeholder="{{app.user.lastName}}" required></p>
+        <p>
+            <label for="adress">Endereço:</label><br>
+            <input type="text" id="adress" name="adress" placeholder="{{ app.user.adress }}">
+        </p>
 
-            <p><input type="text" id="adress" name="adress" placeholder="{{app.user.adress}}" required></p>
-
-            <p><input type="submit" id="submit" value="Modificar"></p>
-        </form>
-
-
-
-
-
-   
-
-    {# {{ include('user/_form.html.twig', {'button_label': ''}) }}
-
-    <a href="{{ path('app_user_show') }}">back to list</a> #}
-
-    {# {{ include('user/_delete_form.html.twig') }} #}
+        <p>
+            <input type="submit" id="submit" value="Modificar">
+        </p>
+    </form>
+</div>
 {% endblock %}

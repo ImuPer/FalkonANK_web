@@ -71,7 +71,7 @@ class RegistrationFormType extends AbstractType
                 TextType::class,
                 [
                     'attr' => [
-                        'placeholder' => 'Sobrenome',
+                        'placeholder' => 'Sobrenome (apelido(s))',
                     ],
                 ]
             )

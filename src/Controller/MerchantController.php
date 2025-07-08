@@ -161,19 +161,13 @@ final class MerchantController extends AbstractController
         $entityManager->flush();
 
         //-----------Envoyer l’email avec le PDF en pièce jointe------------------------------------------
-        $logoPath = $_SERVER['DOCUMENT_ROOT'] . '/image/FalkonANK/logo-transparent-png.png';
-        if (file_exists($logoPath)) {
-            $logoData = base64_encode(file_get_contents($logoPath));
-            $logoSrc = 'data:image/png;base64,' . $logoData;
-        } else {
-            $logoSrc = ''; // fallback: no logo
-        }
+    
 
         $contractEmailContent = <<<EOD
 <html>
   <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
     <div style="text-align: center; margin-bottom: 20px;">
-      <img class="logo" src="$logoSrc" style="max-width: 200px;">
+      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
     </div>
 
     <p>Olá <strong>{$userName}</strong>,</p>
@@ -236,6 +230,7 @@ EOD;
         $options = new Options();
         $options->set('defaultFont', 'Arial');
 
+        set_time_limit(3000); 
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($contractEmailContent);
         $dompdf->setPaper('A4', 'portrait');

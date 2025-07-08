@@ -55,15 +55,24 @@ class ShopCrudController extends AbstractCrudController
     {
 
         return [
-            TextField::new('name', 'Nome da Loja'),
-            TextField::new('adress', 'Endereço'),
+            TextField::new('name', 'Nome da Loja')->setRequired(true),
+            TextField::new('adress', 'Endereço')->setRequired(true),
             TextField::new('phone', 'Téléfone fixo'),
-            TextField::new('mobile_phone', 'Movel'),
-            TextEditorField::new('email', 'Email da loja'),
-            TextEditorField::new('description', 'Descriçao'),
-            TextEditorField::new('horario', 'Horario '),
-            AssociationField::new('city', 'Cidade'),
+            TextField::new('mobile_phone', 'Movel')->setRequired(true),
+
+            TextEditorField::new('email', 'Email da loja')->hideOnForm(),
+            TextField::new('email', 'Email da loja')->setRequired(true)->hideOnIndex()->setHelp('👉 é o nome que vai aparcer para os clientes!'),
+
+            TextEditorField::new('description', 'Descriçao')->hideOnForm(),
+            TextareaField::new('description', 'Descriçao')->setRequired(true)->hideOnIndex(),
+
+            TextEditorField::new('horario', 'Horario ')->hideOnForm(),
+            TextareaField::new('horario', 'Horario ')->setRequired(true)->hideOnIndex(),
+
+            AssociationField::new('city', 'Cidade')->setRequired(true),
+
             TextEditorField::new('user.email', 'Email du Gerente')->hideOnForm(),
+
             ImageField::new('img', 'imagem')
                 ->setBasePath(self::SHOP_BASE_PATH)
                 ->setUploadDir(self::SHOP_UPLOAD_DIR)
