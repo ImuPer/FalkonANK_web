@@ -160,7 +160,7 @@
 
 		<div class="price-box">
 			<p>Preço Sem Desconto: <span id="precoOriginal">€0</span></p>
-			<p>Preço Com Aplicativo (10% desconto): <span id="precoFinal">€0</span></p>
+			<p>Preço Com Aplicativo (15% desconto): <span id="precoFinal">€0</span></p>
 		</div>
 
 		<a href="{{ path('contact_nous') }}" class="btn-contact">Contacte-nos para orçamento final</a>
@@ -186,7 +186,7 @@
 
 				const appSelecionado = Array.from(radiosApp).find(r => r.checked);
 				if (appSelecionado.value === 'sim') {
-					const desconto = total * 0.10;
+					const desconto = total * 0.15;
 					total -= desconto;
 				}
 
