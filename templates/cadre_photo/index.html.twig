@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vitrine de Quadros Digitais
-{% endblock %}
+{% block title %}Vitrine de Quadros Digitais{% endblock %}
 
 {% block stylesheets %}
 	<style>
@@ -65,10 +64,21 @@
 		}
 
 		.price-box {
-			font-size: 1.5em;
+			font-size: 1.2em;
 			margin-top: 20px;
-			color: #28a745;
+			color: #333;
 			font-weight: bold;
+		}
+
+		#precoOriginal {
+			text-decoration: line-through;
+			color: #888;
+			font-size: 1em;
+		}
+
+		#precoFinal {
+			color: #28a745;
+			font-size: 1.5em;
 		}
 
 		.btn-contact {
@@ -149,8 +159,8 @@
 		</div>
 
 		<div class="price-box">
-			Estimativa de Preço:
-			<span id="precoFinal">€0</span>
+			<p>Preço Sem Desconto: <span id="precoOriginal">€0</span></p>
+			<p>Preço Com Aplicativo (10% desconto): <span id="precoFinal">€0</span></p>
 		</div>
 
 		<a href="{{ path('contact_nous') }}" class="btn-contact">Contacte-nos para orçamento final</a>
@@ -158,28 +168,37 @@
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-const tipoQuadro = document.getElementById('tipoQuadro');
-const tamanhoTela = document.getElementById('tamanhoTela');
-const radiosApp = document.getElementsByName('appMovel');
-const radiosSuporte = document.getElementsByName('suporte');
-const precoFinal = document.getElementById('precoFinal');
+			const tipoQuadro = document.getElementById('tipoQuadro');
+			const tamanhoTela = document.getElementById('tamanhoTela');
+			const radiosApp = document.getElementsByName('appMovel');
+			const radiosSuporte = document.getElementsByName('suporte');
+			const precoFinal = document.getElementById('precoFinal');
+			const precoOriginal = document.getElementById('precoOriginal');
 
-function calcularPreco() {
-const precoQuadro = parseFloat(tipoQuadro.selectedOptions[0].dataset.preco);
-const precoTela = parseFloat(tamanhoTela.selectedOptions[0].dataset.preco);
-const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
-const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
+			function calcularPreco() {
+				const precoQuadro = parseFloat(tipoQuadro.selectedOptions[0].dataset.preco);
+				const precoTela = parseFloat(tamanhoTela.selectedOptions[0].dataset.preco);
+				const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
+				const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
 
-const total = precoQuadro + precoTela + precoApp + precoSuporte;
-precoFinal.innerText = '€' + total.toFixed(2);
-}
+				let total = precoQuadro + precoTela + precoApp + precoSuporte;
+				precoOriginal.innerText = '€' + total.toFixed(2);
 
-tipoQuadro.addEventListener('change', calcularPreco);
-tamanhoTela.addEventListener('change', calcularPreco);
-radiosApp.forEach(r => r.addEventListener('change', calcularPreco));
-radiosSuporte.forEach(r => r.addEventListener('change', calcularPreco));
+				const appSelecionado = Array.from(radiosApp).find(r => r.checked);
+				if (appSelecionado.value === 'sim') {
+					const desconto = total * 0.10;
+					total -= desconto;
+				}
 
-calcularPreco(); // Inicial
-});
+				precoFinal.innerText = '€' + total.toFixed(2);
+			}
+
+			tipoQuadro.addEventListener('change', calcularPreco);
+			tamanhoTela.addEventListener('change', calcularPreco);
+			radiosApp.forEach(r => r.addEventListener('change', calcularPreco));
+			radiosSuporte.forEach(r => r.addEventListener('change', calcularPreco));
+
+			calcularPreco();
+		});
 	</script>
 {% endblock %}
