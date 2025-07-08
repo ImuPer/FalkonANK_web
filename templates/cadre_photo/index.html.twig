@@ -1,204 +1,200 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vitrine de Quadros Digitais{% endblock %}
+{% block title %}Quadros Digitais Personalizado{% endblock %}
 
 {% block stylesheets %}
-	<style>
-		h1 {
-			text-align: center;
-			margin-bottom: 30px;
-		}
-
-		body {
-			background: #f7f7f7;
-		}
-
-		.vitrine-container {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-			gap: 20px;
-			margin-bottom: 50px;
-		}
-
-		.quadro {
-			background: white;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-			padding: 15px;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			text-align: center;
-		}
-
-		.quadro img {
-			max-width: 100%;
-			height: auto;
-			border-radius: 6px;
-		}
-
-		.quadro h3 {
-			margin-top: 10px;
-			font-size: 1.2em;
-		}
-
-		.quadro p {
-			margin: 5px 0;
-			color: #555;
-		}
-
-		.quadro .preco {
-			font-weight: bold;
-			color: #1a73e8;
-		}
-
-		.form-vitrine {
-			background: #fff;
-			padding: 20px;
-			border-radius: 8px;
-			box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-			max-width: 700px;
-			margin: auto;
-		}
-
-		.form-group {
-			margin-bottom: 15px;
-		}
-
-		.price-box {
-			font-size: 1.2em;
-			margin-top: 20px;
-			color: #333;
-			font-weight: bold;
-		}
-
-		#precoOriginal {
-			text-decoration: line-through;
-			color: #888;
-			font-size: 1em;
-		}
-
-		#precoFinal {
-			color: #28a745;
-			font-size: 1.5em;
-		}
-
-		.btn-contact {
-			margin-top: 20px;
-			display: inline-block;
-			background: #007bff;
-			color: white;
-			padding: 10px 20px;
-			border-radius: 5px;
-			text-decoration: none;
-		}
-
-		.btn-contact:hover {
-			background: #0056b3;
-		}
-	</style>
+<style>
+	h1 {
+		text-align: center;
+		margin-bottom: 30px;
+	}
+	body {
+		background: #f7f7f7;
+	}
+	.vitrine-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 20px;
+		margin-bottom: 50px;
+	}
+	.quadro {
+		background: white;
+		border: 1px solid #ddd;
+		border-radius: 10px;
+		padding: 15px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		text-align: center;
+	}
+	.quadro img {
+		max-width: 100%;
+		height: auto;
+		border-radius: 6px;
+	}
+	.quadro h3 {
+		margin-top: 10px;
+		font-size: 1.2em;
+	}
+	.quadro p {
+		margin: 5px 0;
+		color: #555;
+	}
+	.quadro .preco {
+		font-weight: bold;
+		color: #1a73e8;
+	}
+	.form-vitrine {
+		background: #fff;
+		padding: 20px;
+		border-radius: 8px;
+		box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+		max-width: 700px;
+		margin: auto;
+	}
+	.form-group {
+		margin-bottom: 15px;
+	}
+	.price-box {
+		font-size: 1.2em;
+		margin-top: 20px;
+		color: #333;
+		font-weight: bold;
+	}
+	#precoOriginal {
+		text-decoration: line-through;
+		color: #888;
+		font-size: 1em;
+	}
+	#precoFinal {
+		color: #28a745;
+		font-size: 1.5em;
+	}
+	.btn-contact {
+		margin-top: 20px;
+		display: inline-block;
+		background: #007bff;
+		color: white;
+		padding: 10px 20px;
+		border-radius: 5px;
+		text-decoration: none;
+	}
+	.btn-contact:hover {
+		background: #0056b3;
+	}
+</style>
 {% endblock %}
 
 {% block body %}
-	<h1>Vitrine de Quadros Digitais</h1>
+<h1>Quadros Digitais Personalizado</h1>
+<h2>(Familiar / Profissional)</h2>
 
-	<div class="vitrine-container">
-		<div class="quadro">
-			<img src="https://falkon.click/image/quadro/suportPlafond0.jpg" alt="Quadro Pi 8G">
-			<h3>Quadro Moderno 4K Pi 8G</h3>
-			<p>- fixação parede/plafond</p>
-			<p>Systema (8 GB), 4K</p>
-			<p>Cabo HDMI 2 m + fonte 5 V/5 A</p>
-			<p>Caixa + dissipador</p>
-			<p>Suporte VESA + parafusos</p>
-			<p class="preco">€299,00</p>
-		</div>
-
-		<div class="quadro">
-			<img src="https://falkon.click/image/quadro/suportParede.jpg" alt="Quadro Pi 4G">
-			<h3>Quadro Rústico Pi 4G</h3>
-			<p>- fixação parede/plafond</p>
-			<p>Systema (4 GB)</p>
-			<p>Suporte VESA + parafusos</p>
-			<p>Caixa + fonte + cabos</p>
-			<p class="preco">€249,00</p>
-		</div>
+<div class="vitrine-container">
+	<div class="quadro">
+		<img src="https://falkon.click/image/quadro/suportPlafond0.jpg" alt="Quadro Pi 8G">
+		<h3>Quadro Moderno 4K Pi 8G</h3>
+		<p>- fixação parede/plafond</p>
+		<p>Systema (8 GB), 4K</p>
+		<p>Cabo HDMI 2 m + fonte 5 V/5 A</p>
+		<p>Caixa + dissipador</p>
+		<p>Suporte VESA + parafusos</p>
+		<p class="preco">€299,00</p>
 	</div>
 
-	<div class="form-vitrine">
-		<h2>Personalize o seu quadro digital</h2>
+	<div class="quadro">
+		<img src="https://falkon.click/image/quadro/suportParede.jpg" alt="Quadro Pi 4G">
+		<h3>Quadro Rústico Pi 4G - Personalizado</h3>
+		<p>- fixação parede/plafond</p>
+		<p>Systema (4 GB)</p>
+		<p>Suporte VESA + parafusos</p>
+		<p>Caixa + fonte + cabos</p>
+		<p class="preco">€249,00</p>
+	</div>
+</div>
 
-		<div class="form-group">
-			<label for="tipoQuadro">Tipo de Quadro:</label>
-			<select id="tipoQuadro" class="form-control">
-				<option value="moderno" data-preco="299">Quadro Moderno Pi 8G - €299</option>
-				<option value="rustico" data-preco="249">Quadro Rústico Pi 4G - €249</option>
-			</select>
-		</div>
+<div class="form-vitrine">
+	<h2>Personalize o seu quadro digital</h2>
 
-		<div class="form-group">
-			<label for="tamanhoTela">Tamanho da Tela:</label>
-			<select id="tamanhoTela" class="form-control">
-				<option value="24" data-preco="150">24" - €150</option>
-				<option value="27" data-preco="200">27" - €200</option>
-			</select>
-		</div>
-
-		<div class="form-group">
-			<label>Tipo de Suporte:</label><br>
-			<input type="radio" name="suporte" value="mural" data-preco="30" checked>
-			Suporte Mural (+ €30)<br>
-			<input type="radio" name="suporte" value="plafond" data-preco="50">
-			Suporte Plafond (+ €50)
-		</div>
-
-		<div class="form-group">
-			<label>Aplicativo Móvel Integrado:</label><br>
-			<input type="radio" name="appMovel" value="sim" data-preco="300" checked>
-			Sim (+ €300)<br>
-			<input type="radio" name="appMovel" value="nao" data-preco="0">
-			Não
-		</div>
-
-		<div class="price-box">
-			<p>Preço Sem Desconto: <span id="precoOriginal">€0</span></p>
-			<p>Preço Com Aplicativo (15% desconto): <span id="precoFinal">€0</span></p>
-		</div>
-
-		<a href="{{ path('contact_nous') }}" class="btn-contact">Contacte-nos para orçamento final</a>
+	<div class="form-group">
+		<label for="tipoQuadro">Tipo de Quadro:</label>
+		<select id="tipoQuadro" class="form-control">
+			<option disabled selected value="">-- selecione --</option>
+			<option value="moderno" data-preco="299">Quadro Moderno 4K Pi 8G - €299</option>
+			<option value="rustico" data-preco="249">Quadro Rústico Pi 4G - €249</option>
+		</select>
 	</div>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			const tipoQuadro = document.getElementById('tipoQuadro');
-			const tamanhoTela = document.getElementById('tamanhoTela');
-			const radiosApp = document.getElementsByName('appMovel');
-			const radiosSuporte = document.getElementsByName('suporte');
-			const precoFinal = document.getElementById('precoFinal');
-			const precoOriginal = document.getElementById('precoOriginal');
+	<div class="form-group">
+		<label for="tamanhoTela">Tamanho da Tela:</label>
+		<select id="tamanhoTela" class="form-control">
+			<option disabled selected value="">-- selecione --</option>
+			<option value="24hd" data-preco="120">24" Full HD - €120</option>
+			<option value="27hd" data-preco="150">27" Full HD - €150</option>
+			<option value="27k" data-preco="200">27" 4K - €200</option>
+		</select>
+	</div>
 
-			function calcularPreco() {
-				const precoQuadro = parseFloat(tipoQuadro.selectedOptions[0].dataset.preco);
-				const precoTela = parseFloat(tamanhoTela.selectedOptions[0].dataset.preco);
-				const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
-				const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
+	<div class="form-group">
+		<label>Tipo de Suporte:</label><br>
+		<input type="radio" name="suporte" value="mural" data-preco="30" checked> Suporte Mural (+ €30)<br>
+		<input type="radio" name="suporte" value="plafond" data-preco="50"> Suporte Plafond (+ €50)
+	</div>
 
-				let total = precoQuadro + precoTela + precoApp + precoSuporte;
-				precoOriginal.innerText = '€' + total.toFixed(2);
+	<div class="form-group">
+		<label>Aplicativo Móvel Integrado:</label><br>
+		<input type="radio" name="appMovel" value="sim" data-preco="300" checked> Sim (+ €300)<br>
+		<input type="radio" name="appMovel" value="nao" data-preco="0"> Não
+	</div>
 
-				const appSelecionado = Array.from(radiosApp).find(r => r.checked);
-				if (appSelecionado.value === 'sim') {
-					const desconto = total * 0.15;
-					total -= desconto;
-				}
+	<div class="price-box">
+		<p>Preço Sem Desconto: <span id="precoOriginal">€0</span></p>
+		<p>Preço Com Aplicativo (15% desconto): <span id="precoFinal">€0</span></p>
+	</div>
 
-				precoFinal.innerText = '€' + total.toFixed(2);
+	<a href="{{ path('contact_nous') }}" class="btn-contact">Contacte-nos para orçamento final</a>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const tipoQuadro = document.getElementById('tipoQuadro');
+		const tamanhoTela = document.getElementById('tamanhoTela');
+		const radiosApp = document.getElementsByName('appMovel');
+		const radiosSuporte = document.getElementsByName('suporte');
+		const precoFinal = document.getElementById('precoFinal');
+		const precoOriginal = document.getElementById('precoOriginal');
+
+		function calcularPreco() {
+			const selectedQuadro = tipoQuadro.selectedOptions[0];
+			const selectedTela = tamanhoTela.selectedOptions[0];
+
+			if (!selectedQuadro || !selectedTela || selectedQuadro.value === "" || selectedTela.value === "") {
+				precoOriginal.innerText = '€0';
+				precoFinal.innerText = '€0';
+				return;
 			}
 
-			tipoQuadro.addEventListener('change', calcularPreco);
-			tamanhoTela.addEventListener('change', calcularPreco);
-			radiosApp.forEach(r => r.addEventListener('change', calcularPreco));
-			radiosSuporte.forEach(r => r.addEventListener('change', calcularPreco));
+			const precoQuadro = parseFloat(selectedQuadro.dataset.preco);
+			const precoTela = parseFloat(selectedTela.dataset.preco);
+			const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
+			const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
 
-			calcularPreco();
-		});
-	</script>
+			let total = precoQuadro + precoTela + precoApp + precoSuporte;
+			precoOriginal.innerText = '€' + total.toFixed(2);
+
+			const appSelecionado = Array.from(radiosApp).find(r => r.checked);
+			if (appSelecionado.value === 'sim') {
+				const desconto = total * 0.15;
+				total -= desconto;
+			}
+
+			precoFinal.innerText = '€' + total.toFixed(2);
+		}
+
+		// Eventos
+		tipoQuadro.addEventListener('change', calcularPreco);
+		tamanhoTela.addEventListener('change', calcularPreco);
+		document.querySelectorAll('input[name="suporte"]').forEach(r => r.addEventListener('change', calcularPreco));
+		document.querySelectorAll('input[name="appMovel"]').forEach(r => r.addEventListener('change', calcularPreco));
+
+		calcularPreco(); // Inicial
+	});
+</script>
 {% endblock %}
