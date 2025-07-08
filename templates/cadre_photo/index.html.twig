@@ -9,7 +9,7 @@
 			text-align: center;
 			margin-bottom: 3px;
 		}
-        h2 {
+		h2 {
 			text-align: center;
 			margin-bottom: 3px;
 		}
@@ -114,6 +114,16 @@
 			<p>Caixa + fonte + cabos</p>
 			{# <p class="preco">€249,00</p> #}
 		</div>
+		<div class="quadro">
+			<img src="https://falkon.click/image/quadro/suportParede0.jpg" alt="Quadro Básico">
+			<h3>Quadro Básico Pi</h3>
+			<p>- Sistema simples, ideal para fotos familiares</p>
+			<p>- Fixação parede</p>
+			<p>- Compatível com tela 22”</p>
+			<p>Fonte e suporte incluídos</p>
+			{# <p class="preco">€199,99</p> #}
+		</div>
+
 	</div>
 
 	<div class="form-vitrine">
@@ -123,19 +133,23 @@
 			<label for="tipoQuadro">Tipo de Quadro:</label>
 			<select id="tipoQuadro" class="form-control">
 				<option disabled selected value="">-- selecione --</option>
-				<option value="moderno" data-preco="299">Moderno 4K Pi 8G - €299</option>
+				<option value="basico" data-preco="199.99">Básico Full HD Pi - €199,99</option>
 				<option value="rustico" data-preco="249">Rústico Full HD Pi 4G - €249</option>
+				<option value="moderno" data-preco="299">Moderno 4K Pi 8G - €299</option>
 			</select>
+
 		</div>
 
 		<div class="form-group">
 			<label for="tamanhoTela">Tamanho da Tela:</label>
 			<select id="tamanhoTela" class="form-control">
 				<option disabled selected value="">-- selecione --</option>
+				<option value="22" data-preco="90" data-quadro="basico">22" Full HD - €90</option>
 				<option value="24hd" data-preco="120" data-quadro="rustico">24" Full HD - €120</option>
 				<option value="27hd" data-preco="150" data-quadro="rustico">27" Full HD - €150</option>
 				<option value="27k" data-preco="200" data-quadro="moderno">27" 4K - €200</option>
 			</select>
+
 		</div>
 
 		<div class="form-group">
@@ -168,63 +182,64 @@
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-            const tipoQuadro = document.getElementById('tipoQuadro');
-            const tamanhoTela = document.getElementById('tamanhoTela');
-            const radiosApp = document.getElementsByName('appMovel');
-            const radiosSuporte = document.getElementsByName('suporte');
-            const precoFinal = document.getElementById('precoFinal');
-            const precoOriginal = document.getElementById('precoOriginal');
+const tipoQuadro = document.getElementById('tipoQuadro');
+const tamanhoTela = document.getElementById('tamanhoTela');
+const radiosApp = document.getElementsByName('appMovel');
+const radiosSuporte = document.getElementsByName('suporte');
+const precoFinal = document.getElementById('precoFinal');
+const precoOriginal = document.getElementById('precoOriginal');
 
-            function filtrarOpcoesTela() {
-                const tipoSelecionado = tipoQuadro.value;
-                Array.from(tamanhoTela.options).forEach(option => {
-                    if (option.value === "") {
-                        option.hidden = false;
-                        return;
-                    }
-                    const permitido = option.dataset.quadro === tipoSelecionado;
-                    option.hidden = !permitido;
-                });
-                tamanhoTela.selectedIndex = 0; // reset selection
-            }
+function filtrarOpcoesTela() {
+const tipoSelecionado = tipoQuadro.value;
+Array.from(tamanhoTela.options).forEach(option => {
+if (option.value === "") {
+option.hidden = false;
+return;
+}
+const permitido = option.dataset.quadro === tipoSelecionado;
+option.hidden = ! permitido;
+});
+tamanhoTela.selectedIndex = 0; // reset selection
+}
 
-            function calcularPreco() {
-                const selectedQuadro = tipoQuadro.selectedOptions[0];
-                const selectedTela = tamanhoTela.selectedOptions[0];
 
-                if (!selectedQuadro || !selectedTela || selectedQuadro.value === "" || selectedTela.value === "") {
-                    precoOriginal.innerText = '€0';
-                    precoFinal.innerText = '€0';
-                    return;
-                }
+function calcularPreco() {
+const selectedQuadro = tipoQuadro.selectedOptions[0];
+const selectedTela = tamanhoTela.selectedOptions[0];
 
-                const precoQuadro = parseFloat(selectedQuadro.dataset.preco);
-                const precoTela = parseFloat(selectedTela.dataset.preco);
-                const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
-                const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
+if (! selectedQuadro || ! selectedTela || selectedQuadro.value === "" || selectedTela.value === "") {
+precoOriginal.innerText = '€0';
+precoFinal.innerText = '€0';
+return;
+}
 
-                let total = precoQuadro + precoTela + precoApp + precoSuporte;
-                precoOriginal.innerText = '€' + total.toFixed(2);
+const precoQuadro = parseFloat(selectedQuadro.dataset.preco);
+const precoTela = parseFloat(selectedTela.dataset.preco);
+const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
+const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
 
-                const appSelecionado = Array.from(radiosApp).find(r => r.checked);
-                if (appSelecionado.value === 'sim') {
-                    const desconto = total * 0.15;
-                    total -= desconto;
-                }
+let total = precoQuadro + precoTela + precoApp + precoSuporte;
+precoOriginal.innerText = '€' + total.toFixed(2);
 
-                precoFinal.innerText = '€' + total.toFixed(2);
-            }
+const appSelecionado = Array.from(radiosApp).find(r => r.checked);
+if (appSelecionado.value === 'sim') {
+const desconto = total * 0.15;
+total -= desconto;
+}
 
-            // Eventos
-            tipoQuadro.addEventListener('change', () => {
-                filtrarOpcoesTela();
-                calcularPreco();
-            });
-            tamanhoTela.addEventListener('change', calcularPreco);
-            document.querySelectorAll('input[name="suporte"]').forEach(r => r.addEventListener('change', calcularPreco));
-            document.querySelectorAll('input[name="appMovel"]').forEach(r => r.addEventListener('change', calcularPreco));
+precoFinal.innerText = '€' + total.toFixed(2);
+}
 
-            calcularPreco(); // Initial
-        });
+// Eventos
+tipoQuadro.addEventListener('change', () => {
+filtrarOpcoesTela();
+calcularPreco();
+});
+tamanhoTela.addEventListener('change', calcularPreco);
+document.querySelectorAll('input[name="suporte"]').forEach(r => r.addEventListener('change', calcularPreco));
+document.querySelectorAll('input[name="appMovel"]').forEach(r => r.addEventListener('change', calcularPreco));
+
+calcularPreco(); // Initial
+});
 	</script>
 {% endblock %}
