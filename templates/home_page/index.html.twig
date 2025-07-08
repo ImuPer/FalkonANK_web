@@ -69,7 +69,8 @@
 
 				<div class="cards">
 					{% for produit in products %}
-						{% if produit.shop.active == true and produit.active == true and produit.stock > 4 %}
+						{# {% if produit.shop.active == true and produit.active == true and produit.stock > 4 %} #}
+						{% if produit.shop.active == true and produit.active == true %}
 							<div class="card">
 								<a href="{{ path('app_product_show', {'id': produit.id}) }}">
 									<img class="card-img-top" src="{{asset('upload/images/products/' ~ produit.img )}}" alt="Card image cap">
@@ -87,7 +88,7 @@
 										</h4>
 									</div>
 
-									{% if produit.stock > 0 %}
+									{% if produit.stock > 3 %}
 										{% if app.user %}
 											{% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles %}
 												<p class="p_a_c">para compras - criar uma conta simplis
