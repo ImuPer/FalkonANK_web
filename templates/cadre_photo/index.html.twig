@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vitrine de Quadros Digitais{% endblock %}
+{% block title %}Vitrine de Quadros Digitais
+{% endblock %}
 
 {% block stylesheets %}
 	<style>
@@ -91,7 +92,7 @@
 
 	<div class="vitrine-container">
 		<div class="quadro">
-			<img src="https://falkon.click/image/quadro/suportPlafond0.jpg/300x200?text=Quadro+Moderno" alt="Quadro Pi 8G">
+			<img src="https://falkon.click/image/quadro/suportPlafond0.jpg" alt="Quadro Pi 8G">
 			<h3>Quadro Moderno 4K Pi 8G</h3>
 			<p>- fixação parede</p>
 			<p>Systema (8 GB), 4K</p>
@@ -102,7 +103,7 @@
 		</div>
 
 		<div class="quadro">
-			<img src="https://falkon.click/image/quadro/suportParede.jpg/300x200?text=Quadro+Rustico" alt="Quadro Pi 4G">
+			<img src="https://falkon.click/image/quadro/suportParede.jpg" alt="Quadro Pi 4G">
 			<h3>Quadro Rústico Pi 4G</h3>
 			<p>- fixação parede</p>
 			<p>Systema (4 GB)</p>
@@ -133,18 +134,23 @@
 
 		<div class="form-group">
 			<label>Tipo de Suporte:</label><br>
-			<input type="radio" name="suporte" value="mural" data-preco="30" checked> Suporte Mural (+ €30)<br>
-			<input type="radio" name="suporte" value="plafond" data-preco="50"> Suporte Plafond (+ €50)
+			<input type="radio" name="suporte" value="mural" data-preco="30" checked>
+			Suporte Mural (+ €30)<br>
+			<input type="radio" name="suporte" value="plafond" data-preco="50">
+			Suporte Plafond (+ €50)
 		</div>
 
 		<div class="form-group">
 			<label>Aplicativo Móvel Integrado:</label><br>
-			<input type="radio" name="appMovel" value="sim" data-preco="400" checked> Sim (+ €400)<br>
-			<input type="radio" name="appMovel" value="nao" data-preco="0"> Não
+			<input type="radio" name="appMovel" value="sim" data-preco="400" checked>
+			Sim (+ €400)<br>
+			<input type="radio" name="appMovel" value="nao" data-preco="0">
+			Não
 		</div>
 
 		<div class="price-box">
-			Estimativa de Preço: <span id="precoFinal">€0</span>
+			Estimativa de Preço:
+			<span id="precoFinal">€0</span>
 		</div>
 
 		<a href="{{ path('contact_nous') }}" class="btn-contact">Contacte-nos para orçamento final</a>
@@ -152,28 +158,28 @@
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			const tipoQuadro = document.getElementById('tipoQuadro');
-			const tamanhoTela = document.getElementById('tamanhoTela');
-			const radiosApp = document.getElementsByName('appMovel');
-			const radiosSuporte = document.getElementsByName('suporte');
-			const precoFinal = document.getElementById('precoFinal');
+const tipoQuadro = document.getElementById('tipoQuadro');
+const tamanhoTela = document.getElementById('tamanhoTela');
+const radiosApp = document.getElementsByName('appMovel');
+const radiosSuporte = document.getElementsByName('suporte');
+const precoFinal = document.getElementById('precoFinal');
 
-			function calcularPreco() {
-				const precoQuadro = parseFloat(tipoQuadro.selectedOptions[0].dataset.preco);
-				const precoTela = parseFloat(tamanhoTela.selectedOptions[0].dataset.preco);
-				const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
-				const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
+function calcularPreco() {
+const precoQuadro = parseFloat(tipoQuadro.selectedOptions[0].dataset.preco);
+const precoTela = parseFloat(tamanhoTela.selectedOptions[0].dataset.preco);
+const precoApp = parseFloat(Array.from(radiosApp).find(r => r.checked).dataset.preco);
+const precoSuporte = parseFloat(Array.from(radiosSuporte).find(r => r.checked).dataset.preco);
 
-				const total = precoQuadro + precoTela + precoApp + precoSuporte;
-				precoFinal.innerText = '€' + total.toFixed(2);
-			}
+const total = precoQuadro + precoTela + precoApp + precoSuporte;
+precoFinal.innerText = '€' + total.toFixed(2);
+}
 
-			tipoQuadro.addEventListener('change', calcularPreco);
-			tamanhoTela.addEventListener('change', calcularPreco);
-			radiosApp.forEach(r => r.addEventListener('change', calcularPreco));
-			radiosSuporte.forEach(r => r.addEventListener('change', calcularPreco));
+tipoQuadro.addEventListener('change', calcularPreco);
+tamanhoTela.addEventListener('change', calcularPreco);
+radiosApp.forEach(r => r.addEventListener('change', calcularPreco));
+radiosSuporte.forEach(r => r.addEventListener('change', calcularPreco));
 
-			calcularPreco(); // Inicial
-		});
+calcularPreco(); // Inicial
+});
 	</script>
 {% endblock %}
