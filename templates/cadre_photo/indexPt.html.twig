@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cadres Numériques Personnalisés
+{% block title %}Quadros Digitais Personalizado
 {% endblock %}
 
 {% block stylesheets %}
 	<style>
-		/* (CSS inchangé, uniquement les textes HTML seront traduits) */
-		h1,
+		h1 {
+			text-align: center;
+			margin-bottom: 3px;
+		}
 		h2 {
 			text-align: center;
 			margin-bottom: 3px;
 		}
+
 		body {
 			background: #f7f7f7;
 		}
@@ -83,164 +86,102 @@
 		.btn-contact:hover {
 			background: #0056b3;
 		}
-		.desc-app {
-			display: block;
-			margin-top: -5px;
-			margin-bottom: 10px;
-			font-size: 0.75em;
-			color: #666;
-			font-style: italic;
-		}
-
-		{
-			#------------ Carossel ----------------#
-		}
-		.image-gallery {
-			display: flex;
-			gap: 5px;
-			justify-content: center;
-			flex-wrap: wrap;
-			margin-bottom: 10px;
-		}
-
-		.image-gallery img {
-			width: 80px;
-			height: auto;
-			border-radius: 4px;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-			cursor: pointer;
-			transition: transform 0.2s;
-		}
-
-		.image-gallery img:hover {
-			transform: scale(1.05);
-		}
-		{
-			#-------------------- Zoom------------- #
-		}
-		/* Effet de zoom plein écran */
-		.zoom-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100vw;
-			height: 100vh;
-			background-color: rgba(0, 0, 0, 0.8);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			z-index: 9999;
-			cursor: zoom-out;
-		}
-
-		.zoom-overlay img {
-			max-width: 90%;
-			max-height: 90%;
-			box-shadow: 0 0 20px #fff;
-			border-radius: 8px;
-		}
 	</style>
 {% endblock %}
 
 {% block body %}
-	<h1>Cadres Numériques Personnalisés</h1>
-	<h2>(Famille / Professionnel)</h2>
+	<h1>Quadros Digitais Personalizado</h1>
+	<h2>(Familiar / Profissional)</h2>
 
 	<div class="vitrine-container">
 		<div class="quadro">
-			<div class="image-gallery">
-				<img src="https://falkon.click/image/quadro/suportPlafond0.jpg" alt="Vue 1 - Cadre Pi 8G">
-				<img src="https://falkon.click/image/quadro/suportPlafond1.jpg" alt="Vue 2 - Cadre Pi 8G">
-				<img src="https://falkon.click/image/quadro/suportPlafond0.jpg" alt="Vue 3 - Cadre Pi 8G">
-			</div>
-			<h3>Cadre Moderne 4K Pi 8G</h3>
-			<p>- Fixation murale ou plafond</p>
-			<p>Système (8 Go), 4K</p>
-			<p>Câble HDMI 2 m + alimentation 5 V/5 A</p>
-			<p>Boîtier + dissipateur</p>
-			<p>Support VESA + vis incluses</p>
-		</div>
-		<div class="quadro">
-			<img src="https://falkon.click/image/quadro/suportParede.jpg" alt="Cadre Pi 4G">
-			<h3>Cadre Rustique Full HD Pi 4G - Personnalisé</h3>
-			<p>- Fixation murale ou plafond</p>
-			<p>Système (4 Go)</p>
-			<p>Support VESA + vis</p>
-			<p>Boîtier + alimentation + câbles</p>
+			<img src="https://falkon.click/image/quadro/suportPlafond0.jpg" alt="Quadro Pi 8G">
+			<h3>Quadro Moderno 4K Pi 8G</h3>
+			<p>- fixação parede/plafond</p>
+			<p>Systema (8 GB), 4K</p>
+			<p>Cabo HDMI 2 m + fonte 5 V/5 A</p>
+			<p>Caixa + dissipador</p>
+			<p>Suporte VESA + parafusos</p>
+			{# <p class="preco">€299,00</p> #}
 		</div>
 
 		<div class="quadro">
-			<img src="https://falkon.click/image/quadro/suportParede0.jpg" alt="Cadre Basique">
-			<h3>Cadre Numérique Basique Pi</h3>
-			<p>- Système simple, idéal pour photos familiales</p>
-			<p>- Fixation murale</p>
-			<p>- Compatible avec écran 22”</p>
-			<p>Alimentation et support inclus</p>
+			<img src="https://falkon.click/image/quadro/suportParede.jpg" alt="Quadro Pi 4G">
+			<h3>Quadro Rústico Full HD Pi 4G - Personalizado</h3>
+			<p>- fixação parede/plafond</p>
+			<p>Systema (4 GB)</p>
+			<p>Suporte VESA + parafusos</p>
+			<p>Caixa + fonte + cabos</p>
+			{# <p class="preco">€249,00</p> #}
 		</div>
+		<div class="quadro">
+			<img src="https://falkon.click/image/quadro/suportParede0.jpg" alt="Quadro Básico">
+			<h3>Quadro Básico Pi</h3>
+			<p>- Sistema simples, ideal para fotos familiares</p>
+			<p>- Fixação parede</p>
+			<p>- Compatível com tela 22”</p>
+			<p>Fonte e suporte incluídos</p>
+			{# <p class="preco">€199,99</p> #}
+		</div>
+
 	</div>
 
 	<div class="form-vitrine">
-		<h2>Personnalisez votre cadre numérique</h2>
+		<h2>Personalize o seu quadro digital</h2>
 
 		<div class="form-group">
-			<label for="tipoQuadro">Type de Cadre :</label>
+			<label for="tipoQuadro">Tipo de Quadro:</label>
 			<select id="tipoQuadro" class="form-control">
-				<option disabled selected value="">-- veuillez sélectionner --</option>
-				<option value="basico" data-preco="199.99">Basique Full HD Pi - €199,99</option>
-				<option value="rustico" data-preco="249">Rustique Full HD Pi 4G - €249</option>
-				<option value="moderno" data-preco="299">Moderne 4K Pi 8G - €299</option>
+				<option disabled selected value="">-- selecione --</option>
+				<option value="basico" data-preco="199.99">Básico Full HD Pi - €199,99</option>
+				<option value="rustico" data-preco="249">Rústico Full HD Pi 4G - €249</option>
+				<option value="moderno" data-preco="299">Moderno 4K Pi 8G - €299</option>
 			</select>
+
 		</div>
 
 		<div class="form-group">
-			<label for="tamanhoTela">Taille de l’Écran :</label>
+			<label for="tamanhoTela">Tamanho da Tela:</label>
 			<select id="tamanhoTela" class="form-control">
-				<option disabled selected value="">-- veuillez sélectionner --</option>
+				<option disabled selected value="">-- selecione --</option>
 				<option value="22" data-preco="90" data-quadro="basico">22" Full HD - €90</option>
 				<option value="24hd" data-preco="120" data-quadro="rustico">24" Full HD - €120</option>
 				<option value="27hd" data-preco="150" data-quadro="rustico">27" Full HD - €150</option>
 				<option value="27k" data-preco="200" data-quadro="moderno">27" 4K - €200</option>
 			</select>
+
 		</div>
 
 		<div class="form-group">
-			<label>Type de Support :</label><br>
+			<label>Tipo de Suporte:</label><br>
 			<input type="radio" name="suporte" value="mural" data-preco="30" checked>
-			Support mural (+ €30)<br>
+			Suporte Mural (+ €30)<br>
 			<input type="radio" name="suporte" value="plafond" data-preco="50">
-			Support plafond (+ €50)
+			Suporte Plafond (+ €50)
 		</div>
 
 		<div class="form-group">
-			<label>Application Mobile :</label><br>
-
-			<input type="radio" name="appMovel" value="perso" data-preco="300" checked>
-			Application personnalisée intégrée (+ €300)<br>
-			<small class="desc-app">(personnalisée avec votre nom, nom de famille, ou nom d'entreprise + logo)</small><br>
-
-			<input type="radio" name="appMovel" value="basique" data-preco="50">
-			Application mobile basique (+ €50)<br>
-
-			<input type="radio" name="appMovel" value="aucune" data-preco="0">
-			Aucune application
+			<label>Aplicativo Móvel (Personalizado) Integrado:</label><br>
+			<input type="radio" name="appMovel" value="sim" data-preco="300" checked>
+			Sim (+ €300)<br>
+			<input type="radio" name="appMovel" value="nao" data-preco="0">
+			Não
 		</div>
-
 
 		<div class="price-box">
-			<p>Prix sans remise :
+			<p>Preço Sem Desconto:
 				<span id="precoOriginal">€0</span>
 			</p>
-			<p>Prix avec application personnalisée (15% de réduction) :
+			<p>Preço Com Aplicativo (15% desconto):
 				<span id="precoFinal">€0</span>
 			</p>
 		</div>
 
-		<a href="{{ path('contact_nous') }}" class="btn-contact">Contactez-nous pour un devis final</a>
+		<a href="{{ path('contact_nous') }}" class="btn-contact">Contacte-nos para orçamento final</a>
 	</div>
 
 	<script>
-		// (Script JavaScript original conservé)
-document.addEventListener('DOMContentLoaded', function () {
+		document.addEventListener('DOMContentLoaded', function () {
 const tipoQuadro = document.getElementById('tipoQuadro');
 const tamanhoTela = document.getElementById('tamanhoTela');
 const radiosApp = document.getElementsByName('appMovel');
@@ -258,8 +199,9 @@ return;
 const permitido = option.dataset.quadro === tipoSelecionado;
 option.hidden = ! permitido;
 });
-tamanhoTela.selectedIndex = 0;
+tamanhoTela.selectedIndex = 0; // reset selection
 }
+
 
 function calcularPreco() {
 const selectedQuadro = tipoQuadro.selectedOptions[0];
@@ -280,7 +222,7 @@ let total = precoQuadro + precoTela + precoApp + precoSuporte;
 precoOriginal.innerText = '€' + total.toFixed(2);
 
 const appSelecionado = Array.from(radiosApp).find(r => r.checked);
-if (appSelecionado.value === 'perso') {
+if (appSelecionado.value === 'sim') {
 const desconto = total * 0.15;
 total -= desconto;
 }
@@ -288,6 +230,7 @@ total -= desconto;
 precoFinal.innerText = '€' + total.toFixed(2);
 }
 
+// Eventos
 tipoQuadro.addEventListener('change', () => {
 filtrarOpcoesTela();
 calcularPreco();
@@ -296,28 +239,7 @@ tamanhoTela.addEventListener('change', calcularPreco);
 document.querySelectorAll('input[name="suporte"]').forEach(r => r.addEventListener('change', calcularPreco));
 document.querySelectorAll('input[name="appMovel"]').forEach(r => r.addEventListener('change', calcularPreco));
 
-calcularPreco();
+calcularPreco(); // Initial
 });
-
-// Zoom image plein écran au clic
-document.querySelectorAll('.image-gallery img').forEach(img => {
-	img.addEventListener('click', () => {
-		const overlay = document.createElement('div');
-		overlay.className = 'zoom-overlay';
-
-		const zoomedImg = document.createElement('img');
-		zoomedImg.src = img.src;
-		zoomedImg.alt = img.alt;
-
-		overlay.appendChild(zoomedImg);
-		document.body.appendChild(overlay);
-
-		// Fermer le zoom au clic
-		overlay.addEventListener('click', () => {
-			document.body.removeChild(overlay);
-		});
-	});
-});
-
 	</script>
 {% endblock %}
