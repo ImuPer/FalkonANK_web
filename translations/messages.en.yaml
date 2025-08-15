@@ -1,0 +1,298 @@
+homeH: Home
+about_us: About us
+contact: Contact
+photo_frame: Photo frame
+my_space: My space
+profileH: Profile
+ordersH: Orders
+basketH: Basket
+logout: Logout
+registerH: Sign up
+loginH: Login
+admin: Administrator
+search_placeholder: Search
+search_button: Search
+
+
+
+# ----------about page----------------------
+about_us_title: "About Us"
+back_to_store: "Back to Store"
+about_us_paragraph_1: "We are an organization based in Paris, France, founded by the Cape Verdean diaspora with the aim of strengthening the connection between the Cape Verdean community abroad and local traders in Cape Verde. Our e‑commerce website is designed to facilitate direct trade between members of the diaspora and local vendors, providing a unique shopping experience for our customers."
+about_us_paragraph_2: "We focus primarily on the food sector, enabling the Cape Verdean diaspora to purchase products directly from local merchants in Cape Verde. Our system allows customers to make purchases and instruct their family members or recipients to pick up the goods at points of sale, or choose home delivery, ensuring greater convenience and flexibility."
+about_us_paragraph_3: "Our commitment is to quality, authenticity, and support for the local economy, promoting growth and development of commerce in Cape Verde through an innovative and accessible digital platform."
+
+# Contact page------------------------------------
+contact.title: "Contact"
+# back_to_store: "Back to Store"
+contact.heading: "Contact Us"
+label.name: "Name"
+placeholder.name: "Your name"
+label.email: "Email"
+placeholder.email: "Your email"
+label.subject: "Subject"
+placeholder.subject: "Subject of your message"
+label.message: "Message"
+placeholder.message: "Your message"
+button.send: "Send"
+contact.info_title: "Contact Information"
+contact.follow_us: "Follow Us"
+
+#- Reponse--------------
+response.heading: "Response to %name%'s message"
+response.subject: "Subject:"
+response.message_label: "Message:"
+button.close: "Close"
+response.reply_label: "Reply:"
+response.send_button: "Send"
+
+
+#-------- cadrePhoto page-----------------------------
+download_apk: "Download APK"
+play_store: "Play Store:"
+app_banner: "App banner"
+screenshot: "Screenshot #%"
+app_name: "Imuhotepu‑Videos"
+app_description: >
+  is an educational streaming subscription app,
+  offering exclusive access to videos on history, general culture, and education.
+  Learn at your own pace, explore the world, and enrich your knowledge
+  thanks to an intuitive, content-rich platform.
+
+
+
+# Register page----------------------------------------
+register:
+  title: "Register"
+  create_account: "Create an account"
+  email: "Email"
+  password: "Password"
+  confirm_password: "Confirm Password"
+  first_name: "First Name"
+  last_name: "Last Name"
+  address: "Address"
+  accept_terms: "I accept the"
+  terms_conditions: "Terms and Conditions"
+  create_account_button: "Create Account"
+form:
+  email_placeholder: "Email"
+  password_placeholder: "Password"
+  confirm_password_placeholder: "Confirm password"
+  last_name_placeholder: "Last name (family name(s))"
+  first_name_placeholder: "First name"
+  address_placeholder: "Your address"
+  agree_terms_message: "You must agree to our terms."
+  password_blank_message: "Please enter a password"
+  password_length_message: "Your password must be at least {{ limit }} characters"
+  confirm_password_blank_message: "Please confirm the password"
+
+# terms and condition----------
+terms_and_conditions:
+  title: "Terms and Conditions"
+  heading: "General Terms and Conditions (CGU)"
+  last_update: "Last updated"
+  platform_goal: "1. Platform Objective"
+  platform_goal_description: "This platform connects the Cabo Verdean diaspora with local merchants in Cabo Verde. Diaspora members can purchase products for their family members in the country. These products will either be picked up locally or delivered to the beneficiaries through our partners."
+  access: "2. Access to the Service"
+  free_registration: "Free registration with account creation"
+  acceptance: "Mandatory acceptance of these T&Cs"
+  correct_information: "Provision of correct and up-to-date information"
+  order_process: "3. Order Process"
+  product_selection: "Choosing products from merchants"
+  online_payment: "Online payment via a secure system"
+  delivery_or_pickup: "Product pickup or delivery in Cabo Verde"
+  platform_role: "4. Platform Role"
+  platform_intermediary: "The platform acts as an intermediary. Merchants are responsible for the quality, availability, and delivery of the products."
+  user_commitments: "5. User Commitments"
+  honest_use: "Honest use and compliance with the law"
+  no_fraud: "Prohibition of fake accounts or fraudulent activities"
+  respect_others: "Respect for other users and merchants"
+  payment_and_security: "6. Payment and Security"
+  payment_security: "All payments are processed by certified providers. No banking information is stored on our servers."
+  delivery: "7. Delivery / Pickup"
+  delivery_method: "The pickup method depends on the merchant (delivery or pickup). Details are provided before payment."
+  responsibility: "8. Responsibility"
+  platform_responsibility: "The platform is not responsible for delays, stock shortages, or direct disputes with the merchant. However, we are available to help resolve any conflicts."
+  data_protection: "9. Data Protection"
+  data_protection_description: "Your personal data is protected according to the laws in force (GDPR)."
+  privacy_policy: "Privacy Policy"
+  for_more: "for more details"
+  terms_changes: "10. Changes to the T&Cs"
+  right_to_change: "We reserve the right to change these terms at any time. You will be notified in case of significant changes."
+  contact: "11. Contact"
+  contact_info: "For any questions or suggestions"
+  acceptance_alert: "By using our platform, you fully and unconditionally accept these terms."
+  thank_you: "Thank you for your trust"
+
+#privacy-------------------
+privacy:
+  title: "Privacy Policy"
+  heading: "Privacy Policy"
+  last_update: "Last updated"
+
+  intro_title: "1. Introduction"
+  intro_text: "This privacy policy explains how we collect, use, store, and protect your personal data when you use our platform."
+
+  data_collected_title: "2. Data Collected"
+  data_collected_intro: "We collect the following information:"
+  data:
+    name: "First name, last name"
+    email: "Email address"
+    address: "Postal address (for delivery or billing)"
+    history: "Order history"
+    cookies: "Browsing data (via cookies, if accepted)"
+
+  data_use_title: "3. Use of Data"
+  data_use_intro: "Your data is used to:"
+  data_use:
+    account: "Create and manage your user account"
+    orders: "Ensure the proper functioning of orders and deliveries"
+    improvement: "Improve our platform and the services offered"
+    communication: "Communicate with you (confirmation emails, notifications, customer support, etc.)"
+
+  sharing_title: "4. Data Sharing"
+  sharing_text: "We only share your personal data with service providers necessary for the execution of services (payment, delivery). No data will be sold to third parties."
+
+  security_title: "5. Security"
+  security_text: "We implement all necessary technical and organizational measures to protect your data against unauthorized access, loss, or destruction."
+
+  retention_title: "6. Data Retention"
+  retention_text: "Your data will be retained as long as your account is active and for up to 3 years after your last activity."
+
+  rights_title: "7. Your Rights"
+  rights_intro: "Under the GDPR, you have the following rights:"
+  rights:
+    access: "Access your personal data"
+    update: "Correct or update your information"
+    delete: "Delete your account and data"
+    object: "Object to certain data processing activities"
+  rights.contact: "To exercise your rights, contact us at: <a href=\"mailto:%email%\">%email%</a>"
+
+  cookies_title: "8. Cookies"
+  cookies_text: "We use cookies to enhance your user experience. You can accept or reject cookies via your browser settings."
+
+  modifications_title: "9. Changes"
+  modifications_text: "This policy may be updated at any time. In the event of significant changes, you will be notified via the platform or by email."
+
+  contact_title: "10. Contact"
+  contact_text: "For any questions regarding this policy, contact us:"
+
+  acceptance: "By using our platform, you accept this Privacy Policy."
+
+
+#------------ Login paga-----------------------
+login:
+  title: "Log in"
+  heading: "Log in"
+  logged_in_as: "Logged in as %user%"
+  logout: "Logout"
+  email: "Email address"
+  password: "Password"
+  forgot_password: "Forgot your password?"
+  submit: "LOGIN"
+
+#--- reset page---------------------------
+reset_password:
+  title: "Reset your password"
+  heading: "Reset your password"
+  email:
+    label: "Email address"
+    help: "Enter your email address and we will send you a link to reset your password."
+  submit: "Send email"
+
+# Cyties Nav--------------
+navbar:
+  toggle_navigation: "Toggle navigation"
+  cities: "Cities : shops"
+
+# Footer----------------
+footer:
+  title: "Responsive Footer"
+  home: "Home"
+  contact: "Contact"
+  about: "About Us"
+  privacy_policy: "Privacy Policy"
+  imuhotepu_videos: "Imuhotepu-Videos"
+  download_apk: "Download APK"
+
+# -Home---------------------------
+home:
+  meta_description: 'FalkonANK: connecting the Cape Verdean diaspora with local merchants in Cape Verde. Purchase and have products delivered to your loved ones.'
+  title: 'FalkonANK'
+  category_label: 'Select Category'
+  shops_button: 'Our Shops'
+  create_account_prompt: 'To purchase – create a simple account'
+  add_to_cart: 'Add to Cart'
+  out_of_stock: 'Out of Stock'
+  shop: 'Shop'
+  location: 'Location'
+
+# profil----------------------------
+profile:
+  title: "Profile (My Account)"
+  back_to_shop: "Back to Shop"
+  personal_data: "Personal Data"
+  email: "Email"
+  name: "Name"
+  address: "Address"
+  edit: "Edit"
+  merchant: "Merchant"
+  become_merchant: "Become a Merchant"
+  close: "Close"
+  city: "City"
+  select_city: "Select a city"
+  shop_name: "Shop Name"
+  shop_name_placeholder: "Enter shop name"
+  shop_address: "Shop Address"
+  shop_address_placeholder: "Enter shop address"
+  nif: "NIF (Tax Identification Number)"
+  nif_placeholder: "e.g. 123456789"
+  nif_title: "The NIF must have 9 digits and start with 1, 2, 3, or 5."
+  nif_help: "The NIF must have 9 digits and start with 1, 2, 3, or 5."
+  cancel: "Cancel"
+  submit: "Submit"
+  merchant_pending: "Your request is being processed."
+  submitted_at: "Submitted at"
+  edit_store_data: "Edit Store Data"
+  merchant_rejected: "Your request has been rejected."
+  reason: "Reason"
+  more_info: "For more information:"
+  contact_us: "Contact us"
+  merchant_approved: "Congratulations! Your request has been approved."
+  admin_message: "Admin message"
+
+  delete_button: "Delete Account"
+  delete_confirm: "Warning: this action is irreversible! Are you sure you want to delete your account?"
+
+# Order-------------------------
+order:
+  title: Orders
+  back_to_shop: Back to shop
+  my_orders: My Orders
+  reference: Reference
+  date: Date (CV time)
+  total: Total
+  status: Status
+  beneficiary: Beneficiary
+  no_orders: No purchase records found!
+
+# basket---------------------------
+basket:
+  title: "My Basket"
+  back_to_shop: "Back to Shop"
+  city: "City"
+  empty_message: "Your basket is empty!"
+  total: "Total"
+  checkout_button: "Proceed to Checkout"
+  beneficiary_info: "Beneficiary Information"
+  close: "Close"
+  beneficiary_city: "Beneficiary's City"
+  select_city: "Select a city"
+  beneficiary_name: "Name"
+  beneficiary_address: "Beneficiary's Address"
+  beneficiary_email: "Email"
+  optional: "optional"
+  phone_number: "Phone Number"
+  confirm_pay: "Confirm and Pay"
+
+  no_items_message: "You don't have any items yet, add a product to your basket!"

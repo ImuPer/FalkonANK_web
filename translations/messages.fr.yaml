@@ -1,0 +1,312 @@
+homeH: Accueil
+about_us: À propos de nous
+contact: Contact
+photo_frame: Cadre de photos
+my_space: Mon espace
+profileH: Profil
+ordersH: Commandes
+basketH: Panier
+logout: Déconnexion
+registerH: Créer un compte
+loginH: Connexion
+admin: Administrateur
+search_placeholder: Rechercher
+search_button: Rechercher
+
+# --------------about page---------------------------------------
+about_us_title: "À propos de nous"
+back_to_store: "Retourner à la boutique"
+about_us_paragraph_1: "Nous sommes une organisation basée à Paris, France, créée par la diaspora cap‑verdienne dans le but de renforcer le lien entre la communauté cap‑verdienne à l’étranger et les commerçants locaux au Cabo‑Vert. Notre site e‑commerce a été conçu pour faciliter le commerce direct entre les membres de la diaspora et les vendeurs locaux, offrant une expérience d'achat unique à nos clients."
+about_us_paragraph_2: "Nous nous concentrons principalement sur le secteur alimentaire, permettant à la diaspora cap‑verdienne d’acheter des produits directement auprès des commerçants locaux au Cabo‑Vert. Notre système permet aux clients de passer commande et d’instruire leurs proches ou bénéficiaires à venir récupérer les produits sur place, ou d’opter pour une livraison à domicile, assurant ainsi plus de commodité et de flexibilité."
+about_us_paragraph_3: "Notre engagement porte sur la qualité, l’authenticité et le soutien à l’économie locale, favorisant la croissance et le développement du commerce au Cabo‑Vert via une plateforme digitale innovante et accessible."
+
+
+# ------------------contact page-----------------------------------------------------------
+contact.title: "Contact"
+# back_to_store: "Retourner à la boutique"
+contact.heading: "Contactez-nous"
+label.name: "Nom"
+placeholder.name: "Votre nom"
+label.email: "E‑mail"
+placeholder.email: "Votre e‑mail"
+label.subject: "Sujet"
+placeholder.subject: "Sujet de votre message"
+label.message: "Message"
+placeholder.message: "Votre message"
+button.send: "Envoyer"
+contact.info_title: "Informations de contact"
+contact.follow_us: "Suivez-nous"
+
+#----------- reponse--------------------------------
+response.heading: "Réponse au message de %name%"
+response.subject: "Sujet :"
+response.message_label: "Message :"
+button.close: "Fermer"
+response.reply_label: "Réponse :"
+response.send_button: "Envoyer"
+
+
+# ------Cadre-Photo-----------------------------------------------------------------------------------
+download_apk: "Télécharger l’APK"
+play_store: "Play Store :"
+app_banner: "Bannière de l’application"
+screenshot: "Capture #%"
+app_name: "Imuhotepu‑Videos"
+app_description: >
+  est une application de streaming éducatif par abonnement,
+  offrant un’accès exclusif à des vidéos sur l’histoire, la culture générale et l’éducation.
+  Apprenez à votre rythme, découvrez le monde, et enrichissez vos connaissances
+  grâce à une plateforme intuitive et riche en contenus.
+
+
+# -------------register page---------------------------------------------------
+register:
+  title: "Inscription"
+  create_account: "Créer un compte"
+  email: "Email"
+  password: "Mot de passe"
+  confirm_password: "Confirmer le mot de passe"
+  first_name: "Prénom"
+  last_name: "Nom"
+  address: "Adresse"
+  accept_terms: "J'accepte les"
+  terms_conditions: "Conditions Générales d'Utilisation"
+  create_account_button: "Créer un compte"
+form:
+  email_placeholder: "E-mail"
+  password_placeholder: "Mot de passe"
+  confirm_password_placeholder: "Confirmez le mot de passe"
+  last_name_placeholder: "Nom de famille (nom(s) de famille)"
+  first_name_placeholder: "Prénom"
+  address_placeholder: "Votre adresse"
+  agree_terms_message: "Vous devez accepter nos conditions."
+  password_blank_message: "Veuillez entrer un mot de passe"
+  password_length_message: "Votre mot de passe doit contenir au moins {{ limit }} caractères"
+  confirm_password_blank_message: "Veuillez confirmer le mot de passe"
+
+# terms and conditions:
+terms_and_conditions:
+  title: "Conditions Générales d'Utilisation"
+  heading: "Conditions Générales d'Utilisation (CGU)"
+  last_update: "Dernière mise à jour"
+  platform_goal: "1. Objectif de la plateforme"
+  platform_goal_description: "Cette plateforme connecte la diaspora capverdienne avec les commerçants locaux au Cabo Verde. Les membres de la diaspora peuvent acheter des produits pour leurs proches dans le pays. Ces produits seront soit retirés localement, soit livrés aux bénéficiaires par nos partenaires."
+  access: "2. Accès au service"
+  free_registration: "Inscription gratuite avec création de compte"
+  acceptance: "Acceptation obligatoire de ces CGU"
+  correct_information: "Fourniture d'informations correctes et actualisées"
+  order_process: "3. Processus de commande"
+  product_selection: "Choix des produits auprès des commerçants"
+  online_payment: "Paiement en ligne via un système sécurisé"
+  delivery_or_pickup: "Retrait ou livraison des produits au Cabo Verde"
+  platform_role: "4. Rôle de la plateforme"
+  platform_intermediary: "La plateforme agit en tant qu'intermédiaire. Les commerçants sont responsables de la qualité, de la disponibilité et de la livraison des produits."
+  user_commitments: "5. Engagements des utilisateurs"
+  honest_use: "Utilisation honnête et conforme à la législation"
+  no_fraud: "Interdiction des faux comptes ou activités frauduleuses"
+  respect_others: "Respect des autres utilisateurs et des commerçants"
+  payment_and_security: "6. Paiement et sécurité"
+  payment_security: "Tous les paiements sont traités par des prestataires certifiés. Aucune information bancaire n'est stockée sur nos serveurs."
+  delivery: "7. Livraison / Retrait"
+  delivery_method: "Le mode de retrait dépend du commerçant (livraison ou retrait). Les détails sont fournis avant le paiement."
+  responsibility: "8. Responsabilité"
+  platform_responsibility: "La plateforme n'est pas responsable des retards, des ruptures de stock ou des litiges directs avec le commerçant. Cependant, nous sommes disponibles pour aider à résoudre tout conflit."
+  data_protection: "9. Protection des données"
+  data_protection_description: "Vos données personnelles sont protégées conformément aux lois en vigueur (RGPD)."
+  privacy_policy: "Politique de confidentialité"
+  for_more: "pour plus de détails"
+  terms_changes: "10. Modifications des CGU"
+  right_to_change: "Nous nous réservons le droit de modifier ces conditions à tout moment. Vous serez informé en cas de modifications importantes."
+  contact: "11. Contact"
+  contact_info: "Pour toute question ou suggestion"
+  acceptance_alert: "En utilisant notre plateforme, vous acceptez pleinement et sans réserve ces conditions."
+  thank_you: "Merci pour votre confiance"
+
+# privacy------------------------
+privacy:
+  title: "Politique de Confidentialité"
+  heading: "Politique de Confidentialité"
+  last_update: "Dernière mise à jour"
+
+  intro_title: "1. Introduction"
+  intro_text: "Cette politique de confidentialité explique comment nous collectons, utilisons, stockons et protégeons vos données personnelles lorsque vous utilisez notre plateforme."
+
+  data_collected_title: "2. Données Collectées"
+  data_collected_intro: "Nous collectons les informations suivantes :"
+  data:
+    name: "Nom, prénom"
+    email: "Adresse e-mail"
+    address: "Adresse postale (pour livraison ou facturation)"
+    history: "Historique de commandes"
+    cookies: "Données de navigation (via cookies, si acceptés)"
+
+  data_use_title: "3. Utilisation des Données"
+  data_use_intro: "Vos données sont utilisées pour :"
+  data_use:
+    account: "Créer et gérer votre compte utilisateur"
+    orders: "Assurer le bon déroulement des commandes et livraisons"
+    improvement: "Améliorer notre plateforme et les services proposés"
+    communication: "Communiquer avec vous (e-mails de confirmation, notifications, support client, etc.)"
+
+  sharing_title: "4. Partage des Données"
+  sharing_text: "Nous ne partageons vos données personnelles qu’avec les prestataires nécessaires à l’exécution des services (paiement, livraison). Aucune donnée ne sera vendue à des tiers."
+
+  security_title: "5. Sécurité"
+  security_text: "Nous mettons en œuvre toutes les mesures techniques et organisationnelles nécessaires pour protéger vos données contre tout accès non autorisé, perte ou destruction."
+
+  retention_title: "6. Durée de Conservation"
+  retention_text: "Vos données sont conservées tant que votre compte est actif, et jusqu’à 3 ans après votre dernière activité."
+
+  rights_title: "7. Vos Droits"
+  rights_intro: "Conformément au RGPD, vous disposez des droits suivants :"
+  rights:
+    access: "Accès à vos données personnelles"
+    update: "Correction ou mise à jour de vos informations"
+    delete: "Suppression de votre compte et de vos données"
+    object: "Opposition à certains traitements de vos données"
+  rights.contact: "Pour exercer vos droits, contactez-nous à l’adresse : <a href=\"mailto:%email%\">%email%</a>"
+
+  cookies_title: "8. Cookies"
+  cookies_text: "Nous utilisons des cookies pour améliorer votre expérience utilisateur. Vous pouvez accepter ou refuser leur utilisation via les paramètres de votre navigateur."
+
+  modifications_title: "9. Modifications"
+  modifications_text: "Cette politique peut être mise à jour à tout moment. En cas de modifications importantes, vous serez informé(e) via la plateforme ou par e-mail."
+
+  contact_title: "10. Contact"
+  contact_text: "Pour toute question concernant cette politique, contactez-nous :"
+
+  acceptance: "En utilisant notre plateforme, vous acceptez cette Politique de Confidentialité."
+
+
+# --------delete acountPage-----------------------------------------------------------------------------------------
+account:
+  deletion_title: "Suppression du compte"
+  merchant_warning: "Vous êtes un commerçant. La suppression du compte entraînera la perte de ce rôle."
+  deletion_confirm_question: "Êtes-vous sûr de vouloir supprimer votre compte ?"
+  delete_reason_label: "Motif de la suppression (optionnel)"
+  delete_reason_placeholder: "Pourquoi souhaitez-vous supprimer votre compte ?"
+  confirm_password_label: "Confirmez votre mot de passe"
+  confirm_password_placeholder: "Saisissez votre mot de passe"
+  confirm_delete_button: "Confirmer la suppression"
+  cancel_button: "Annuler"
+
+
+
+
+# ------------Login page-----------------------------------------------------------------------------
+login:
+  title: "Connexion"
+  heading: "Se connecter"
+  logged_in_as: "Connecté en tant que %user%"
+  logout: "Déconnexion"
+  email: "Adresse e-mail"
+  password: "Mot de passe"
+  forgot_password: "Mot de passe oublié ?"
+  submit: "SE CONNECTER"
+
+#------------ reset page------------------------
+reset_password:
+  title: "Réinitialiser votre mot de passe"
+  heading: "Réinitialiser votre mot de passe"
+  email:
+    label: "Adresse e-mail"
+    help: "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe."
+  submit: "Envoyer l’e-mail"
+
+# Cyties Nav-------------
+navbar:
+  toggle_navigation: "Activer la navigation"
+  cities: "Villes : magasins"
+
+# Footer-----------
+footer:
+  title: "Pied de page responsive"
+  home: "Accueil"
+  contact: "Contact"
+  about: "À propos de nous"
+  privacy_policy: "Politique"
+  imuhotepu_videos: "Vidéos Imuhotepu"
+  download_apk: "Télécharger APK"
+
+# Home---------------------
+home:
+  meta_description: 'FalkonANK : plateforme de mise en relation entre la diaspora cap-verdienne et les commerçants locaux au Cap‑Vert. Achetez et faites livrer des produits à vos proches.'
+  title: 'FalkonANK'
+  category_label: 'Sélectionnez une catégorie'
+  shops_button: 'Nos Boutiques'
+  create_account_prompt: 'Pour acheter – créez simplement un compte'
+  add_to_cart: 'Ajouter au panier'
+  out_of_stock: 'Rupture de stock'
+  shop: 'Boutique'
+  location: 'Localité'
+
+# profil -----------------------------------
+profile:
+  title: "Profil (Mon Compte)"
+  back_to_shop: "Retour à la boutique"
+  personal_data: "Données personnelles"
+  email: "E‑mail"
+  name: "Nom"
+  address: "Adresse"
+  edit: "Modifier"
+  merchant: "Commerçant"
+  become_merchant: "Devenir commerçant"
+  close: "Fermer"
+  city: "Ville"
+  select_city: "Sélectionnez une ville"
+  shop_name: "Nom de la boutique"
+  shop_name_placeholder: "Entrez le nom de la boutique"
+  shop_address: "Adresse de la boutique"
+  shop_address_placeholder: "Entrez l’adresse de la boutique"
+  nif: "NIF (Numéro d'identification fiscale)"
+  nif_placeholder: "Ex : 123456789"
+  nif_title: "Le NIF doit comporter 9 chiffres et commencer par 1, 2, 3 ou 5"
+  nif_help: "Le NIF doit compter 9 chiffres et commencer par 1, 2, 3 ou 5."
+  cancel: "Annuler"
+  submit: "Envoyer"
+  merchant_pending: "Votre demande est en cours de traitement."
+  submitted_at: "Date d’envoi"
+  edit_store_data: "Modifier les données de la boutique"
+  merchant_rejected: "Votre demande a été refusée."
+  reason: "Raison"
+  more_info: "Pour plus d’informations :"
+  contact_us: "Nous contacter"
+  merchant_approved: "Félicitations ! Votre demande a été approuvée."
+  admin_message: "Message de l’administrateur"
+
+  delete_button: "Supprimer le compte"
+  delete_confirm: "Attention : ce processus est irréversible ! Êtes-vous sûr de vouloir supprimer votre compte ?"
+
+# order----------------------
+order:
+  title: Commandes
+  back_to_shop: Retour à la boutique
+  my_orders: Mes Achats
+  reference: Référence
+  date: Date (heure CV)
+  total: Total
+  status: Statut
+  beneficiary: Bénéficiaire
+  no_orders: Aucun enregistrement d'achat trouvé !
+
+# basket------------------------
+basket:
+  title: "Mon Panier"
+  back_to_shop: "Retour à la boutique"
+  city: "Ville"
+  empty_message: "Votre panier est vide !"
+  total: "Total"
+  checkout_button: "Finaliser l'achat"
+  beneficiary_info: "Informations du Bénéficiaire"
+  close: "Fermer"
+  beneficiary_city: "Ville du Bénéficiaire"
+  select_city: "Sélectionnez une ville"
+  beneficiary_name: "Nom"
+  beneficiary_address: "Adresse du Bénéficiaire"
+  beneficiary_email: "Email"
+  optional: "optionnel"
+  phone_number: "Numéro de téléphone portable"
+  confirm_pay: "Confirmer et Payer"
+  
+  no_items_message: "Vous n'avez pas encore d'articles, ajoutez un produit au panier !"
+

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/basket')]
 class BasketController extends AbstractController
@@ -159,26 +160,31 @@ class BasketController extends AbstractController
 
     // ------------------Show user basket --------------------------------
     #[Route('/', name: 'user_basket', methods: ['GET'])]
-    public function showUserBasket(BasketRepository $basketRepository, EntityManagerInterface $entityManager): Response
-    {
+    public function showUserBasket(
+        BasketRepository $basketRepository,
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator
+    ): Response {
         $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
 
         if ($user) {
-            // Récupère le panier de l'utilisateur
             $basket = $basketRepository->findOneBy(['user' => $user]);
+
             if ($basket) {
-                // Récupérer tous les produits du panier
                 $basketProducts = $basket->getBasketProducts();
 
-                // Filtrer les produits du panier avec 'payment' = false
+                // Filtrer les produits non payés
                 $basketProducts = $basketProducts->filter(function ($basketProduct) {
                     return !$basketProduct->isPayment();
                 });
-                $message = "";
+
+                $message = '';
                 if ($basketProducts->isEmpty()) {
-                    $message = "A sua cesta está vazia !";
+                    $message = $translator->trans('basket.empty_message');
                 }
+
                 $cities = $entityManager->getRepository(City::class)->findAll();
+
                 return $this->render('basket/user_basket.html.twig', [
                     'message' => $message,
                     'basketPs' => $basketProducts,
@@ -186,18 +192,18 @@ class BasketController extends AbstractController
                 ]);
             } else {
                 // Pas de panier pour cet utilisateur
-                $message = "Você ainda não tem artigos, adicione um produto ao carrinho !";
+                $message = $translator->trans('basket.no_items_message');
 
                 return $this->render('basket/user_basket.html.twig', [
-                    'basketPs' => null, // Pas de produits à afficher
+                    'basketPs' => null,
                     'message' => $message,
                 ]);
             }
         } else {
-            // Gère le cas où aucun utilisateur n'est connecté
             return $this->redirectToRoute('app_login');
         }
     }
+
 
     // ------------------fin show user basket --------------------------------
 

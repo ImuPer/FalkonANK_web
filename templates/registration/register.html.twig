@@ -1,97 +1,109 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% trans_default_domain 'messages' %}
+
+{% block title %}
+	{{ 'register.title'|trans }}
+{% endblock %}
 
 {% block body %}
 
-<link rel="stylesheet" href="{{ asset("css/register.css") }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<br>
-<div class="container_register">
-    <div id="d_head">
-        <h1>Criação de conta</h1>
-    </div>
+	<link rel="stylesheet" href="{{ asset("css/register.css") }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<br>
+	<div class="container_register">
+		<div id="d_head">
+			<h1>{{ 'register.create_account'|trans }}</h1>
+		</div>
 
-    <hr class="hr1">
+		<hr class="hr1">
 
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+		{% for flash_error in app.flashes('verify_email_error') %}
+			<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+		{% endfor %}
 
-    {{ form_start(registrationForm) }}
+		{{ form_start(registrationForm) }}
 
-    <!-- Email -->
-    <div class="form-group">
-        {{ form_widget(registrationForm.email) }}
-        {{ form_errors(registrationForm.email) }}
-    </div>
+		<!-- Email -->
+		<div class="form-group">
+			<label for="email">{{ 'register.email'|trans }}</label>
+			{{ form_widget(registrationForm.email) }}
+			{{ form_errors(registrationForm.email) }}
+		</div>
 
-    <!-- Password -->
-    <div class="form-group my-password-field">
-        {{ form_widget(registrationForm.plainPassword, {
-            'attr': {
-                'data-toggle': 'password',
-                'class': registrationForm.plainPassword.vars.errors|length ? 'is-invalid' : ''
-            }
-        }) }}
-        <i class="fa fa-eye toggle-password"></i>
-        {{ form_errors(registrationForm.plainPassword) }}
-    </div>
+		<!-- Password -->
+		<div class="form-group my-password-field">
+			<label for="plainPassword">{{ 'register.password'|trans }}</label>
+			{{ form_widget(registrationForm.plainPassword, {
+                'attr': {
+                    'data-toggle': 'password',
+                    'class': registrationForm.plainPassword.vars.errors|length ? 'is-invalid' : ''
+                }
+            }) }}
+			<i class="fa fa-eye toggle-password"></i>
+			<!-- Icône de l'œil -->
+			{{ form_errors(registrationForm.plainPassword) }}
+		</div>
 
-    <!-- Confirm Password -->
-    <div class="form-group my-password-field">
-        {{ form_widget(registrationForm.confirmPassword, {
+
+		<!-- Confirm Password -->
+		<div class="form-group my-password-field">
+			<label for="confirmPassword">{{ 'register.confirm_password'|trans }}</label>
+			{{ form_widget(registrationForm.confirmPassword, {
             'attr': {
                 'data-toggle': 'password',
                 'class': registrationForm.confirmPassword.vars.errors|length ? 'is-invalid' : ''
             }
         }) }}
-        <i class="fa fa-eye toggle-password"></i>
-        {{ form_errors(registrationForm.confirmPassword) }}
-    </div>
+			<i class="fa fa-eye toggle-password"></i>
+			{{ form_errors(registrationForm.confirmPassword) }}
+		</div>
 
+		<!-- First and Last Name -->
+		<div class="form-group">
+			<label for="first_name">{{ 'register.first_name'|trans }}</label>
+			{{ form_widget(registrationForm.first_name) }}
+		</div>
+		<div class="form-group">
+			<label for="last_name">{{ 'register.last_name'|trans }}</label>
+			{{ form_widget(registrationForm.last_name) }}
+		</div>
 
-    <!-- First and Last Name -->
-    <div class="form-group">
-        {{ form_widget(registrationForm.first_name) }}
-    </div>
-    <div class="form-group">
-        {{ form_widget(registrationForm.last_name) }}
-    </div>
+		<!-- Address -->
+		<div class="form-group">
+			<label for="adress">{{ 'register.address'|trans }}</label>
+			{{ form_widget(registrationForm.adress) }}
+		</div>
 
-    <!-- Address -->
-    <div class="form-group">
-        {{ form_widget(registrationForm.adress) }}
-    </div>
+		<!-- Terms and Conditions -->
+		<div class="form-check mb-3">
+			{{ form_widget(registrationForm.agreeTerms) }}
+			{{ form_errors(registrationForm.agreeTerms) }}
+			<span class="ms-2">
+				{{ 'register.accept_terms'|trans }}
+				<a href="{{ path('agree_terms') }}" target="_blank">{{ 'register.terms_conditions'|trans }}</a>
+			</span>
+		</div>
 
-    <!-- Terms and Conditions -->
-    <div class="form-check mb-3">
-        {{ form_widget(registrationForm.agreeTerms) }}
-        {{ form_errors(registrationForm.agreeTerms) }}
-        <span class="ms-2">
-            Eu aceito as <a href="{{ path('agree_terms') }}" target="_blank">Condições Gerais de Utilização</a>
-        </span>
-    </div>
+		<!-- Submit button -->
+		<input type="submit" id="submit" value="{{ 'register.create_account_button'|trans }}">
 
-    <!-- Submit button -->
-    <input type="submit" id="submit" value="Criar uma conta">
+		{{ form_end(registrationForm) }}
+	</div>
 
-    {{ form_end(registrationForm) }}
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const passwordFields = document.querySelectorAll('[data-toggle="password"]');
-        passwordFields.forEach(field => {
-            const toggleIcon = field.parentElement.querySelector('.toggle-password'); // Icône d'affichage du mot de passe
-            toggleIcon.addEventListener('click', function () {
-                const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
-                field.setAttribute('type', type);
-                toggleIcon.classList.toggle('fa-eye');
-                toggleIcon.classList.toggle('fa-eye-slash'); // Change l'icône
-            });
-        });
-    });
-</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+const passwordFields = document.querySelectorAll('[data-toggle="password"]');
+passwordFields.forEach(field => {
+const toggleIcon = field.parentElement.querySelector('.toggle-password'); // Icône d'affichage du mot de passe
+toggleIcon.addEventListener('click', function () {
+const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+field.setAttribute('type', type);
+toggleIcon.classList.toggle('fa-eye');
+toggleIcon.classList.toggle('fa-eye-slash'); // Change l'icône
+});
+});
+});
+	</script>
 
 {% endblock %}

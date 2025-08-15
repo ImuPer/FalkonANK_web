@@ -1,73 +1,61 @@
+{# templates/contact.html.twig #}
 {% extends 'base.html.twig' %}
+{% trans_default_domain 'messages' %}
 
-{% block title %}Contacto
-{% endblock %}
+{% block title %}{{ 'contact.title'|trans }}{% endblock %}
 
 {% block body %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href={{asset("css/header.css")}}>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('css/header.css') }}">
 
-	<div class="d-inline-flex p-3">
-		<a href="{{path('app_home_page')}}">
-			<button type="button" class="btn btn-dark">Voltar a loja</button>
-		</a>
-	</div>
-	<div
-		class="container mt-5">
-		<h1 class="text-center mb-4">Fale Conosco</h1>
+<div class="d-inline-flex p-3">
+  <a href="{{ path('app_home_page') }}">
+    <button type="button" class="btn btn-dark">{{ 'back_to_store'|trans }}</button>
+  </a>
+</div>
 
-		<div
-			class="row">
-			<!-- Formulaire de Contact -->
-			<div class="col-lg-6 mb-4">
-				<form action="{{ path('contact_form_submit') }}" method="post">
-					<div class="mb-3">
-						<label for="name" class="form-label">Nome</label>
-						<input type="text" class="form-control" id="name" name="name" placeholder="Seu nome" required>
-					</div>
-					<div class="mb-3">
-						<label for="email" class="form-label">E-mail</label>
-						<input type="email" class="form-control" id="email" name="email" placeholder="Seu e-mail" required>
-					</div>
-					<div class="mb-3">
-						<label for="subject" class="form-label">Assunto</label>
-						<input type="text" class="form-control" id="subject" name="subject" placeholder="Assunto da sua mensagem" required>
-					</div>
-					<div class="mb-3">
-						<label for="message" class="form-label">Mensagem</label>
-						<textarea class="form-control" id="message" name="message" rows="6" placeholder="Sua mensagem" required></textarea>
-					</div>
-					<button type="submit" class="btn btn-primary w-100">Enviar</button>
-				</form>
-			</div>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">{{ 'contact.heading'|trans }}</h1>
 
-			<!-- Informations de Contact -->
-			<div class="col-lg-6">
-				<h5 class="mb-3">Informações de Contato</h5>
-				<ul class="list-unstyled">
-					<li>
-						<i class="fas fa-map-marker-alt text-primary me-2"></i>60 rue François 1er 75008 Paris, France</li>
-					{# <li><i class="fas fa-phone text-primary me-2"></i>+33 782697764</li> #}
-					<li>
-						<i class="fas fa-envelope text-primary me-2"></i>falkon674@gmail.com</li>
-				</ul>
+  <div class="row">
+    <div class="col-lg-6 mb-4">
+      <form action="{{ path('contact_form_submit') }}" method="post">
+        <div class="mb-3">
+          <label for="name" class="form-label">{{ 'label.name'|trans }}</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="{{ 'placeholder.name'|trans }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">{{ 'label.email'|trans }}</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="{{ 'placeholder.email'|trans }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="subject" class="form-label">{{ 'label.subject'|trans }}</label>
+          <input type="text" class="form-control" id="subject" name="subject" placeholder="{{ 'placeholder.subject'|trans }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">{{ 'label.message'|trans }}</label>
+          <textarea class="form-control" id="message" name="message" rows="6" placeholder="{{ 'placeholder.message'|trans }}" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">{{ 'button.send'|trans }}</button>
+      </form>
+    </div>
 
-				<h5 class="mt-4 mb-3">Siga-nos</h5>
-				<div>
-					<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" class="btn btn-outline-primary btn-sm me-2">
-						<i class="fab fa-facebook-f"></i>
-					</a>
-					{# <a href="#" class="btn btn-outline-info btn-sm me-2"><i class="fab fa-twitter"></i></a> #}
-					
-					{# <a href="#" class="btn btn-outline-danger btn-sm me-2">
-						<i class="fab fa-instagram"></i>
-					</a> #}
-					
-					{# <a href="#" class="btn btn-outline-primary btn-sm"><i class="fab fa-linkedin"></i></a> #}
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-lg-6">
+      <h5 class="mb-3">{{ 'contact.info_title'|trans }}</h5>
+      <ul class="list-unstyled">
+        <li><i class="fas fa-map-marker-alt text-primary me-2"></i>60 rue François 1er 75008 Paris, France</li>
+        <li><i class="fas fa-envelope text-primary me-2"></i>falkon674@gmail.com</li>
+      </ul>
 
-	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+      <h5 class="mt-4 mb-3">{{ 'contact.follow_us'|trans }}</h5>
+      <div>
+        <a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" class="btn btn-outline-primary btn-sm me-2">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 {% endblock %}

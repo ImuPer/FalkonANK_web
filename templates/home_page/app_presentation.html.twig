@@ -1,90 +1,69 @@
-<!DOCTYPE html>
-<html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Imuhotepu-Videos</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				margin: 0;
-				padding: 20px;
-				background-color: #f4f4f4;
-			}
+{# templates/imuvideos.html.twig #}
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'messages' %}
 
-			.container {
-				max-width: 960px;
-				margin: auto;
-				background: white;
-				padding: 20px;
-				border-radius: 10px;
-			}
+{% block title %}Imuhotepu-Videos{% endblock %}
 
-			h1 {
-				text-align: center;
-				color: #333;
-			}
+{% block stylesheets %}
+  <style>
+    .screenshots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
 
-			.main-image {
-				width: 100%;
-				height: auto;
-				margin: 20px 0;
-				border-radius: 10px;
-			}
+    .screenshot {
+      width: 120px;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      object-fit: cover;
+    }
 
-			.description {
-				font-size: 1.1em;
-				color: #555;
-				margin-bottom: 30px;
-			}
+    @media (max-width: 600px) {
+      .screenshot {
+        width: 80px;
+      }
+    }
+  </style>
+{% endblock %}
 
-			.screenshots {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 10px;
-				justify-content: center;
-			}
 
-			.screenshot {
-				width: 150px;
-				height: auto;
-				border-radius: 6px;
-				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<h1>Imuhotepu-Videos
-				<a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download style="display: inline-flex; align-items: center; justify-content: center;
-													          border: 2px solid #4CAF50; border-radius: 8px; padding: 6px 10px;
-													          background-color: #f9fff9; color: #333; text-decoration: none;
-													          font-weight: 500; transition: 0.3s;">
-					<img class="logo" src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" style="width: 25px; height: 25px; margin-right: 8px;">
-					<span>Download APK</span>
-				</a>
-			</h1>
-			<p><strong>Play Store :</strong> (Imuhotepuvideos)</p>
 
-			<img
-			src="{{ asset('/image/imuvideos/banner.png') }}" alt="Bannière de l'application" class="main-image">
+{% block body %}
+<div class="container">
+  <h1>
+    Imuhotepu‑Videos
+    <a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download
+       style="display:inline-flex;align-items:center;justify-content:center;
+              border:2px solid #4CAF50;border-radius:8px;padding:6px 10px;
+              background-color:#f9fff9;color:#333;text-decoration:none;
+              font-weight:500;transition:0.3s;">
+      <img class="logo" src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" style="width:25px;height:25px;margin-right:8px;">
+      {{ 'download_apk'|trans }}
+    </a>
+  </h1>
 
-			{# <h2> >>> </h2> #}
-			<div class="screenshots">
-				{% for capture in captures %}
-					<img src="{{ asset('/image/imuvideos/captures/' ~ capture) }}" alt="Capture {{ loop.index }}" class="screenshot">
-				{% endfor %}
-			</div>
+  <p><strong>{{ 'play_store'|trans }}</strong>
+     <a href="https://play.google.com/store/apps/details?id=com.TechDevnius.imuhotepuvideos">
+       (Imuhotepuvideos)
+     </a>
+  </p>
 
-			<div class="description">
-				<p>
-					<strong>Imuhotepu-Videos</strong>
-					est une application de streaming éducatif par abonnement,
-					                offrant un accès exclusif à des vidéos sur l’histoire, la culture générale et l’éducation.
-					                Apprenez à votre rythme, découvrez le monde, et enrichissez vos connaissances grâce à une
-					                plateforme intuitive et riche en contenus.
-				</p>
-			</div>
-		</div>
-	</body>
-</html>
+  <img src="{{ asset('image/imuvideos/banner.png') }}" alt="{{ 'app_banner'|trans }}" class="main-image">
+
+  <div class="screenshots">
+    {% for capture in captures %}
+      <img src="{{ asset('image/imuvideos/captures/' ~ capture) }}" alt="{{ 'screenshot'|trans({'#': loop.index}) }}" class="screenshot">
+    {% endfor %}
+  </div>
+
+  <div class="description">
+    <p>
+      <strong>{{ 'app_name'|trans }}</strong>
+      {{ 'app_description'|trans }}
+    </p>
+  </div>
+</div>
+{% endblock %}

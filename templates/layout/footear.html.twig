@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="{{ app.request.locale }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="{{ asset('css/newslatterFootear.css') }}">
-		<title>Rodapé Responsivo</title>
+		<title>{{ 'footer.title'|trans }}</title>
 	</head>
 	<body>
 		<footer class="footer bg-danger text-white py-3 my-4">
-			<div
-				class="container">
+			<div class="container">
 				<!-- Links de navegação -->
 				<ul class="nav justify-content-center border-bottom pb-3 mb-3">
 					<li class="nav-item">
-						<a href="{{ path('app_home_page') }}" class="nav-link px-2 text-white">Home</a>
+						<a href="{{ path('app_home_page') }}" class="nav-link px-2 text-white">{{ 'footer.home'|trans }}</a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ path('contact_nous') }}" class="nav-link px-2 text-white">Contacto</a>
+						<a href="{{ path('contact_nous') }}" class="nav-link px-2 text-white">{{ 'footer.contact'|trans }}</a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ path('app_about_page') }}" class="nav-link px-2 text-white">Sobre nós</a>
+						<a href="{{ path('app_about_page') }}" class="nav-link px-2 text-white">{{ 'footer.about'|trans }}</a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ path('privacy_policy') }}" class="nav-link px-2 text-white">Política</a>
+						<a href="{{ path('privacy_policy') }}" class="nav-link px-2 text-white">{{ 'footer.privacy_policy'|trans }}</a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ path('app_presentation') }}" class="nav-link px-2 text-white">Imuhotepu-videos</a>
+						<a href="{{ path('app_presentation') }}" class="nav-link px-2 text-white">{{ 'footer.imuhotepu_videos'|trans }}</a>
 					</li>
 				</ul>
 
@@ -34,12 +33,9 @@
 					<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" class="social-icon">
 						<i class="fab fa-facebook-f"></i>
 					</a>
-					<a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download style="display: inline-flex; align-items: center; justify-content: center;
-							          border: 2px solid #4CAF50; border-radius: 8px; padding: 6px 10px;
-							          background-color: #f9fff9; color: #333; text-decoration: none;
-							          font-weight: 500; transition: 0.3s;">
+					<a href="/downloads/imuhotepuvideos/app-imuhotepu-videos.apk" download style="display: inline-flex; align-items: center; justify-content: center; border: 2px solid #4CAF50; border-radius: 8px; padding: 6px 10px; background-color: #f9fff9; color: #333; text-decoration: none; font-weight: 500; transition: 0.3s;">
 						<img class="logo" src="{{ asset('image/icon/appstore.png') }}" alt="Logo Imuhotepu" style="width: 25px; height: 25px; margin-right: 8px;">
-						<span>Download APK</span>
+						<span>{{ 'footer.download_apk'|trans }}</span>
 					</a>
 				</div>
 

@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\EqualTo;
 
 class RegistrationFormType extends AbstractType
 {
@@ -23,14 +24,14 @@ class RegistrationFormType extends AbstractType
                 'email',
                 TextType::class,
                 [
-                    'attr' => ['placeholder' => 'E-mail',]
+                    'attr' => ['placeholder' => 'form.email_placeholder',],
                 ]
             )
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'Você deve concordar com os nossos termos.',
+                        'message' => 'form.agree_terms_message',
                     ]),
                 ],
             ])
@@ -38,17 +39,17 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'placeholder' => 'Senha',
-                    'class' => 'my-password-field',  // Classe personalizada
-                    'data-toggle' => 'password',      // Atributo para JavaScript
+                    'placeholder' => 'form.password_placeholder',
+                    'class' => 'my-password-field',  
+                    'data-toggle' => 'password',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Por favor, insira uma senha',
+                        'message' => 'form.password_blank_message',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Sua senha deve ter pelo menos {{ limit }} caracteres',
+                        'minMessage' => 'form.password_length_message',
                         'max' => 4096,
                     ]),
                 ],
@@ -57,12 +58,16 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'placeholder' => 'Confirme a senha',
-                    'data-toggle' => 'password',  // Atributo para JavaScript
+                    'placeholder' => 'form.confirm_password_placeholder',
+                    'data-toggle' => 'password',
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Por favor, confirme a senha',
+                        'message' => 'form.confirm_password_blank_message',
+                    ]),
+                    new EqualTo([
+                        'value' => 'plainPassword',
+                        'message' => 'Les mots de passe doivent correspondre.',
                     ]),
                 ],
             ])
@@ -71,7 +76,7 @@ class RegistrationFormType extends AbstractType
                 TextType::class,
                 [
                     'attr' => [
-                        'placeholder' => 'Sobrenome (apelido(s))',
+                        'placeholder' => 'form.last_name_placeholder',
                     ],
                 ]
             )
@@ -80,7 +85,7 @@ class RegistrationFormType extends AbstractType
                 TextType::class,
                 [
                     'attr' => [
-                        'placeholder' => 'Nome',
+                        'placeholder' => 'form.first_name_placeholder',
                     ],
                 ]
             )
@@ -89,7 +94,7 @@ class RegistrationFormType extends AbstractType
                 TextType::class,
                 [
                     'attr' => [
-                        'placeholder' => 'Seu endereço',
+                        'placeholder' => 'form.address_placeholder',
                     ],
                 ]
             );

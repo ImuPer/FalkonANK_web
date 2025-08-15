@@ -6,3 +6,12 @@ framework:
         gc_maxlifetime: 3600       # Durée de vie côté serveur (garbage collector)
         cookie_secure: auto        # Utile si tu es en HTTPS
         cookie_samesite: lax       # Évite des problèmes de redirection cross-site
+    
+    default_locale: pt
+    set_locale_from_accept_language: true
+    set_content_language_from_locale: true
+    enabled_locales: ['fr', 'pt', 'en', 'es']
+    translator:
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks: ['pt']
+    

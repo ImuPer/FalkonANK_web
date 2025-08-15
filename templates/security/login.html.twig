@@ -1,79 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!
-{% endblock %}
+{% trans_default_domain 'messages' %}
+
+{% block title %}{{ 'login.title'|trans }}{% endblock %}
 
 {% block body %}
-	<link rel="stylesheet" href={{asset("css/login.css")}}>
+	<link rel="stylesheet" href="{{ asset('css/login.css') }}">
 	<br>
 	<div id="global">
-
 		<div id="container">
-
 			<form method="post">
 				{% if error %}
 					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 				{% endif %}
+
 				<div id="d_head">
-					<h1>Iniciar Sessão</h1>
+					<h1>{{ 'login.heading'|trans }}</h1>
 				</div>
 
 				{% if app.user %}
 					<div class="mb-3">
-						You are logged in as
-						{{ app.user.userIdentifier }},
-						<a href="{{ path('app_logout') }}">Logout</a>
+						{{ 'login.logged_in_as'|trans({'%user%': app.user.userIdentifier}) }}
+						<a href="{{ path('app_logout') }}">{{ 'login.logout'|trans }}</a>
 					</div>
 				{% endif %}
+
 				<hr>
 
-				<label for="username">Email</label>
+				<label for="username">{{ 'login.email'|trans }}</label>
 				<input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-				<label for="password">Password</label>
+
+				<label for="password">{{ 'login.password'|trans }}</label>
 				<div style="position: relative;">
 					<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-					<span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-						👁️
-					</span>
-				<p style="color:red;"><a style="color:red;" href="{{ path('app_forgot_password_request') }}">Esqueceu a sua senha ?</a></p>
+					<span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
+					<p><a style="color:red;" href="{{ path('app_forgot_password_request') }}">{{ 'login.forgot_password'|trans }}</a></p>
 				</div>
 
-				<input
-				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-				{#
-				                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-				                    See https://symfony.com/doc/current/security/remember_me.html
-				
-				                    <div class="checkbox mb-3">
-				                        <input type="checkbox" name="_remember_me" id="_remember_me">
-				                        <label for="_remember_me">Remember me</label>
-				                    </div>
-				                #}
-				<input
-				type="submit" id='submit' value='LOGIN'>
-
-			{# <button class="btn btn-lg btn-primary" type="submit">
-			                    Sign in
-			                </button> #}
+				<input type="submit" id="submit" value="{{ 'login.submit'|trans }}">
 			</form>
-             <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
 
-        togglePassword.addEventListener('click', function () {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					const togglePassword = document.getElementById('togglePassword');
+					const passwordInput = document.getElementById('password');
 
-            // Change l'icône si tu veux (ex: 👁️ / 🙈)
-            this.textContent = type === 'password' ? '👁️' : '🙈';
-        });
-    });
-</script>
-
-
+					togglePassword.addEventListener('click', function () {
+						const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+						passwordInput.setAttribute('type', type);
+						this.textContent = type === 'password' ? '👁️' : '🙈';
+					});
+				});
+			</script>
 		</div>
-
 	</div>
 {% endblock %}

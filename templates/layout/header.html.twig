@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('css/header.css') }}">
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,78 +11,71 @@
 	</head>
 
 	<body>
-		<!--Barre de Navegation-->
+		<!--Barre de Navigation-->
 		<nav>
-			<a class="navbar-brand" href="{{path('app_home_page')}}"><img class="logo" src="{{asset("image/FalkonANK/logo-transparent-png.png")}}"></a>
-			{# <h1>Alimentason e Qualidade!</h1> #}
+			<a class="navbar-brand" href="{{ path('app_home_page') }}">
+				<img class="logo" src="{{ asset('image/FalkonANK/logo-transparent-png.png') }}" alt="Logo">
+			</a>
+
 			<button class="hamburger">
 				<i class="fas fa-bars"></i>
 			</button>
 
 			<div id="navMenu" class="onglets">
-				<a href="{{path('app_home_page')}}">
+				<a href="{{ path('app_home_page') }}">
 					<i class="fas fa-home"></i>
 				</a>
-				<a href="{{path('app_about_page')}}">Sobre Nos</a>
-				<a href="{{path('contact_nous')}}">Contacto</a>
-				<a href="{{path('app_cadre_photo')}}">Quadro de photos</a>
+				<a href="{{ path('app_about_page') }}">{{ 'about_us'|trans }}</a>
+				<a href="{{ path('contact_nous') }}">{{ 'contact'|trans }}</a>
+				<a href="{{ path('app_cadre_photo') }}">{{ 'photo_frame'|trans }}</a>
 
 				{% if app.user %}
 					<li style="position: relative;">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Meu espaço
+							{{ 'my_space'|trans }}
 						</a>
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
 							<li>
-								<a class="dropdown-item" href="{{ path('app_user_show') }}">Profile</a>
+								<a class="dropdown-item" href="{{ path('app_user_show') }}">{{ 'profile'|trans }}</a>
 							</li>
 							{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
 								<li>
-									<a class="dropdown-item" href="{{ path('app_user_orders') }}">Compras</a>
+									<a class="dropdown-item" href="{{ path('app_user_orders') }}">{{ 'ordersH'|trans }}</a>
 								</li>
 								<li>
-									<a class="dropdown-item" href="{{ path('user_basket') }}">Cesta</a>
+									<a class="dropdown-item" href="{{ path('user_basket') }}">{{ 'basketH'|trans }}</a>
 								</li>
 							{% endif %}
 						</ul>
 					</li>
-
-					<a class="nav-item nav-link " href="{{path('app_logout')}}">Sair</a>
-
+					<a class="nav-item nav-link" href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a>
 				{% else %}
-					<a href="{{path('app_register')}}">Criar conta</a>
-					<a href="{{path('app_login')}}">Login</a>
+					<a href="{{ path('app_register') }}">{{ 'registerH'|trans }}</a>
+					<a href="{{ path('app_login') }}">{{ 'loginH'|trans }}</a>
 				{% endif %}
 
-
-				{#------Role merchant------------------------- #}
 				{% if is_granted('ROLE_MERCHANT') %}
 					<li class="link_employe">
-						<a style="color: blue;" href="{{path('admin')}}">
+						<a style="color: blue;" href="{{ path('admin') }}">
 							<i class="fas fa-user-edit"></i>
 						</a>
 					</li>
 				{% endif %}
 
-				{#------Role Admin------------------------- #}
 				{% if is_granted('ROLE_ADMIN') %}
 					<li class="link_admin">
-						<a href="{{path('admin')}}" class="btn btn-danger">Administrateur</a>
+						<a href="{{ path('admin') }}" class="btn btn-danger">{{ 'admin'|trans }}</a>
 					</li>
 				{% endif %}
 
-				
-
-				{# <a class="insta" href="">
-																													<i class="fab fa-instagram"></i>
-																												</a> #}
-				<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank" >
+				<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank">
 					<i class="fab fa-facebook-f"></i>
 				</a>
+
 				<div class="busca">
 					<form class="d-flex" role="search" method="get" action="{{ path('product_search') }}">
 						<div class="input-group">
-							<input type="search" class="form-control" name="search" placeholder="Busca" aria-label="Search">
+							<input type="search" class="form-control" name="search" placeholder="{{ 'search_placeholder'|trans }}" aria-label="Search">
 							<button class="btn btn-secondary" type="submit">
 								<i class="fa-solid fa-magnifying-glass"></i>
 							</button>
@@ -96,31 +89,43 @@
 					{% endif %}
 				</div>
 
-			</div>
-			{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
-					<a class="shoping_header" href="{{path('user_basket')}}">
+				{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+					<a class="shoping_header" href="{{ path('user_basket') }}">
 						<i class="fas fa-shopping-cart">
 							{% if is_granted('ROLE_USER') %}
-								{% set userId = app.user is not null ? app.user.id : null %}
-								{% set totalQuantity = userId is not null ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
+								{% set userId = app.user ? app.user.id : null %}
+								{% set totalQuantity = userId ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
 								<label>{{ totalQuantity }}</label>
 							{% endif %}
 						</i>
 					</a>
 				{% endif %}
-		</nav>
-		<!--Fim de barre de Navegation-->
 
+				{# {% set route = app.request.attributes.get('_route') %}
+				{% set params = app.request.attributes.get('_route_params') %}
+				<div class="language-switcher">
+					{% for lang, label in {'fr':'FR','pt':'PT','en':'EN'} %}
+						<a href="{{ path(route, params|merge({'_locale': lang})) }}" class="{{ app.request.locale == lang ? 'active' : '' }}">{{ label }}</a>
+						{% if not loop.last %}
+							|
+						{% endif %}
+					{% endfor %}
+				</div> #}
+
+
+			</nav>
+			<!-- Fin de barre de Navigation -->
+		</body>
 	</body>
 </html>
 
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-	const menuButton = document.querySelector('.hamburger');
-	const navMenu = document.getElementById('navMenu');
+const menuButton = document.querySelector('.hamburger');
+const navMenu = document.getElementById('navMenu');
 
-	menuButton.addEventListener('click', function () {
-	navMenu.classList.toggle('active');
-	});
-	});
+menuButton.addEventListener('click', function () {
+navMenu.classList.toggle('active');
+});
+});
 </script>

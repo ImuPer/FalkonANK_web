@@ -1,0 +1,303 @@
+homeH: Início
+about_us: Sobre nós
+contact: Contato
+photo_frame: Quadro de fotos
+my_space: Meu espaço
+profileH: Perfil
+ordersH: Compras
+basketH: Cesta
+logout: Sair
+registerH: Criar conta
+loginH: Entrar
+admin: Administrador
+search_placeholder: Buscar
+search_button: Buscar
+
+# ----------about page-------------------------------------------------------------------------
+about_us_title: "Sobre Nós"
+back_to_store: "Voltar à loja"
+about_us_paragraph_1: "Somos uma organização sediada em Paris, França, criada pela diáspora cabo‑verdiana com o objetivo de fortalecer a conexão entre a comunidade cabo‑verdiana no exterior e os comerciantes locais em Cabo Verde. Nosso site de e‑commerce foi projetado para facilitar o comércio direto entre os membros da diáspora e os vendedores locais, promovendo uma experiência única de compras para nossos clientes."
+about_us_paragraph_2: "Focamos principalmente no setor alimentar, permitindo que a diáspora cabo‑verdiana compre produtos diretamente de comerciantes locais em Cabo Verde. Nosso sistema possibilita que os clientes façam compras e instruam seus familiares ou destinatários a irem buscar os produtos nos pontos de venda, ou optem por entrega ao domicílio, garantindo maior conveniência e flexibilidade."
+about_us_paragraph_3: "O nosso compromisso é com a qualidade, a autenticidade e o apoio à economia local, promovendo o crescimento e o desenvolvimento do comércio em Cabo Verde através de uma plataforma digital inovadora e acessível."
+
+
+# ------------------contact page-----------------------------------------------------------
+contact.title: "Contato"
+# back_to_store: "Voltar à loja"
+contact.heading: "Fale Conosco"
+label.name: "Nome"
+placeholder.name: "Seu nome"
+label.email: "E‑mail"
+placeholder.email: "Seu e‑mail"
+label.subject: "Assunto"
+placeholder.subject: "Assunto da sua mensagem"
+label.message: "Mensagem"
+placeholder.message: "Sua mensagem"
+button.send: "Enviar"
+contact.info_title: "Informações de Contato"
+contact.follow_us: "Siga‑nos"
+
+# reponse-------------------------
+response.heading: "Resposta à mensagem de %name%"
+response.subject: "Assunto :"
+response.message_label: "Mensagem :"
+button.close: "Fechar"
+response.reply_label: "Resposta :"
+response.send_button: "Enviar"
+
+
+#---------------- cadrePhoto page-------------------------------------------------
+download_apk: "Descarregar APK"
+play_store: "Play Store :"
+app_banner: "Banner do aplicativo"
+screenshot: "Captura #%"
+app_name: "Imuhotepu‑Videos"
+app_description: >
+  é um aplicativo de streaming educativo por assinatura,
+  oferecendo acesso exclusivo a vídeos sobre história, cultura geral e educação.
+  Aprenda no seu ritmo, descubra o mundo e enriqueça seus conhecimentos
+  com uma plataforma intuitiva e rica em conteúdos.
+
+
+
+# ----------------register page-----------------------------------------------------------------
+register:
+  title: "Registrar"
+  create_account: "Criar uma conta"
+  email: "E-mail"
+  password: "Senha"
+  confirm_password: "Confirmar Senha"
+  first_name: "Primeiro Nome"
+  last_name: "Sobrenome"
+  address: "Endereço"
+  accept_terms: "Eu aceito os"
+  terms_conditions: "Termos e Condições"
+  create_account_button: "Criar Conta"
+form:
+  email_placeholder: "E-mail"
+  password_placeholder: "Senha"
+  confirm_password_placeholder: "Confirme a senha"
+  last_name_placeholder: "Sobrenome (apelido(s))"
+  first_name_placeholder: "Nome"
+  address_placeholder: "Seu endereço"
+  agree_terms_message: "Você deve concordar com os nossos termos."
+  password_blank_message: "Por favor, insira uma senha"
+  password_length_message: "Sua senha deve ter pelo menos {{ limit }} caracteres"
+  confirm_password_blank_message: "Por favor, confirme a senha"
+
+# terms and condition
+terms_and_conditions:
+  title: "Condições Gerais de Utilização"
+  heading: "Condições Gerais de Utilização (CGU)"
+  last_update: "Última atualização"
+  platform_goal: "1. Objetivo da Plataforma"
+  platform_goal_description: "Esta plataforma conecta a diáspora cabo-verdiana com os comerciantes locais em Cabo Verde. Os membros da diáspora podem comprar produtos para seus familiares no país. Estes produtos serão retirados localmente ou entregues aos beneficiários através dos nossos parceiros."
+  access: "2. Acesso ao Serviço"
+  free_registration: "Inscrição gratuita com criação de conta"
+  acceptance: "Aceitação obrigatória destas CGU"
+  correct_information: "Fornecimento de informações corretas e atualizadas"
+  order_process: "3. Processo de Encomenda"
+  product_selection: "Escolha dos produtos junto dos comerciantes"
+  online_payment: "Pagamento online através de um sistema seguro"
+  delivery_or_pickup: "Retirada ou entrega dos produtos em Cabo Verde"
+  platform_role: "4. Papel da Plataforma"
+  platform_intermediary: "A plataforma atua como intermediária. Os comerciantes são responsáveis pela qualidade, disponibilidade e entrega dos produtos."
+  user_commitments: "5. Compromissos dos Utilizadores"
+  honest_use: "Utilização honesta e conforme à legislação"
+  no_fraud: "Proibição de contas falsas ou atividades fraudulentas"
+  respect_others: "Respeito pelos outros utilizadores e pelos comerciantes"
+  payment_and_security: "6. Pagamento e Segurança"
+  payment_security: "Todos os pagamentos são processados por prestadores certificados. Nenhuma informação bancária é armazenada nos nossos servidores."
+  delivery: "7. Entrega / Retirada"
+  delivery_method: "O método de retirada depende do comerciante (entrega ou levantamento). Os detalhes são apresentados antes do pagamento."
+  responsibility: "8. Responsabilidade"
+  platform_responsibility: "A plataforma não se responsabiliza por atrasos, ruturas de stock ou litígios diretos com o comerciante. No entanto, estamos disponíveis para ajudar na resolução de qualquer conflito."
+  data_protection: "9. Proteção de Dados"
+  data_protection_description: "Os seus dados pessoais são protegidos de acordo com as leis em vigor (RGPD)."
+  privacy_policy: "Política de Privacidade"
+  for_more: "para mais detalhes"
+  terms_changes: "10. Alterações das CGU"
+  right_to_change: "Reservamo-nos o direito de alterar estas condições a qualquer momento. Será notificado(a) em caso de alterações importantes."
+  contact: "11. Contacto"
+  contact_info: "Para qualquer questão ou sugestão"
+  acceptance_alert: "Ao utilizar a nossa plataforma, aceita integralmente e sem reservas estas condições."
+  thank_you: "Obrigado pela sua confiança"
+
+#---Privacy------------------
+privacy:
+  title: "Política de Privacidade"
+  heading: "Política de Privacidade"
+  last_update: "Última atualização"
+
+  intro_title: "1. Introdução"
+  intro_text: "Esta política de privacidade explica como coletamos, usamos, armazenamos e protegemos seus dados pessoais quando você utiliza nossa plataforma."
+
+  data_collected_title: "2. Dados Coletados"
+  data_collected_intro: "Coletamos as seguintes informações:"
+  data:
+    name: "Nome, sobrenome"
+    email: "Endereço de e-mail"
+    address: "Endereço postal (para entrega ou faturamento)"
+    history: "Histórico de pedidos"
+    cookies: "Dados de navegação (via cookies, se aceitos)"
+
+  data_use_title: "3. Uso dos Dados"
+  data_use_intro: "Seus dados são usados para:"
+  data_use:
+    account: "Criar e gerenciar sua conta de usuário"
+    orders: "Garantir o bom funcionamento dos pedidos e entregas"
+    improvement: "Melhorar nossa plataforma e os serviços oferecidos"
+    communication: "Comunicar com você (e-mails de confirmação, notificações, suporte ao cliente, etc.)"
+
+  sharing_title: "4. Compartilhamento de Dados"
+  sharing_text: "Não compartilhamos seus dados pessoais, exceto com prestadores de serviço necessários para a execução dos serviços (pagamento, entrega). Nenhum dado será vendido a terceiros."
+
+  security_title: "5. Segurança"
+  security_text: "Implementamos todas as medidas técnicas e organizacionais necessárias para proteger seus dados contra acessos não autorizados, perda ou destruição."
+
+  retention_title: "6. Duração de Conservação"
+  retention_text: "Seus dados serão mantidos enquanto sua conta estiver ativa e por até 3 anos após sua última atividade."
+
+  rights_title: "7. Seus Direitos"
+  rights_intro: "De acordo com o RGPD, você tem os seguintes direitos:"
+  rights:
+    access: "Acesso aos seus dados pessoais"
+    update: "Correção ou atualização das suas informações"
+    delete: "Exclusão da sua conta e dos seus dados"
+    object: "Oposição a certos tratamentos dos seus dados"
+  rights.contact: "Para exercer seus direitos, entre em contato conosco através de: <a href=\"mailto:%email%\">%email%</a>"
+
+  cookies_title: "8. Cookies"
+  cookies_text: "Usamos cookies para melhorar a sua experiência de usuário. Você pode aceitar ou recusar o uso de cookies através das configurações do seu navegador."
+
+  modifications_title: "9. Modificações"
+  modifications_text: "Esta política pode ser atualizada a qualquer momento. Em caso de modificações importantes, você será informado(a) através da plataforma ou por e-mail."
+
+  contact_title: "10. Contato"
+  contact_text: "Para qualquer dúvida sobre esta política, entre em contato conosco:"
+
+  acceptance: "Ao utilizar nossa plataforma, você aceita esta Política de Privacidade."
+
+
+# ------------Login page-----------------------------------------------------------------------------
+login:
+  title: "Iniciar Sessão"
+  heading: "Iniciar Sessão"
+  logged_in_as: "Sessão iniciada como %user%"
+  logout: "Sair"
+  email: "Email"
+  password: "Senha"
+  forgot_password: "Esqueceu a sua senha?"
+  submit: "LOGIN"
+
+
+# ----------reset page-----------------------------------------------------------------------------------------
+reset_password:
+  title: "Redefinir sua senha"
+  heading: "Redefinir sua senha"
+  email:
+    label: "Endereço de e-mail"
+    help: "Digite seu endereço de e-mail e enviaremos um link para redefinir sua senha."
+  submit: "Enviar e-mail"
+
+# Cyties Nav-----------------
+navbar:
+  toggle_navigation: "Alternar navegação"
+  cities: "Cidades : lojas"
+
+# Footer---------------------
+footer:
+  title: "Rodapé Responsivo"
+  home: "Home"
+  contact: "Contacto"
+  about: "Sobre nós"
+  privacy_policy: "Política"
+  imuhotepu_videos: "Imuhotepu-videos"
+  download_apk: "Baixar APK"
+
+# -Home-------------------------
+home:
+  meta_description: 'FalkonANK: plataforma de ligação entre a diáspora cabo-verdiana e os comerciantes locais em Cabo Verde. Compre e faça entregar produtos aos seus entes queridos.'
+  title: 'FalkonANK'
+  category_label: 'Selecione uma categoria'
+  shops_button: 'Nossas Lojas'
+  create_account_prompt: 'Para comprar – crie uma conta simples'
+  add_to_cart: 'Adicionar ao carrinho'
+  out_of_stock: 'Esgotado'
+  shop: 'Loja'
+  location: 'Localidade'
+
+# Categories-----------------
+category.Fruits: Frutas
+category.Electronics: Eletrônicos
+category.Clothing: Roupas
+
+# Profile---------------------------------
+profile:
+  title: "Perfil (Minha Conta)"
+  back_to_shop: "Voltar à loja"
+  personal_data: "Dados Pessoais"
+  email: "Email"
+  name: "Nome"
+  address: "Endereço"
+  edit: "Modificar"
+  merchant: "Comerciante"
+  become_merchant: "Torne-se um comerciante"
+  close: "Fechar"
+  city: "Cidade"
+  select_city: "Selecione uma cidade"
+  shop_name: "Nome da loja"
+  shop_name_placeholder: "Insira o nome da loja"
+  shop_address: "Endereço da loja"
+  shop_address_placeholder: "Insira o endereço da loja"
+  nif: "NIF (Número de Identificação Fiscal)"
+  nif_placeholder: "Ex: 123456789"
+  nif_title: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5."
+  nif_help: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5."
+  cancel: "Cancelar"
+  submit: "Enviar"
+  merchant_pending: "Sua solicitação está sendo processada."
+  submitted_at: "Enviado em"
+  edit_store_data: "Modificar dados da loja"
+  merchant_rejected: "Sua solicitação foi recusada."
+  reason: "Razão"
+  more_info: "Para mais informações:"
+  contact_us: "Entre em contato"
+  merchant_approved: "Parabéns! Sua solicitação foi aprovada."
+  admin_message: "Mensagem do administrador"
+
+  delete_button: "Eliminar a Conta"
+  delete_confirm: "Atenção: este processo não tem volta! Tem certeza de que deseja eliminar a sua conta?"
+
+# Order---------------------
+order:
+  title: Encomendas
+  back_to_shop: Voltar à loja
+  my_orders: As Minhas Compras
+  reference: Referência
+  date: Data (hora de CV)
+  total: Total
+  status: Estado
+  beneficiary: Beneficiário
+  no_orders: Nenhum registro de compra!
+
+# basket-------------
+basket:
+  title: "Minha Cesta"
+  back_to_shop: "Voltar à loja"
+  city: "Cidade"
+  empty_message: "A sua cesta está vazia!"
+  total: "Total"
+  checkout_button: "Finalizar a compra"
+  beneficiary_info: "Informações do Beneficiário"
+  close: "Fechar"
+  beneficiary_city: "Cidade do Beneficiário"
+  select_city: "Seleciona uma cidade"
+  beneficiary_name: "Nome"
+  beneficiary_address: "Endereço do Beneficiário"
+  beneficiary_email: "Email"
+  optional: "opcional"
+  phone_number: "Número de Telemóvel"
+  confirm_pay: "Confirmar e Pagar"
+  
+  no_items_message: "Você ainda não tem artigos, adicione um produto ao carrinho !"
