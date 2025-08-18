@@ -35,6 +35,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\FormBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -43,13 +44,15 @@ class OrderCrudController extends AbstractCrudController
     private ManagerRegistry $doctrine;
     private RequestStack $requestStack;
     private RouterInterface $router;
+       private TranslatorInterface $translator;
 
-    public function __construct(Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router)
+    public function __construct(Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->security = $security;
         $this->doctrine = $doctrine;
         $this->requestStack = $requestStack;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public static function getEntityFqcn(): string
@@ -279,8 +282,7 @@ class OrderCrudController extends AbstractCrudController
 
             // Validation obligatoire
             if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
-                $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
-
+                $this->addFlash('danger', $this->translator->trans('order.refund_missing_fields'));
                 $request = $this->requestStack->getCurrentRequest();
                 $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
 
@@ -306,7 +308,7 @@ class OrderCrudController extends AbstractCrudController
             $autoCode = $entityInstance->getAutoSecretCode();
 
             if ($merchantCode === null || $merchantCode !== $autoCode) {
-                $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
+                $this->addFlash('danger', $this->translator->trans('order.invalid_secret_code'));
 
                 $request = $this->requestStack->getCurrentRequest();
                 $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
@@ -314,7 +316,7 @@ class OrderCrudController extends AbstractCrudController
                 (new RedirectResponse($referer))->send();
                 exit;
             } else {
-                $this->addFlash('success', 'Registrado com sucesso');
+                $this->addFlash('success', $this->translator->trans('order.saved_successfully'));
             }
         }
 

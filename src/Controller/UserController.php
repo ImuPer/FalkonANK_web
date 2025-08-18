@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -97,7 +98,8 @@ class UserController extends AbstractController
         User $user,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository,
-        Service $service
+        Service $service,
+        TranslatorInterface $translator
     ): Response {
         //  dd($user);    
         // $form = $this->createForm(UserType::class, $user);
@@ -158,7 +160,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Dados modificados com sucesso.');
+            $this->addFlash('success', $translator->trans('account.update_success'));
             return $this->redirectToRoute('app_user_show', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
         }
 
@@ -203,7 +205,8 @@ class UserController extends AbstractController
         ResetPasswordRequestRepository $resetPasswordRequestRepository,
         TokenStorageInterface $tokenStorage,
         SessionInterface $session,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        TranslatorInterface $translator, // 👈 ajout du traducteur
     ): Response {
         if (!$this->isCsrfTokenValid('delete' . $user->getId(), $request->get('_token'))) {
             return $this->redirectToRoute('app_user_show');
@@ -212,8 +215,8 @@ class UserController extends AbstractController
         $password = $request->request->get('password');
 
         if (!$passwordHasher->isPasswordValid($user, $password)) {
-            $this->addFlash('error', 'Palavra-passe incorreta.');
-            return $this->redirectToRoute('app_user_delete', ['id' => $user->getId()]);
+           $this->addFlash('error', $translator->trans('user.invalid_password'));
+           return $this->redirectToRoute('app_user_delete', ['id' => $user->getId()]);
         }
 
         $reason = $request->request->get('reason');
@@ -284,7 +287,7 @@ class UserController extends AbstractController
         // Appliquer toutes les modifications en une seule fois
         $entityManager->flush();
 
-        $this->addFlash('success', 'A sua conta foi eliminada com sucesso.');
+        $this->addFlash('success', $translator->trans('user.account_deleted'));
 
         // Déconnexion : vider le token et la session
         $tokenStorage->setToken(null);

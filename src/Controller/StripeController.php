@@ -22,6 +22,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 
@@ -38,7 +39,7 @@ class StripeController extends AbstractController
 
     //--------------checkout--------------------------------------------------
     #[Route('/checkout', name: 'app_checkout', methods: ['POST'])]
-    public function checkout(Request $request, BasketProductRepository $basketProductRepository): Response
+    public function checkout(Request $request, BasketProductRepository $basketProductRepository, TranslatorInterface $translator): Response
     {
         $basket = $this->getUser()->getBasket();
         $basketProducts = $basketProductRepository->findBasketProductsByBasketId($basket);
@@ -56,7 +57,7 @@ class StripeController extends AbstractController
 
         // Vérifie si le montant est inférieur à 0,150 €
         if ($totalAmount < 250) { // 250 centimes en centimes
-            $this->addFlash('error', "O valor total da compra deve ser superior a 250 CVE(escudos).");
+            $this->addFlash('error', $translator->trans('checkout.minimum_amount_error'));
             return $this->redirectToRoute('user_basket');
         }
 
@@ -66,11 +67,10 @@ class StripeController extends AbstractController
             $currentShopId = $bp->getProduct()->getShop()->getId();
 
             if ($currentShopId !== $firstShopId) {
-                $this->addFlash('error', "Todos os produtos na Cesta devem pertencer à mesma loja. Remova os produtos de lojas diferentes.");
+                $this->addFlash('error', $translator->trans('checkout.same_shop_required'));
                 return $this->redirectToRoute('user_basket');
             }
         }
-
 
         // Récupérer les infos du formulaire
         $cityId = $request->request->get('city_id'); // 👈 récupère l'id sélectionné
@@ -84,7 +84,7 @@ class StripeController extends AbstractController
             $productCityId = $bp->getProduct()->getShop()->getCity()->getId();
 
             if ($productCityId != $cityId) {
-                $this->addFlash('error', "Todos os produtos na Cesta devem pertencer à cidade selecionada para o Beneficiário. Remova os produtos de outra cidade ou altere a cidade do Beneficiário.");
+                $this->addFlash('error', $translator->trans('checkout.same_city_required'));
                 return $this->redirectToRoute('user_basket'); // Rediriger vers la page panier ou une autre page pertinente
             }
         }
@@ -155,7 +155,8 @@ class StripeController extends AbstractController
         OrderRepository $orderRepository,
         EntityManagerInterface $entityManager,
         CityRepository $cityRepository,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        TranslatorInterface $translator
     ): Response {
         // Récupérer l'ID de la session depuis la requête
         $id_sessions = $request->query->get('id_sessions');
@@ -372,45 +373,45 @@ class StripeController extends AbstractController
 
 
         $receiptContent = <<<EOD
-<html>
-  <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
-    </div>
+            <html>
+                <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
+                    </div>
 
-    <p>Olá <strong>{$customerName}</strong>,</p>
+                    <p>{$translator->trans('email.greeting', ['%name%' => $customerName])}</p>
 
-    <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
+                    <p>{$translator->trans('email.thank_you')}</p>
 
-    <p>
-      <strong>Número da encomenda:</strong> {$ref_order}<br>
-      <strong>Valor total:</strong> {$amountFormatted} {$currency}
-      (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
-    </p>
+                    <p>
+                    <strong>{$translator->trans('email.order_number')}:</strong> {$ref_order}<br>
+                    <strong>{$translator->trans('email.total_amount')}:</strong> {$amountFormatted} {$currency}
+                    (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
+                    </p>
 
-    <p style="color: #a00;">
-      <em>O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o codigo secreto. </em>
-      <strong>Deves envia-lo essa referência : {$ref_order}</strong> e o <strong>codigo secreto : {$secretCode}</strong>
-    </p>
-    <br>
+                    <p style="color: #a00;">
+                    <em>{$translator->trans('email.instructions')}</em>
+                    <strong>{$translator->trans('email.send_reference')} {$ref_order}</strong> {$translator->trans('email.secret_code')} <strong>{$secretCode}</strong>
+                    </p>
+                    <br>
 
-    <div style="text-align: center;">
-        <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
-        {$productsList}
-    </div>
+                    <div style="text-align: center;">
+                        <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">{$translator->trans('email.products')}</h3>
+                        {$productsList}
+                    </div>
 
-    <h3>Entrega para:</h3>
-    <p>
-      <strong>Nome:</strong> {$beneficiaryName}<br>
-      <strong>Endereço:</strong> {$beneficiaryAddress}
-    </p>
+                    <h3>{$translator->trans('email.delivery_to')}:</h3>
+                    <p>
+                    <strong>{$translator->trans('email.name')}:</strong> {$beneficiaryName}<br>
+                    <strong>{$translator->trans('email.address')}:</strong> {$beneficiaryAddress}
+                    </p>
 
-    <p style="margin-top: 30px;">Atenciosamente,<br>
-    <strong>FALKON-ANK Alimentason</strong></p>
+                    <p style="margin-top: 30px;">{$translator->trans('email.signature')}<br>
+                    <strong>FALKON-ANK Alimentason</strong></p>
 
-  </body>
-</html>
-EOD;
+                </body>
+            </html>
+        EOD;
 
         // Envoi du mail au client
         $emailClient = (new Email())

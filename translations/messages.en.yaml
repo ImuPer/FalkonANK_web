@@ -1,6 +1,6 @@
 homeH: Home
 about_us: About us
-contact: Contact
+contactH: Contact
 photo_frame: Photo frame
 my_space: My space
 profileH: Profile
@@ -74,6 +74,11 @@ register:
   accept_terms: "I accept the"
   terms_conditions: "Terms and Conditions"
   create_account_button: "Create Account"
+  # addFlash:
+  email_already_used: 'This email is already in use.'
+  passwords_do_not_match: 'Passwords do not match.'
+  success: 'Registration successful!'
+
 form:
   email_placeholder: "Email"
   password_placeholder: "Password"
@@ -275,6 +280,14 @@ order:
   status: Status
   beneficiary: Beneficiary
   no_orders: No purchase records found!
+# AddFlash:
+  refund_missing_fields: "❌ Refund: The amount and refund status are required."
+  invalid_secret_code: "❌ The secret code is incorrect. Please enter the correct code."
+  saved_successfully: "Successfully saved"
+  # delivered_note: "All products have been successfully delivered. Come back soon. Our team thanks you!"
+  # cancelled_note: "The order has been cancelled."
+  # refund_in_progress: "The refund is in progress."
+  # refund_completed: "The refund was completed on %date%. The amount will be available in your account within 3 to 8 business days, depending on your bank."
 
 # basket---------------------------
 basket:
@@ -296,3 +309,53 @@ basket:
   confirm_pay: "Confirm and Pay"
 
   no_items_message: "You don't have any items yet, add a product to your basket!"
+
+# -addFlash-------------------
+merchantAdF:
+    updated_successfully: 'Data updated successfully!'
+merchant.request_already_exists: 'You already have a registered store request.'
+merchant.required_fields_missing: 'All required fields must be filled in.'
+merchant.invalid_file_format: 'The file must be in PDF, JPG, JPEG, or PNG format.'
+merchant.store_creation_success: 'Your store creation request has been successfully registered.'
+comment.added_success: 'Comment added successfully!'
+verify:
+  email_error: 'Error verifying the email address.'
+  invalid_email: 'This email is invalid.'
+  success: 'Your email address has been successfully verified.'
+contact:
+  all_fields_required: 'All fields are required.'
+  invalid_email: 'The email address is not valid.'
+  success: 'Your message was sent successfully. Thank you for contacting us!'
+  error: 'An error occurred while sending your message. Please try again later.'
+  not_found: 'Contact not found.'
+  response_saved_and_sent: 'Response saved and sent successfully!'
+  empty_response_error: 'Please write a response.'
+auth:
+  invalid_email: 'Incorrect email address!'
+checkout:
+  minimum_amount_error: 'The total purchase amount must be greater than 250 CVE.'
+  same_shop_required: 'All products in the basket must belong to the same shop. Please remove products from different shops.'
+  same_city_required: 'All products must belong to the selected city for the beneficiary. Remove products from another city or change the beneficiary city.'
+email:
+  greeting: "Hello <strong>%name%</strong>,"
+  thank_you: "Thank you for your order. Here is a summary of your purchase:"
+  order_number: "Order Number"
+  total_amount: "Total Amount"
+  instructions: "The recipient must present their ID, order reference, and secret code."
+  send_reference: "You must send them this reference:"
+  secret_code: "and the secret code:"
+  products: "Products"
+  delivery_to: "Delivery to"
+  name: "Name"
+  address: "Address"
+  signature: "Best regards,"
+account:
+  update_success: 'Data updated successfully.'
+user:
+  invalid_password: 'Incorrect password.'
+  account_deleted: 'Your account has been successfully deleted.'
+merchant:
+  approved_message: "%name%, welcome. Your request has been accepted! You can access your Merchant space using the 'Merchant' button or the blue icon at the top of the page."
+  rejected_message: "%name%, unfortunately your request was not accepted due to missing or incorrect information. For more details, contact us via the 'Contact' button at the top of the page."
+  approved_flash: "Merchant approved successfully!"
+  rejected_flash: "Merchant not approved!"

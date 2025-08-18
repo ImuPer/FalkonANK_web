@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/order')]
 class OrderController extends AbstractController
@@ -90,7 +91,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/{id}/comment', name: 'app_order_comment', methods: ['POST'])]
-    public function comment(Request $request, Order $order, EntityManagerInterface $em): Response
+    public function comment(Request $request, Order $order, EntityManagerInterface $em, TranslatorInterface $translator): Response
     {
         $note = $request->request->get('customer_note');
 
@@ -98,7 +99,7 @@ class OrderController extends AbstractController
             $order->setCustomerNote($note);
             $em->flush();
 
-            $this->addFlash('success', 'Comentário adicionado com sucesso!');
+            $this->addFlash('success', $translator->trans('comment.added_success'));
         }
 
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);

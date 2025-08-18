@@ -1,6 +1,6 @@
 homeH: Accueil
 about_us: À propos de nous
-contact: Contact
+contactH: Contact
 photo_frame: Cadre de photos
 my_space: Mon espace
 profileH: Profil
@@ -72,6 +72,11 @@ register:
   accept_terms: "J'accepte les"
   terms_conditions: "Conditions Générales d'Utilisation"
   create_account_button: "Créer un compte"
+  # addFlash:
+  email_already_used: 'Cet e-mail est déjà utilisé.'
+  passwords_do_not_match: 'Les mots de passe ne correspondent pas.'
+  success: 'Inscription réussie !'
+
 form:
   email_placeholder: "E-mail"
   password_placeholder: "Mot de passe"
@@ -178,17 +183,17 @@ privacy:
   acceptance: "En utilisant notre plateforme, vous acceptez cette Politique de Confidentialité."
 
 
-# --------delete acountPage-----------------------------------------------------------------------------------------
-account:
-  deletion_title: "Suppression du compte"
-  merchant_warning: "Vous êtes un commerçant. La suppression du compte entraînera la perte de ce rôle."
-  deletion_confirm_question: "Êtes-vous sûr de vouloir supprimer votre compte ?"
-  delete_reason_label: "Motif de la suppression (optionnel)"
-  delete_reason_placeholder: "Pourquoi souhaitez-vous supprimer votre compte ?"
-  confirm_password_label: "Confirmez votre mot de passe"
-  confirm_password_placeholder: "Saisissez votre mot de passe"
-  confirm_delete_button: "Confirmer la suppression"
-  cancel_button: "Annuler"
+# # --------delete acountPage-----------------------------------------------------------------------------------------
+# account:
+#   deletion_title: "Suppression du compte"
+#   merchant_warning: "Vous êtes un commerçant. La suppression du compte entraînera la perte de ce rôle."
+#   deletion_confirm_question: "Êtes-vous sûr de vouloir supprimer votre compte ?"
+#   delete_reason_label: "Motif de la suppression (optionnel)"
+#   delete_reason_placeholder: "Pourquoi souhaitez-vous supprimer votre compte ?"
+#   confirm_password_label: "Confirmez votre mot de passe"
+#   confirm_password_placeholder: "Saisissez votre mot de passe"
+#   confirm_delete_button: "Confirmer la suppression"
+#   cancel_button: "Annuler"
 
 
 
@@ -288,6 +293,14 @@ order:
   status: Statut
   beneficiary: Bénéficiaire
   no_orders: Aucun enregistrement d'achat trouvé !
+# addFlash:
+  refund_missing_fields: "❌ Remboursement : Le montant et l'état du remboursement sont obligatoires."
+  invalid_secret_code: "❌ Le code secret est incorrect. Veuillez saisir le bon code."
+  saved_successfully: "Enregistré avec succès"
+  # delivered_note: "Tous les produits ont été livrés avec succès. Revenez vite. Notre équipe vous remercie !"
+  # cancelled_note: "La commande a été annulée."
+  # refund_in_progress: "Le remboursement est en cours."
+  # refund_completed: "Le remboursement a été effectué le %date%. Le montant sera disponible sur votre compte dans un délai de 3 à 8 jours ouvrables, selon votre banque."
 
 # basket------------------------
 basket:
@@ -310,3 +323,51 @@ basket:
   
   no_items_message: "Vous n'avez pas encore d'articles, ajoutez un produit au panier !"
 
+# -addFlash-------------------
+merchantAdF:
+    updated_successfully: 'Données mises à jour avec succès !'
+merchant.request_already_exists: 'Vous avez déjà une demande de magasin enregistrée.'
+merchant.required_fields_missing: 'Tous les champs obligatoires doivent être remplis.'
+merchant.invalid_file_format: 'Le fichier doit être au format PDF, JPG, JPEG ou PNG.'
+merchant.store_creation_success: 'Votre demande de création de magasin a été enregistrée avec succès.'
+verify:
+  email_error: 'Erreur lors de la vérification de l’e-mail.'
+  invalid_email: 'Cet e-mail est invalide.'
+  success: 'Votre adresse e-mail a été vérifiée avec succès.'
+contact:
+  all_fields_required: 'Tous les champs sont obligatoires.'
+  invalid_email: "L'adresse e-mail n'est pas valide."
+  success: 'Votre message a été envoyé avec succès. Merci de nous avoir contactés !'
+  error: "Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer plus tard."
+  not_found: 'Contact non trouvé.'
+  response_saved_and_sent: 'Réponse sauvegardée et envoyée avec succès !'
+  empty_response_error: 'Veuillez écrire une réponse.'
+auth:
+  invalid_email: 'Adresse e-mail incorrecte !'
+checkout:
+  minimum_amount_error: "Le montant total de l'achat doit être supérieur à 250 CVE."
+  same_shop_required: 'Tous les produits du panier doivent appartenir au même magasin. Veuillez retirer les produits provenant de magasins différents.'
+  same_city_required: "Tous les produits doivent appartenir à la ville sélectionnée pour le bénéficiaire. Retirez les produits d'une autre ville ou modifiez la ville du bénéficiaire."
+email:
+  greeting: "Bonjour <strong>%name%</strong>,"
+  thank_you: "Merci pour votre commande. Voici le résumé de votre achat :"
+  order_number: "Numéro de commande"
+  total_amount: "Montant total"
+  instructions: "Le bénéficiaire devra présenter son document d'identité, la référence de la commande et le code secret."
+  send_reference: "Vous devez lui transmettre cette référence :"
+  secret_code: "et le code secret :"
+  products: "Produits"
+  delivery_to: "Livraison à"
+  name: "Nom"
+  address: "Adresse"
+  signature: "Cordialement,"
+account:
+  update_success: "Données modifiées avec succès."
+user:
+  invalid_password: 'Mot de passe incorrect.'
+  account_deleted: 'Votre compte a été supprimé avec succès.'
+merchant:
+  approved_message: "%name%, bienvenue. Votre demande a été acceptée ! Vous pouvez accéder à votre espace Marchand via le bouton 'Marchand' ou l'icône bleue en haut de la page."
+  rejected_message: "%name%, malheureusement votre demande n’a pas été acceptée en raison d’informations manquantes ou incorrectes. Pour plus d’informations, veuillez nous contacter via le bouton 'Contact' en haut de la page."
+  approved_flash: "Marchand approuvé avec succès !"
+  rejected_flash: "Marchand non approuvé !"

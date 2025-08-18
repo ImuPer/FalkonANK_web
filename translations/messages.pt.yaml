@@ -1,6 +1,6 @@
 homeH: Início
 about_us: Sobre nós
-contact: Contato
+contactH: Contato
 photo_frame: Quadro de fotos
 my_space: Meu espaço
 profileH: Perfil
@@ -73,6 +73,10 @@ register:
   accept_terms: "Eu aceito os"
   terms_conditions: "Termos e Condições"
   create_account_button: "Criar Conta"
+  # addFlash:
+  email_already_used: 'Este e-mail já está em utilização.'
+  passwords_do_not_match: 'As senhas não correspondem.'
+  success: 'Registro realizado com sucesso!'
 form:
   email_placeholder: "E-mail"
   password_placeholder: "Senha"
@@ -280,6 +284,14 @@ order:
   status: Estado
   beneficiary: Beneficiário
   no_orders: Nenhum registro de compra!
+# AddFlash:
+  refund_missing_fields: "❌ Reembolso: O montante e o estado do reembolso são obrigatórios."
+  invalid_secret_code: "❌ O código secreto está incorreto. Por favor, insira o código correto."
+  saved_successfully: "Registrado com sucesso"
+  # delivered_note: "Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!"
+  # cancelled_note: "A encomenda foi cancelada."
+  # refund_in_progress: "O reembolso está em curso."
+  # refund_completed: "O reembolso foi concluído em %date%. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco."
 
 # basket-------------
 basket:
@@ -301,3 +313,54 @@ basket:
   confirm_pay: "Confirmar e Pagar"
   
   no_items_message: "Você ainda não tem artigos, adicione um produto ao carrinho !"
+
+# -addFlash-------------------
+merchantAdF:
+    updated_successfully: 'Dados atualizados com sucesso!'
+merchant.request_already_exists: 'Você já tem uma solicitação de loja registrada.'
+merchant.required_fields_missing: 'Todos os campos obrigatórios devem ser preenchidos.'
+merchant.invalid_file_format: 'O ficheiro deve estar no formato PDF, JPG, JPEG ou PNG.'
+merchant.store_creation_success: 'Sua solicitação de criação de loja foi registrada com sucesso.'
+comment.added_success: 'Comentário adicionado com sucesso!'
+verify:
+  email_error: 'Erro ao verificar o e-mail.'
+  invalid_email: 'Este e-mail é inválido.'
+  success: 'Seu endereço de e-mail foi verificado com sucesso.'
+contact:
+  all_fields_required: 'Todos os campos são obrigatórios.'
+  invalid_email: 'O endereço de e-mail não é válido.'
+  success: 'Sua mensagem foi enviada com sucesso. Obrigado por nos contatar!'
+  error: 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.'
+  not_found: 'Contato não encontrado.'
+  response_saved_and_sent: 'Resposta salva e enviada com sucesso!'
+  empty_response_error: 'Por favor, escreva uma resposta.'
+auth:
+  invalid_email: 'E-mail incorreto!'
+checkout:
+  minimum_amount_error: 'O valor total da compra deve ser superior a 250 CVE (escudos).'
+  same_shop_required: 'Todos os produtos na Cesta devem pertencer à mesma loja. Remova os produtos de lojas diferentes.'
+  same_city_required: 'Todos os produtos na Cesta devem pertencer à cidade selecionada para o Beneficiário. Remova os produtos de outra cidade ou altere a cidade do Beneficiário.'
+email:
+  greeting: "Olá <strong>%name%</strong>,"
+  thank_you: "Obrigado pela sua encomenda. Aqui está o resumo da sua compra:"
+  order_number: "Número da encomenda"
+  total_amount: "Valor total"
+  instructions: "O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o código secreto."
+  send_reference: "Deves enviar-lhe essa referência :"
+  secret_code: "e o código secreto :"
+  products: "Produtos"
+  delivery_to: "Entrega para"
+  name: "Nome"
+  address: "Endereço"
+  signature: "Atenciosamente,"
+account:
+  update_success: 'Dados modificados com sucesso.'
+user:
+  invalid_password: 'Palavra-passe incorreta.'
+  account_deleted: 'A sua conta foi eliminada com sucesso.'
+merchant:
+  approved_message: "%name%, seja bem-vindo(a). O seu pedido foi aceite! Pode aceder ao seu espaço Comerciante através do botão 'Comerciante' ou do ícone azul no topo da página."
+  rejected_message: "%name%, infelizmente o seu pedido não foi aceite devido a falta ou erro nas informações fornecidas. Para mais informações, contacte-nos através do botão 'Contacto' no início da página."
+  approved_flash: "Comerciante aprovado com sucesso!"
+  rejected_flash: "Comerciante não aprovado!"
+
