@@ -1,4 +1,4 @@
-{# templates/imuvideos.html.twig #}
+
 {# {% extends 'base.html.twig' %} #}
 {% trans_default_domain 'messages' %}
 
@@ -34,7 +34,7 @@
 {% block body %}
 <div class="container">
   <h1>
-    Mbl-SmartFrame
+    Mbl-SmartFrame<br>
     <a href="/downloads/mbl/mbl-smartFrame.apk" download
        style="display:inline-flex;align-items:center;justify-content:center;
               border:2px solid #4c93afff;border-radius:8px;padding:6px 10px;
@@ -45,7 +45,7 @@
     </a>
   </h1>
 
-  <img src="{{ asset('image/mbl/banner.png') }}" alt="Mbl-SmartFrame" style="width:50px;height:50px;margin-right:8px;">
+  <img src="{{ asset('image/mbl/banner.png') }}" alt="Mbl-SmartFrame" style="width:250px;height:250px;margin-right:8px;">
 
   <div class="screenshots">
     {% for capture in captures %}
