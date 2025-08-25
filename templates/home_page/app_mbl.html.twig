@@ -1,5 +1,5 @@
 {# templates/imuvideos.html.twig #}
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %} #}
 {% trans_default_domain 'messages' %}
 
 {% block title %}Mbl-SmartFrame{% endblock %}
@@ -40,12 +40,12 @@
               border:2px solid #4c93afff;border-radius:8px;padding:6px 10px;
               background-color:#f9fff9;color:#333;text-decoration:none;
               font-weight:500;transition:0.3s;">
-      <img class="logo" src="{{ asset('image/icon/mbl_logo.png') }}" alt="Logo Imuhotepu" style="width:25px;height:25px;margin-right:8px;">
+      <img class="logo" src="{{ asset('image/icon/mbl_logo.png') }}" alt="Logo Mbl-SmartFrame" style="width:25px;height:25px;margin-right:8px;">
       {{ 'download_apk'|trans }}
     </a>
   </h1>
 
-  <img src="{{ asset('image/mbl/banner.png') }}" alt="{{ 'app_banner'|trans }}" class="main-image">
+  <img src="{{ asset('image/mbl/banner.png') }}" alt="Mbl-SmartFrame" style="width:50px;height:50px;margin-right:8px;">
 
   <div class="screenshots">
     {% for capture in captures %}
@@ -53,11 +53,11 @@
     {% endfor %}
   </div>
 
-  <div class="description">
+  {# <div class="description">
     <p>
       <strong>{{ 'app_name'|trans }}</strong>
       {{ 'app_description'|trans }}
     </p>
-  </div>
+  </div> #}
 </div>
 {% endblock %}

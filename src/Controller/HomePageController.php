@@ -186,7 +186,7 @@ public function shopShow(?Shop $shop): Response
 }
 
 
-    //-------------APP ImuhotepuVideos---------------------------------------------------
+    //-------------APP Mbl-SmartFrame---------------------------------------------------
     #[Route('/mbl', name: 'app_mbl')]
      public function showAppMbl(): Response
 {
@@ -195,7 +195,7 @@ public function shopShow(?Shop $shop): Response
         'screen2.jpg',
         'screen3.jpg',
         'screen4.jpg',
-        'screen5.jpg',
+        // 'screen5.jpg',
         // etc.
     ];
 
