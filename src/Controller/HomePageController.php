@@ -186,6 +186,24 @@ public function shopShow(?Shop $shop): Response
 }
 
 
+    //-------------APP ImuhotepuVideos---------------------------------------------------
+    #[Route('/mbl', name: 'app_mbl')]
+     public function showAppMbl(): Response
+{
+    $captures = [
+        'screen1.jpg',
+        'screen2.jpg',
+        'screen3.jpg',
+        'screen4.jpg',
+        'screen5.jpg',
+        // etc.
+    ];
+
+    return $this->render('home_page/app_mbl.html.twig', [
+        'captures' => $captures,
+    ]);
+}
+
 
 
 }
