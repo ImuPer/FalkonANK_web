@@ -1,4 +1,12 @@
-<form method="post" action="{{ path('app_basketP_delete', {'id': basketP.id}) }}" onsubmit="return confirm('Tem certeza de que deseja excluir este produto?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ basketP.id) }}">
-    <button class="btn"><i class="fas fa-trash"></i></button>
+<form method="post"
+      action="{{ path('app_basketP_delete', {'id': basketP.id}) }}"
+      onsubmit="return confirm('{{ 'basket.delete_confirm'|trans|e('js') }}');">
+
+    <input type="hidden"
+           name="_token"
+           value="{{ csrf_token('delete' ~ basketP.id) }}">
+
+    <button class="btn" title="{{ 'basket.delete'|trans }}">
+        <i class="fas fa-trash"></i>
+    </button>
 </form>

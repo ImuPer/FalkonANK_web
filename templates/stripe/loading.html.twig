@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmação de pagamento...</title>
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'payment.processing.title'|trans }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
     <style>
-        /* Styles de base */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -18,7 +17,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Spinner de chargement */
         .spinner {
             width: 80px;
             height: 80px;
@@ -30,78 +28,55 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* Texte central */
         p {
             text-align: center;
             font-size: 18px;
             color: #555;
         }
 
-        /* Section de publicité */
         .advertisement {
             width: 100%;
             text-align: center;
             margin-top: 20px;
             padding: 10px;
             background-color: #f1f1f1;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .advertisement img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Media Queries pour mobile */
         @media (max-width: 600px) {
             .spinner {
                 width: 60px;
                 height: 60px;
             }
-
-            p {
-                font-size: 16px;
-            }
-
-            .advertisement {
-                font-size: 14px;
-            }
         }
-
     </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
     <script>
-        // Redirige après un court délai
         setTimeout(() => {
             window.location.href = "/success/final?id_sessions={{ id_sessions }}";
-        }, 1000); // 1s de pause
+        }, 1000);
     </script>
-</head>
-<body>
+{% endblock %}
+
+{% block body %}
     <div class="spinner"></div>
-    <p>Tratando o pagamento... aguarde um momento.</p>	
 
-    <!-- Section publicitaire -->
+    <p>{{ 'payment.processing.message'|trans }}</p>
+
     <div class="advertisement">
-        {# <p>Confira as nossas promoções especiais:</p>
-        <a href="https://www.exemplo.com/promocoes" target="_blank">
-            <img src="https://via.placeholder.com/600x100/3498db/ffffff?text=Promoções+Especiais" alt="Promoções especiais">
-        </a> #}
-        <p>FalkonANK agradece a sua confiança!</p>
+        <p>{{ 'payment.processing.thanks'|trans }}</p>
+        <p>{{ 'payment.processing.amazon_books'|trans }}</p>
 
-        <p>Confira os nossos livros na amazon : </p>
-        <a href="https://www.amazon.fr/stores/To-Imuhotepu/author/B0DQPK6XMM?ref=ap_rdr&isDramIntegrated=true&shoppingPortalEnabled=true" target="_blank">
-            <img src="https://falkon.click/image/slideShow/falkon.jpg/600x100/3498db/ffffff?text=To+Imuhotepu" alt="To Imuhotepu">
+        <a href="https://www.amazon.fr/stores/To-Imuhotepu/author/B0DQPK6XMM"
+           target="_blank">
+            <img src="https://falkon.click/image/slideShow/falkon.jpg/600x100/3498db/ffffff?text=To+Imuhotepu"
+                 alt="To Imuhotepu">
         </a>
-
-        {#-----------------------Carousel Controls------------------------------------------------------- #}
-        {# {% include "layout/carousel.html.twig" %} #}
-        {#------------FIN de Carousel Controls------------------------------------------------------------------ #}
-            
-        
     </div>
-</body>
-</html>
+{% endblock %}

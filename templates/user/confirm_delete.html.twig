@@ -1,52 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Eliminação da conta
+{% block title %}
+    {{ 'user_delete.title'|trans }}
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="col-md-8">
-				<div class="card shadow-sm border-0">
-					<div class="card-body p-4">
-						<h2 class="card-title text-center text-danger mb-4">Eliminação da conta</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
 
-						{% if isMerchant %}
-							<div class="alert alert-warning text-center" role="alert">
-								⚠️ Você é um comerciante. A eliminação da conta resultará na perda deste papel.
-							</div>
-						{% else %}
-							<p class="text-center fs-5">Tem a certeza de que deseja eliminar a sua conta?</p>
-						{% endif %}
+                    <h2 class="card-title text-center text-danger mb-4">
+                        {{ 'user_delete.heading'|trans }}
+                    </h2>
 
-						{% for message in app.flashes('error') %}
-							<div class="alert alert-danger text-center" role="alert">
-								{{ message }}
-							</div>
-						{% endfor %}
+                    {% if isMerchant %}
+                        <div class="alert alert-warning text-center" role="alert">
+                            ⚠️ {{ 'user_delete.merchant_warning'|trans }}
+                        </div>
+                    {% else %}
+                        <p class="text-center fs-5">
+                            {{ 'user_delete.confirm_text'|trans }}
+                        </p>
+                    {% endif %}
 
-						<form method="POST" action="{{ path('app_user_deleteConf', {'id': user.id}) }}" class="d-flex flex-column align-items-center">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger text-center" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
 
-							<div class="mb-3 w-100">
-								<label for="reason" class="form-label">Motivo da eliminação (opcional)</label>
-								<textarea class="form-control" id="reason" name="reason" rows="4" placeholder="Por que quer eliminar a sua conta?"></textarea>
-							</div>
+                    <form method="POST"
+                          action="{{ path('app_user_deleteConf', {'id': user.id}) }}"
+                          class="d-flex flex-column align-items-center">
 
-                            <div class="mb-3 w-100">
-								<label for="password" class="form-label">Confirme a sua palavra-passe</label>
-								<input type="password" class="form-control" id="password" name="password" required placeholder="Digite a sua palavra-passe">
-							</div>
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
 
-							<div class="d-grid gap-2 col-12 col-md-6 mt-3">
-								<button type="submit" class="btn btn-danger btn-lg">Confirmar eliminação</button>
-								<a href="{{ path('app_user_show') }}" class="btn btn-secondary btn-lg">Cancelar</a>
-							</div>
-						</form>
+                        <div class="mb-3 w-100">
+                            <label for="reason" class="form-label">
+                                {{ 'user_delete.reason_label'|trans }}
+                            </label>
+                            <textarea class="form-control"
+                                      id="reason"
+                                      name="reason"
+                                      rows="4"
+                                      placeholder="{{ 'user_delete.reason_placeholder'|trans }}"></textarea>
+                        </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                        <div class="mb-3 w-100">
+                            <label for="password" class="form-label">
+                                {{ 'user_delete.password_label'|trans }}
+                            </label>
+                            <input type="password"
+                                   class="form-control"
+                                   id="password"
+                                   name="password"
+                                   required
+                                   placeholder="{{ 'user_delete.password_placeholder'|trans }}">
+                        </div>
+
+                        <div class="d-grid gap-2 col-12 col-md-6 mt-3">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                {{ 'user_delete.submit'|trans }}
+                            </button>
+                            <a href="{{ path('app_user_show') }}" class="btn btn-secondary btn-lg">
+                                {{ 'user_delete.cancel'|trans }}
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

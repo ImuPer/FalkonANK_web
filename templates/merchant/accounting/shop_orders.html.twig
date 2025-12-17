@@ -1,112 +1,114 @@
 {% extends 'base.html.twig' %}
-{% block title %}Contabilidade
-{% endblock %}
+
+{% block title %}{{ 'orders.accounting_title'|trans }}{% endblock %}
 
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 {% endblock %}
 
 {% block body %}
-	<div
-		class="container mt-4">
+<div class="container mt-4">
 
-			{% set orderGroups = {
-			'Finalizadas por Semana': ordersWk,
-			'Finalizadas': orders,
-			'Reembolsado': ordersR,
-			'Em curso de reembolso': ordersCR,
-			'Não finalizadas': ordersN
-		} %}
-		{# Boucle sur chaque type de section #}
-		{% for sectionTitle, ordersList in orderGroups %}
-			{% set groupedOrders = {} %}
-			{# Regroupement par mois ou semaine #}
-			{% for order in ordersList %}
-				{% set groupKey = sectionTitle == 'Finalizadas por Semana' ? order.year_week : order.month %}
-				{% set groupedOrders = groupedOrders|merge({
-					(groupKey): (groupedOrders[groupKey] ?? [])|merge([order])
-				}) %}
-			{% endfor %}
+	{% set orderGroups = {
+		'orders.finished_week': ordersWk,
+		'orders.finished': orders,
+		'orders.refunded': ordersR,
+		'orders.refund_in_progress': ordersCR,
+		'orders.not_finished': ordersN
+	} %}
 
-			<div class="text-center mt-5 mb-3">
-				<h3 style="color: {{ sectionTitle == 'Finalizadas' ? 'green' : sectionTitle == 'Reembolsado' ? 'black' : sectionTitle == 'Em curso de reembolso' ? 'orange' : sectionTitle == 'Finalizadas por Semana' ? '#007bff' : 'red' }};">
-					{{ sectionTitle }}
-				</h3>
-			</div>
+	{% for sectionKey, ordersList in orderGroups %}
+		{% set groupedOrders = {} %}
 
-			{% if groupedOrders is empty %}
-				<div class="alert alert-info text-center">Nenhuma encomenda
-					{{ sectionTitle|lower }}.</div>
-			{% else %}
-				{% for month, orders in groupedOrders %}
-					<div class="month-section mb-4">
-						<div class="month-header">📅
-							{% if sectionTitle == 'Finalizadas por Semana' %}
-								Semana:
-								{{ month }}
-							{% else %}
-								{{ month|date("F \\d\\e Y") }}
-							{% endif %}
-						</div>
-
-						<div class="table-responsive">
-							<table class="table table-bordered table-hover table-sm">
-								<thead class="thead-light">
-									<tr>
-										<th>Ref da Encomenda</th>
-										<th>Data</th>
-										<th>Status</th>
-										<th>Total</th>
-										{% if isAdmin %}
-											<th>Final</th>
-										{% endif %}
-										<th>Reembolso</th>
-										{% if isAdmin %}
-											<th>StripePayID</th>
-										{% endif %}
-										<th>Email da loja</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for order in orders %}
-										<tr>
-											<td>{{ order.order_ref }}</td>
-											<td>{{ order.order_date|date('d/m/Y H:i') }}</td>
-
-											{% set statusColor =
-												order.order_status == 'Entregue e finalizado' ? '#28a745' :
-												order.order_status == 'Em processamento' ? '#dc3545' :
-												order.order_status == 'Em curso' ? '#ce8404' :
-												order.order_status == 'Reembolso' ? '#ce8404' :
-												'#999'
-											%}
-
-											<td>
-												<span class="badge badge-status" style="background-color: {{ statusColor }}; color: white;">
-													{{ order.order_status }}
-												</span>
-											</td>
-
-											<td>{{ (order.total_amount / 100)|number_format(0, ',', ' ') }}
-												escudos</td>
-											{% if isAdmin %}
-												<td>{{ (order.amount_final / 100)|number_format(0, ',', ' ') }}
-													escudos</td>
-											{% endif %}
-											<td>{{ (order.refund_amount ?? 0) / 100 | number_format(0, ',', ' ') }}
-												escudos</td>
-											{% if isAdmin %}
-												<td>{{ order.stripe_pay_id }}</td>
-											{% endif %}
-											<td>{{ order.customer_email }}</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				{% endfor %}
-			{% endif %}
+		{% for order in ordersList %}
+			{% set groupKey = sectionKey == 'orders.finished_week' ? order.year_week : order.month %}
+			{% set groupedOrders = groupedOrders|merge({
+				(groupKey): (groupedOrders[groupKey] ?? [])|merge([order])
+			}) %}
 		{% endfor %}
-	</div>
+
+		<div class="text-center mt-5 mb-3">
+			<h3 style="
+				color:
+				{{ sectionKey == 'orders.finished' ? 'green'
+				: sectionKey == 'orders.refunded' ? 'black'
+				: sectionKey == 'orders.refund_in_progress' ? 'orange'
+				: sectionKey == 'orders.finished_week' ? '#007bff'
+				: 'red' }};
+			">
+				{{ sectionKey|trans }}
+			</h3>
+		</div>
+
+		{% if groupedOrders is empty %}
+			<div class="alert alert-info text-center">
+				{{ 'orders.none_for_section'|trans({'%section%': sectionKey|trans|lower}) }}
+			</div>
+		{% else %}
+			{% for month, orders in groupedOrders %}
+				<div class="month-section mb-4">
+					<div class="month-header">
+						📅
+						{% if sectionKey == 'orders.finished_week' %}
+							{{ 'orders.week'|trans }} : {{ month }}
+						{% else %}
+							{{ month|date("F \\d\\e Y") }}
+						{% endif %}
+					</div>
+
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover table-sm">
+							<thead>
+								<tr>
+									<th>{{ 'orders.ref'|trans }}</th>
+									<th>{{ 'orders.date'|trans }}</th>
+									<th>{{ 'orders.status'|trans }}</th>
+									<th>{{ 'orders.total'|trans }}</th>
+									{% if isAdmin %}
+										<th>{{ 'orders.final'|trans }}</th>
+									{% endif %}
+									<th>{{ 'orders.refund'|trans }}</th>
+									{% if isAdmin %}
+										<th>{{ 'orders.stripe'|trans }}</th>
+									{% endif %}
+									<th>{{ 'orders.shop_email'|trans }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for order in orders %}
+									{% set statusColor =
+										order.order_status == 'Entregue e finalizado' ? '#28a745' :
+										order.order_status == 'Em processamento' ? '#dc3545' :
+										order.order_status == 'Em curso' ? '#ce8404' :
+										order.order_status == 'Reembolso' ? '#ce8404' :
+										'#999'
+									%}
+
+									<tr>
+										<td>{{ order.order_ref }}</td>
+										<td>{{ order.order_date|date('d/m/Y H:i') }}</td>
+										<td>
+											<span class="badge" style="background-color: {{ statusColor }}; color: white;">
+												{{ order.order_status|trans }}
+											</span>
+										</td>
+										<td>{{ (order.total_amount / 100)|number_format(0, ',', ' ') }} escudos</td>
+										{% if isAdmin %}
+											<td>{{ (order.amount_final / 100)|number_format(0, ',', ' ') }} escudos</td>
+										{% endif %}
+										<td>{{ ((order.refund_amount ?? 0) / 100)|number_format(0, ',', ' ') }} escudos</td>
+										{% if isAdmin %}
+											<td>{{ order.stripe_pay_id }}</td>
+										{% endif %}
+										<td>{{ order.customer_email }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+</div>
 {% endblock %}

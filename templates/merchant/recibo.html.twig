@@ -1,73 +1,74 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
-	{# .no-print {
-		display: none !important;
-	}
-	a[href]:after {
-		content: "";
-	}
-	body * {
-		visibility: hidden;
-	} #}
+
 {% block content %}
 
-	<style>
-		@media print {
-			
-			#recibo-content,
-			#recibo-content * {
-				visibility: visible;
-			}
-			#recibo-content {
-				position: absolute;
-				left: 0;
-				top: 0;
-				width: 100%;
-			}
-		}
-        
-	</style>
+<style>
+@media print {
+    #recibo-content,
+    #recibo-content * {
+        visibility: visible;
+    }
+    #recibo-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+</style>
 
+<div class="container d-flex justify-content-center mt-5">
+    <div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+        <div class="card-body text-center" id="recibo-content">
 
-	<div class="container d-flex justify-content-center mt-5">
-		<div class="card shadow-sm" style="max-width: 600px; width: 100%;">
+            <h2 class="card-title mb-4">
+                {{ 'receipt.title'|trans({'%ref%': order.ref}) }}
+            </h2>
 
-			<div class="card-body text-center" id="recibo-content">
-				<h2 class="card-title mb-4">Recibo da Encomenda #{{ order.ref }}</h2>
+            <ul class="list-group list-group-flush text-start mb-4">
+                <li class="list-group-item">
+                    <strong>{{ 'receipt.beneficiary'|trans }}:</strong>
+                    {{ order.beneficiaryName }}
+                </li>
 
-				<ul class="list-group list-group-flush text-start mb-4">
-					<li class="list-group-item">
-						<strong>Beneficiário:</strong>
-						{{ order.beneficiaryName }}</li>
-					{# <li class="list-group-item">
-						<strong>Preço Final:</strong>
-						{{ order.amountFinal }}
-						CVE</li> #}
-					<li class="list-group-item">
-						<strong>Estado:</strong>
-						{{ order.orderStatus }}</li>
-					<li class="list-group-item">
-						<strong>Data da Encomenda:</strong>
-						{{ order.orderDate|date('d/m/Y H:i') }}</li>
-				</ul>
+                <li class="list-group-item">
+                    <strong>{{ 'receipt.status'|trans }}:</strong>
+                    {{ order.orderStatus|trans }}
+                </li>
 
-				<h5 class="mb-3">Artigos:</h5>
-				<ul class="list-group mb-4 text-start">
-					{% for basketP in basketProducts %}
-						<li class="list-group-item d-flex justify-content-between align-items-center">
-							{{ basketP.product.name }}
-							<span class="badge bg-primary rounded-pill">x{{ basketP.quantity }}</span>
-						</li>
-					{% else %}
-						<li class="list-group-item text-muted">Nenhum artigo encontrado.</li>
-					{% endfor %}
-				</ul>
+                <li class="list-group-item">
+                    <strong>{{ 'receipt.order_date'|trans }}:</strong>
+                    {{ order.orderDate|date('d/m/Y H:i') }}
+                </li>
+            </ul>
 
-				<p class="text-muted">
-					<strong>Data do recibo:</strong>
-					{{ "now"|date("d/m/Y H:i") }}</p>
+            <h5 class="mb-3">{{ 'receipt.items'|trans }}</h5>
 
-				<button class="btn btn-outline-primary mt-3" onclick="window.print()">🖨️ Imprimir Recibo</button>
-			</div>
-		</div>
-	</div>
+            <ul class="list-group mb-4 text-start">
+                {% for basketP in basketProducts %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ basketP.product.name }}
+                        <span class="badge bg-primary rounded-pill">
+                            x{{ basketP.quantity }}
+                        </span>
+                    </li>
+                {% else %}
+                    <li class="list-group-item text-muted">
+                        {{ 'receipt.no_items'|trans }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <p class="text-muted">
+                <strong>{{ 'receipt.date'|trans }}:</strong>
+                {{ "now"|date("d/m/Y H:i") }}
+            </p>
+
+            <button class="btn btn-outline-primary mt-3" onclick="window.print()">
+                🖨️ {{ 'receipt.print'|trans }}
+            </button>
+
+        </div>
+    </div>
+</div>
 {% endblock %}

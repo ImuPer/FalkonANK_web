@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Minha Cesta{% endblock %}
+{% block title %}{{ 'basket.index.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Basket index</h1>
+    <h1>{{ 'basket.index.heading'|trans }}</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>actions</th>
+                <th>{{ 'basket.id'|trans }}</th>
+                <th>{{ 'basket.actions'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -17,17 +17,26 @@
             <tr>
                 <td>{{ basket.id }}</td>
                 <td>
-                    <a href="{{ path('app_basket_show', {'id': basket.id}) }}">show</a>
-                    <a href="{{ path('app_basket_edit', {'id': basket.id}) }}">edit</a>
+                    <a href="{{ path('app_basket_show', {'id': basket.id}) }}">
+                        {{ 'basket.show'|trans }}
+                    </a>
+                    |
+                    <a href="{{ path('app_basket_edit', {'id': basket.id}) }}">
+                        {{ 'basket.edit'|trans }}
+                    </a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="2" class="text-center text-muted">
+                    {{ 'basket.no_records'|trans }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_basket_new') }}">Create new</a>
+    <a href="{{ path('app_basket_new') }}" class="btn btn-primary">
+        {{ 'basket.create_new'|trans }}
+    </a>
 {% endblock %}

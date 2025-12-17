@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Redefinir sua senha{% endblock %}
+{% block title %}
+    {{ 'reset_new.title'|trans }}
+{% endblock %}
 
 {% block stylesheets %}
 <style>
@@ -59,7 +61,10 @@
 
 {% block body %}
 <div class="reset-password-container">
-    <h1 class="mb-4 text-center">Redefinir sua senha</h1>
+
+    <h1 class="mb-4 text-center">
+        {{ 'reset_new.heading'|trans }}
+    </h1>
 
     {{ form_start(resetForm) }}
 
@@ -69,7 +74,7 @@
             {{ form_widget(resetForm.plainPassword.first, {
                 'attr': {
                     'class': 'form-control',
-                    'placeholder': 'Digite sua nova senha',
+                    'placeholder': 'reset_new.placeholder_new'|trans,
                     'type': 'password'
                 }
             }) }}
@@ -86,7 +91,7 @@
             {{ form_widget(resetForm.plainPassword.second, {
                 'attr': {
                     'class': 'form-control',
-                    'placeholder': 'Repita a nova senha',
+                    'placeholder': 'reset_new.placeholder_confirm'|trans,
                     'type': 'password'
                 }
             }) }}
@@ -97,21 +102,25 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100 mt-3">Redefinir senha</button>
+    <button type="submit" class="btn btn-primary w-100 mt-3">
+        {{ 'reset_new.submit'|trans }}
+    </button>
 
     {{ form_end(resetForm) }}
 </div>
 
 <script>
-    function togglePassword(eyeIcon) {
-        const input = eyeIcon.parentNode.querySelector('input');
-        if (input && input.type === 'password') {
-            input.type = 'text';
-            eyeIcon.textContent = '🙈';
-        } else if (input) {
-            input.type = 'password';
-            eyeIcon.textContent = '👁️';
-        }
+function togglePassword(eyeIcon) {
+    const input = eyeIcon.parentNode.querySelector('input');
+    if (!input) return;
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        eyeIcon.textContent = '👁️';
     }
+}
 </script>
 {% endblock %}

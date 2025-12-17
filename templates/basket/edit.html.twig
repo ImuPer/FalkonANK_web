@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modificar cesta{% endblock %}
+{% block title %}{{ 'basket.edit.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Basket</h1>
+    <h1>{{ 'basket.edit.heading'|trans }}</h1>
 
-    {{ include('basket/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('basket/_form.html.twig', {
+        button_label: 'basket.update'|trans
+    }) }}
 
-    <a href="{{ path('app_basket_index') }}">back to list</a>
+    <a href="{{ path('app_basket_index') }}" class="btn btn-link mt-3">
+        {{ 'basket.back_to_list'|trans }}
+    </a>
 
     {{ include('basket/_delete_form.html.twig') }}
 {% endblock %}

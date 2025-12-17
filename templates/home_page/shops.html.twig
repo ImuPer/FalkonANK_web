@@ -1,108 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Loja
-{% endblock %}
+{% block title %}{{ 'shop.title'|trans }}{% endblock %}
 
 {% block body %}
-	{# CSS #}
-	<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<link rel="stylesheet" href="{{ asset('css/home.css') }}">
 
-	<div
-		class="general_showP">
+<div class="general_showP">
 
-		{% if shop_loja is not defined and shops_lojas  is not defined %}
-			<h3>Nenhuma loja encontrada ! </h3>
-		{% endif %}
+    {% if shop_loja is not defined and shops_lojas is not defined %}
+        <h3>{{ 'shop.none_found'|trans }}</h3>
+    {% endif %}
 
-		{# Une seule boutique (si disponible) #}
-		{% if shop_loja is defined and shop_loja is not null %}
-			<h1>
-				{{ shop_loja.getName() }}</h1>
-			<div class="shop_dv container mb-5">
-				<a href="{{ path('shop_products', {'id': shop_loja.getId()}) }}" class="text-decoration-none text-dark">
-					{% if shop_loja is not null and (shop_loja.img is not null) %}
-						<img src="{{ asset('upload/images/shops/' ~ shop_loja.img) }}" class="img-fluid d-block mx-auto" alt="Imagem da loja">
-					{% else %}
-						<h3 class="text-center mb-4">
-							<i class="fas fa-store fa-2x text-primary"></i>
-						</h3>
-					{% endif %}
-					<div class="row" style="color:white; background-color:black">
-						<div class="col-12 col-md-6">
-							<p>
-								<strong>Nome da Loja:</strong>
-								{{ shop_loja.getName() }}</p>
-							<p>
-								<strong>Localidade:</strong>
-								{{ shop_loja.getCity() }}</p>
-							<p>
-								<strong>Endereço:</strong>
-								{{ shop_loja.getAdress() }}</p>
-							<p>
-								<strong>Email:</strong>
-								{{ shop_loja.getEmail() }}</p>
-						</div>
-						<div class="col-12 col-md-6">
-							<p>
-								<strong>Telefone:</strong>
-								{{ shop_loja.getPhone() }}</p>
-							<p>
-								<strong>Móvel:</strong>
-								{{ shop_loja.getMobilePhone() }}</p>
-							<p>
-								<strong>Horário:</strong>
-								{{ shop_loja.getHorario() }}</p>
-						</div>
-					</div>
-				</a>
-			</div>
-		{% else %}
-			{# Liste de toutes les boutiques #}
-			{% for shop in shops_lojas %}
-				{% if shop.active == true %}
-					<h2>{{ shop.getName() }}</h2>
-					<div class=" container mb-5 shop_dv">
-						<a href="{{ path('shop_products', {'id': shop.getId()}) }}" class="text-decoration-none text-dark">
-							{% if shop.img is not null %}
-								<img src="{{ asset('upload/images/shops/' ~ shop.img) }}" class="img-fluid d-block mx-auto" alt="Imagem da loja">
-							{% else %}
-								<h3 class="text-center mb-4">
-									<i class="fas fa-store fa-2x text-primary"></i>
-								</h3>
-							{% endif %}
-							<div class="row mt-3">
-								<div class="col-12 col-md-6 colTextColor">
-									<p>
-										<strong>Nome da Loja:</strong>
-										{{ shop.getName() }}</p>
-									<p>
-										<strong>Localidade:</strong>
-										{{ shop.getCity() }}</p>
-									<p>
-										<strong>Endereço:</strong>
-										{{ shop.getAdress() }}</p>
-									<p>
-										<strong>Email:</strong>
-										{{ shop.getEmail() }}</p>
-								</div>
-								<div class="col-12 col-md-6 colTextColor">
-									<p>
-										<strong>Telefone:</strong>
-										{{ shop.getPhone() }}</p>
-									<p>
-										<strong>Móvel:</strong>
-										{{ shop.getMobilePhone() }}</p>
-									<p>
-										<strong>Horário:</strong>
-										{{ shop.getHorario() }}</p>
-								</div>
-							</div>
-						</a>
-						<hr>
-					</div>
-				{% endif %}
-			{% endfor %}
-		{% endif %}
-
-	</div>
+    {# Une seule boutique (si disponible) #}
+    {% if shop_loja is defined and shop_loja is not null %}
+        <h1>{{ shop_loja.getName() }}</h1>
+        <div class="shop_dv container mb-5">
+            <a href="{{ path('shop_products', {'id': shop_loja.getId()}) }}" class="text-decoration-none text-dark">
+                {% if shop_loja.img is not null %}
+                    <img src="{{ asset('upload/images/shops/' ~ shop_loja.img) }}" class="img-fluid d-block mx-auto" alt="{{ 'shop.image_alt'|trans }}">
+                {% else %}
+                    <h3 class="text-center mb-4">
+                        <i class="fas fa-store fa-2x text-primary"></i>
+                    </h3>
+                {% endif %}
+                <div class="row" style="color:white; background-color:black">
+                    <div class="col-12 col-md-6">
+                        <p><strong>{{ 'shop.name'|trans }}:</strong> {{ shop_loja.getName() }}</p>
+                        <p><strong>{{ 'shop.city'|trans }}:</strong> {{ shop_loja.getCity() }}</p>
+                        <p><strong>{{ 'shop.address'|trans }}:</strong> {{ shop_loja.getAdress() }}</p>
+                        <p><strong>{{ 'shop.email'|trans }}:</strong> {{ shop_loja.getEmail() }}</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <p><strong>{{ 'shop.phone'|trans }}:</strong> {{ shop_loja.getPhone() }}</p>
+                        <p><strong>{{ 'shop.mobile'|trans }}:</strong> {{ shop_loja.getMobilePhone() }}</p>
+                        <p><strong>{{ 'shop.hours'|trans }}:</strong> {{ shop_loja.getHorario() }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% else %}
+        {# Liste de toutes les boutiques #}
+        {% for shop in shops_lojas %}
+            {% if shop.active == true %}
+                <h2>{{ shop.getName() }}</h2>
+                <div class="container mb-5 shop_dv">
+                    <a href="{{ path('shop_products', {'id': shop.getId()}) }}" class="text-decoration-none text-dark">
+                        {% if shop.img is not null %}
+                            <img src="{{ asset('upload/images/shops/' ~ shop.img) }}" class="img-fluid d-block mx-auto" alt="{{ 'shop.image_alt'|trans }}">
+                        {% else %}
+                            <h3 class="text-center mb-4">
+                                <i class="fas fa-store fa-2x text-primary"></i>
+                            </h3>
+                        {% endif %}
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-6 colTextColor">
+                                <p><strong>{{ 'shop.name'|trans }}:</strong> {{ shop.getName() }}</p>
+                                <p><strong>{{ 'shop.city'|trans }}:</strong> {{ shop.getCity() }}</p>
+                                <p><strong>{{ 'shop.address'|trans }}:</strong> {{ shop.getAdress() }}</p>
+                                <p><strong>{{ 'shop.email'|trans }}:</strong> {{ shop.getEmail() }}</p>
+                            </div>
+                            <div class="col-12 col-md-6 colTextColor">
+                                <p><strong>{{ 'shop.phone'|trans }}:</strong> {{ shop.getPhone() }}</p>
+                                <p><strong>{{ 'shop.mobile'|trans }}:</strong> {{ shop.getMobilePhone() }}</p>
+                                <p><strong>{{ 'shop.hours'|trans }}:</strong> {{ shop.getHorario() }}</p>
+                            </div>
+                        </div>
+                    </a>
+                    <hr>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

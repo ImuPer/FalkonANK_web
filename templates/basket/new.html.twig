@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Basket{% endblock %}
+{% block title %}{{ 'basket.new.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Create new Basket</h1>
+    <h1>{{ 'basket.new.heading'|trans }}</h1>
 
     {{ include('basket/_form.html.twig') }}
 
-    <a href="{{ path('app_basket_index') }}">back to list</a>
+    <a href="{{ path('app_basket_index') }}" class="btn btn-secondary mt-3">
+        {{ 'basket.back_to_list'|trans }}
+    </a>
 {% endblock %}

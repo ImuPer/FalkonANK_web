@@ -14,18 +14,24 @@ class ResetPasswordRequestFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'attr' => ['autocomplete' => 'email'],
+                'attr' => [
+                    'autocomplete' => 'email',
+                    'placeholder' => 'reset_request.email' // clé traduisible
+                ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter your email',
+                        'message' => 'reset_request.email_blank', // clé traduisible
                     ]),
                 ],
+                'label' => false,
             ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+            'translation_domain' => 'messages', // permet d’utiliser |trans dans les messages d’erreur
+        ]);
     }
 }

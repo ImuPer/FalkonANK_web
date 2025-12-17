@@ -1,22 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cesta{% endblock %}
+{% block title %}{{ 'basket.show.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Basket</h1>
+    <h1>{{ 'basket.show.heading'|trans }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ 'basket.fields.id'|trans }}</th>
                 <td>{{ basket.id }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_basket_index') }}">back to list</a>
+    <a href="{{ path('app_basket_index') }}" class="btn btn-secondary">
+        {{ 'basket.back_to_list'|trans }}
+    </a>
 
-    <a href="{{ path('app_basket_edit', {'id': basket.id}) }}">edit</a>
+    <a href="{{ path('app_basket_edit', {'id': basket.id}) }}" class="btn btn-primary">
+        {{ 'basket.edit'|trans }}
+    </a>
 
     {{ include('basket/_delete_form.html.twig') }}
 {% endblock %}

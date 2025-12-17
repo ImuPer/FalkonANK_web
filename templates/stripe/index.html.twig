@@ -1,35 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ status == 'success' ? 'Payment Successful' : 'Payment Canceled' }}
+    {{ status == 'success' ? 'payment.success.title'|trans : 'payment.canceled.title'|trans }}
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		{% if status == 'success' %}
-			<div class="alert alert-success text-center">
-				<h1 class="display-4">Obrigado !</h1>
-				<p class="lead">O seu pagamento foi realizado com sucesso.</p>
-				<hr>
-				<p>Você receberá uma confirmação em breve no e-mail
-					(<strong>{{customerEmail}}</strong>).
-					<small>Se não encontrar, verifique sua pasta de spam ou lixo eletrônico 😉</small>
-				</p>
-				<a href="{{ path('app_user_orders') }}" class="btn btn-success mt-3">Suas compras</a>
-			</div>
-		{% else %}
-			<div class="alert alert-warning text-center">
-				<h1 class="display-4">Pagamento Cancelado</h1>
-				<p class="lead">O seu pagamento não foi concluído.</p>
-				<hr>
-				<p>Se encontrar algum problema, tente novamente ou contacte o nosso suporte : </p>
-				<p><a href="{{path('contact_nous')}}"><strong> * Contacto</strong></a></p>
-			</div>
-		{% endif %}
-		<a href="{{ path('app_home_page') }}" class="btn btn-dark mt-3">Voltar a Loja !</a>
-		{% if status != 'success' %}
-			<a href="{{ path('user_basket') }}" class="btn btn-secondary mt-3 text-warning">Tentar novamente o pagamento</a>
+<div class="container mt-5">
+    {% if status == 'success' %}
+        <div class="alert alert-success text-center">
+            <h1 class="display-4">{{ 'payment.success.heading'|trans }}</h1>
+            <p class="lead">{{ 'payment.success.message'|trans }}</p>
+            <hr>
+            <p>
+                {{ 'payment.success.email_info'|trans({'%email%': customerEmail}) }}
+                <small>
+                    {{ 'payment.success.spam_note'|trans }}
+                    {# <br>
+                    {{ 'payment.success.secret_code'|trans }}
+                    {% if secretCode is defined %}
+                        {{ secretCode }}
+                    {% endif %} #}
+                </small>
+            </p>
+            <a href="{{ path('app_user_orders') }}" class="btn btn-success mt-3">
+                {{ 'payment.success.orders_button'|trans }}
+            </a>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            <h1 class="display-4">{{ 'payment.canceled.heading'|trans }}</h1>
+            <p class="lead">{{ 'payment.canceled.message'|trans }}</p>
+            <hr>
+            <p>{{ 'payment.canceled.help_message'|trans }}</p>
+            <p>
+                <a href="{{ path('contact_nous') }}"><strong>{{ 'payment.canceled.contact'|trans }}</strong></a>
+            </p>
+        </div>
+    {% endif %}
 
-		{% endif %}
-	</div>
+    <a href="{{ path('app_home_page') }}" class="btn btn-dark mt-3">{{ 'payment.back_to_shop'|trans }}</a>
+
+    {% if status != 'success' %}
+        <a href="{{ path('user_basket') }}" class="btn btn-secondary mt-3 text-warning">
+            {{ 'payment.retry'|trans }}
+        </a>
+    {% endif %}
+</div>
 {% endblock %}

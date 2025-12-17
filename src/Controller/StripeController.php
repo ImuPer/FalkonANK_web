@@ -521,6 +521,7 @@ class StripeController extends AbstractController
         return $this->render('stripe/index.html.twig', [
             'status' => 'success',
             'customerEmail' => $customerEmail,
+            'secrectCode' => $secretCode,
         ]);
     }
 
