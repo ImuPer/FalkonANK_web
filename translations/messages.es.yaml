@@ -704,3 +704,6 @@ profile.merchant_approved: "¡Felicidades! Su solicitud ha sido aprobada."
 profile.admin_message: "Mensaje del administrador"
 profile.submission_date: "Fecha de envío"
 
+shop:
+  view_products_from_shop: "Ver los productos de la tienda"
+

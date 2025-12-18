@@ -1,75 +1,150 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'shop.title'|trans }}{% endblock %}
+{% block title %}
+	{{ 'shop.title'|trans }}
+{% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/home.css') }}">
 
-<div class="general_showP">
+	<div class="general_showP">
 
-    {% if shop_loja is not defined and shops_lojas is not defined %}
-        <h3>{{ 'shop.none_found'|trans }}</h3>
-    {% endif %}
+		{% if shop_loja is not defined and shops_lojas is not defined %}
+			<h3>{{ 'shop.none_found'|trans }}</h3>
+		{% endif %}
 
-    {# Une seule boutique (si disponible) #}
-    {% if shop_loja is defined and shop_loja is not null %}
-        <h1>{{ shop_loja.getName() }}</h1>
-        <div class="shop_dv container mb-5">
-            <a href="{{ path('shop_products', {'id': shop_loja.getId()}) }}" class="text-decoration-none text-dark">
-                {% if shop_loja.img is not null %}
-                    <img src="{{ asset('upload/images/shops/' ~ shop_loja.img) }}" class="img-fluid d-block mx-auto" alt="{{ 'shop.image_alt'|trans }}">
-                {% else %}
-                    <h3 class="text-center mb-4">
-                        <i class="fas fa-store fa-2x text-primary"></i>
-                    </h3>
-                {% endif %}
-                <div class="row" style="color:white; background-color:black">
-                    <div class="col-12 col-md-6">
-                        <p><strong>{{ 'shop.name'|trans }}:</strong> {{ shop_loja.getName() }}</p>
-                        <p><strong>{{ 'shop.city'|trans }}:</strong> {{ shop_loja.getCity() }}</p>
-                        <p><strong>{{ 'shop.address'|trans }}:</strong> {{ shop_loja.getAdress() }}</p>
-                        <p><strong>{{ 'shop.email'|trans }}:</strong> {{ shop_loja.getEmail() }}</p>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <p><strong>{{ 'shop.phone'|trans }}:</strong> {{ shop_loja.getPhone() }}</p>
-                        <p><strong>{{ 'shop.mobile'|trans }}:</strong> {{ shop_loja.getMobilePhone() }}</p>
-                        <p><strong>{{ 'shop.hours'|trans }}:</strong> {{ shop_loja.getHorario() }}</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-    {% else %}
-        {# Liste de toutes les boutiques #}
-        {% for shop in shops_lojas %}
-            {% if shop.active == true %}
-                <h2>{{ shop.getName() }}</h2>
-                <div class="container mb-5 shop_dv">
-                    <a href="{{ path('shop_products', {'id': shop.getId()}) }}" class="text-decoration-none text-dark">
-                        {% if shop.img is not null %}
-                            <img src="{{ asset('upload/images/shops/' ~ shop.img) }}" class="img-fluid d-block mx-auto" alt="{{ 'shop.image_alt'|trans }}">
-                        {% else %}
-                            <h3 class="text-center mb-4">
-                                <i class="fas fa-store fa-2x text-primary"></i>
-                            </h3>
-                        {% endif %}
-                        <div class="row mt-3">
-                            <div class="col-12 col-md-6 colTextColor">
-                                <p><strong>{{ 'shop.name'|trans }}:</strong> {{ shop.getName() }}</p>
-                                <p><strong>{{ 'shop.city'|trans }}:</strong> {{ shop.getCity() }}</p>
-                                <p><strong>{{ 'shop.address'|trans }}:</strong> {{ shop.getAdress() }}</p>
-                                <p><strong>{{ 'shop.email'|trans }}:</strong> {{ shop.getEmail() }}</p>
-                            </div>
-                            <div class="col-12 col-md-6 colTextColor">
-                                <p><strong>{{ 'shop.phone'|trans }}:</strong> {{ shop.getPhone() }}</p>
-                                <p><strong>{{ 'shop.mobile'|trans }}:</strong> {{ shop.getMobilePhone() }}</p>
-                                <p><strong>{{ 'shop.hours'|trans }}:</strong> {{ shop.getHorario() }}</p>
-                            </div>
-                        </div>
-                    </a>
-                    <hr>
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-</div>
+		{% if shop_loja is defined and shop_loja is not null %}
+			{# Une seule boutique (si disponible) #}
+			<div class="container my-5">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-10">
+
+						<a href="{{ path('shop_products', {'id': shop_loja.getId()}) }}" class="text-decoration-none text-dark">
+
+							<div
+								class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+								{# Image ou icône #}
+								{% if shop_loja.img is not null %}
+									<img src="{{ asset('upload/images/shops/' ~ shop_loja.img) }}" class="card-img-top img-fluid" alt="{{ 'shop.image_alt'|trans }}">
+								{% else %}
+									<div class="bg-light text-center py-5">
+										<i class="fas fa-store fa-3x text-primary"></i>
+									</div>
+								{% endif %}
+
+								{# Contenu #}
+								<div class="card-body p-4">
+											<h5 class="card-title text-primary fw-bold">
+												{{  shop_loja.getName() }}
+											</h5>
+
+											<p class="mb-1">
+												<i class="fas fa-map-marker-alt me-2 text-muted"></i>
+												{{  shop_loja.getCity() }}
+											</p>
+
+											<p class="mb-1">
+												<i class="fas fa-location-dot me-2 text-muted"></i>
+												{{  shop_loja.getAdress() }}
+											</p>
+
+											<p class="mb-1">
+												<i class="fas fa-envelope me-2 text-muted"></i>
+												{{  shop_loja.getEmail() }}
+											</p>
+
+											<p class="mb-1">
+												<i class="fas fa-phone me-2 text-muted"></i>
+												{{  shop_loja.getPhone() }}
+											</p>
+
+											<p class="mb-0">
+												<i class="fas fa-clock me-2 text-muted"></i>
+												{{  shop_loja.getHorario() }}
+											</p>
+										</div>
+
+								{# Footer optionnel #}
+								<div class="card-footer bg-white border-0 text-center pb-4">
+									<span class="btn btn-outline-primary rounded-pill px-4">
+										{{ 'shop.view_products_from_shop'|trans }}
+									</span>
+								</div>
+
+							</div>
+						</a>
+
+					</div>
+				</div>
+			</div>
+
+		{% else %}
+			{# Liste de toutes les boutiques #}
+			<div class="container my-5">
+				<div class="row g-4">
+					{% for shop in shops_lojas %}
+						{% if shop.active %}
+							<div class="col-12 col-md-6 col-lg-4">
+								<a href="{{ path('shop_products', {'id': shop.getId()}) }}" class="text-decoration-none text-dark">
+
+									<div
+										class="card h-100 shadow-sm border-0 shop-card">
+
+										{# Image #}
+										{% if shop.img is not null %}
+											<img src="{{ asset('upload/images/shops/' ~ shop.img) }}" class="card-img-top" alt="{{ 'shop.image_alt'|trans }}">
+										{% else %}
+											<div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+												<i class="fas fa-store fa-3x text-primary"></i>
+											</div>
+										{% endif %}
+
+										{# Contenu #}
+										<div class="card-body">
+											<h5 class="card-title text-primary fw-bold">
+												{{ shop.getName() }}
+											</h5>
+
+											<p class="mb-1">
+												<i class="fas fa-map-marker-alt me-2 text-muted"></i>
+												{{ shop.getCity() }}
+											</p>
+
+											<p class="mb-1">
+												<i class="fas fa-location-dot me-2 text-muted"></i>
+												{{ shop.getAdress() }}
+											</p>
+
+											<p class="mb-1">
+												<i class="fas fa-envelope me-2 text-muted"></i>
+												{{ shop.getEmail() }}
+											</p>
+
+											<p class="mb-1">
+												<i class="fas fa-phone me-2 text-muted"></i>
+												{{ shop.getPhone() }}
+											</p>
+
+											<p class="mb-0">
+												<i class="fas fa-clock me-2 text-muted"></i>
+												{{ shop.getHorario() }}
+											</p>
+										</div>
+
+										{# Footer #}
+										<div class="card-footer bg-white text-center border-0">
+											<span class="btn btn-outline-primary btn-sm">
+												{{ 'shop.view_products_from_shop'|trans }}
+											</span>
+										</div>
+									</div>
+								</a>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		{% endif %}
+	</div>
 {% endblock %}

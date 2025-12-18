@@ -701,3 +701,6 @@ profile.merchant_approved: "Congratulations! Your request has been approved."
 profile.admin_message: "Administrator Message"
 profile.submission_date: "Submission Date"
 
+shop:
+  view_products_from_shop: "View shop products"
+

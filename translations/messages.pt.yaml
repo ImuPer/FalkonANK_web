@@ -690,3 +690,6 @@ profile.button.contact_us: "Contactar-nos"
 profile.merchant_approved: "Felicitações! O seu pedido foi aprovado."
 profile.admin_message: "Mensagem do administrador"
 profile.submission_date: "Data de envio"
+
+shop:
+  view_products_from_shop: "Ver produtos da loja"
