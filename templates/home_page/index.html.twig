@@ -13,16 +13,7 @@
     <!-- Header -->
     <header>
         <div class="div-header">
-            <div class="scrolling-text">
-                <div class="ads-wrapper">
-                    {% for ads in adss %}
-                        {% if ads.title == 'ads' %}
-                            <a href="{{ ads.urlAds }}" class="ads-item">{{ ads.description }}</a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-
+             
             <select id="category-select" class="category-menu">
                 <option disabled selected>{{ 'header.category'|trans }}</option>
                 {% for category in categories %}
@@ -37,6 +28,16 @@
             <a href="{{ path('app_shop_all') }}" class="btn btn-dark">
                 <span>{{ 'header.shops'|trans }}</span>
             </a>
+
+            <div class="scrolling-text">
+                <div class="ads-wrapper">
+                    {% for ads in adss %}
+                        {% if ads.title == 'ads' %}
+                            <a href="{{ ads.urlAds }}" class="ads-item">{{ ads.description }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
