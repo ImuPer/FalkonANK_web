@@ -7,6 +7,7 @@ use App\Entity\Merchant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,14 +34,19 @@ class MerchantType extends AbstractType
                 'label' => 'merchant.address',
             ])
 
-            ->add('description', TextType::class, [
-                'label' => 'merchant.description',
+            ->add('description', TextareaType::class, [
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control mb-3',
+                    'rows' => 5,
+                    'placeholder' => 'merchant.description'
+                ],
             ])
-
+            
             ->add('licenseFile', FileType::class, [
                 'label' => 'merchant.license',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
             ])
 
             ->add('bankHolder', TextType::class, [
