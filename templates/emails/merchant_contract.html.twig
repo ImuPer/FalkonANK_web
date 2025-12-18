@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png"
+             alt="FalkonANK Logo"
+             style="max-width: 100px; height: auto;">
+    </div>
+
+    <p>
+        {{ 'contract.greeting'|trans({'%name%': userName})|raw }}
+    </p>
+
+    <p>
+        {{ 'contract.introduction'|trans }}
+    </p>
+
+    <p>
+        <strong>{{ 'contract.number'|trans }}:</strong> CT-USER-{{ userID }}-{{ dateNowFormatted0 }}<br>
+        <strong>{{ 'contract.date'|trans }}:</strong> {{ dateNowFormatted }}
+    </p>
+
+    <h3>{{ 'contract.details_title'|trans }}</h3>
+
+    <p>
+        <strong>{{ 'contract.platform'|trans }}:</strong>
+        FalkonANK Alimentason
+        (<em>Pereira Mascarenhas Milton Mario</em>)<br>
+
+        <strong>{{ 'contract.merchant'|trans }}:</strong> {{ userName }}<br>
+        <strong>{{ 'contract.nif'|trans }}:</strong> {{ nifMerchant }}<br>
+        <strong>{{ 'contract.address'|trans }}:</strong> {{ shopAddress }}<br>
+        <strong>{{ 'contract.city'|trans }}:</strong> {{ city }}<br>
+        <strong>{{ 'contract.email'|trans }}:</strong> {{ userEmail }}
+    </p>
+
+    <h3>{{ 'contract.clauses_title'|trans }}</h3>
+
+    <p><strong>1.</strong> {{ 'contract.clause_1'|trans }}</p>
+    <p><strong>2.</strong> {{ 'contract.clause_2'|trans }}</p>
+    <p><strong>3.</strong> {{ 'contract.clause_3'|trans }}</p>
+
+    <p><strong>4.</strong> {{ 'contract.clause_4_title'|trans }}</p>
+    <ul>
+        <li>{{ 'contract.clause_4_1'|trans }}</li>
+        <li>{{ 'contract.clause_4_2'|trans }}</li>
+        <li>{{ 'contract.clause_4_3'|trans }}</li>
+        <li>{{ 'contract.clause_4_4'|trans }}</li>
+    </ul>
+
+    <p><strong>5.</strong> {{ 'contract.clause_5'|trans }}</p>
+    <p><strong>6.</strong> {{ 'contract.clause_6'|trans }}</p>
+    <p><strong>7.</strong> {{ 'contract.clause_7'|trans }}</p>
+    <p><strong>8.</strong> {{ 'contract.clause_8'|trans }}</p>
+
+    <h3>{{ 'contract.signature_title'|trans }}</h3>
+
+    <p><strong>{{ 'contract.merchant_name'|trans }}:</strong> {{ userName }}</p>
+    <p><strong>{{ 'contract.date'|trans }}:</strong> {{ dateNowFormatted }}</p>
+    <p><strong>{{ 'contract.signed_in'|trans }}:</strong> {{ city }}</p>
+
+    <p style="margin-top: 30px;">
+        {{ 'contract.closing'|trans }}<br>
+        <strong>FALKON-ANK</strong>
+    </p>
+
+</body>
+</html>

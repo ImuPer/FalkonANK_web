@@ -10,21 +10,31 @@ use App\Repository\ShopRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HomePageController extends AbstractController
 {
+    private TranslatorInterface $translator;
 
-        #[Route('shops', name: 'app_shop_all')]
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    #[Route('/shops', name: 'app_shop_all')]
     public function shops(): Response
     {
         return $this->render('home_page/shops.html.twig');
     }
 
     #[Route('/', name: 'app_home_page')]
-    public function index(ProductRepository $productRepository, CityRepository $cityRepository, ShopRepository $shopRepository, CategoryRepository $categoryRepository): Response
-    {
+    public function index(
+        ProductRepository $productRepository,
+        CityRepository $cityRepository,
+        ShopRepository $shopRepository,
+        CategoryRepository $categoryRepository
+    ): Response {
         return $this->render('home_page/index.html.twig', [
             'products' => $productRepository->findAll(),
             'cities' => $cityRepository->findAll(),
@@ -34,10 +44,12 @@ class HomePageController extends AbstractController
     }
 
     #[Route('/search', name: 'product_search')]
-    public function search(Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
-    {
-        $query = $request->query->get('search');
-
+    public function search(
+        Request $request,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository
+    ): Response {
+        $query = $request->query->get('search', '');
         $products = [];
 
         if ($query) {
@@ -52,12 +64,18 @@ class HomePageController extends AbstractController
     }
 
     #[Route('/shop/{id}', name: 'shop_products')]
-    public function products($id, ShopRepository $shopRepository, CityRepository $cityRepository, CategoryRepository $categoryRepository): Response
-    {
+    public function products(
+        int $id,
+        ShopRepository $shopRepository,
+        CityRepository $cityRepository,
+        CategoryRepository $categoryRepository
+    ): Response {
         $shop = $shopRepository->find($id);
 
         if (!$shop) {
-            throw $this->createNotFoundException("Shop not found");
+            throw $this->createNotFoundException(
+                $this->translator->trans('shop.not_found')
+            );
         }
 
         return $this->render('home_page/index.html.twig', [
@@ -68,23 +86,25 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('about', name: 'app_about_page')]
+    #[Route('/about', name: 'app_about_page')]
     public function aboutPage(): Response
     {
-        return $this->render('home_page/about.html.twig', [
-            // 'products' => $productRepository->findAll(),
-        ]);
-
+        return $this->render('home_page/about.html.twig');
     }
 
-
     #[Route('/category/{name}', name: 'products_by_category')]
-    public function productsByCategory(string $name, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
-    {
+    public function productsByCategory(
+        string $name,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository
+    ): Response {
         $products = $productRepository->findByCategoryName($name);
 
         if (empty($products)) {
-            $this->addFlash('warning', "Nenhum produto encontrado para a categoria '$name'.");
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('category.no_products', ['%category%' => $name])
+            );
         }
 
         return $this->render('home_page/index.html.twig', [
@@ -94,98 +114,33 @@ class HomePageController extends AbstractController
         ]);
     }
 
-   #[Route('/{id}', name: 'app_shop_loja', requirements: ['id' => '\d+'])]
-public function shopShow(?Shop $shop): Response
-{
+    #[Route('/shop/show/{id}', name: 'app_shop_loja', requirements: ['id' => '\d+'])]
+    public function shopShow(?Shop $shop): Response
+    {
         if (!$shop) {
-            throw $this->createNotFoundException('Loja não encontrada.');
+            throw $this->createNotFoundException(
+                $this->translator->trans('shop.not_found')
+            );
         }
+
         return $this->render('home_page/shops.html.twig', [
             'shop_loja' => $shop,
         ]);
     }
-    
 
-
-    // -------------------------CONTACTER-NOUS-------------------------------------------------------------------------------------------
-    // #[Route('contactnous', name: 'contact_nous', methods: ['GET', 'POST'])]
-    // public function contacterNous(): Response
-    // { 
-    //     $user = $this->getUser();
-
-    //     return $this->render('contact/contact.html.twig', []);
-    // }
-
-
-
-    // #[Route('/contact_form_submit', name: 'contact_form_submit', methods: ['POST'])]
-    // public function submit(Request $request, MailerInterface $mailer): Response
-    // {
-    //     // Récupération des données du formulaire
-    //     $name = $request->request->get('name');
-    //     $email = $request->request->get('email');
-    //     $subject = $request->request->get('subject');
-    //     $message = $request->request->get('message');
-
-    //     // Validation des données
-    //     if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-    //         $this->addFlash('danger', 'Tous les champs sont obligatoires.');
-    //         return $this->redirectToRoute('contact_page'); // Redirige vers la page de contact
-    //     }
-
-    //     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    //         $this->addFlash('danger', 'L\'adresse e-mail n\'est pas valide.');
-    //         return $this->redirectToRoute('contact_page');
-    //     }
-
-    //     try {
-    //         // Envoi de l'e-mail
-    //         $emailMessage = (new Email())
-    //             ->from($email)
-    //             ->to('toimuhotepu@hotmail.com') // Adresse de destination
-    //             ->subject($subject)
-    //             ->text("Nom: $name\nEmail: $email\nMessage:\n$message")
-    //             ->html("
-    //                 <p><strong>Nom:</strong> $name</p>
-    //                 <p><strong>Email:</strong> $email</p>
-    //                 <p><strong>Message:</strong></p>
-    //                 <p>$message</p>
-    //             ");
-
-    //         $mailer->send($emailMessage);
-
-    //         // Message de confirmation
-    //         $this->addFlash('success', 'Sua mensagem foi enviada com sucesso. Obrigado por nos contatar!');
-    //     } catch (\Exception $e) {
-    //         // Gestion des erreurs d'envoi d'e-mail
-    //         $this->addFlash('danger', 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
-    //     }
-
-    //     return $this->redirectToRoute('contact_nous');
-    // }
-
-
-    
-
-    //-------------APP ImuhotepuVideos---------------------------------------------------
     #[Route('/imuhotepu', name: 'app_presentation')]
-     public function showAppPage(): Response
-{
-    $captures = [
-        'screen1.jpg',
-        'screen2.jpg',
-        'screen3.jpg',
-        'screen4.jpg',
-        'screen5.jpg',
-        // etc.
-    ];
+    public function showAppPage(): Response
+    {
+        $captures = [
+            'screen1.jpg',
+            'screen2.jpg',
+            'screen3.jpg',
+            'screen4.jpg',
+            'screen5.jpg',
+        ];
 
-    return $this->render('home_page/app_presentation.html.twig', [
-        'captures' => $captures,
-    ]);
-}
-
-
-
-
+        return $this->render('home_page/app_presentation.html.twig', [
+            'captures' => $captures,
+        ]);
+    }
 }

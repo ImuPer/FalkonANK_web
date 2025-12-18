@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\MerchantRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/merchant/accounting')]
 class AccountingController extends AbstractController
@@ -22,7 +23,8 @@ class AccountingController extends AbstractController
         AccountingService $accountingService,
         MerchantRepository $merchantRepository,
         BasketProductRepository $basketProductRepository,
-        ShopRepository $shopRepository
+        ShopRepository $shopRepository,
+        TranslatorInterface $translator
     ): Response {
         $user = $this->getUser();
 
@@ -47,7 +49,7 @@ class AccountingController extends AbstractController
         $merchant = $merchantRepository->findOneBy(['user' => $user]);
 
         if (!$merchant) {
-            throw $this->createNotFoundException("Aucun marchand trouvé.");
+            throw $this->createNotFoundException($translator->trans('merchant.not_found'));
         }
 
         $shop = $shopRepository->findOneBy(['user' => $user]);

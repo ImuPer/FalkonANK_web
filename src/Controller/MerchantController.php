@@ -26,13 +26,16 @@ use Symfony\Component\Mime\Part\Multipart\RelatedPart;
 use Symfony\Component\Mime\Part\TextPart;
 use Symfony\Component\Mime\Part\Multipart\MixedPart;
 use Symfony\Component\Mime\Address;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 //#[Route('/merchant')]
 final class MerchantController extends AbstractController
 {
 
-    public function __construct(private EmailVerifier $emailVerifier)
-    {
+    public function __construct(
+        private EmailVerifier $emailVerifier,
+        private TranslatorInterface $translator
+    ) {
     }
 
     #[Route('/merchant/edit/{id}', name: 'merchant_edit')]
@@ -66,7 +69,7 @@ final class MerchantController extends AbstractController
 
             $em->flush();
 
-            $this->addFlash('success', 'Dados atualizados com sucesso!');
+            $this->addFlash('success', $this->translator->trans('merchant.updated_success'));
             return $this->redirectToRoute('user_dashboard');
         }
 
@@ -98,7 +101,7 @@ final class MerchantController extends AbstractController
         $existingMerchant = $entityManager->getRepository(Merchant::class)->findOneBy(['user' => $user]);
 
         if ($existingMerchant) {
-            $this->addFlash('error', 'Você já tem uma solicitação de loja registrada.');
+            $this->addFlash('error', $this->translator->trans('merchant.already_exists'));
             return $this->redirectToRoute('user_dashboard');
         }
 
@@ -119,7 +122,7 @@ final class MerchantController extends AbstractController
 
         // Validation des champs obligatoires
         if (empty($shopName) || empty($shopAddress) || !$shopLicense) {
-            $this->addFlash('error', 'Todos os campos obrigatórios devem ser preenchidos.');
+            $this->addFlash('error', $this->translator->trans('merchant.missing_fields'));
             return $this->redirectToRoute('user_basket');
         }
 
@@ -129,7 +132,7 @@ final class MerchantController extends AbstractController
             $fileExtension = $shopLicense->guessExtension() ?: $shopLicense->getClientOriginalExtension();
 
             if (!in_array($fileExtension, $allowedExtensions)) {
-                $this->addFlash('error', 'O ficheiro deve estar no formato PDF, JPG, JPEG ou PNG.');
+                $this->addFlash('error', $this->translator->trans('merchant.invalid_file'));
                 return $this->redirectToRoute('app_user_show');
             }
 
@@ -161,76 +164,31 @@ final class MerchantController extends AbstractController
         $entityManager->flush();
 
         //-----------Envoyer l’email avec le PDF en pièce jointe------------------------------------------
-    
-
-        $contractEmailContent = <<<EOD
-<html>
-  <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
-    </div>
-
-    <p>Olá <strong>{$userName}</strong>,</p>
-
-    <p>Obrigado por escolher fazer parte da nossa rede de parceiros comerciais. Estamos entusiasmados com a sua colaboração. Abaixo está o resumo do seu contrato de parceria comercial:</p>
-
-    <p>
-      <strong>Número do Contrato:</strong> CT-USER-{$userID}-{$dateNowFormatted0}<br>
-      <strong>Data de Assinatura:</strong> {$dateNowFormatted}
-    </p>
-
-    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Detalhes do Contrato</h3>
-    <p>
-      <strong>Entre:</strong> <br>
-      <strong>A Plataforma :</strong> FalkonANK Alimentason (nome legal: <em>Pereira Mascarenhas Milton Mario</em>), com sede em 60 rue François 1er, 75008 Paris, França.<br>
-      <strong>E :</strong> <br>
-      <strong>Comerciante : </strong> {$userName}<br>
-      <strong>NIF : </strong> {$nifMerchant}<br>
-      <strong>Morada do Estabelecimento : </strong> {$shopAddress}<br>
-      <strong>Cidade : </strong> {$city}
-      <strong>E-mail de Contacto : </strong> {$userEmail}
-    </p>
-
-    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Cláusulas do Contrato</h3>
-
-    <p><strong>1. Objeto:</strong> Este contrato estabelece os termos da parceria para venda e entrega de produtos através da plataforma FalkonANK Alimentason.</p>
-    <p><strong>2. Obrigações da Plataforma:</strong> Divulgar produtos, processar pagamentos, encaminhar pedidos ao Comerciante e fornecer suporte ao cliente.</p>
-    <p><strong>3. Obrigações do Comerciante:</strong> Garantir a qualidade e disponibilidade dos produtos e entregar conforme acordado.</p>
-    <p><strong>4. Preços e Pagamentos:</strong></p>
-    <ul>
-      <li>O Comerciante define o preço base (sem comissões).</li>
-      <li>A Plataforma adiciona a comissão + taxas Stripe ao valor final.</li>
-      <li>Pagamentos serão feitos entre 7 a 10 dias úteis após a entrega.</li>
-      <li>O custo da transferência bancária internacional será deduzido.</li>
-    </ul>
-    <p><strong>5. Duração e Rescisão:</strong> Contrato por tempo indeterminado, com aviso prévio de 15 dias para rescisão.</p>
-    <p><strong>6. Responsabilidade:</strong> O Comerciante é responsável pelos produtos entregues.</p>
-    <p><strong>7. Proteção de Dados:</strong> Ambas as partes devem cumprir o RGPD.</p>
-    <p><strong>8. Foro:</strong> Para resolução de litígios, fica eleito o foro da Comarca de Praia, Cabo Verde.</p>
-
-    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Assinatura</h3>
-    <p><strong>Nome do Comerciante : </strong> {$userName}</p>
-    <p><strong>Data : </strong> {$dateNowFormatted}</p>
-    <p><strong>Assinado em : </strong> {$city}</p>
-
-    <p style="margin-top: 30px;">Atenciosamente,<br>
-    <strong>FALKON-ANK</strong></p>
-  </body>
-</html>
-EOD;
+        $contractEmailContent = $this->renderView('emails/merchant_contract.html.twig', [
+            'userName' => $userName,
+            'userID' => $userID,
+            'dateNowFormatted0' => $dateNowFormatted0,
+            'dateNowFormatted' => $dateNowFormatted,
+            'nifMerchant' => $nifMerchant,
+            'shopAddress' => $shopAddress,
+            'city' => $city,
+            'userEmail' => $userEmail,
+        ]);
 
 
         $emailClient = (new Email())
             ->from(new Address('no-reply@FalkonANK.com', 'FalkonANK Alimentason'))
             ->to($userEmail, "falkon674@gmail.com")
-            ->subject('📄 Seu contrato de parceria com a FalkonANK')
-            ->html("Olá $userName,\n\nSegue em anexo o seu contrato de parceria com a FalkonANK.\n\nPor favor, guarde este documento.\n\nAtenciosamente,\nEquipe FalkonANK");
+            // ->subject('📄 Seu contrato de parceria com a FalkonANK')
+            // ->html("Olá $userName,\n\nSegue em anexo o seu contrato de parceria com a FalkonANK.\n\nPor favor, guarde este documento.\n\nAtenciosamente,\nEquipe FalkonANK");
+            ->subject($this->translator->trans('merchant.contract_subject'))
+            ->html($this->translator->trans('merchant.contract_body', ['%userName%' => $userName]));
 
         //-------Contract en PDF--------------------
         $options = new Options();
         $options->set('defaultFont', 'Arial');
 
-        set_time_limit(3000); 
+        set_time_limit(3000);
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($contractEmailContent);
         $dompdf->setPaper('A4', 'portrait');
@@ -248,7 +206,7 @@ EOD;
         unlink($tempPdfPath);
         //------------------------------------Fin de Email & Pdf-----------------------------------------------
 
-        $this->addFlash('success', 'Sua solicitação de criação de loja foi registrada com sucesso.');
+        $this->addFlash('success', $this->translator->trans('merchant.registered_success'));
         return $this->redirectToRoute('user_dashboard');
     }
 

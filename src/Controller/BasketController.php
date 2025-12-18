@@ -19,11 +19,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/basket')]
 class BasketController extends AbstractController
 {
 
+     private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
     // delite BasketProdut--------------------------------------------------------
     #[Route('/{id}', name: 'app_basketP_delete', methods: ['POST'])]
     public function delete(Request $request, BasketProduct $basketProduct, EntityManagerInterface $entityManager): Response
@@ -54,13 +61,13 @@ class BasketController extends AbstractController
             // Valider le token CSRF
             $submittedToken = $request->headers->get('X-CSRF-TOKEN');
             if (!$csrfTokenManager->isTokenValid(new CsrfToken('update_quantity', $submittedToken))) {
-                return new JsonResponse(['success' => false, 'message' => 'Invalid CSRF token.'], 403);
+                return new JsonResponse(['success' => false, 'message' => $this->translator->trans('basket.invalid_csrf')], 403);
             }
 
             // Récupérer le produit du panier par son ID
             $basketProduct = $basketProductRepository->find($id);
             if (!$basketProduct) {
-                return new JsonResponse(['success' => false, 'message' => 'Product not found.'], 404);
+                return new JsonResponse(['success' => false,  'message' => $this->translator->trans('basket.product_not_found')], 404);
             }
 
             // Récupérer le panier de l'utilisateur
@@ -76,7 +83,7 @@ class BasketController extends AbstractController
         }
 
         // Si l'utilisateur n'est pas connecté, retourner une réponse JSON
-        return new JsonResponse(['success' => false, 'message' => 'User not authenticated.'], 403);
+        return new JsonResponse(['success' => false, 'message' => $this->translator->trans('basket.user_not_authenticated')], 403);
     }
     //--------------Fin de delite products----------------------------------------
 
@@ -88,12 +95,12 @@ class BasketController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user) {
-            return new JsonResponse(['success' => false, 'message' => 'User not authenticated'], 403);
+            return new JsonResponse(['success' => false, 'message' => $this->translator->trans('basket.user_not_authenticated')], 403);
         }
 
         $basketProduct = $basketProductRepository->find($id);
         if (!$basketProduct) {
-            return new JsonResponse(['success' => false, 'message' => 'Product not found'], 404);
+            return new JsonResponse(['success' => false, 'message' => $this->translator->trans('basket.empty')], 404);
         }
 
         if ($quantity === 0) {
@@ -186,7 +193,7 @@ class BasketController extends AbstractController
                 ]);
             } else {
                 // Pas de panier pour cet utilisateur
-                $message = "Você ainda não tem artigos, adicione um produto ao carrinho !";
+                $message = $this->translator->trans('basket.no_products_yet');
 
                 return $this->render('basket/user_basket.html.twig', [
                     'basketPs' => null, // Pas de produits à afficher
