@@ -1,90 +1,100 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'order.title'|trans }}{% endblock %}
+{% block title %}
+    {{ 'orders.title'|trans }}
+{% endblock %}
 
 {% block body %}
-	<link rel="stylesheet" href="{{ asset('css/order.css') }}">
+<link rel="stylesheet" href="{{ asset('css/order.css') }}">
 
-	<style>
-		/* Responsive table styling conservé */
-		.responsive-table {
-			width: 100%;
-			overflow-x: auto;
-		}
-		.table-container {
-			display: block;
-			width: 100%;
-			overflow-x: auto;
-			-webkit-overflow-scrolling: touch;
-		}
-		.table thead {
-			background-color: #f8f9fa;
-		}
-		@media(max-width: 768px) {
-			.table thead {
-				display: none;
-			}
-			.table, .table tbody, .table tr, .table td {
-				display: block;
-				width: 100%;
-			}
-			.table tr {
-				margin-bottom: 15px;
-				border-bottom: 1px solid #ddd;
-			}
-			.table td {
-				text-align: right;
-				padding-left: 50%;
-				position: relative;
-			}
-			.table td::before {
-				content: attr(data-label);
-				position: absolute;
-				left: 15px;
-				width: 45%;
-				padding-left: 15px;
-				font-weight: bold;
-				text-align: left;
-			}
-		}
-	</style>
+<style>
+.responsive-table { width: 100%; overflow-x: auto; }
+.table-container { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table thead { background-color: #f8f9fa; }
 
-	<div class="d-inline-flex p-3">
-		<a href="{{ path('app_home_page') }}">
-			<button type="button" class="btn btn-dark">{{ 'order.back_to_shop'|trans }}</button>
-		</a>
-	</div>
+@media(max-width: 768px) {
+    .table thead { display: none; }
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+    .table tr {
+        margin-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    .table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-left: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+}
+</style>
 
-	<div class="general_order container mt-4">
-		<h1 class="mb-4">{{ 'order.my_orders'|trans }}</h1>
+<div class="d-inline-flex p-3">
+    <a href="{{ path('app_home_page') }}">
+        <button type="button" class="btn btn-dark">
+            {{ 'orders.back_shop'|trans }}
+        </button>
+    </a>
+</div>
 
-		<div class="table-container">
-			<table class="table table-striped responsive-table">
-				<thead>
-					<tr>
-						<th>{{ 'order.reference'|trans }}</th>
-						<th>{{ 'order.date'|trans }}</th>
-						<th>{{ 'order.total'|trans }}</th>
-						<th>{{ 'order.status'|trans }}</th>
-						<th>{{ 'order.beneficiary'|trans }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for order in orders %}
-						<tr onclick="window.location.href='{{ path('app_order_show', {'id': order.id}) }}';" style="cursor: pointer;">
-							<td data-label="{{ 'order.reference'|trans }}">{{ order.ref }}</td>
-							<td data-label="{{ 'order.date'|trans }}">{{ order.orderDate ? order.orderDate|date('d-m-Y H:i:s') : '' }}</td>
-							<td data-label="{{ 'order.total'|trans }}">{{ order.amountFinal / 100 }} CVE</td>
-							<td data-label="{{ 'order.status'|trans }}">{{ order.orderStatus }}</td>
-							<td data-label="{{ 'order.beneficiary'|trans }}">{{ order.beneficiaryName }}</td>
-						</tr>
-					{% else %}
-						<tr>
-							<td colspan="5">{{ 'order.no_orders'|trans }}</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
+<div class="general_order container mt-4">
+    <h1 class="mb-4">{{ 'orders.heading'|trans }}</h1>
+
+    <div class="table-container">
+        <table class="table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th>{{ 'orders.ref'|trans }}</th>
+                    <th>{{ 'orders.date'|trans }}</th>
+                    <th>{{ 'orders.total'|trans }}</th>
+                    <th>{{ 'orders.status'|trans }}</th>
+                    <th>{{ 'orders.beneficiary'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr onclick="window.location.href='{{ path('app_order_show', {'id': order.id}) }}';"
+                        style="cursor: pointer;">
+
+                        <td data-label="{{ 'orders.ref'|trans }}">
+                            {{ order.ref }}
+                        </td>
+
+                        <td data-label="{{ 'orders.date'|trans }}">
+                            {{ order.orderDate ? order.orderDate|date('d-m-Y H:i:s') : '' }}
+                        </td>
+
+                        <td data-label="{{ 'orders.total'|trans }}">
+                            {{ order.amountFinal / 100 }} {{ 'currency.cve'|trans }}
+                        </td>
+
+                        <td data-label="{{ 'orders.status'|trans }}">
+                            {{ order.orderStatus|trans }}
+                        </td>
+
+                        <td data-label="{{ 'orders.beneficiary'|trans }}">
+                            {{ order.beneficiaryName }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            {{ 'orders.empty'|trans }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

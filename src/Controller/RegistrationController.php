@@ -20,7 +20,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use function Symfony\Component\Clock\now;
 use App\Entity\Response as ResponseEntity; // attention au nom pour éviter conflit
@@ -32,7 +31,7 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security, TranslatorInterface $translator): Response
+    public function register(UserRepository $userRepository, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Security $security): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -42,7 +41,7 @@ class RegistrationController extends AbstractController
         // Vérification si l'email existe déjà
         $existingUser = $userRepository->findOneBy(['email' => $user->getEmail()]);
         if ($existingUser) {
-            $this->addFlash('success', $translator->trans('register.success'));
+            $this->addFlash('error', 'Este e-mail já está em utilização.');
             return $this->render('registration/register.html.twig', [
                 'registrationForm' => $form,
             ]);
@@ -55,7 +54,7 @@ class RegistrationController extends AbstractController
 
             if ($password !== $confirmPassword) {
                 $form->get('confirmPassword')
-                    ->addError(new \Symfony\Component\Form\FormError($translator->trans('register.passwords_do_not_match')));
+                    ->addError(new \Symfony\Component\Form\FormError('As senhas não correspondem.'));
             } else {
                 // encode the plain password
                 $user->setPassword(
@@ -80,21 +79,22 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
+    public function verifyUserEmail(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            // Tente de valider le lien d'email
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans('verify.email_error'));
-            $this->addFlash('error', $translator->trans('verify.invalid_email'));
+            $this->addFlash('verify_email_error', $exception->getReason());
+            $this->addFlash('error', 'Este e-mail é ivalido.');
 
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', $translator->trans('verify.success'));
+        // @TODO Change the redirect on success and handle or remove the flash message in your templates
+        $this->addFlash('success', 'Seu endereço de e-mail foi verificado.');
 
         return $this->redirectToRoute('app_home_page');
     }
@@ -136,14 +136,8 @@ class RegistrationController extends AbstractController
 
 
     #[Route('/contact_form_submit', name: 'contact_form_submit', methods: ['POST'])]
-
-
-    public function submit(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        MailerInterface $mailer,
-        TranslatorInterface $translator
-    ): Response {
+    public function submit(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    {
         // Récupération des données du formulaire
         $name = $request->request->get('name');
         $email = $request->request->get('email');
@@ -152,16 +146,17 @@ class RegistrationController extends AbstractController
 
         // Validation des données
         if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-            $this->addFlash('danger', $translator->trans('contact.all_fields_required'));
-            return $this->redirectToRoute('contact_page');
+            $this->addFlash('danger', 'Tous les champs sont obligatoires.');
+            return $this->redirectToRoute('contact_page'); // Redirige vers la page de contact
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->addFlash('danger', $translator->trans('contact.invalid_email'));
+            $this->addFlash('danger', 'L\'adresse e-mail n\'est pas valide.');
             return $this->redirectToRoute('contact_page');
         }
 
         try {
+            //Cree et enregistrer sur contact
             $contact = new Contact();
             $contact->setName($name);
             $contact->setEmail($email);
@@ -171,14 +166,29 @@ class RegistrationController extends AbstractController
             $entityManager->persist($contact);
             $entityManager->flush();
 
-            $this->addFlash('success', $translator->trans('contact.success'));
+            // Envoi de l'e-mail
+            // $emailMessage = (new Email())
+            //     ->from($email)
+            //     ->to('falkon674@gmail.com') // Adresse de destination
+            //     ->subject($subject)
+            //     ->text("Nom: $name\nEmail: $email\nMessage:\n$message")
+            //     ->html("
+            //         <p><strong>Nom:</strong> $name</p>
+            //         <p><strong>Email:</strong> $email</p>
+            //         <p><strong>Message:</strong></p>
+            //         <p>$message</p>
+            //     ");
+            // $mailer->send($emailMessage);
+
+            // Message de confirmation
+            $this->addFlash('success', 'Sua mensagem foi enviada com sucesso. Obrigado por nos contatar!');
         } catch (\Exception $e) {
-            $this->addFlash('danger', $translator->trans('contact.error'));
+            // Gestion des erreurs d'envoi d'e-mail
+            $this->addFlash('danger', 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.');
         }
 
         return $this->redirectToRoute('contact_nous');
     }
-
 
     //---------------Response---------------------------------------------------------------------------------
     #[Route('/reponse/{id}', name: 'reponse', methods: ['GET', 'POST'])]
@@ -186,14 +196,14 @@ class RegistrationController extends AbstractController
         int $id,
         Request $request,
         EntityManagerInterface $em,
-        MailerInterface $mailer,
-        TranslatorInterface $translator
+        MailerInterface $mailer
     ): Response {
         $contact = $em->getRepository(Contact::class)->find($id);
         if (!$contact) {
-            throw $this->createNotFoundException($translator->trans('contact.not_found'));
+            throw $this->createNotFoundException('Contact non trouvé');
         }
 
+        // Chercher si une réponse existe déjà pour ce contact
         $responseRepo = $em->getRepository(ResponseEntity::class);
         $response = $responseRepo->findOneBy(['contact' => $contact]);
 
@@ -213,6 +223,7 @@ class RegistrationController extends AbstractController
                 $em->persist($response);
                 $em->flush();
 
+                // Envoi mail
                 $email = (new Email())
                     ->from('no-reply@tondomaine.com')
                     ->to($contact->getEmail())
@@ -221,11 +232,11 @@ class RegistrationController extends AbstractController
 
                 $mailer->send($email);
 
-                $this->addFlash('success', $translator->trans('contact.response_saved_and_sent'));
+                $this->addFlash('success', 'Réponse sauvegardée et envoyée avec succès !');
 
                 return $this->redirectToRoute('reponse', ['id' => $id]);
             } else {
-                $this->addFlash('error', $translator->trans('contact.empty_response_error'));
+                $this->addFlash('error', 'Veuillez écrire une réponse.');
             }
         }
 
@@ -234,7 +245,6 @@ class RegistrationController extends AbstractController
             'reponse' => $response->getResponse(),
         ]);
     }
-
 
     //------------------------- Fin de Pesponse---------------------------------------------------------
 

@@ -1,70 +1,91 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
-{% block title %}{{ 'privacy.title'|trans }}{% endblock %}
+{% block title %}
+    {{ 'privacy.title'|trans }}
+{% endblock %}
 
 {% block body %}
 <div class="container mt-5 mb-5">
-    <h1>🔒 {{ 'privacy.heading'|trans }}</h1>
 
-    <p><strong>{{ 'privacy.last_update'|trans }}:</strong> 19 de maio de 2025</p>
+    <h1 class="mb-4">
+        {{ 'privacy.heading'|trans }}
+    </h1>
+
+    <p class="text-muted">
+        <strong>{{ 'privacy.last_update'|trans }}</strong> 19 de maio de 2025
+    </p>
 
     <hr>
 
-    <h2>{{ 'privacy.intro_title'|trans }}</h2>
-    <p>{{ 'privacy.intro_text'|trans }}</p>
+    {# 1. Introduction #}
+    <h2 class="mt-4">{{ 'privacy.section1.title'|trans }}</h2>
+    <p>{{ 'privacy.section1.content'|trans }}</p>
 
-    <h2>{{ 'privacy.data_collected_title'|trans }}</h2>
-    <p>{{ 'privacy.data_collected_intro'|trans }}</p>
+    {# 2. Données collectées #}
+    <h2 class="mt-4">{{ 'privacy.section2.title'|trans }}</h2>
+    <p>{{ 'privacy.section2.intro'|trans }}</p>
     <ul>
-        <li>{{ 'privacy.data.name'|trans }}</li>
-        <li>{{ 'privacy.data.email'|trans }}</li>
-        <li>{{ 'privacy.data.address'|trans }}</li>
-        <li>{{ 'privacy.data.history'|trans }}</li>
-        <li>{{ 'privacy.data.cookies'|trans }}</li>
+        <li>{{ 'privacy.section2.item1'|trans }}</li>
+        <li>{{ 'privacy.section2.item2'|trans }}</li>
+        <li>{{ 'privacy.section2.item3'|trans }}</li>
+        <li>{{ 'privacy.section2.item4'|trans }}</li>
+        <li>{{ 'privacy.section2.item5'|trans }}</li>
     </ul>
 
-    <h2>{{ 'privacy.data_use_title'|trans }}</h2>
-    <p>{{ 'privacy.data_use_intro'|trans }}</p>
+    {# 3. Utilisation des données #}
+    <h2 class="mt-4">{{ 'privacy.section3.title'|trans }}</h2>
+    <p>{{ 'privacy.section3.intro'|trans }}</p>
     <ul>
-        <li>{{ 'privacy.data_use.account'|trans }}</li>
-        <li>{{ 'privacy.data_use.orders'|trans }}</li>
-        <li>{{ 'privacy.data_use.improvement'|trans }}</li>
-        <li>{{ 'privacy.data_use.communication'|trans }}</li>
+        <li>{{ 'privacy.section3.item1'|trans }}</li>
+        <li>{{ 'privacy.section3.item2'|trans }}</li>
+        <li>{{ 'privacy.section3.item3'|trans }}</li>
+        <li>{{ 'privacy.section3.item4'|trans }}</li>
     </ul>
 
-    <h2>{{ 'privacy.sharing_title'|trans }}</h2>
-    <p>{{ 'privacy.sharing_text'|trans }}</p>
+    {# 4. Partage des données #}
+    <h2 class="mt-4">{{ 'privacy.section4.title'|trans }}</h2>
+    <p>{{ 'privacy.section4.content'|trans }}</p>
 
-    <h2>{{ 'privacy.security_title'|trans }}</h2>
-    <p>{{ 'privacy.security_text'|trans }}</p>
+    {# 5. Sécurité #}
+    <h2 class="mt-4">{{ 'privacy.section5.title'|trans }}</h2>
+    <p>{{ 'privacy.section5.content'|trans }}</p>
 
-    <h2>{{ 'privacy.retention_title'|trans }}</h2>
-    <p>{{ 'privacy.retention_text'|trans }}</p>
+    {# 6. Durée de conservation #}
+    <h2 class="mt-4">{{ 'privacy.section6.title'|trans }}</h2>
+    <p>{{ 'privacy.section6.content'|trans }}</p>
 
-    <h2>{{ 'privacy.rights_title'|trans }}</h2>
-    <p>{{ 'privacy.rights_intro'|trans }}</p>
+    {# 7. Droits des utilisateurs #}
+    <h2 class="mt-4">{{ 'privacy.section7.title'|trans }}</h2>
+    <p>{{ 'privacy.section7.intro'|trans }}</p>
     <ul>
-        <li>{{ 'privacy.rights.access'|trans }}</li>
-        <li>{{ 'privacy.rights.update'|trans }}</li>
-        <li>{{ 'privacy.rights.delete'|trans }}</li>
-        <li>{{ 'privacy.rights.object'|trans }}</li>
+        <li>{{ 'privacy.section7.item1'|trans }}</li>
+        <li>{{ 'privacy.section7.item2'|trans }}</li>
+        <li>{{ 'privacy.section7.item3'|trans }}</li>
+        <li>{{ 'privacy.section7.item4'|trans }}</li>
     </ul>
-    <p>{{ 'privacy.rights.contact'|trans({ '%email%' : 'falkon674@gmail.com' }) }}</p>
-
-    <h2>{{ 'privacy.cookies_title'|trans }}</h2>
-    <p>{{ 'privacy.cookies_text'|trans }}</p>
-
-    <h2>{{ 'privacy.modifications_title'|trans }}</h2>
-    <p>{{ 'privacy.modifications_text'|trans }}</p>
-
-    <h2>{{ 'privacy.contact_title'|trans }}</h2>
     <p>
-        {{ 'privacy.contact_text'|trans }}<br>
+        {{ 'privacy.section7.contact'|trans }}
+        <a href="mailto:falkon674@gmail.com">falkon674@gmail.com</a>
+    </p>
+
+    {# 8. Cookies #}
+    <h2 class="mt-4">{{ 'privacy.section8.title'|trans }}</h2>
+    <p>{{ 'privacy.section8.content'|trans }}</p>
+
+    {# 9. Modifications #}
+    <h2 class="mt-4">{{ 'privacy.section9.title'|trans }}</h2>
+    <p>{{ 'privacy.section9.content'|trans }}</p>
+
+    {# 10. Contact #}
+    <h2 class="mt-4">{{ 'privacy.section10.title'|trans }}</h2>
+    <p>
+        {{ 'privacy.section10.content'|trans }}<br>
         📧 <a href="mailto:falkon674@gmail.com">falkon674@gmail.com</a>
     </p>
 
-    <div class="alert alert-info mt-4" role="alert">
-        {{ 'privacy.acceptance'|trans }}
+    <div class="alert alert-info mt-5" role="alert">
+        {{ 'privacy.accept.text'|trans }}
     </div>
+
 </div>
 {% endblock %}

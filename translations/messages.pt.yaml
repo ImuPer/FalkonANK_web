@@ -1,366 +1,692 @@
-homeH: Início
-about_us: Sobre nós
-contactH: Contato
-photo_frame: Quadro de fotos
-my_space: Meu espaço
-profileH: Perfil
-ordersH: Compras
-basketH: Cesta
-logout: Sair
-registerH: Criar conta
-loginH: Entrar
-admin: Administrador
-search_placeholder: Buscar
-search_button: Buscar
+site_title: "Falkon-ANK"
+about: "Sobre Nós"
+# contact: "Contacto"
+photos: "Quadro de fotos"
+my_space: "Meu espaço"
+profile_h: "Perfil"
+orders: "Compras"
+basket: "Cesta"
+logout: "Sair"
+register_h: "Criar conta"
+# login: "Login"
+admin: "Administrador"
+search: "Busca"
 
-# ----------about page-------------------------------------------------------------------------
-about_us_title: "Sobre Nós"
-back_to_store: "Voltar à loja"
-about_us_paragraph_1: "Somos uma organização sediada em Paris, França, criada pela diáspora cabo‑verdiana com o objetivo de fortalecer a conexão entre a comunidade cabo‑verdiana no exterior e os comerciantes locais em Cabo Verde. Nosso site de e‑commerce foi projetado para facilitar o comércio direto entre os membros da diáspora e os vendedores locais, promovendo uma experiência única de compras para nossos clientes."
-about_us_paragraph_2: "Focamos principalmente no setor alimentar, permitindo que a diáspora cabo‑verdiana compre produtos diretamente de comerciantes locais em Cabo Verde. Nosso sistema possibilita que os clientes façam compras e instruam seus familiares ou destinatários a irem buscar os produtos nos pontos de venda, ou optem por entrega ao domicílio, garantindo maior conveniência e flexibilidade."
-about_us_paragraph_3: "O nosso compromisso é com a qualidade, a autenticidade e o apoio à economia local, promovendo o crescimento e o desenvolvimento do comércio em Cabo Verde através de uma plataforma digital inovadora e acessível."
+meta.description: "FalkonANK: plataforma de ligação entre a diáspora cabo-verdiana e os comerciantes locais em Cabo Verde."
+title.site: "FalkonANK"
+header.category: "Categoria de Artigos"
+header.shops: "Nossas Lojas"
+button.add_cart: "Adicionar ao Carrinho"
+text.out_of_stock: "Ruptura de stock"
+text.for_purchase: "Para compras – criar uma conta simples"
+product.shop: "Loja"
+product.city: "Localidade"
+
+about.title: "Sobre Nós"
+button.back_to_shop: "Voltar à loja"
+about.paragraph1: "Somos uma organização sediada em Paris, França, criada pela diáspora cabo-verdiana com o objetivo de fortalecer a conexão entre a comunidade cabo-verdiana no exterior e os comerciantes locais em Cabo Verde. Nosso site e-commerce foi projetado para facilitar o comércio direto entre os membros da diáspora e os vendedores locais, promovendo uma experiência única de compras para nossos clientes."
+about.paragraph2: "Focamos principalmente no setor alimentar, permitindo que a diáspora cabo-verdiana compre produtos diretamente de comerciantes locais em Cabo Verde. Nosso sistema possibilita que os clientes façam compras e instruam seus familiares ou destinatários a irem buscar os produtos nos pontos de venda, ou optem por uma entrega ao domicílio, garantindo maior conveniência e flexibilidade."
+about.paragraph3: "O nosso compromisso é com a qualidade, a autenticidade e o apoio à economia local, promovendo o crescimento e desenvolvimento do comércio em Cabo Verde através de uma plataforma digital inovadora e acessível."
+about.image_alt: "Imagem Sobre Nós"
+
+imuhotepu.title: "Imuhotepu-Videos"
+imuhotepu.download_apk: "Baixar APK"
+imuhotepu.logo_alt: "Logo Imuhotepu"
+imuhotepu.banner_alt: "Banner do aplicativo"
+imuhotepu.screenshot: "Captura de tela %index%"
+imuhotepu.description: "<strong>Imuhotepu-Videos</strong> é um aplicativo de streaming educativo por assinatura, oferecendo acesso exclusivo a vídeos sobre história, cultura geral e educação. Aprenda no seu ritmo, descubra o mundo e enriqueça seus conhecimentos com uma plataforma intuitiva e rica em conteúdos."
+
+shop.title: "Loja"
+shop.none_found: "Nenhuma loja encontrada !"
+shop.name: "Nome da Loja"
+shop.city: "Localidade"
+shop.address: "Endereço"
+shop.email: "Email"
+shop.phone: "Telefone"
+shop.mobile: "Móvel"
+shop.hours: "Horário"
+shop.image_alt: "Imagem da loja"
+
+nav.cities_shops: "Cidades : lojas"
+nav.toggle: "Mostrar / ocultar navegação"
+
+footer.title: "Rodapé"
+footer.home: "Início"
+footer.contact: "Contacto"
+footer.about: "Sobre nós"
+footer.privacy: "Política de privacidade"
+footer.imuhotepu: "Imuhotepu-videos"
+footer.download_apk: "Download APK"
+footer.imuhotepu_logo: "Logo Imuhotepu"
+
+carousel.label: "Galeria de produtos"
+carousel.slide: "Slide"
+carousel.previous: "Anterior"
+carousel.next: "Seguinte"
+carousel.image_products: "Produtos disponíveis"
+carousel.image_delivery: "Entrega rápida"
+carousel.image_quality: "Qualidade garantida"
+
+file.view: "Ver ficheiro"
+file.no_upload: "Nenhum ficheiro enviado"
+
+basket.delete: "Excluir"
+basket.delete_confirm: "Tem certeza de que deseja excluir este produto?"
+
+form.save: "Guardar"
+
+basket.edit.title: "Modificar cesta"
+basket.edit.heading: "Editar cesta"
+basket.update: "Atualizar"
+basket.back_to_list: "Voltar à lista"
+basket.index.title: "Minha cesta"
+basket.index.heading: "Minha cesta"
+basket.id: "ID"
+basket.actions: "Ações"
+basket.show: "Ver"
+basket.edit: "Editar"
+basket.no_records: "Nenhum registo encontrado"
+basket.create_new: "Criar nova cesta"
+basket.new.title: "Nova cesta"
+basket.new.heading: "Criar nova cesta"
+# basket.back_to_list: "Voltar à lista"
+basket.show.title: "Cesta"
+basket.show.heading: "Cesta"
+basket.fields.id: "Id"
+# basket.back_to_list: "Voltar à lista"
+# basket.edit: "Editar"
+
+# Carrinho
+basket.title: "Meu Carrinho"
+basket.heading: "Meu Carrinho"
+basket.back_to_shop: "Voltar à loja"
+basket.city: "Cidade"
+basket.empty: "O seu carrinho está vazio!"
+basket.total: "Total"
+basket.checkout: "Finalizar compra"
+# Moeda
+currency.euro: "Euro"
+currency.usd: "USD"
+# Modal Checkout
+checkout.modal_title: "Informações do Beneficiário"
+checkout.close: "Fechar"
+checkout.city: "Cidade do Beneficiário"
+checkout.select_city: "Selecione uma cidade"
+checkout.name: "Nome"
+checkout.address: "Endereço do Beneficiário"
+checkout.email: "Email (opcional)"
+checkout.phone: "Número de telemóvel (opcional)"
+checkout.confirm: "Confirmar e Pagar"
 
 
-# ------------------contact page-----------------------------------------------------------
-contact.title: "Contato"
-# back_to_store: "Voltar à loja"
-contact.heading: "Fale Conosco"
-label.name: "Nome"
-placeholder.name: "Seu nome"
-label.email: "E‑mail"
-placeholder.email: "Seu e‑mail"
-label.subject: "Assunto"
-placeholder.subject: "Assunto da sua mensagem"
-label.message: "Mensagem"
-placeholder.message: "Sua mensagem"
-button.send: "Enviar"
-contact.info_title: "Informações de Contato"
-contact.follow_us: "Siga‑nos"
 
-# reponse-------------------------
-response.heading: "Resposta à mensagem de %name%"
-response.subject: "Assunto :"
-response.message_label: "Mensagem :"
-button.close: "Fechar"
-response.reply_label: "Resposta :"
-response.send_button: "Enviar"
+basket_title: "Minha Cesta"
+basket_empty: "A sua cesta está vazia!"
+back_to_shop: "Voltar à loja"
+total: "Total"
+euro: "€ (Euro)"
+usd: "$ (USD)"
+finalize_purchase: "Finalizar Compra"
+beneficiary_info: "Informações do Beneficiário"
+beneficiary_city: "Cidade do Beneficiário *"
+select_city: "Selecionar uma cidade"
+beneficiary_name: "Nome *"
+beneficiary_address: "Endereço do Beneficiário *"
+beneficiary_email: "Email (opcional)"
+phone_number: "Número de Telemóvel (opcional)"
+confirm_pay: "Confirmar e Pagar"
+city: "Cidade"
 
 
-#---------------- cadrePhoto page-------------------------------------------------
-download_apk: "Descarregar APK"
-play_store: "Play Store :"
-app_banner: "Banner do aplicativo"
-screenshot: "Captura #%"
-app_name: "Imuhotepu‑Videos"
-app_description: >
-  é um aplicativo de streaming educativo por assinatura,
-  oferecendo acesso exclusivo a vídeos sobre história, cultura geral e educação.
-  Aprenda no seu ritmo, descubra o mundo e enriqueça seus conhecimentos
-  com uma plataforma intuitiva e rica em conteúdos.
+page:
+  title: "Molduras Digitais Personalizadas"
+  subtitle: "(Família / Profissional)"
+  
+product:
+  detail:
+    title: "Artigo"
+    add_to_cart: "Adicionar ao Carrinho"
+    stock_out: "Esgotado"
+    description: "Descrição"
+    shop: "Loja"
+    shop_name: "Nome da Loja"
+    location: "Localidade"
+    address: "Endereço"
+    email: "Email"
+    phone: "Telefone"
+    mobile: "Telemóvel"
+    schedule: "Horário"
+    purchase_note: "Para compras - criar uma conta simples"
 
-
-
-# ----------------register page-----------------------------------------------------------------
-register:
-  title: "Registrar"
-  create_account: "Criar uma conta"
-  email: "E-mail"
-  password: "Senha"
-  confirm_password: "Confirmar Senha"
-  first_name: "Primeiro Nome"
-  last_name: "Sobrenome"
-  address: "Endereço"
-  accept_terms: "Eu aceito os"
-  terms_conditions: "Termos e Condições"
-  create_account_button: "Criar Conta"
-  # addFlash:
-  email_already_used: 'Este e-mail já está em utilização.'
-  passwords_do_not_match: 'As senhas não correspondem.'
-  success: 'Registro realizado com sucesso!'
+  modern:
+    title: "Moldura Moderna 4K Pi 8GB"
+    alt1: "Vista 1 - Moldura Moderna"
+    alt2: "Vista 2 - Moldura Moderna"
+    alt3: "Vista 3 - Moldura Moderna"
+  rustic:
+    title: "Moldura Rústica Full HD Pi 4GB - Personalizada"
+    alt: "Moldura Rústica"
+  basic:
+    title: "Moldura Digital Básica Pi"
+    alt: "Moldura Digital Básica"
+    desc1: "- Sistema simples, ideal para fotos de família"
+    desc2: "- Fixação na parede"
+    desc3: "- Compatível com ecrã de 22”"
+    desc4: "Fonte de alimentação e suporte incluídos"
+  fixation:
+    wall_ceiling: "- Fixação na parede ou no teto"
+  system:
+    8g_4k: "Sistema (8 GB), 4K"
+    4g: "Sistema (4 GB)"
+  cable_power: "Cabo HDMI 2 m + alimentação 5 V / 5 A"
+  box_heatsink: "Caixa + dissipador"
+  box_power_cable: "Caixa + alimentação + cabos"
+  vesa: "Suporte VESA + parafusos incluídos"
 form:
-  email_placeholder: "E-mail"
-  password_placeholder: "Senha"
-  confirm_password_placeholder: "Confirme a senha"
-  last_name_placeholder: "Sobrenome (apelido(s))"
-  first_name_placeholder: "Nome"
-  address_placeholder: "Seu endereço"
-  agree_terms_message: "Você deve concordar com os nossos termos."
-  password_blank_message: "Por favor, insira uma senha"
-  password_length_message: "Sua senha deve ter pelo menos {{ limit }} caracteres"
-  confirm_password_blank_message: "Por favor, confirme a senha"
+  customize: "Personalize a sua moldura digital"
+  frame_type: "Tipo de moldura:"
+  screen_size: "Tamanho do ecrã:"
+  select: "-- selecione --"
+  frame:
+    basic: "Básica Full HD Pi"
+    rustic: "Rústica Full HD Pi 4GB"
+    modern: "Moderna 4K Pi 8GB"
+  support_type: "Tipo de suporte:"
+  support:
+    wall: "Suporte de parede"
+    ceiling: "Suporte de teto"
+  mobile_app: "Aplicação móvel:"
+  app:
+    custom: "Aplicação personalizada integrada"
+    custom_desc: "(nome, apelido ou empresa + logótipo)"
+    basic: "Aplicação móvel básica"
+    none: "Sem aplicação"
+price:
+  original: "Preço sem desconto"
+  discounted: "Preço com aplicação personalizada (15 % de desconto)"
+button:
+  contact: "Contacte-nos para um orçamento final"
 
-# terms and condition
-terms_and_conditions:
+
+contact:
+  us: "Contactar-nos"
+  title: "Contato"
+  back_to_shop: "Voltar à loja"
+  heading: "Fale Conosco"
+  form:
+    name:
+      label: "Nome"
+      placeholder: "Seu nome"
+    email:
+      label: "E-mail"
+      placeholder: "Seu e-mail"
+    subject:
+      label: "Assunto"
+      placeholder: "Assunto da sua mensagem"
+    message:
+      label: "Mensagem"
+      placeholder: "Sua mensagem"
+    submit: "Enviar"
+  info:
+    title: "Informações de Contato"
+    address: "60 rue François 1er, 75008 Paris, França"
+    email: "falkon674@gmail.com"
+  social:
+    title: "Siga-nos"
+
+
+response_to_message: "Resposta à mensagem de %name%"
+subject: "Assunto"
+message: "Mensagem"
+response: "Resposta"
+send: "Enviar"
+close: "Fechar"
+
+accounting.title: "Contabilidade"
+accounting.all_shops: "📊 Contabilidade de todas as lojas"
+accounting.your_shop: "📊 Contabilidade da sua loja"
+accounting.monthly_revenue: "📅 Receita mensal"
+accounting.product_revenue: "🛒 Receita por produto"
+accounting.category_revenue: "📂 Receita por categoria"
+accounting.month: "Mês"
+accounting.revenue: "Faturamento"
+accounting.commission: "Comissão"
+accounting.final_price: "Preço final"
+accounting.refund: "Reembolso"
+accounting.shop_name: "Nome da loja"
+accounting.shop_email: "Email da loja"
+accounting.product: "Produto"
+accounting.category: "Categoria"
+accounting.no_data: "Nenhum dado disponível"
+
+
+orders.accounting_title: "Contabilidade das encomendas"
+orders.finished_week: "Encomendas finalizadas por semana"
+orders.finished: "Encomendas finalizadas"
+orders.refunded: "Encomendas reembolsadas"
+orders.refund_in_progress: "Reembolso em curso"
+orders.not_finished: "Encomendas não finalizadas"
+orders.none_for_section: "Nenhuma encomenda %section%."
+orders.week: "Semana"
+orders.ref: "Referência"
+orders.date: "Data"
+orders.status: "Estado"
+orders.total: "Total"
+orders.final: "Valor final"
+orders.refund: "Reembolso"
+orders.stripe: "Stripe Pay ID"
+orders.shop_email: "Email da loja"
+Entregue e finalizado: "Entregue e finalizado"
+Em processamento: "Em processamento"
+Em curso: "Em curso"
+Reembolso: "Reembolso"
+
+button.delete: "Eliminar"
+
+button.save: "Guardar"
+
+# ----contract--------------------------------------------------------------------------------------------
+contract.title: "Exemplo de Contrato de Parceria Comercial"
+contract.number: "Número do Contrato"
+contract.between: "Entre"
+contract.platform: "A Plataforma"
+contract.legal_name: "nome legal"
+contract.address_platform: "com sede em 60 rue François 1er, 75008 Paris, França"
+contract.and: "E"
+contract.merchant: "Comerciante"
+contract.nif: "NIF (Número de Identificação Fiscal)"
+contract.address: "Morada do Estabelecimento"
+contract.email: "E-mail"
+contract.clauses_title: "Cláusulas do Contrato"
+contract.object.title: "Objeto"
+contract.object.text: "Este contrato estabelece os termos da parceria para venda e entrega de produtos através da plataforma FalkonANK Alimentason."
+contract.platform_duties.title: "Obrigações da Plataforma"
+contract.platform_duties.text: "Divulgar os produtos, processar pagamentos e fornecer suporte básico."
+contract.merchant_duties.title: "Obrigações do Comerciante"
+contract.merchant_duties.text: "Garantir a qualidade dos produtos e cumprir as entregas."
+contract.payment.title: "Preços e Pagamentos"
+contract.payment.1: "O Comerciante define o preço base."
+contract.payment.2: "A Plataforma adiciona comissão e taxas."
+contract.payment.3: "Pagamentos em 7 a 10 dias úteis."
+contract.payment.4: "Custos bancários deduzidos."
+contract.payment.5: "Pagamentos centralizados via Stripe."
+contract.duration.title: "Duração e Rescisão"
+contract.duration.text: "Contrato por tempo indeterminado."
+contract.liability.title: "Responsabilidade"
+contract.liability.text: "O Comerciante é responsável pelos produtos."
+contract.data.title: "Proteção de Dados"
+contract.data.text: "As partes respeitam o RGPD."
+contract.jurisdiction.title: "Foro"
+contract.jurisdiction.text: "Comarca da Praia, Cabo Verde."
+contract.signature: "Assinatura"
+contract.date: "Data"
+button.ok: "OK"
+
+shop.edit.title: "Editar Loja"
+shop.edit.heading: "Editar Dados da Loja"
+shop.back_profile: "Voltar ao Perfil"
+button.update: "Atualizar"
+
+
+receipt.title: "Recibo da Encomenda #%ref%"
+receipt.beneficiary: "Beneficiário"
+receipt.status: "Estado"
+receipt.order_date: "Data da encomenda"
+receipt.items: "Artigos"
+receipt.no_items: "Nenhum artigo encontrado"
+receipt.date: "Data do recibo"
+receipt.print: "Imprimir recibo"
+# Entregue e finalizado: "Entregue e finalizado"
+# Em processamento: "Em processamento"
+# Em curso: "Em curso"
+# Reembolso: "Reembolso"
+
+
+merchant.name: "Nome da loja"
+merchant.city: "Cidade"
+merchant.city_placeholder: "Seleciona uma cidade"
+merchant.address: "Morada"
+merchant.description: "Descrição"
+merchant.license: "Licença legal"
+merchant.bank_holder: "Titular da conta"
+merchant.bank_name: "Nome do banco"
+merchant.iban: "Número da conta / IBAN"
+merchant.iban_placeholder: "Ex: CV64000500000020108215144"
+merchant.iban_help: "O IBAN em Cabo Verde tem 25 caracteres e começa por “CV”"
+merchant.swift: "Código BIC/SWIFT"
+merchant.swift_placeholder: "Ex: BCVVCVCV"
+merchant.swift_help: "O código SWIFT (ou BIC) tem 8 ou 11 caracteres"
+merchant.nif: "NIF do Comerciante"
+merchant.nif_placeholder: "Ex: 123456789"
+merchant.nif_help: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5"
+merchant.nif_length: "O NIF deve ter exatamente {{ limit }} dígitos."
+merchant.nif_regex: "O NIF deve começar por 1, 2, 3 ou 5 e ter 9 dígitos."
+
+
+orders.title: "Encomendas"
+orders.heading: "As Minhas Compras"
+orders.back_shop: "Voltar à loja"
+# orders.ref: "Referência"
+# orders.date: "Data (hora de CV)"
+# orders.total: "Total"
+# orders.status: "Estado"
+orders.beneficiary: "Beneficiário"
+orders.empty: "Nenhum registo de compra"
+currency.cve: "escudos"
+
+
+# translations/messages.pt.yaml
+order:
+  detail:
+    title: "Encomenda"
+    ref: "Referência"
+    back_list: "Voltar à lista"
+    quantity: "Quantidade"
+    total: "Total"
+    date: "Data"
+    status: "Estado da Encomenda"
+    secret_code: "Seu código secreto"
+    shop_note: "Notificação da loja"
+    refund: "Reembolso"
+    customer_note: "Seu comentário atual"
+    no_comment: "Nenhum comentário ainda."
+    edit_comment: "Editar comentário"
+    comment_placeholder: "Escreva seu comentário..."
+    save_comment: "Salvar Comentário"
+
+currency:
+  cve: "escudos"
+  cve_full: "CVE - Escudos de Cabo Verde"
+  euro: "euro"
+  usd: "USD"
+
+
+cgu:
   title: "Condições Gerais de Utilização"
-  heading: "Condições Gerais de Utilização (CGU)"
-  last_update: "Última atualização"
-  platform_goal: "1. Objetivo da Plataforma"
-  platform_goal_description: "Esta plataforma conecta a diáspora cabo-verdiana com os comerciantes locais em Cabo Verde. Os membros da diáspora podem comprar produtos para seus familiares no país. Estes produtos serão retirados localmente ou entregues aos beneficiários através dos nossos parceiros."
-  access: "2. Acesso ao Serviço"
-  free_registration: "Inscrição gratuita com criação de conta"
-  acceptance: "Aceitação obrigatória destas CGU"
-  correct_information: "Fornecimento de informações corretas e atualizadas"
-  order_process: "3. Processo de Encomenda"
-  product_selection: "Escolha dos produtos junto dos comerciantes"
-  online_payment: "Pagamento online através de um sistema seguro"
-  delivery_or_pickup: "Retirada ou entrega dos produtos em Cabo Verde"
-  platform_role: "4. Papel da Plataforma"
-  platform_intermediary: "A plataforma atua como intermediária. Os comerciantes são responsáveis pela qualidade, disponibilidade e entrega dos produtos."
-  user_commitments: "5. Compromissos dos Utilizadores"
-  honest_use: "Utilização honesta e conforme à legislação"
-  no_fraud: "Proibição de contas falsas ou atividades fraudulentas"
-  respect_others: "Respeito pelos outros utilizadores e pelos comerciantes"
-  payment_and_security: "6. Pagamento e Segurança"
-  payment_security: "Todos os pagamentos são processados por prestadores certificados. Nenhuma informação bancária é armazenada nos nossos servidores."
-  delivery: "7. Entrega / Retirada"
-  delivery_method: "O método de retirada depende do comerciante (entrega ou levantamento). Os detalhes são apresentados antes do pagamento."
-  responsibility: "8. Responsabilidade"
-  platform_responsibility: "A plataforma não se responsabiliza por atrasos, ruturas de stock ou litígios diretos com o comerciante. No entanto, estamos disponíveis para ajudar na resolução de qualquer conflito."
-  data_protection: "9. Proteção de Dados"
-  data_protection_description: "Os seus dados pessoais são protegidos de acordo com as leis em vigor (RGPD)."
-  privacy_policy: "Política de Privacidade"
-  for_more: "para mais detalhes"
-  terms_changes: "10. Alterações das CGU"
-  right_to_change: "Reservamo-nos o direito de alterar estas condições a qualquer momento. Será notificado(a) em caso de alterações importantes."
-  contact: "11. Contacto"
-  contact_info: "Para qualquer questão ou sugestão"
-  acceptance_alert: "Ao utilizar a nossa plataforma, aceita integralmente e sem reservas estas condições."
-  thank_you: "Obrigado pela sua confiança"
+  last_update: "Última atualização:"
+  heading: "📝 Condições Gerais de Utilização (CGU)"
+  section1:
+    title: "Objetivo da Plataforma"
+    content: >
+      Esta plataforma conecta a diáspora cabo-verdiana com os comerciantes locais
+      em Cabo Verde. Os membros da diáspora podem comprar produtos para os seus familiares no país.
+      Estes produtos serão levantados localmente ou entregues aos beneficiários
+      através dos nossos parceiros.
+  section2:
+    title: "Acesso ao Serviço"
+    item1: "Inscrição gratuita com criação de conta de utilizador"
+    item2: "Aceitação obrigatória destas Condições Gerais"
+    item3: "Fornecimento de informações corretas e atualizadas"
+  section3:
+    title: "Funcionamento das Encomendas"
+    item1: "Escolha dos produtos junto dos comerciantes"
+    item2: "Pagamento online através de um sistema seguro"
+    item3: "Levantamento ou entrega dos produtos em Cabo Verde"
+  section4:
+    title: "Papel da Plataforma"
+    content: >
+      A plataforma atua como intermediária.
+      Os comerciantes são responsáveis pela qualidade,
+      disponibilidade e entrega dos produtos.
+  section5:
+    title: "Compromissos dos Utilizadores"
+    item1: "Utilização honesta e conforme à legislação em vigor"
+    item2: "Proibição de contas falsas ou atividades fraudulentas"
+    item3: "Respeito pelos outros utilizadores e comerciantes"
+  section6:
+    title: "Pagamento e Segurança"
+    content: >
+      Todos os pagamentos são processados por prestadores certificados.
+      Nenhuma informação bancária é armazenada nos nossos servidores.
+  section7:
+    title: "Entrega / Levantamento"
+    content: >
+      O método de levantamento depende do comerciante (entrega ou levantamento).
+      Os detalhes são apresentados antes do pagamento.
+  section8:
+    title: "Responsabilidade"
+    content: >
+      A plataforma não se responsabiliza por atrasos,
+      ruturas de stock ou litígios diretos com o comerciante.
+      No entanto, estamos disponíveis para ajudar na resolução de conflitos.
+  section9:
+    title: "Proteção de Dados"
+    content: >
+      Os seus dados pessoais são protegidos de acordo com a legislação em vigor (RGPD).
+      Consulte a nossa Política de Privacidade para mais informações.
+  section10:
+    title: "Alterações das Condições"
+    content: >
+      Reservamo-nos o direito de alterar estas condições a qualquer momento.
+      Os utilizadores serão notificados em caso de alterações importantes.
+  section11:
+    title: "Contacto"
+    content: "Para qualquer questão ou sugestão:"
+  accept:
+    text: >
+      Ao utilizar a nossa plataforma, aceita integralmente e sem reservas estas condições.
+    thanks: "Obrigado pela sua confiança."
 
-#---Privacy------------------
+# ----------------privacy-------------------------------------------------------------------------------
 privacy:
   title: "Política de Privacidade"
-  heading: "Política de Privacidade"
-  last_update: "Última atualização"
+  heading: "🔒 Política de Privacidade"
+  last_update: "Última atualização:"
 
-  intro_title: "1. Introdução"
-  intro_text: "Esta política de privacidade explica como coletamos, usamos, armazenamos e protegemos seus dados pessoais quando você utiliza nossa plataforma."
+  section1:
+    title: "Introdução"
+    content: "Esta política de privacidade explica como coletamos, usamos, armazenamos e protegemos seus dados pessoais quando você utiliza nossa plataforma."
 
-  data_collected_title: "2. Dados Coletados"
-  data_collected_intro: "Coletamos as seguintes informações:"
-  data:
-    name: "Nome, sobrenome"
-    email: "Endereço de e-mail"
-    address: "Endereço postal (para entrega ou faturamento)"
-    history: "Histórico de pedidos"
-    cookies: "Dados de navegação (via cookies, se aceitos)"
+  section2:
+    title: "Dados Coletados"
+    intro: "Coletamos as seguintes informações:"
+    item1: "Nome e sobrenome"
+    item2: "Endereço de e-mail"
+    item3: "Endereço postal (entrega ou faturamento)"
+    item4: "Histórico de pedidos"
+    item5: "Dados de navegação (cookies, se aceitos)"
 
-  data_use_title: "3. Uso dos Dados"
-  data_use_intro: "Seus dados são usados para:"
-  data_use:
-    account: "Criar e gerenciar sua conta de usuário"
-    orders: "Garantir o bom funcionamento dos pedidos e entregas"
-    improvement: "Melhorar nossa plataforma e os serviços oferecidos"
-    communication: "Comunicar com você (e-mails de confirmação, notificações, suporte ao cliente, etc.)"
+  section3:
+    title: "Uso dos Dados"
+    intro: "Seus dados são utilizados para:"
+    item1: "Criar e gerenciar sua conta"
+    item2: "Garantir o funcionamento dos pedidos e entregas"
+    item3: "Melhorar a plataforma e os serviços"
+    item4: "Comunicação com o usuário"
 
-  sharing_title: "4. Compartilhamento de Dados"
-  sharing_text: "Não compartilhamos seus dados pessoais, exceto com prestadores de serviço necessários para a execução dos serviços (pagamento, entrega). Nenhum dado será vendido a terceiros."
+  section4:
+    title: "Compartilhamento de Dados"
+    content: "Os dados são compartilhados apenas com prestadores necessários (pagamento, entrega). Nenhuma informação é vendida a terceiros."
 
-  security_title: "5. Segurança"
-  security_text: "Implementamos todas as medidas técnicas e organizacionais necessárias para proteger seus dados contra acessos não autorizados, perda ou destruição."
+  section5:
+    title: "Segurança"
+    content: "Aplicamos medidas técnicas e organizacionais para proteger seus dados."
 
-  retention_title: "6. Duração de Conservação"
-  retention_text: "Seus dados serão mantidos enquanto sua conta estiver ativa e por até 3 anos após sua última atividade."
+  section6:
+    title: "Duração de Conservação"
+    content: "Os dados são mantidos enquanto a conta estiver ativa e até 3 anos após a última atividade."
 
-  rights_title: "7. Seus Direitos"
-  rights_intro: "De acordo com o RGPD, você tem os seguintes direitos:"
-  rights:
-    access: "Acesso aos seus dados pessoais"
-    update: "Correção ou atualização das suas informações"
-    delete: "Exclusão da sua conta e dos seus dados"
-    object: "Oposição a certos tratamentos dos seus dados"
-  rights.contact: "Para exercer seus direitos, entre em contato conosco através de: <a href=\"mailto:%email%\">%email%</a>"
+  section7:
+    title: "Seus Direitos"
+    intro: "De acordo com o RGPD, você tem direito a:"
+    item1: "Acesso aos dados"
+    item2: "Correção ou atualização"
+    item3: "Exclusão da conta e dos dados"
+    item4: "Oposição ao tratamento de dados"
+    contact: "Para exercer seus direitos, entre em contato através de:"
 
-  cookies_title: "8. Cookies"
-  cookies_text: "Usamos cookies para melhorar a sua experiência de usuário. Você pode aceitar ou recusar o uso de cookies através das configurações do seu navegador."
+  section8:
+    title: "Cookies"
+    content: "Utilizamos cookies para melhorar a experiência do usuário."
 
-  modifications_title: "9. Modificações"
-  modifications_text: "Esta política pode ser atualizada a qualquer momento. Em caso de modificações importantes, você será informado(a) através da plataforma ou por e-mail."
+  section9:
+    title: "Modificações"
+    content: "Esta política pode ser alterada a qualquer momento."
 
-  contact_title: "10. Contato"
-  contact_text: "Para qualquer dúvida sobre esta política, entre em contato conosco:"
+  section10:
+    title: "Contato"
+    content: "Para qualquer dúvida sobre esta política:"
 
-  acceptance: "Ao utilizar nossa plataforma, você aceita esta Política de Privacidade."
-
-
-# ------------Login page-----------------------------------------------------------------------------
-login:
-  title: "Iniciar Sessão"
-  heading: "Iniciar Sessão"
-  logged_in_as: "Sessão iniciada como %user%"
-  logout: "Sair"
-  email: "Email"
-  password: "Senha"
-  forgot_password: "Esqueceu a sua senha?"
-  submit: "LOGIN"
+  accept:
+    text: "Ao utilizar nossa plataforma, você aceita esta Política de Privacidade."
 
 
-# ----------reset page-----------------------------------------------------------------------------------------
-reset_password:
+# -------------------------------
+register:
+  form:
+    email: "E-mail"
+    password: "Senha"
+    password_confirm: "Confirmar senha"
+    first_name: "Nome"
+    last_name: "Sobrenome"
+    address: "Endereço"
+
+    agree_terms_error: "Você deve concordar com os nossos termos."
+    password_blank: "Por favor, insira uma senha."
+    password_confirm_blank: "Por favor, confirme a senha."
+    password_min: "Sua senha deve ter pelo menos {{ limit }} caracteres."
+
+  title: "Criar conta"
+  heading: "Criação de conta"
+  accept_prefix: "Aceito as"
+  terms_link: "Condições Gerais de Utilização"
+  submit: "Criar uma conta"
+
+
+reset:
   title: "Redefinir sua senha"
   heading: "Redefinir sua senha"
-  email:
-    label: "Endereço de e-mail"
-    help: "Digite seu endereço de e-mail e enviaremos um link para redefinir sua senha."
+  help_text: >
+    Digite seu endereço de e-mail e enviaremos
+    um link para redefinir sua senha.
   submit: "Enviar e-mail"
 
-# Cyties Nav-----------------
-navbar:
-  toggle_navigation: "Alternar navegação"
-  cities: "Cidades : lojas"
 
-# Footer---------------------
-footer:
-  title: "Rodapé Responsivo"
-  home: "Home"
-  contact: "Contacto"
-  about: "Sobre nós"
-  privacy_policy: "Política"
-  imuhotepu_videos: "Imuhotepu-videos"
-  download_apk: "Baixar APK"
+reset_new:
+  title: "Redefinir sua senha"
+  heading: "Redefinir sua senha"
+  placeholder_new: "Digite sua nova senha"
+  placeholder_confirm: "Repita a nova senha"
+  submit: "Redefinir senha"
 
-# -Home-------------------------
-home:
-  meta_description: 'FalkonANK: plataforma de ligação entre a diáspora cabo-verdiana e os comerciantes locais em Cabo Verde. Compre e faça entregar produtos aos seus entes queridos.'
-  title: 'FalkonANK'
-  category_label: 'Selecione uma categoria'
-  shops_button: 'Nossas Lojas'
-  create_account_prompt: 'Para comprar – crie uma conta simples'
-  add_to_cart: 'Adicionar ao carrinho'
-  out_of_stock: 'Esgotado'
-  shop: 'Loja'
-  location: 'Localidade'
 
-# Categories-----------------
-category.Fruits: Frutas
-category.Electronics: Eletrônicos
-category.Clothing: Roupas
+reset_request:
+  email: "E-mail"
+  email_blank: "Por favor, insira seu e-mail."
 
-# Profile---------------------------------
-profile:
-  title: "Perfil (Minha Conta)"
-  back_to_shop: "Voltar à loja"
-  personal_data: "Dados Pessoais"
-  email: "Email"
-  name: "Nome"
-  address: "Endereço"
-  edit: "Modificar"
-  merchant: "Comerciante"
-  become_merchant: "Torne-se um comerciante"
-  close: "Fechar"
-  city: "Cidade"
-  select_city: "Selecione uma cidade"
-  shop_name: "Nome da loja"
-  shop_name_placeholder: "Insira o nome da loja"
-  shop_address: "Endereço da loja"
-  shop_address_placeholder: "Insira o endereço da loja"
-  nif: "NIF (Número de Identificação Fiscal)"
-  nif_placeholder: "Ex: 123456789"
-  nif_title: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5."
-  nif_help: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5."
+
+login:
+  title: "Iniciar sessão"
+  heading: "Iniciar sessão"
+  email_label: "E-mail"
+  password_label: "Senha"
+  forgot_password: "Esqueceu a sua senha?"
+  submit: "Login"
+  already_logged_in: "Você já está logado como %user%"
+  logout: "Sair"
+
+
+payment:
+  success:
+    title: "Pagamento Bem-Sucedido"
+    heading: "Obrigado !"
+    message: "O seu pagamento foi realizado com sucesso."
+    email_info: "Você receberá uma confirmação em breve no e-mail (%email%)."
+    spam_note: "Se não encontrar, verifique sua pasta de spam ou lixo eletrônico 😉"
+    secret_code: "Seu código secreto :"
+    orders_button: "Suas compras"
+  canceled:
+    title: "Pagamento Cancelado"
+    heading: "Pagamento Cancelado"
+    message: "O seu pagamento não foi concluído."
+    help_message: "Se encontrar algum problema, tente novamente ou contacte o nosso suporte :"
+    contact: "Contacto"
+  back_to_shop: "Voltar à Loja !"
+  retry: "Tentar novamente o pagamento"
+
+  processing:
+    title: "Confirmação de pagamento..."
+    message: "Tratando o pagamento... aguarde um momento."
+    thanks: "FalkonANK agradece a sua confiança!"
+    amazon_books: "Confira os nossos livros na Amazon:"
+
+
+user.delete.confirm: "Atenção: este processo não tem volta! Tem certeza de que deseja eliminar a sua conta?"
+user.delete.button: "Eliminar a Conta"
+
+user_delete:
+  title: "Eliminação da conta"
+  heading: "Eliminação da conta"
+  merchant_warning: "Você é um comerciante. A eliminação da conta resultará na perda deste papel."
+  confirm_text: "Tem a certeza de que deseja eliminar a sua conta?"
+  reason_label: "Motivo da eliminação (opcional)"
+  reason_placeholder: "Por que quer eliminar a sua conta?"
+  password_label: "Confirme a sua palavra-passe"
+  password_placeholder: "Digite a sua palavra-passe"
+  submit: "Confirmar eliminação"
   cancel: "Cancelar"
-  submit: "Enviar"
-  merchant_pending: "Sua solicitação está sendo processada."
-  submitted_at: "Enviado em"
-  edit_store_data: "Modificar dados da loja"
-  merchant_rejected: "Sua solicitação foi recusada."
-  reason: "Razão"
-  more_info: "Para mais informações:"
-  contact_us: "Entre em contato"
-  merchant_approved: "Parabéns! Sua solicitação foi aprovada."
-  admin_message: "Mensagem do administrador"
 
-  delete_button: "Eliminar a Conta"
-  delete_confirm: "Atenção: este processo não tem volta! Tem certeza de que deseja eliminar a sua conta?"
+user_edit:
+  title: "Modificar Dados Pessoais"
+  heading: "Modificar os Dados Pessoais"
+  back: "Voltar Atrás"
+  email: "Email:"
+  first_name: "Nome:"
+  last_name: "Sobrenome (apelidos):"
+  address: "Endereço:"
+  submit: "Modificar"
 
-# Order---------------------
-order:
-  title: Encomendas
-  back_to_shop: Voltar à loja
-  my_orders: As Minhas Compras
-  reference: Referência
-  date: Data (hora de CV)
-  total: Total
-  status: Estado
-  beneficiary: Beneficiário
-  no_orders: Nenhum registro de compra!
-# AddFlash:
-  refund_missing_fields: "❌ Reembolso: O montante e o estado do reembolso são obrigatórios."
-  invalid_secret_code: "❌ O código secreto está incorreto. Por favor, insira o código correto."
-  saved_successfully: "Registrado com sucesso"
-  # delivered_note: "Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!"
-  # cancelled_note: "A encomenda foi cancelada."
-  # refund_in_progress: "O reembolso está em curso."
-  # refund_completed: "O reembolso foi concluído em %date%. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco."
 
-# basket-------------
-basket:
-  title: "Minha Cesta"
-  back_to_shop: "Voltar à loja"
-  city: "Cidade"
-  empty_message: "A sua cesta está vazia!"
-  total: "Total"
-  checkout_button: "Finalizar a compra"
-  beneficiary_info: "Informações do Beneficiário"
-  close: "Fechar"
-  beneficiary_city: "Cidade do Beneficiário"
-  select_city: "Seleciona uma cidade"
-  beneficiary_name: "Nome"
-  beneficiary_address: "Endereço do Beneficiário"
-  beneficiary_email: "Email"
-  optional: "opcional"
-  phone_number: "Número de Telemóvel"
-  confirm_pay: "Confirmar e Pagar"
-  
-  no_items_message: "Você ainda não tem artigos, adicione um produto ao carrinho !"
+account_deleted.title: "Conta eliminada com sucesso"
+account_deleted.heading: "A sua conta foi eliminada"
+account_deleted.message: >
+    A sua conta foi removida com sucesso da nossa plataforma.<br>
+    Obrigado pela sua confiança em nós.
+account_deleted.back_home: "Voltar à página inicial"
 
-# -addFlash-------------------
-merchantAdF:
-    updated_successfully: 'Dados atualizados com sucesso!'
-merchant.request_already_exists: 'Você já tem uma solicitação de loja registrada.'
-merchant.required_fields_missing: 'Todos os campos obrigatórios devem ser preenchidos.'
-merchant.invalid_file_format: 'O ficheiro deve estar no formato PDF, JPG, JPEG ou PNG.'
-merchant.store_creation_success: 'Sua solicitação de criação de loja foi registrada com sucesso.'
-comment.added_success: 'Comentário adicionado com sucesso!'
-verify:
-  email_error: 'Erro ao verificar o e-mail.'
-  invalid_email: 'Este e-mail é inválido.'
-  success: 'Seu endereço de e-mail foi verificado com sucesso.'
-contact:
-  all_fields_required: 'Todos os campos são obrigatórios.'
-  invalid_email: 'O endereço de e-mail não é válido.'
-  success: 'Sua mensagem foi enviada com sucesso. Obrigado por nos contatar!'
-  error: 'Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.'
-  not_found: 'Contato não encontrado.'
-  response_saved_and_sent: 'Resposta salva e enviada com sucesso!'
-  empty_response_error: 'Por favor, escreva uma resposta.'
-auth:
-  invalid_email: 'E-mail incorreto!'
-checkout:
-  minimum_amount_error: 'O valor total da compra deve ser superior a 250 CVE (escudos).'
-  same_shop_required: 'Todos os produtos na Cesta devem pertencer à mesma loja. Remova os produtos de lojas diferentes.'
-  same_city_required: 'Todos os produtos na Cesta devem pertencer à cidade selecionada para o Beneficiário. Remova os produtos de outra cidade ou altere a cidade do Beneficiário.'
-email:
-  greeting: "Olá <strong>%name%</strong>,"
-  thank_you: "Obrigado pela sua encomenda. Aqui está o resumo da sua compra:"
-  order_number: "Número da encomenda"
-  total_amount: "Valor total"
-  instructions: "O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o código secreto."
-  send_reference: "Deves enviar-lhe essa referência :"
-  secret_code: "e o código secreto :"
-  products: "Produtos"
-  delivery_to: "Entrega para"
-  name: "Nome"
-  address: "Endereço"
-  signature: "Atenciosamente,"
-account:
-  update_success: 'Dados modificados com sucesso.'
-user:
-  invalid_password: 'Palavra-passe incorreta.'
-  account_deleted: 'A sua conta foi eliminada com sucesso.'
-merchant:
-  approved_message: "%name%, seja bem-vindo(a). O seu pedido foi aceite! Pode aceder ao seu espaço Comerciante através do botão 'Comerciante' ou do ícone azul no topo da página."
-  rejected_message: "%name%, infelizmente o seu pedido não foi aceite devido a falta ou erro nas informações fornecidas. Para mais informações, contacte-nos através do botão 'Contacto' no início da página."
-  approved_flash: "Comerciante aprovado com sucesso!"
-  rejected_flash: "Comerciante não aprovado!"
-
+profile.title: "Perfil (Minha Compta)"
+profile.button.back_to_shop: "Voltar à loja"
+profile.personal_data: "Dados Pessoais"
+profile.email: "Email"
+profile.name: "Nome"
+profile.address: "Endereço"
+profile.button.edit: "Modificar"
+profile.button.merchant: "Comerciante"
+profile.become_merchant: "Torne-se um comerciante"
+profile.button.close: "Fechar"
+profile.city: "Cidade"
+profile.select_city: "Seleciona uma cidade"
+profile.shop_name: "Nome da loja"
+profile.shop_name_placeholder: "Insere o nome da loja"
+profile.shop_address: "Endereço da loja"
+profile.shop_address_placeholder: "Insere o endereço da loja"
+profile.merchant_nif: "NIF (Número de Identificação Fiscal)"
+profile.nif_title: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5."
+profile.nif_hint: "O NIF deve ter 9 dígitos e começar por 1, 2, 3 ou 5."
+profile.shop_license: "Licença legal (pdf, jpg, jpeg, png)"
+profile.shop_description: "Descrição da loja"
+profile.shop_description_placeholder: "Descreve a tua loja"
+profile.bank_info: "Informações Bancárias"
+profile.bank_holder: "Nome do titular da conta"
+profile.bank_holder_placeholder: "Insere o nome completo"
+profile.bank_name: "Nome do banco"
+profile.bank_name_placeholder: "Insere o nome do banco"
+profile.bank_iban: "Número da conta / IBAN"
+profile.iban_hint: "O IBAN em Cabo Verde tem 25 caracteres e começa por “CV”"
+profile.bank_swift: "Código BIC/SWIFT"
+profile.swift_hint: "O código SWIFT tem 8 ou 11 caracteres"
+profile.bank_country: "País da conta bancária"
+profile.bank_country_placeholder: "Insere o País"
+profile.contract_agree: "Li e aceito os termos do Contrato de Parceria"
+profile.button.cancel: "Cancelar"
+profile.button.submit: "Enviar"
+profile.merchant_pending: "Seu pedido está sendo processado."
+profile.view_file: "Ver o ficheiro"
+profile.button.edit_shop: "Modificar dados da loja"
+profile.merchant_denied: "Sua solicitação foi recusada."
+profile.reason: "Razão"
+profile.more_info: "Para mais informação"
+profile.button.contact_us: "Contactar-nos"
+profile.merchant_approved: "Felicitações! O seu pedido foi aprovado."
+profile.admin_message: "Mensagem do administrador"
+profile.submission_date: "Data de envio"

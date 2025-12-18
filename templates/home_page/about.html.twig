@@ -1,31 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% trans_default_domain 'messages' %}
-
-{% block title %}
-	{{ 'about_us_title'|trans }}
-{% endblock %}
+{% block title %}{{ 'about.title'|trans }}{% endblock %}
 
 {% block body %}
-	<div class="container">
-		<section class="about-us">
-			<div class="row">
-				<div class="col-md-6">
-					<div class="d-inline-flex p-3">
-						<a href="{{ path('app_home_page') }}">
-							<button type="button" class="btn btn-dark">{{ 'back_to_store'|trans }}</button>
-						</a>
-					</div>
-					<br>
-					<h1>{{ 'about_us_title'|trans }}</h1>
-					<p>{{ 'about_us_paragraph_1'|trans }}</p>
-					<p>{{ 'about_us_paragraph_2'|trans }}</p>
-					<p>{{ 'about_us_paragraph_3'|trans }}</p>
-				</div>
-				<div class="col-md-6">
-					<img src="{{ asset('image/backg/about.jpg') }}" alt="{{ 'about_us_title'|trans }}" class="img-fluid">
-				</div>
-			</div>
-		</section>
-	</div>
+<div class="container">
+    <section class="about-us">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="d-inline-flex p-3">
+                    <a href="{{ path('app_home_page') }}">
+                        <button type="button" class="btn btn-dark">{{ 'button.back_to_shop'|trans }}</button>
+                    </a>
+                </div>
+                <br>
+                <h1>{{ 'about.title'|trans }}</h1>
+                <p>{{ 'about.paragraph1'|trans }}</p>
+                <p>{{ 'about.paragraph2'|trans }}</p>
+                <p>{{ 'about.paragraph3'|trans }}</p>
+            </div>
+            <div class="col-md-6">
+                <img src="{{ asset('image/backg/sobre.png') }}" alt="{{ 'about.image_alt'|trans }}" class="img-fluid">
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}

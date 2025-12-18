@@ -1,33 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% trans_default_domain 'messages' %}
-
-{% block title %}{{ 'reset_password.title'|trans }}{% endblock %}
+{% block title %}
+    {{ 'reset.title'|trans }}
+{% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		{% for flash_error in app.flashes('reset_password_error') %}
-			<div class="alert alert-danger text-center mx-auto" style="max-width: 400px;" role="alert">
-				{{ flash_error|trans }}
-			</div>
-		{% endfor %}
+<div class="container mt-5">
 
-		<h1 class="mb-4 text-center">{{ 'reset_password.heading'|trans }}</h1>
+    {# Flash errors #}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger text-center mx-auto"
+             style="max-width: 400px;"
+             role="alert">
+            {{ flash_error }}
+        </div>
+    {% endfor %}
 
-		<div class="row justify-content-center">
-			<div class="col-md-6 col-sm-12">
-				{{ form_start(requestForm) }}
-				<div class="mb-3">
-					{{ form_label(requestForm.email, 'reset_password.email.label'|trans, { 'label_attr': {'class': 'form-label'} }) }}
-					{{ form_widget(requestForm.email, { 'attr': {'class': 'form-control'} }) }}
-					<small class="form-text text-muted">
-						{{ 'reset_password.email.help'|trans }}
-					</small>
-				</div>
+    <h1 class="mb-4 text-center">
+        {{ 'reset.heading'|trans }}
+    </h1>
 
-				<button class="btn btn-primary w-100">{{ 'reset_password.submit'|trans }}</button>
-				{{ form_end(requestForm) }}
-			</div>
-		</div>
-	</div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-sm-12">
+
+            {{ form_start(requestForm) }}
+
+            <div class="mb-3">
+                {{ form_label(requestForm.email, null, {
+                    'label_attr': {'class': 'form-label'}
+                }) }}
+
+                {{ form_widget(requestForm.email, {
+                    'attr': {'class': 'form-control'}
+                }) }}
+
+                <small class="form-text text-muted">
+                    {{ 'reset.help_text'|trans }}
+                </small>
+            </div>
+
+            <button class="btn btn-primary w-100">
+                {{ 'reset.submit'|trans }}
+            </button>
+
+            {{ form_end(requestForm) }}
+
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,361 +1,703 @@
-homeH: Home
-about_us: About us
-contactH: Contact
-photo_frame: Photo frame
-my_space: My space
-profileH: Profile
-ordersH: Orders
-basketH: Basket
-logout: Logout
-registerH: Sign up
-loginH: Login
-admin: Administrator
-search_placeholder: Search
-search_button: Search
+site_title: "Falkon-ANK"
+about: "About Us"
+# contact: "Contact"
+photos: "Photo Gallery"
+my_space: "My Space"
+profile_h: "Profile"
+orders: "Orders"
+basket: "Basket"
+logout: "Logout"
+register_h: "Register"
+# login: "Login"
+admin: "Administrator"
+search: "Search"
+
+meta.description: "FalkonANK: connecting the Cape Verdean diaspora with local merchants in Cape Verde."
+title.site: "FalkonANK"
+header.category: "Product Categories"
+header.shops: "Our Shops"
+button.add_cart: "Add to Cart"
+text.out_of_stock: "Out of stock"
+text.for_purchase: "To purchase – create a simple account"
+product.shop: "Shop"
+product.city: "City"
+
+about.title: "About Us"
+button.back_to_shop: "Back to Shop"
+about.paragraph1: "We are an organization based in Paris, France, founded by the Cape Verdean diaspora to strengthen the connection between the Cape Verdean community abroad and local merchants in Cape Verde. Our e-commerce website is designed to facilitate direct trade between diaspora members and local sellers, providing a unique shopping experience for our customers."
+about.paragraph2: "We primarily focus on the food sector, allowing the Cape Verdean diaspora to purchase products directly from local merchants in Cape Verde. Our system enables customers to buy and instruct their family or recipients to collect products at the point of sale, or opt for home delivery, ensuring greater convenience and flexibility."
+about.paragraph3: "Our commitment is to quality, authenticity, and supporting the local economy, promoting the growth and development of commerce in Cape Verde through an innovative and accessible digital platform."
+about.image_alt: "About Us Image"
+
+imuhotepu.title: "Imuhotepu-Videos"
+imuhotepu.download_apk: "Download APK"
+imuhotepu.logo_alt: "Imuhotepu Logo"
+imuhotepu.banner_alt: "App Banner"
+imuhotepu.screenshot: "Screenshot %index%"
+imuhotepu.description: "<strong>Imuhotepu-Videos</strong> is a subscription-based educational streaming app, providing exclusive access to videos on history, general culture, and education. Learn at your own pace, discover the world, and enrich your knowledge through an intuitive, content-rich platform."
+
+shop.title: "Shop"
+shop.none_found: "No shop found!"
+shop.name: "Shop Name"
+shop.city: "City"
+shop.address: "Address"
+shop.email: "Email"
+shop.phone: "Phone"
+shop.mobile: "Mobile"
+shop.hours: "Hours"
+shop.image_alt: "Shop Image"
+
+nav.cities_shops: "Cities : shops"
+nav.toggle: "Toggle navigation"
+
+footer.title: "Footer"
+footer.home: "Home"
+footer.contact: "Contact"
+footer.about: "About us"
+footer.privacy: "Privacy policy"
+footer.imuhotepu: "Imuhotepu-videos"
+footer.download_apk: "Download APK"
+footer.imuhotepu_logo: "Imuhotepu logo"
+
+carousel.label: "Product gallery"
+carousel.slide: "Slide"
+carousel.previous: "Previous"
+carousel.next: "Next"
+carousel.image_products: "Available products"
+carousel.image_delivery: "Fast delivery"
+carousel.image_quality: "Guaranteed quality"
+
+file.view: "View file"
+file.no_upload: "No file uploaded"
+
+basket.delete: "Delete"
+basket.delete_confirm: "Are you sure you want to delete this product?"
+
+form.save: "Save"
+
+basket.edit.title: "Edit basket"
+basket.edit.heading: "Edit basket"
+basket.update: "Update"
+basket.back_to_list: "Back to list"
+
+basket.index.title: "My basket"
+basket.index.heading: "My basket"
+basket.id: "ID"
+basket.actions: "Actions"
+basket.show: "Show"
+basket.edit: "Edit"
+basket.no_records: "No records found"
+basket.create_new: "Create new basket"
+basket.new.title: "New basket"
+basket.new.heading: "Create new basket"
+# basket.back_to_list: "Back to list"
+basket.show.title: "Basket"
+basket.show.heading: "Basket"
+basket.fields.id: "Id"
+# basket.back_to_list: "Back to list"
+# basket.edit: "Edit"
+
+# Panier
+basket.title: "My Basket"
+basket.heading: "My Basket"
+basket.back_to_shop: "Back to shop"
+basket.city: "City"
+basket.empty: "Your basket is empty!"
+basket.total: "Total"
+basket.checkout: "Checkout"
+# Devise
+currency.euro: "Euro"
+currency.usd: "USD"
+# Modal Checkout
+checkout.modal_title: "Beneficiary Information"
+checkout.close: "Close"
+checkout.city: "Beneficiary City"
+checkout.select_city: "Select a city"
+checkout.name: "Name"
+checkout.address: "Beneficiary Address"
+checkout.email: "Email (optional)"
+checkout.phone: "Phone number (optional)"
+checkout.confirm: "Confirm and Pay"
 
 
+basket_title: "My Basket"
+basket_empty: "Your basket is empty!"
+back_to_shop: "Back to shop"
+total: "Total"
+euro: "€ (Euro)"
+usd: "$ (USD)"
+finalize_purchase: "Finalize Purchase"
+beneficiary_info: "Beneficiary Information"
+beneficiary_city: "Beneficiary City *"
+select_city: "Select a city"
+beneficiary_name: "Name *"
+beneficiary_address: "Beneficiary Address *"
+beneficiary_email: "Email (optional)"
+phone_number: "Phone Number (optional)"
+confirm_pay: "Confirm & Pay"
+city: "City"
 
-# ----------about page----------------------
-about_us_title: "About Us"
-back_to_store: "Back to Store"
-about_us_paragraph_1: "We are an organization based in Paris, France, founded by the Cape Verdean diaspora with the aim of strengthening the connection between the Cape Verdean community abroad and local traders in Cape Verde. Our e‑commerce website is designed to facilitate direct trade between members of the diaspora and local vendors, providing a unique shopping experience for our customers."
-about_us_paragraph_2: "We focus primarily on the food sector, enabling the Cape Verdean diaspora to purchase products directly from local merchants in Cape Verde. Our system allows customers to make purchases and instruct their family members or recipients to pick up the goods at points of sale, or choose home delivery, ensuring greater convenience and flexibility."
-about_us_paragraph_3: "Our commitment is to quality, authenticity, and support for the local economy, promoting growth and development of commerce in Cape Verde through an innovative and accessible digital platform."
-
-# Contact page------------------------------------
-contact.title: "Contact"
-# back_to_store: "Back to Store"
-contact.heading: "Contact Us"
-label.name: "Name"
-placeholder.name: "Your name"
-label.email: "Email"
-placeholder.email: "Your email"
-label.subject: "Subject"
-placeholder.subject: "Subject of your message"
-label.message: "Message"
-placeholder.message: "Your message"
-button.send: "Send"
-contact.info_title: "Contact Information"
-contact.follow_us: "Follow Us"
-
-#- Reponse--------------
-response.heading: "Response to %name%'s message"
-response.subject: "Subject:"
-response.message_label: "Message:"
-button.close: "Close"
-response.reply_label: "Reply:"
-response.send_button: "Send"
-
-
-#-------- cadrePhoto page-----------------------------
-download_apk: "Download APK"
-play_store: "Play Store:"
-app_banner: "App banner"
-screenshot: "Screenshot #%"
-app_name: "Imuhotepu‑Videos"
-app_description: >
-  is an educational streaming subscription app,
-  offering exclusive access to videos on history, general culture, and education.
-  Learn at your own pace, explore the world, and enrich your knowledge
-  thanks to an intuitive, content-rich platform.
-
-
-
-# Register page----------------------------------------
-register:
-  title: "Register"
-  create_account: "Create an account"
-  email: "Email"
-  password: "Password"
-  confirm_password: "Confirm Password"
-  first_name: "First Name"
-  last_name: "Last Name"
-  address: "Address"
-  accept_terms: "I accept the"
-  terms_conditions: "Terms and Conditions"
-  create_account_button: "Create Account"
-  # addFlash:
-  email_already_used: 'This email is already in use.'
-  passwords_do_not_match: 'Passwords do not match.'
-  success: 'Registration successful!'
-
+page:
+  title: "Custom Digital Frames"
+  subtitle: "(Family / Professional)"
+  
+product:
+  detail:
+    title: "Product"
+    add_to_cart: "Add to Cart"
+    stock_out: "Out of Stock"
+    description: "Description"
+    shop: "Shop"
+    shop_name: "Shop Name"
+    location: "Location"
+    address: "Address"
+    email: "Email"
+    phone: "Phone"
+    mobile: "Mobile"
+    schedule: "Opening Hours"
+    purchase_note: "To purchase - create a simple account"
+  modern:
+    title: "Modern 4K Frame Pi 8GB"
+    alt1: "View 1 - Modern Frame"
+    alt2: "View 2 - Modern Frame"
+    alt3: "View 3 - Modern Frame"
+  rustic:
+    title: "Rustic Full HD Frame Pi 4GB - Customized"
+    alt: "Rustic Frame"
+  basic:
+    title: "Basic Digital Frame Pi"
+    alt: "Basic Digital Frame"
+    desc1: "- Simple system, ideal for family photos"
+    desc2: "- Wall mounting"
+    desc3: "- Compatible with 22” screen"
+    desc4: "Power supply and stand included"
+  fixation:
+    wall_ceiling: "- Wall or ceiling mounting"
+  system:
+    8g_4k: "System (8 GB), 4K"
+    4g: "System (4 GB)"
+  cable_power: "HDMI cable 2 m + power supply 5 V / 5 A"
+  box_heatsink: "Case + heatsink"
+  box_power_cable: "Case + power supply + cables"
+  vesa: "VESA mount + screws included"
 form:
-  email_placeholder: "Email"
-  password_placeholder: "Password"
-  confirm_password_placeholder: "Confirm password"
-  last_name_placeholder: "Last name (family name(s))"
-  first_name_placeholder: "First name"
-  address_placeholder: "Your address"
-  agree_terms_message: "You must agree to our terms."
-  password_blank_message: "Please enter a password"
-  password_length_message: "Your password must be at least {{ limit }} characters"
-  confirm_password_blank_message: "Please confirm the password"
+  customize: "Customize your digital frame"
+  frame_type: "Frame type:"
+  screen_size: "Screen size:"
+  select: "-- please select --"
+  frame:
+    basic: "Basic Full HD Pi"
+    rustic: "Rustic Full HD Pi 4GB"
+    modern: "Modern 4K Pi 8GB"
+  support_type: "Mount type:"
+  support:
+    wall: "Wall mount"
+    ceiling: "Ceiling mount"
+  mobile_app: "Mobile application:"
+  app:
+    custom: "Integrated custom application"
+    custom_desc: "(first name, last name or company + logo)"
+    basic: "Basic mobile application"
+    none: "No application"
+price:
+  original: "Price without discount"
+  discounted: "Price with custom application (15% discount)"
+button:
+  contact: "Contact us for a final quote"
 
-# terms and condition----------
-terms_and_conditions:
-  title: "Terms and Conditions"
-  heading: "General Terms and Conditions (CGU)"
-  last_update: "Last updated"
-  platform_goal: "1. Platform Objective"
-  platform_goal_description: "This platform connects the Cabo Verdean diaspora with local merchants in Cabo Verde. Diaspora members can purchase products for their family members in the country. These products will either be picked up locally or delivered to the beneficiaries through our partners."
-  access: "2. Access to the Service"
-  free_registration: "Free registration with account creation"
-  acceptance: "Mandatory acceptance of these T&Cs"
-  correct_information: "Provision of correct and up-to-date information"
-  order_process: "3. Order Process"
-  product_selection: "Choosing products from merchants"
-  online_payment: "Online payment via a secure system"
-  delivery_or_pickup: "Product pickup or delivery in Cabo Verde"
-  platform_role: "4. Platform Role"
-  platform_intermediary: "The platform acts as an intermediary. Merchants are responsible for the quality, availability, and delivery of the products."
-  user_commitments: "5. User Commitments"
-  honest_use: "Honest use and compliance with the law"
-  no_fraud: "Prohibition of fake accounts or fraudulent activities"
-  respect_others: "Respect for other users and merchants"
-  payment_and_security: "6. Payment and Security"
-  payment_security: "All payments are processed by certified providers. No banking information is stored on our servers."
-  delivery: "7. Delivery / Pickup"
-  delivery_method: "The pickup method depends on the merchant (delivery or pickup). Details are provided before payment."
-  responsibility: "8. Responsibility"
-  platform_responsibility: "The platform is not responsible for delays, stock shortages, or direct disputes with the merchant. However, we are available to help resolve any conflicts."
-  data_protection: "9. Data Protection"
-  data_protection_description: "Your personal data is protected according to the laws in force (GDPR)."
-  privacy_policy: "Privacy Policy"
-  for_more: "for more details"
-  terms_changes: "10. Changes to the T&Cs"
-  right_to_change: "We reserve the right to change these terms at any time. You will be notified in case of significant changes."
-  contact: "11. Contact"
-  contact_info: "For any questions or suggestions"
-  acceptance_alert: "By using our platform, you fully and unconditionally accept these terms."
-  thank_you: "Thank you for your trust"
+contact:
+  us: "Contact us"
+  title: "Contact"
+  back_to_shop: "Back to shop"
+  heading: "Contact Us"
+  form:
+    name:
+      label: "Name"
+      placeholder: "Your name"
+    email:
+      label: "Email"
+      placeholder: "Your email"
+    subject:
+      label: "Subject"
+      placeholder: "Message subject"
+    message:
+      label: "Message"
+      placeholder: "Your message"
+    submit: "Send"
+  info:
+    title: "Contact Information"
+    address: "60 rue François 1er, 75008 Paris, France"
+    email: "falkon674@gmail.com"
+  social:
+    title: "Follow us"
 
-#privacy-------------------
+
+response_to_message: "Response to the message from %name%"
+subject: "Subject"
+message: "Message"
+response: "Response"
+send: "Send"
+close: "Close"
+
+accounting.title: "Accounting"
+accounting.all_shops: "📊 Accounting for all shops"
+accounting.your_shop: "📊 Accounting for your shop"
+accounting.monthly_revenue: "📅 Monthly Revenue"
+accounting.product_revenue: "🛒 Revenue by Product"
+accounting.category_revenue: "📂 Revenue by Category"
+accounting.month: "Month"
+accounting.revenue: "Revenue"
+accounting.commission: "Commission"
+accounting.final_price: "Final Price"
+accounting.refund: "Refund"
+accounting.shop_name: "Shop Name"
+accounting.shop_email: "Shop Email"
+accounting.product: "Product"
+accounting.category: "Category"
+accounting.no_data: "No data available"
+
+
+orders.accounting_title: "Orders Accounting"
+orders.finished_week: "Completed orders by week"
+orders.finished: "Completed orders"
+orders.refunded: "Refunded orders"
+orders.refund_in_progress: "Refund in progress"
+orders.not_finished: "Unfinished orders"
+orders.none_for_section: "No orders for %section%."
+orders.week: "Week"
+orders.ref: "Order Ref"
+orders.date: "Date"
+orders.status: "Status"
+orders.total: "Total"
+orders.final: "Final amount"
+orders.refund: "Refund"
+orders.stripe: "Stripe Pay ID"
+orders.shop_email: "Shop email"
+Entregue e finalizado: "Delivered and completed"
+Em processamento: "Processing"
+Em curso: "In progress"
+Reembolso: "Refund"
+
+button.delete: "Delete"
+
+button.save: "Save"
+
+
+# -----------Contract-----------------------------------------------------------------------------------
+contract.title: "Commercial Partnership Agreement Example"
+contract.number: "Contract Number"
+contract.between: "Between"
+contract.platform: "The Platform"
+contract.legal_name: "legal name"
+contract.address_platform: "located at 60 rue François 1er, 75008 Paris, France"
+contract.and: "And"
+contract.merchant: "Merchant"
+contract.nif: "Tax Identification Number"
+contract.address: "Business Address"
+contract.email: "Email"
+contract.clauses_title: "Contract Clauses"
+contract.object.title: "Purpose"
+contract.object.text: "This agreement defines the terms of the partnership."
+contract.platform_duties.title: "Platform Obligations"
+contract.platform_duties.text: "Product promotion and payment processing."
+contract.merchant_duties.title: "Merchant Obligations"
+contract.merchant_duties.text: "Ensure product quality and delivery."
+contract.payment.title: "Pricing and Payments"
+contract.payment.1: "Merchant sets base price."
+contract.payment.2: "Platform adds commission."
+contract.payment.3: "Payments within 7–10 business days."
+contract.payment.4: "Bank fees deducted."
+contract.payment.5: "Payments centralized via Stripe."
+contract.duration.title: "Duration and Termination"
+contract.duration.text: "Open-ended agreement."
+contract.liability.title: "Liability"
+contract.liability.text: "Merchant is responsible for products."
+contract.data.title: "Data Protection"
+contract.data.text: "GDPR compliance."
+contract.jurisdiction.title: "Jurisdiction"
+contract.jurisdiction.text: "Court of Praia, Cape Verde."
+contract.signature: "Signature"
+contract.date: "Date"
+button.ok: "OK"
+
+shop.edit.title: "Edit Shop"
+shop.edit.heading: "Edit Shop Information"
+shop.back_profile: "Back to Profile"
+button.update: "Update"
+
+
+receipt.title: "Order Receipt #%ref%"
+receipt.beneficiary: "Beneficiary"
+receipt.status: "Status"
+receipt.order_date: "Order date"
+receipt.items: "Items"
+receipt.no_items: "No items found"
+receipt.date: "Receipt date"
+receipt.print: "Print receipt"
+# Entregue e finalizado: "Delivered and completed"
+# Em processamento: "Processing"
+# Em curso: "In progress"
+# Reembolso: "Refund"
+
+
+merchant.name: "Shop name"
+merchant.city: "City"
+merchant.city_placeholder: "Select a city"
+merchant.address: "Address"
+merchant.description: "Description"
+merchant.license: "Legal license"
+merchant.bank_holder: "Account holder"
+merchant.bank_name: "Bank name"
+merchant.iban: "Account number / IBAN"
+merchant.iban_placeholder: "Ex: CV64000500000020108215144"
+merchant.iban_help: "Cape Verde IBAN has 25 characters and starts with “CV”"
+merchant.swift: "BIC / SWIFT code"
+merchant.swift_placeholder: "Ex: BCVVCVCV"
+merchant.swift_help: "SWIFT (or BIC) code has 8 or 11 characters"
+merchant.nif: "Merchant NIF"
+merchant.nif_placeholder: "Ex: 123456789"
+merchant.nif_help: "NIF must have 9 digits and start with 1, 2, 3 or 5"
+merchant.nif_length: "NIF must contain exactly {{ limit }} digits."
+merchant.nif_regex: "NIF must start with 1, 2, 3 or 5 and contain 9 digits."
+
+
+orders.title: "Orders"
+orders.heading: "My purchases"
+orders.back_shop: "Back to shop"
+# orders.ref: "Reference"
+# orders.date: "Date (CV time)"
+# orders.total: "Total"
+# orders.status: "Status"
+orders.beneficiary: "Beneficiary"
+orders.empty: "No purchase records found"
+currency.cve: "escudos"
+
+
+# translations/messages.en.yaml
+order:
+  detail:
+    title: "Order"
+    ref: "Reference"
+    back_list: "Back to list"
+    quantity: "Quantity"
+    total: "Total"
+    date: "Date"
+    status: "Order status"
+    secret_code: "Your secret code"
+    shop_note: "Shop note"
+    refund: "Refund"
+    customer_note: "Your current comment"
+    no_comment: "No comment yet."
+    edit_comment: "Edit comment"
+    comment_placeholder: "Write your comment..."
+    save_comment: "Save Comment"
+
+currency:
+  cve: "escudos"
+  cve_full: "CVE - Cape Verde Escudos"
+  euro: "euro"
+  usd: "USD"
+
+
+cgu:
+  title: "Terms and Conditions of Use"
+  last_update: "Last update:"
+  heading: "📝 Terms and Conditions of Use (T&C)"
+  section1:
+    title: "Platform Purpose"
+    content: >
+      This platform connects the Cape Verdean diaspora with local merchants
+      in Cape Verde. Members of the diaspora can purchase products for their families.
+      These products are either collected locally or delivered to beneficiaries
+      through our partners.
+  section2:
+    title: "Access to the Service"
+    item1: "Free registration with user account creation"
+    item2: "Mandatory acceptance of these Terms and Conditions"
+    item3: "Providing accurate and up-to-date information"
+  section3:
+    title: "Order Process"
+    item1: "Selection of products from merchants"
+    item2: "Online payment through a secure system"
+    item3: "Collection or delivery of products in Cape Verde"
+  section4:
+    title: "Role of the Platform"
+    content: >
+      The platform acts as an intermediary. Merchants are responsible
+      for the quality, availability, and delivery of products.
+  section5:
+    title: "User Commitments"
+    item1: "Honest and lawful use of the platform"
+    item2: "Prohibition of fake accounts or fraudulent activities"
+    item3: "Respect for other users and merchants"
+  section6:
+    title: "Payment and Security"
+    content: >
+      All payments are processed by certified providers.
+      No banking information is stored on our servers.
+  section7:
+    title: "Delivery / Collection"
+    content: >
+      The collection method depends on the merchant (delivery or pickup).
+      Details are shown before payment.
+  section8:
+    title: "Liability"
+    content: >
+      The platform is not responsible for delays, stock shortages,
+      or direct disputes with merchants.
+      However, we remain available to help resolve any issues.
+  section9:
+    title: "Data Protection"
+    content: >
+      Your personal data is protected in accordance with applicable laws (GDPR).
+      Please consult our Privacy Policy for more details.
+  section10:
+    title: "Changes to the Terms"
+    content: >
+      We reserve the right to modify these terms at any time.
+      Users will be notified in case of significant changes.
+  section11:
+    title: "Contact"
+    content: "For any questions or suggestions:"
+  accept:
+    text: >
+      By using our platform, you fully and unconditionally accept these terms.
+    thanks: "Thank you for your trust."
+
+#--------------------- privacy-----------------------------------------
 privacy:
   title: "Privacy Policy"
-  heading: "Privacy Policy"
-  last_update: "Last updated"
+  heading: "🔒 Privacy Policy"
+  last_update: "Last update:"
 
-  intro_title: "1. Introduction"
-  intro_text: "This privacy policy explains how we collect, use, store, and protect your personal data when you use our platform."
+  section1:
+    title: "Introduction"
+    content: >
+      This privacy policy explains how we collect, use, store,
+      and protect your personal data when you use our platform.
 
-  data_collected_title: "2. Data Collected"
-  data_collected_intro: "We collect the following information:"
-  data:
-    name: "First name, last name"
+  section2:
+    title: "Collected Data"
+    intro: "We collect the following information:"
+    item1: "First and last name"
+    item2: "Email address"
+    item3: "Postal address (delivery or billing)"
+    item4: "Order history"
+    item5: "Browsing data (cookies, if accepted)"
+
+  section3:
+    title: "Use of Data"
+    intro: "Your data is used to:"
+    item1: "Create and manage your user account"
+    item2: "Ensure proper order processing and deliveries"
+    item3: "Improve our platform and services"
+    item4: "Communicate with you (confirmations, notifications, customer support)"
+
+  section4:
+    title: "Data Sharing"
+    content: >
+      Your personal data is shared only with service providers
+      required to perform the services (payment, delivery).
+      No data is sold to third parties.
+
+  section5:
+    title: "Security"
+    content: >
+      We implement all necessary technical and organizational measures
+      to protect your data against unauthorized access, loss, or destruction.
+
+  section6:
+    title: "Data Retention"
+    content: >
+      Your data is retained as long as your account is active
+      and for up to 3 years after your last activity.
+
+  section7:
+    title: "Your Rights"
+    intro: "In accordance with GDPR, you have the following rights:"
+    item1: "Access to your personal data"
+    item2: "Correction or update of your information"
+    item3: "Deletion of your account and personal data"
+    item4: "Objection to certain data processing activities"
+    contact: "To exercise your rights, please contact us at:"
+
+  section8:
+    title: "Cookies"
+    content: >
+      We use cookies to enhance your user experience.
+      You can accept or decline cookies through your browser settings.
+
+  section9:
+    title: "Changes"
+    content: >
+      This policy may be updated at any time.
+      In case of significant changes, you will be notified
+      via the platform or by email.
+
+  section10:
+    title: "Contact"
+    content: "For any questions regarding this policy:"
+
+  accept:
+    text: "By using our platform, you accept this Privacy Policy."
+
+# ------------------------
+register:
+  form:
     email: "Email address"
-    address: "Postal address (for delivery or billing)"
-    history: "Order history"
-    cookies: "Browsing data (via cookies, if accepted)"
+    password: "Password"
+    password_confirm: "Confirm password"
+    first_name: "First name"
+    last_name: "Last name"
+    address: "Address"
 
-  data_use_title: "3. Use of Data"
-  data_use_intro: "Your data is used to:"
-  data_use:
-    account: "Create and manage your user account"
-    orders: "Ensure the proper functioning of orders and deliveries"
-    improvement: "Improve our platform and the services offered"
-    communication: "Communicate with you (confirmation emails, notifications, customer support, etc.)"
+    agree_terms_error: "You must accept our terms."
+    password_blank: "Please enter a password."
+    password_confirm_blank: "Please confirm your password."
+    password_min: "Your password must be at least {{ limit }} characters long."
 
-  sharing_title: "4. Data Sharing"
-  sharing_text: "We only share your personal data with service providers necessary for the execution of services (payment, delivery). No data will be sold to third parties."
-
-  security_title: "5. Security"
-  security_text: "We implement all necessary technical and organizational measures to protect your data against unauthorized access, loss, or destruction."
-
-  retention_title: "6. Data Retention"
-  retention_text: "Your data will be retained as long as your account is active and for up to 3 years after your last activity."
-
-  rights_title: "7. Your Rights"
-  rights_intro: "Under the GDPR, you have the following rights:"
-  rights:
-    access: "Access your personal data"
-    update: "Correct or update your information"
-    delete: "Delete your account and data"
-    object: "Object to certain data processing activities"
-  rights.contact: "To exercise your rights, contact us at: <a href=\"mailto:%email%\">%email%</a>"
-
-  cookies_title: "8. Cookies"
-  cookies_text: "We use cookies to enhance your user experience. You can accept or reject cookies via your browser settings."
-
-  modifications_title: "9. Changes"
-  modifications_text: "This policy may be updated at any time. In the event of significant changes, you will be notified via the platform or by email."
-
-  contact_title: "10. Contact"
-  contact_text: "For any questions regarding this policy, contact us:"
-
-  acceptance: "By using our platform, you accept this Privacy Policy."
+  title: "Register"
+  heading: "Create an account"
+  accept_prefix: "I accept the"
+  terms_link: "Terms and Conditions of Use"
+  submit: "Create an account"
 
 
-#------------ Login paga-----------------------
-login:
-  title: "Log in"
-  heading: "Log in"
-  logged_in_as: "Logged in as %user%"
-  logout: "Logout"
-  email: "Email address"
-  password: "Password"
-  forgot_password: "Forgot your password?"
-  submit: "LOGIN"
-
-#--- reset page---------------------------
-reset_password:
+reset:
   title: "Reset your password"
   heading: "Reset your password"
-  email:
-    label: "Email address"
-    help: "Enter your email address and we will send you a link to reset your password."
+  help_text: >
+    Enter your email address and we will send you
+    a link to reset your password.
   submit: "Send email"
 
-# Cyties Nav--------------
-navbar:
-  toggle_navigation: "Toggle navigation"
-  cities: "Cities : shops"
 
-# Footer----------------
-footer:
-  title: "Responsive Footer"
-  home: "Home"
-  contact: "Contact"
-  about: "About Us"
-  privacy_policy: "Privacy Policy"
-  imuhotepu_videos: "Imuhotepu-Videos"
-  download_apk: "Download APK"
+reset_new:
+  title: "Reset your password"
+  heading: "Reset your password"
+  placeholder_new: "Enter your new password"
+  placeholder_confirm: "Confirm your new password"
+  submit: "Reset password"
 
-# -Home---------------------------
-home:
-  meta_description: 'FalkonANK: connecting the Cape Verdean diaspora with local merchants in Cape Verde. Purchase and have products delivered to your loved ones.'
-  title: 'FalkonANK'
-  category_label: 'Select Category'
-  shops_button: 'Our Shops'
-  create_account_prompt: 'To purchase – create a simple account'
-  add_to_cart: 'Add to Cart'
-  out_of_stock: 'Out of Stock'
-  shop: 'Shop'
-  location: 'Location'
+reset_request:
+  email: "Email address"
+  email_blank: "Please enter your email."
 
-# profil----------------------------
-profile:
-  title: "Profile (My Account)"
-  back_to_shop: "Back to Shop"
-  personal_data: "Personal Data"
-  email: "Email"
-  name: "Name"
-  address: "Address"
-  edit: "Edit"
-  merchant: "Merchant"
-  become_merchant: "Become a Merchant"
-  close: "Close"
-  city: "City"
-  select_city: "Select a city"
-  shop_name: "Shop Name"
-  shop_name_placeholder: "Enter shop name"
-  shop_address: "Shop Address"
-  shop_address_placeholder: "Enter shop address"
-  nif: "NIF (Tax Identification Number)"
-  nif_placeholder: "e.g. 123456789"
-  nif_title: "The NIF must have 9 digits and start with 1, 2, 3, or 5."
-  nif_help: "The NIF must have 9 digits and start with 1, 2, 3, or 5."
+
+login:
+  title: "Login"
+  heading: "Sign in"
+  email_label: "Email"
+  password_label: "Password"
+  forgot_password: "Forgot your password?"
+  submit: "Login"
+  already_logged_in: "You are already logged in as %user%"
+  logout: "Logout"
+
+
+payment:
+  success:
+    title: "Payment Successful"
+    heading: "Thank you!"
+    message: "Your payment was successful."
+    email_info: "You will receive a confirmation soon at %email%."
+    spam_note: "If you don’t see it, check your spam or junk folder 😉"
+    secret_code: "Your secret code:"
+    orders_button: "Your orders"
+  canceled:
+    title: "Payment Canceled"
+    heading: "Payment Canceled"
+    message: "Your payment was not completed."
+    help_message: "If you encounter any issue, try again or contact our support:"
+    contact: "Contact"
+  back_to_shop: "Back to Shop!"
+  retry: "Retry Payment"
+
+  processing:
+    title: "Payment Confirmation..."
+    message: "Processing payment... please wait a moment."
+    thanks: "FalkonANK thanks you for your trust!"
+    amazon_books: "Check out our books on Amazon:"
+
+
+user.delete.confirm: "Warning: this action cannot be undone! Are you sure you want to delete your account?"
+user.delete.button: "Delete Account"
+
+
+user_delete:
+  title: "Delete account"
+  heading: "Delete account"
+  merchant_warning: "You are a merchant. Deleting your account will result in the loss of this role."
+  confirm_text: "Are you sure you want to delete your account?"
+  reason_label: "Reason for deletion (optional)"
+  reason_placeholder: "Why do you want to delete your account?"
+  password_label: "Confirm your password"
+  password_placeholder: "Enter your password"
+  submit: "Confirm deletion"
   cancel: "Cancel"
-  submit: "Submit"
-  merchant_pending: "Your request is being processed."
-  submitted_at: "Submitted at"
-  edit_store_data: "Edit Store Data"
-  merchant_rejected: "Your request has been rejected."
-  reason: "Reason"
-  more_info: "For more information:"
-  contact_us: "Contact us"
-  merchant_approved: "Congratulations! Your request has been approved."
-  admin_message: "Admin message"
 
-  delete_button: "Delete Account"
-  delete_confirm: "Warning: this action is irreversible! Are you sure you want to delete your account?"
+user_edit:
+  title: "Edit personal information"
+  heading: "Edit personal information"
+  back: "Go back"
+  email: "Email:"
+  first_name: "First name:"
+  last_name: "Last name:"
+  address: "Address:"
+  submit: "Update"
 
-# Order-------------------------
-order:
-  title: Orders
-  back_to_shop: Back to shop
-  my_orders: My Orders
-  reference: Reference
-  date: Date (CV time)
-  total: Total
-  status: Status
-  beneficiary: Beneficiary
-  no_orders: No purchase records found!
-# AddFlash:
-  refund_missing_fields: "❌ Refund: The amount and refund status are required."
-  invalid_secret_code: "❌ The secret code is incorrect. Please enter the correct code."
-  saved_successfully: "Successfully saved"
-  # delivered_note: "All products have been successfully delivered. Come back soon. Our team thanks you!"
-  # cancelled_note: "The order has been cancelled."
-  # refund_in_progress: "The refund is in progress."
-  # refund_completed: "The refund was completed on %date%. The amount will be available in your account within 3 to 8 business days, depending on your bank."
 
-# basket---------------------------
-basket:
-  title: "My Basket"
-  back_to_shop: "Back to Shop"
-  city: "City"
-  empty_message: "Your basket is empty!"
-  total: "Total"
-  checkout_button: "Proceed to Checkout"
-  beneficiary_info: "Beneficiary Information"
-  close: "Close"
-  beneficiary_city: "Beneficiary's City"
-  select_city: "Select a city"
-  beneficiary_name: "Name"
-  beneficiary_address: "Beneficiary's Address"
-  beneficiary_email: "Email"
-  optional: "optional"
-  phone_number: "Phone Number"
-  confirm_pay: "Confirm and Pay"
+account_deleted.title: "Account successfully deleted"
+account_deleted.heading: "Your account has been deleted"
+account_deleted.message: >
+    Your account has been successfully removed from our platform.<br>
+    Thank you for trusting us.
+account_deleted.back_home: "Back to homepage"
 
-  no_items_message: "You don't have any items yet, add a product to your basket!"
+profile.title: "Profile (Minha Compta)"
+profile.button.back_to_shop: "Back to Shop"
+profile.personal_data: "Personal Data"
+profile.email: "Email"
+profile.name: "Name"
+profile.address: "Address"
+profile.button.edit: "Edit"
+profile.button.merchant: "Merchant"
+profile.become_merchant: "Become a Merchant"
+profile.button.close: "Close"
+profile.city: "City"
+profile.select_city: "Select a city"
+profile.shop_name: "Shop Name"
+profile.shop_name_placeholder: "Enter the shop name"
+profile.shop_address: "Shop Address"
+profile.shop_address_placeholder: "Enter the shop address"
+profile.merchant_nif: "NIF (Tax Identification Number)"
+profile.nif_title: "The NIF must have 9 digits and start with 1, 2, 3, or 5."
+profile.nif_hint: "The NIF must have 9 digits and start with 1, 2, 3, or 5."
+profile.shop_license: "Legal License (pdf, jpg, jpeg, png)"
+profile.shop_description: "Shop Description"
+profile.shop_description_placeholder: "Describe your shop"
+profile.bank_info: "Bank Information"
+profile.bank_holder: "Account Holder Name"
+profile.bank_holder_placeholder: "Enter full name"
+profile.bank_name: "Bank Name"
+profile.bank_name_placeholder: "Enter bank name"
+profile.bank_iban: "Account Number / IBAN"
+profile.iban_hint: "IBAN in Cape Verde has 25 characters and starts with “CV”"
+profile.bank_swift: "BIC/SWIFT Code"
+profile.swift_hint: "SWIFT code has 8 or 11 characters"
+profile.bank_country: "Bank Account Country"
+profile.bank_country_placeholder: "Enter country"
+profile.contract_agree: "I have read and accept the Partnership Agreement terms"
+profile.button.cancel: "Cancel"
+profile.button.submit: "Submit"
+profile.merchant_pending: "Your request is being processed."
+profile.view_file: "View File"
+profile.button.edit_shop: "Edit Shop Data"
+profile.merchant_denied: "Your request was denied."
+profile.reason: "Reason"
+profile.more_info: "For more information"
+profile.button.contact_us: "Contact Us"
+profile.merchant_approved: "Congratulations! Your request has been approved."
+profile.admin_message: "Administrator Message"
+profile.submission_date: "Submission Date"
 
-# -addFlash-------------------
-merchantAdF:
-    updated_successfully: 'Data updated successfully!'
-merchant.request_already_exists: 'You already have a registered store request.'
-merchant.required_fields_missing: 'All required fields must be filled in.'
-merchant.invalid_file_format: 'The file must be in PDF, JPG, JPEG, or PNG format.'
-merchant.store_creation_success: 'Your store creation request has been successfully registered.'
-comment.added_success: 'Comment added successfully!'
-verify:
-  email_error: 'Error verifying the email address.'
-  invalid_email: 'This email is invalid.'
-  success: 'Your email address has been successfully verified.'
-contact:
-  all_fields_required: 'All fields are required.'
-  invalid_email: 'The email address is not valid.'
-  success: 'Your message was sent successfully. Thank you for contacting us!'
-  error: 'An error occurred while sending your message. Please try again later.'
-  not_found: 'Contact not found.'
-  response_saved_and_sent: 'Response saved and sent successfully!'
-  empty_response_error: 'Please write a response.'
-auth:
-  invalid_email: 'Incorrect email address!'
-checkout:
-  minimum_amount_error: 'The total purchase amount must be greater than 250 CVE.'
-  same_shop_required: 'All products in the basket must belong to the same shop. Please remove products from different shops.'
-  same_city_required: 'All products must belong to the selected city for the beneficiary. Remove products from another city or change the beneficiary city.'
-email:
-  greeting: "Hello <strong>%name%</strong>,"
-  thank_you: "Thank you for your order. Here is a summary of your purchase:"
-  order_number: "Order Number"
-  total_amount: "Total Amount"
-  instructions: "The recipient must present their ID, order reference, and secret code."
-  send_reference: "You must send them this reference:"
-  secret_code: "and the secret code:"
-  products: "Products"
-  delivery_to: "Delivery to"
-  name: "Name"
-  address: "Address"
-  signature: "Best regards,"
-account:
-  update_success: 'Data updated successfully.'
-user:
-  invalid_password: 'Incorrect password.'
-  account_deleted: 'Your account has been successfully deleted.'
-merchant:
-  approved_message: "%name%, welcome. Your request has been accepted! You can access your Merchant space using the 'Merchant' button or the blue icon at the top of the page."
-  rejected_message: "%name%, unfortunately your request was not accepted due to missing or incorrect information. For more details, contact us via the 'Contact' button at the top of the page."
-  approved_flash: "Merchant approved successfully!"
-  rejected_flash: "Merchant not approved!"

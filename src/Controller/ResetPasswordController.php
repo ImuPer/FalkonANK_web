@@ -143,7 +143,7 @@ class ResetPasswordController extends AbstractController
         //     return $this->redirectToRoute('app_check_email');
         // }
         if (!$user) {
-            $this->addFlash('danger', $translator->trans('auth.invalid_email'));
+            $this->addFlash('danger', 'Email incorrecto !');
             return $this->redirectToRoute('app_forgot_password_request');
         }
 

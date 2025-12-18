@@ -1,131 +1,140 @@
-{# css #}
+{# templates/layout/header.html.twig #}
 <link rel="stylesheet" href="{{ asset('css/header.css') }}">
 
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.2/css/all.css"/>
-		<title>Falkon-ANK</title>
-	</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.4.2/css/all.css"/>
+    <title>{{ 'site_title'|trans }}</title>
+</head>
 
-	<body>
-		<!--Barre de Navigation-->
-		<nav>
-			<a class="navbar-brand" href="{{ path('app_home_page') }}">
-				<img class="logo" src="{{ asset('image/FalkonANK/logo-transparent-png.png') }}" alt="Logo">
-			</a>
+<body>
+    <!-- Barre de Navigation -->
+    <nav>
+        <a class="navbar-brand" href="{{ path('app_home_page') }}">
+            <img class="logo" src="{{ asset('image/FalkonANK/logo-transparent-png.png') }}">
+        </a>
 
-			<button class="hamburger">
-				<i class="fas fa-bars"></i>
-			</button>
+        <button class="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
 
-			<div id="navMenu" class="onglets">
-				<a href="{{ path('app_home_page') }}">
-					<i class="fas fa-home"></i>
-				</a>
-				<a href="{{ path('app_about_page') }}">{{ 'about_us'|trans }}</a>
-				<a href="{{ path('contact_nous') }}">{{ 'contactH'|trans }}</a>
-				{# <a href="{{ path('app_cadre_photo') }}">{{ 'photo_frame'|trans }}</a> #}
+        <div id="navMenu" class="onglets">
+            <a href="{{ path('app_home_page') }}"><i class="fas fa-home"></i></a>
+            <a href="{{ path('app_about_page') }}">{{ 'about'|trans }}</a>
+            <a href="{{ path('contact_nous') }}">{{ 'contact.title'|trans }}</a>
+            <a href="{{ path('app_cadre_photo') }}">{{ 'photos'|trans }}</a>
 
-				{% if app.user %}
-					<li style="position: relative;">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							{{ 'my_space'|trans }}
-						</a>
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-							<li>
-								<a class="dropdown-item" href="{{ path('app_user_show') }}">{{ 'profile'|trans }}</a>
-							</li>
-							{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
-								<li>
-									<a class="dropdown-item" href="{{ path('app_user_orders') }}">{{ 'ordersH'|trans }}</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="{{ path('user_basket') }}">{{ 'basketH'|trans }}</a>
-								</li>
-							{% endif %}
-						</ul>
-					</li>
-					<a class="nav-item nav-link" href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a>
-				{% else %}
-					<a href="{{ path('app_register') }}">{{ 'registerH'|trans }}</a>
-					<a href="{{ path('app_login') }}">{{ 'loginH'|trans }}</a>
-				{% endif %}
+            {% if app.user %}
+                <li style="position: relative;">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'my_space'|trans }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_user_show') }}">{{ 'profile_h'|trans }}</a>
+                        </li>
+                        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_user_orders') }}">{{ 'orders'|trans }}</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('user_basket') }}">{{ 'basket'|trans }}</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
 
-				{% if is_granted('ROLE_MERCHANT') %}
-					<li class="link_employe">
-						<a style="color: blue;" href="{{ path('admin') }}">
-							<i class="fas fa-user-edit"></i>
-						</a>
-					</li>
-				{% endif %}
+                <a class="nav-item nav-link" href="{{ path('app_logout') }}">{{ 'logout'|trans }}</a>
+            {% else %}
+                <a href="{{ path('app_register') }}">{{ 'register_h'|trans }}</a>
+                <a href="{{ path('app_login') }}">{{ 'login.title'|trans }}</a>
+            {% endif %}
 
-				{% if is_granted('ROLE_ADMIN') %}
-					<li class="link_admin">
-						<a href="{{ path('admin') }}" class="btn btn-danger">{{ 'admin'|trans }}</a>
-					</li>
-				{% endif %}
+            {% if is_granted('ROLE_MERCHANT') %}
+                <li class="link_employe">
+                    <a style="color: blue;" href="{{ path('admin') }}">
+                        <i class="fas fa-user-edit"></i>
+                    </a>
+                </li>
+            {% endif %}
 
-				<a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank">
-					<i class="fab fa-facebook-f"></i>
-				</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="link_admin">
+                    <a href="{{ path('admin') }}" class="btn btn-danger">{{ 'admin'|trans }}</a>
+                </li>
+            {% endif %}
 
-				<div class="busca">
-					<form class="d-flex" role="search" method="get" action="{{ path('product_search') }}">
-						<div class="input-group">
-							<input type="search" class="form-control" name="search" placeholder="{{ 'search_placeholder'|trans }}" aria-label="Search">
-							<button class="btn btn-secondary" type="submit">
-								<i class="fa-solid fa-magnifying-glass"></i>
-							</button>
-						</div>
-					</form>
-				</div>
+            <a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+            </a>
 
-				<div>
-					{% if cities is defined %}
-						{% include 'layout/city_menu.html.twig' with { cities: cities } %}
-					{% endif %}
-				</div>
+            <div class="busca">
+                <form class="d-flex" role="search" method="get" action="{{ path('product_search') }}">
+                    <div class="input-group">
+                        <input type="search" class="form-control" name="search" placeholder="{{ 'search'|trans }}" aria-label="Search">
+                        <button class="btn btn-secondary" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-				{% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
-					<a class="shoping_header" href="{{ path('user_basket') }}">
-						<i class="fas fa-shopping-cart">
-							{% if is_granted('ROLE_USER') %}
-								{% set userId = app.user ? app.user.id : null %}
-								{% set totalQuantity = userId ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
-								<label>{{ totalQuantity }}</label>
-							{% endif %}
-						</i>
-					</a>
-				{% endif %}
+            {% if cities is defined %}
+                {% include 'layout/city_menu.html.twig' with { cities: cities } %}
+            {% endif %}
 
-				{# {% set route = app.request.attributes.get('_route') %}
-				{% set params = app.request.attributes.get('_route_params') %}
-				<div class="language-switcher">
-					{% for lang, label in {'fr':'FR','pt':'PT','en':'EN'} %}
-						<a href="{{ path(route, params|merge({'_locale': lang})) }}" class="{{ app.request.locale == lang ? 'active' : '' }}">{{ label }}</a>
-						{% if not loop.last %}
-							|
-						{% endif %}
-					{% endfor %}
-				</div> #}
+            {# Menu Langue Mobile #}
+            <li class="nav-item dropdown d-lg-none mt-2">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdownMobile" role="button" data-bs-toggle="dropdown">
+                    🌐 {{ app.request.locale|upper }}
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'pt'}) }}">🇵🇹 Português</a></li>
+                    <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'en'}) }}">🇬🇧 English</a></li>
+                    <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'fr'}) }}">🇫🇷 Français</a></li>
+                    <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'es'}) }}">🇪🇸 Español</a></li>
+                </ul>
+            </li>
+        </div>
 
+        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+            <a class="shoping_header" href="{{ path('user_basket') }}">
+                <i class="fas fa-shopping-cart"></i>
+                {% if is_granted('ROLE_USER') %}
+                    {% set userId = app.user is not null ? app.user.id : null %}
+                    {% set totalQuantity = userId is not null ? basket_service.getTotalQuantityForUserWherePaymentFalse(userId) : 0 %}
+                    {% if totalQuantity > 0 %}
+                        <span class="cart-badge">{{ totalQuantity }}</span>
+                    {% endif %}
+                {% endif %}
+            </a>
+        {% endif %}
 
-			</nav>
-			<!-- Fin de barre de Navigation -->
-		</body>
-	</body>
+        {# Menu Langue Desktop #}
+        <div class="nav-item dropdown ms-auto d-none d-lg-block text-end position-relative">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdownDesktop" role="button" data-bs-toggle="dropdown">
+                🌐 {{ app.request.locale|upper }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end show-above">
+                <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'pt'}) }}">🇵🇹 Português</a></li>
+                <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'en'}) }}">🇬🇧 English</a></li>
+                <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'fr'}) }}">🇫🇷 Français</a></li>
+                <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'es'}) }}">🇪🇸 Español</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuButton = document.querySelector('.hamburger');
+            const navMenu = document.getElementById('navMenu');
+            menuButton.addEventListener('click', function () {
+                navMenu.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
 </html>
-
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-const menuButton = document.querySelector('.hamburger');
-const navMenu = document.getElementById('navMenu');
-
-menuButton.addEventListener('click', function () {
-navMenu.classList.toggle('active');
-});
-});
-</script>

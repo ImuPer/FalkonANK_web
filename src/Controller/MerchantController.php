@@ -26,7 +26,6 @@ use Symfony\Component\Mime\Part\Multipart\RelatedPart;
 use Symfony\Component\Mime\Part\TextPart;
 use Symfony\Component\Mime\Part\Multipart\MixedPart;
 use Symfony\Component\Mime\Address;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 //#[Route('/merchant')]
 final class MerchantController extends AbstractController
@@ -37,7 +36,7 @@ final class MerchantController extends AbstractController
     }
 
     #[Route('/merchant/edit/{id}', name: 'merchant_edit')]
-    public function edit(Request $request, Merchant $merchant, EntityManagerInterface $em, TranslatorInterface $translator): Response
+    public function edit(Request $request, Merchant $merchant, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(MerchantType::class, $merchant);
         $form->handleRequest($request);
@@ -67,7 +66,7 @@ final class MerchantController extends AbstractController
 
             $em->flush();
 
-           $this->addFlash('success', $translator->trans('merchantAdF.updated_successfully'));
+            $this->addFlash('success', 'Dados atualizados com sucesso!');
             return $this->redirectToRoute('user_dashboard');
         }
 
@@ -78,96 +77,180 @@ final class MerchantController extends AbstractController
 
 
     #[Route('registermerchand', name: 'merchant_register', methods: ['POST'])]
-public function registerMerchant(
-    Request $request,
-    EntityManagerInterface $entityManager,
-    MailerInterface $mailer,
-    TranslatorInterface $translator
-): Response {
-    // Récupérer l'utilisateur connecté
-    $user = $this->getUser();
+    public function registerMerchant(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
+    ): Response {
+        // Récupérer l'utilisateur connecté
+        $user = $this->getUser();
 
-    $userEmail = $user->getEmail();
-    $userName = $user->getFirstName() . " " . $user->getLastName();
-    $userID = $user->getId();
+        $userEmail = $user->getEmail();
+        $userName = $user->getFirstName() . " " . $user->getLastName();
+        $userID = $user->getId();
 
-    $dateNow = new DateTime();
-    $dateNowFormatted0 = $dateNow->format('Ymd');
-    $dateNowFormatted = $dateNow->format('d/m/Y');
+        $dateNow = new DateTime();
+        $dateNowFormatted0 = $dateNow->format('Ymd');
+        $dateNowFormatted = $dateNow->format('d/m/Y');
 
-    // Vérifier si l'utilisateur a déjà une demande de marchand
-    $existingMerchant = $entityManager->getRepository(Merchant::class)->findOneBy(['user' => $user]);
 
-    if ($existingMerchant) {
-        $this->addFlash('error', $translator->trans('merchant.request_already_exists'));
+        // Vérifier si l'utilisateur a déjà une demande de marchand
+        $existingMerchant = $entityManager->getRepository(Merchant::class)->findOneBy(['user' => $user]);
+
+        if ($existingMerchant) {
+            $this->addFlash('error', 'Você já tem uma solicitação de loja registrada.');
+            return $this->redirectToRoute('user_dashboard');
+        }
+
+        // Récupérer les données du formulaire
+        $cityId = $request->request->get('city_id');
+        $city = $entityManager->getRepository(City::class)->find($cityId);
+        $shopName = $request->request->get('shop_name');
+        $shopAddress = $request->request->get('shop_address');
+        $nifMerchant = $request->request->get('merchant_nif');
+        $shopDescription = $request->request->get('shop_description');
+        $shopLicense = $request->files->get('shop_license');
+
+        // Données bancaires
+        $bankHolder = $request->request->get('bank_holder');
+        $bankName = $request->request->get('bank_name');
+        $bankIban = $request->request->get('bank_iban');
+        $bankSwift = $request->request->get('bank_swift');
+
+        // Validation des champs obligatoires
+        if (empty($shopName) || empty($shopAddress) || !$shopLicense) {
+            $this->addFlash('error', 'Todos os campos obrigatórios devem ser preenchidos.');
+            return $this->redirectToRoute('user_basket');
+        }
+
+        // Traitement du fichier
+        if ($shopLicense) {
+            $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+            $fileExtension = $shopLicense->guessExtension() ?: $shopLicense->getClientOriginalExtension();
+
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                $this->addFlash('error', 'O ficheiro deve estar no formato PDF, JPG, JPEG ou PNG.');
+                return $this->redirectToRoute('app_user_show');
+            }
+
+            $fileName = uniqid() . '.' . $fileExtension;
+            $uploadDir = $this->getParameter('uploads_directory');
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            $shopLicense->move($uploadDir, $fileName);
+        }
+
+        // Création de l'entité Merchant
+        $merchant = new Merchant();
+        $merchant->setName($shopName);
+        $merchant->setAddress($shopAddress);
+        $merchant->setnifManeger($nifMerchant);
+        $merchant->setDescription($shopDescription);
+        $merchant->setLicenseFile('uploads/' . $fileName);
+        $merchant->setUser($user);
+        $merchant->setCity($city);
+
+        // Ajout des données bancaires
+        $merchant->setBankHolder($bankHolder);
+        $merchant->setBankName($bankName);
+        $merchant->setIban($bankIban);
+        $merchant->setSwift($bankSwift);
+
+        $entityManager->persist($merchant);
+        $entityManager->flush();
+
+        //-----------Envoyer l’email avec le PDF en pièce jointe------------------------------------------
+    
+
+        $contractEmailContent = <<<EOD
+<html>
+  <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
+    </div>
+
+    <p>Olá <strong>{$userName}</strong>,</p>
+
+    <p>Obrigado por escolher fazer parte da nossa rede de parceiros comerciais. Estamos entusiasmados com a sua colaboração. Abaixo está o resumo do seu contrato de parceria comercial:</p>
+
+    <p>
+      <strong>Número do Contrato:</strong> CT-USER-{$userID}-{$dateNowFormatted0}<br>
+      <strong>Data de Assinatura:</strong> {$dateNowFormatted}
+    </p>
+
+    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Detalhes do Contrato</h3>
+    <p>
+      <strong>Entre:</strong> <br>
+      <strong>A Plataforma :</strong> FalkonANK Alimentason (nome legal: <em>Pereira Mascarenhas Milton Mario</em>), com sede em 60 rue François 1er, 75008 Paris, França.<br>
+      <strong>E :</strong> <br>
+      <strong>Comerciante : </strong> {$userName}<br>
+      <strong>NIF : </strong> {$nifMerchant}<br>
+      <strong>Morada do Estabelecimento : </strong> {$shopAddress}<br>
+      <strong>Cidade : </strong> {$city}
+      <strong>E-mail de Contacto : </strong> {$userEmail}
+    </p>
+
+    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Cláusulas do Contrato</h3>
+
+    <p><strong>1. Objeto:</strong> Este contrato estabelece os termos da parceria para venda e entrega de produtos através da plataforma FalkonANK Alimentason.</p>
+    <p><strong>2. Obrigações da Plataforma:</strong> Divulgar produtos, processar pagamentos, encaminhar pedidos ao Comerciante e fornecer suporte ao cliente.</p>
+    <p><strong>3. Obrigações do Comerciante:</strong> Garantir a qualidade e disponibilidade dos produtos e entregar conforme acordado.</p>
+    <p><strong>4. Preços e Pagamentos:</strong></p>
+    <ul>
+      <li>O Comerciante define o preço base (sem comissões).</li>
+      <li>A Plataforma adiciona a comissão + taxas Stripe ao valor final.</li>
+      <li>Pagamentos serão feitos entre 7 a 10 dias úteis após a entrega.</li>
+      <li>O custo da transferência bancária internacional será deduzido.</li>
+    </ul>
+    <p><strong>5. Duração e Rescisão:</strong> Contrato por tempo indeterminado, com aviso prévio de 15 dias para rescisão.</p>
+    <p><strong>6. Responsabilidade:</strong> O Comerciante é responsável pelos produtos entregues.</p>
+    <p><strong>7. Proteção de Dados:</strong> Ambas as partes devem cumprir o RGPD.</p>
+    <p><strong>8. Foro:</strong> Para resolução de litígios, fica eleito o foro da Comarca de Praia, Cabo Verde.</p>
+
+    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Assinatura</h3>
+    <p><strong>Nome do Comerciante : </strong> {$userName}</p>
+    <p><strong>Data : </strong> {$dateNowFormatted}</p>
+    <p><strong>Assinado em : </strong> {$city}</p>
+
+    <p style="margin-top: 30px;">Atenciosamente,<br>
+    <strong>FALKON-ANK</strong></p>
+  </body>
+</html>
+EOD;
+
+
+        $emailClient = (new Email())
+            ->from(new Address('no-reply@FalkonANK.com', 'FalkonANK Alimentason'))
+            ->to($userEmail, "falkon674@gmail.com")
+            ->subject('📄 Seu contrato de parceria com a FalkonANK')
+            ->html("Olá $userName,\n\nSegue em anexo o seu contrato de parceria com a FalkonANK.\n\nPor favor, guarde este documento.\n\nAtenciosamente,\nEquipe FalkonANK");
+
+        //-------Contract en PDF--------------------
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+
+        set_time_limit(3000); 
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($contractEmailContent);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        // Enregistrement temporaire
+        $pdfOutput = $dompdf->output();
+        $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
+        file_put_contents($tempPdfPath, $pdfOutput);
+
+        // Attacher le fichier PDF à l'e-mail
+        $emailClient->attachFromPath($tempPdfPath, 'Contrato-FalkonANK.pdf');
+
+        $mailer->send($emailClient);
+        unlink($tempPdfPath);
+        //------------------------------------Fin de Email & Pdf-----------------------------------------------
+
+        $this->addFlash('success', 'Sua solicitação de criação de loja foi registrada com sucesso.');
         return $this->redirectToRoute('user_dashboard');
     }
-
-    // Récupérer les données du formulaire
-    $cityId = $request->request->get('city_id');
-    $city = $entityManager->getRepository(City::class)->find($cityId);
-    $shopName = $request->request->get('shop_name');
-    $shopAddress = $request->request->get('shop_address');
-    $nifMerchant = $request->request->get('merchant_nif');
-    $shopDescription = $request->request->get('shop_description');
-    $shopLicense = $request->files->get('shop_license');
-
-    // Données bancaires
-    $bankHolder = $request->request->get('bank_holder');
-    $bankName = $request->request->get('bank_name');
-    $bankIban = $request->request->get('bank_iban');
-    $bankSwift = $request->request->get('bank_swift');
-
-    // Validation des champs obligatoires
-    if (empty($shopName) || empty($shopAddress) || !$shopLicense) {
-        $this->addFlash('error', $translator->trans('merchant.required_fields_missing'));
-        return $this->redirectToRoute('user_basket');
-    }
-
-    // Traitement du fichier
-    if ($shopLicense) {
-        $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
-        $fileExtension = $shopLicense->guessExtension() ?: $shopLicense->getClientOriginalExtension();
-
-        if (!in_array($fileExtension, $allowedExtensions)) {
-            $this->addFlash('error', $translator->trans('merchant.invalid_file_format'));
-            return $this->redirectToRoute('app_user_show');
-        }
-
-        $fileName = uniqid() . '.' . $fileExtension;
-        $uploadDir = $this->getParameter('uploads_directory');
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        $shopLicense->move($uploadDir, $fileName);
-    }
-
-    // Création de l'entité Merchant
-    $merchant = new Merchant();
-    $merchant->setName($shopName);
-    $merchant->setAddress($shopAddress);
-    $merchant->setnifManeger($nifMerchant);
-    $merchant->setDescription($shopDescription);
-    $merchant->setLicenseFile('uploads/' . $fileName);
-    $merchant->setUser($user);
-    $merchant->setCity($city);
-
-    // Ajout des données bancaires
-    $merchant->setBankHolder($bankHolder);
-    $merchant->setBankName($bankName);
-    $merchant->setIban($bankIban);
-    $merchant->setSwift($bankSwift);
-
-    $entityManager->persist($merchant);
-    $entityManager->flush();
-
-    // Envoi de l’email avec le PDF en pièce jointe (comme dans ton code)
-
-    // Message de succès
-    $this->addFlash('success', $translator->trans('merchant.store_creation_success'));
-    return $this->redirectToRoute('user_dashboard');
-}
-
 
 
     #[Route('/merchant/contract', name: 'merchant_contract', methods: ['GET'])]

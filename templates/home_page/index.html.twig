@@ -1,50 +1,45 @@
 {% extends 'base.html.twig' %}
 
 {% block meta_description %}
-    <meta name="description" content="{{ 'home.meta_description'|trans }}">
+    <meta name="description" content="{{ 'meta.description'|trans }}">
 {% endblock %}
 
-{% block title %}
-    {{ 'home.title'|trans }}
-{% endblock %}
+{% block title %}{{ 'title.site'|trans }}{% endblock %}
 
 {% block body %}
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<div class="example-wrapper">
 
-    <div class="example-wrapper">
-        <!-- Header -->
-        <header>
-            <div class="div-header">
-                <div class="scrolling-text">
-                    <div class="ads-wrapper">
-                        {% for ads in adss %}
-                            {% if ads.title == 'ads' %}
-                                <a href="{{ ads.urlAds }}" class="ads-item">
-                                    {{ ads.description }}
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <select id="category-select" class="category-menu">
-                    <option disabled selected>{{ 'home.category_label'|trans }}</option>
-                    {% for category in categories %}
-                        {% if category.name is defined and category.name is not empty %}
-                            <option value="{{ path('products_by_category', {'name': category.name}) }}">
-                                {{ category.name }}
-                            </option>
+    <!-- Header -->
+    <header>
+        <div class="div-header">
+            <div class="scrolling-text">
+                <div class="ads-wrapper">
+                    {% for ads in adss %}
+                        {% if ads.title == 'ads' %}
+                            <a href="{{ ads.urlAds }}" class="ads-item">{{ ads.description }}</a>
                         {% endif %}
                     {% endfor %}
-                </select>
-
-                <a href="{{ path('app_shop_all') }}" class="btn btn-dark">
-                    <span>{{ 'home.shops_button'|trans }}</span>
-                </a>
+                </div>
             </div>
 
+            <select id="category-select" class="category-menu">
+                <option disabled selected>{{ 'header.category'|trans }}</option>
+                {% for category in categories %}
+                    {% if category.name is defined and category.name is not empty %}
+                        <option value="{{ path('products_by_category', {'name': category.name}) }}">
+                            {{ category.name }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <a href="{{ path('app_shop_all') }}" class="btn btn-dark">
+                <span>{{ 'header.shops'|trans }}</span>
+            </a>
+
             <script>
-                document.addEventListener("DOMContentLoaded", () => {
+                document.addEventListener("DOMContentLoaded", function () {
                     const select = document.getElementById("category-select");
                     select.addEventListener("change", function () {
                         if (this.value) {
@@ -53,54 +48,68 @@
                     });
                 });
             </script>
-        </header>
+        </div>
+    </header>
+    <!-- Fin du header -->
 
-        <!-- Main Section -->
-        <section class="main">
-            <div class="dvgeneralCardsP">
-                <div class="cards">
-                    {% for produit in products %}
-                        {% if produit.shop.active and produit.active %}
-                            <div class="card">
-                                <a href="{{ path('app_product_show', {'id': produit.id}) }}">
-                                    <img class="card-img-top" src="{{ asset('upload/images/products/' ~ produit.img) }}" alt="{{ produit.name }}">
-                                </a>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ produit.name }}</h5>
+    <!-- Section principale -->
+    <section class="main">
+        <div class="dvgeneralCardsP">
+            <div class="cards">
+                {% for produit in products %}
+                    {% if produit.shop.active and produit.active %}
+                        <div class="card">
+                            <a href="{{ path('app_product_show', {'id': produit.id}) }}">
+                                <img class="card-img-top" src="{{ asset('upload/images/products/' ~ produit.img) }}" alt="Card image cap">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ produit.name }}</h5>
 
-                                    <div class="prix">
-                                        <h4>{{ (produit.getFinalPrice / 100)|number_format(2, ',', '.') }} CVE</h4>
-                                    </div>
+                                <div class="prix">
+                                    <h4>{{ (produit.getFinalPrice / 100)|number_format(2, ',', '.') }} CVE</h4>
+                                </div>
 
-                                    {% if produit.stock > 3 %}
-                                        {% if app.user and ('ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles) %}
-                                            <p class="p_a_c">{{ 'home.create_account_prompt'|trans }}</p>
+                                {% if produit.stock > 3 %}
+                                    {% if app.user %}
+                                        {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles %}
+                                            <p class="p_a_c">{{ 'text.for_purchase'|trans }}</p>
                                         {% else %}
                                             <a href="{{ path('app_add', {'id': produit.id}) }}">
                                                 <button type="button" class="btn btn-success">
-                                                    {{ 'home.add_to_cart'|trans }}
+                                                    {{ 'button.add_cart'|trans }}
                                                     <i class="fas fa-shopping-cart"></i>
                                                 </button>
                                             </a>
                                         {% endif %}
                                     {% else %}
-                                        <p class="ruptureStock">{{ 'home.out_of_stock'|trans }}</p>
+                                        <a href="{{ path('app_add', {'id': produit.id}) }}">
+                                            <button type="button" class="btn btn-success">
+                                                {{ 'button.add_cart'|trans }}
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </button>
+                                        </a>
                                     {% endif %}
+                                {% else %}
+                                    <p class="ruptureStock">{{ 'text.out_of_stock'|trans }}</p>
+                                {% endif %}
 
-                                    {% if produit.getShop() %}
-                                        <p class="loja">
-                                            <a href="{{ path('app_shop_loja', {'id': produit.getShop().id}) }}">
-                                                <strong>{{ 'home.shop'|trans }}:</strong> {{ produit.getShop().getName() }}<br>
-                                                <strong class="city">{{ 'home.location'|trans }}:</strong> {{ produit.getShop().getCity() }}
-                                            </a>
-                                        </p>
-                                    {% endif %}
-                                </div>
+                                {% if produit.getShop() %}
+                                    <p class="loja">
+                                        <a href="{{ path('app_shop_loja', {'id': produit.getShop().id}) }}">
+                                            <strong>{{ 'product.shop'|trans }}:</strong> {{ produit.getShop().getName() }}<br>
+                                            <strong class="city">{{ 'product.city'|trans }}:</strong> {{ produit.getShop().getCity() }}
+                                        </a>
+                                    </p>
+                                {% endif %}
+
                             </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+    <!-- Fin de la section principale -->
+
+</div>
 {% endblock %}

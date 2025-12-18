@@ -1,82 +1,90 @@
-{# {% extends 'base.html.twig' %} #}
+{% extends 'base.html.twig' %}
 
-{% trans_default_domain 'messages' %}
-
-{% block title %}{{ 'terms_and_conditions.title'|trans }}{% endblock %}
+{% block title %}
+    {{ 'cgu.title'|trans }}
+{% endblock %}
 
 {% block body %}
 <div class="container mt-5 mb-5">
-    <h1 class="mb-4">📝 {{ 'terms_and_conditions.heading'|trans }}</h1>
-    <p><strong>{{ 'terms_and_conditions.last_update'|trans }}:</strong> 19 de maio de 2025</p>
+
+    <h1 class="mb-4">
+        {{ 'cgu.heading'|trans }}
+    </h1>
+
+    <p class="text-muted">
+        <strong>{{ 'cgu.last_update'|trans }}</strong> 19 de maio de 2025
+    </p>
 
     <hr>
 
-    <h2>1. {{ 'terms_and_conditions.platform_goal'|trans }}</h2>
-    <p>
-        {{ 'terms_and_conditions.platform_goal_description'|trans }}
-    </p>
+    {# 1. Objectif / Objetivo #}
+    <h2 class="mt-4">{{ 'cgu.section1.title'|trans }}</h2>
+    <p>{{ 'cgu.section1.content'|trans }}</p>
 
-    <h2>2. {{ 'terms_and_conditions.access'|trans }}</h2>
+    {# 2. Accès / Acesso #}
+    <h2 class="mt-4">{{ 'cgu.section2.title'|trans }}</h2>
     <ul>
-        <li>{{ 'terms_and_conditions.free_registration'|trans }}</li>
-        <li>{{ 'terms_and_conditions.acceptance'|trans }}</li>
-        <li>{{ 'terms_and_conditions.correct_information'|trans }}</li>
+        <li>{{ 'cgu.section2.item1'|trans }}</li>
+        <li>{{ 'cgu.section2.item2'|trans }}</li>
+        <li>{{ 'cgu.section2.item3'|trans }}</li>
     </ul>
 
-    <h2>3. {{ 'terms_and_conditions.order_process'|trans }}</h2>
+    {# 3. Commandes / Encomendas #}
+    <h2 class="mt-4">{{ 'cgu.section3.title'|trans }}</h2>
     <ol>
-        <li>{{ 'terms_and_conditions.product_selection'|trans }}</li>
-        <li>{{ 'terms_and_conditions.online_payment'|trans }}</li>
-        <li>{{ 'terms_and_conditions.delivery_or_pickup'|trans }}</li>
+        <li>{{ 'cgu.section3.item1'|trans }}</li>
+        <li>{{ 'cgu.section3.item2'|trans }}</li>
+        <li>{{ 'cgu.section3.item3'|trans }}</li>
     </ol>
 
-    <h2>4. {{ 'terms_and_conditions.platform_role'|trans }}</h2>
-    <p>
-        {{ 'terms_and_conditions.platform_intermediary'|trans }}
-    </p>
+    {# 4. Rôle de la plateforme #}
+    <h2 class="mt-4">{{ 'cgu.section4.title'|trans }}</h2>
+    <p>{{ 'cgu.section4.content'|trans }}</p>
 
-    <h2>5. {{ 'terms_and_conditions.user_commitments'|trans }}</h2>
+    {# 5. Engagements utilisateurs #}
+    <h2 class="mt-4">{{ 'cgu.section5.title'|trans }}</h2>
     <ul>
-        <li>{{ 'terms_and_conditions.honest_use'|trans }}</li>
-        <li>{{ 'terms_and_conditions.no_fraud'|trans }}</li>
-        <li>{{ 'terms_and_conditions.respect_others'|trans }}</li>
+        <li>{{ 'cgu.section5.item1'|trans }}</li>
+        <li>{{ 'cgu.section5.item2'|trans }}</li>
+        <li>{{ 'cgu.section5.item3'|trans }}</li>
     </ul>
 
-    <h2>6. {{ 'terms_and_conditions.payment_and_security'|trans }}</h2>
+    {# 6. Paiement & Sécurité #}
+    <h2 class="mt-4">{{ 'cgu.section6.title'|trans }}</h2>
+    <p>{{ 'cgu.section6.content'|trans }}</p>
+
+    {# 7. Livraison / Retrait #}
+    <h2 class="mt-4">{{ 'cgu.section7.title'|trans }}</h2>
+    <p>{{ 'cgu.section7.content'|trans }}</p>
+
+    {# 8. Responsabilité #}
+    <h2 class="mt-4">{{ 'cgu.section8.title'|trans }}</h2>
+    <p>{{ 'cgu.section8.content'|trans }}</p>
+
+    {# 9. Protection des données #}
+    <h2 class="mt-4">{{ 'cgu.section9.title'|trans }}</h2>
     <p>
-        {{ 'terms_and_conditions.payment_security'|trans }}
+        {{ 'cgu.section9.content'|trans }}
+        <a href="{{ path('privacy_policy') }}" class="fw-bold">
+            {{ 'privacy.policy.link'|trans }}
+        </a>
     </p>
 
-    <h2>7. {{ 'terms_and_conditions.delivery'|trans }}</h2>
-    <p>
-        {{ 'terms_and_conditions.delivery_method'|trans }}
-    </p>
+    {# 10. Modifications #}
+    <h2 class="mt-4">{{ 'cgu.section10.title'|trans }}</h2>
+    <p>{{ 'cgu.section10.content'|trans }}</p>
 
-    <h2>8. {{ 'terms_and_conditions.responsibility'|trans }}</h2>
+    {# 11. Contact #}
+    <h2 class="mt-4">{{ 'cgu.section11.title'|trans }}</h2>
     <p>
-        {{ 'terms_and_conditions.platform_responsibility'|trans }}
-    </p>
-
-    <h2>9. {{ 'terms_and_conditions.data_protection'|trans }}</h2>
-    <p>
-        {{ 'terms_and_conditions.data_protection_description'|trans }}
-        <a href="{{ path('privacy_policy') }}"><strong>{{ 'terms_and_conditions.privacy_policy'|trans }}</strong></a> {{ 'terms_and_conditions.for_more'|trans }}.
-    </p>
-
-    <h2>10. {{ 'terms_and_conditions.terms_changes'|trans }}</h2>
-    <p>
-        {{ 'terms_and_conditions.right_to_change'|trans }}
-    </p>
-
-    <h2>11. {{ 'terms_and_conditions.contact'|trans }}</h2>
-    <p>
-        {{ 'terms_and_conditions.contact_info'|trans }} <br>
+        {{ 'cgu.section11.content'|trans }}<br>
         📧 <a href="mailto:falkon674@gmail.com">falkon674@gmail.com</a>
     </p>
 
-    <div class="alert alert-success mt-4" role="alert">
-        {{ 'terms_and_conditions.acceptance_alert'|trans }}<br>
-        <strong>{{ 'terms_and_conditions.thank_you'|trans }} </strong>
+    <div class="alert alert-success mt-5" role="alert">
+        {{ 'cgu.accept.text'|trans }}<br>
+        <strong>{{ 'cgu.accept.thanks'|trans }}</strong>
     </div>
+
 </div>
 {% endblock %}

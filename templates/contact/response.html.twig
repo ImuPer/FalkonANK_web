@@ -1,29 +1,28 @@
 {% extends 'base.html.twig' %}
-{% trans_default_domain 'messages' %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1>{{ 'response.heading'|trans({'%name%': contact.name}) }}</h1>
+    <div class="container mt-5">
+        <h1>{{ 'response_to_message'|trans({'%name%': contact.name}) }}</h1>
 
-    <p><strong>{{ 'response.subject'|trans }}</strong> {{ contact.subject }}</p>
-    <p><strong>{{ 'response.message_label'|trans }}</strong></p>
-    <p>{{ contact.message|nl2br }}</p>
+        <p><strong>{{ 'subject'|trans }} :</strong> {{ contact.subject }}</p>
+        <p><strong>{{ 'message'|trans }} :</strong></p>
+        <p>{{ contact.message|nl2br }}</p>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'button.close'|trans }}"></button>
-            </div>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ 'close'|trans }}"></button>
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-    <form method="post" action="" class="mt-4">
-        <div class="mb-3">
-            <label for="reponse" class="form-label">{{ 'response.reply_label'|trans }}</label>
-            <textarea id="reponse" name="reponse" rows="6" class="form-control">{{ reponse }}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">{{ 'response.send_button'|trans }}</button>
-    </form>
-</div>
+        <form method="post" action="" class="mt-4">
+            <div class="mb-3">
+                <label for="reponse" class="form-label">{{ 'response'|trans }} :</label>
+                <textarea id="reponse" name="reponse" rows="6" class="form-control">{{ reponse }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ 'send'|trans }}</button>
+        </form>
+    </div>
 {% endblock %}

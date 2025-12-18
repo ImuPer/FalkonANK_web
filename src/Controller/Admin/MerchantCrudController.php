@@ -15,7 +15,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class MerchantCrudController extends AbstractCrudController
@@ -24,13 +23,10 @@ class MerchantCrudController extends AbstractCrudController
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
 
-    private TranslatorInterface $translator;
-
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, TranslatorInterface $translator)
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
-        $this->translator = $translator;
     }
 
     public static function getEntityFqcn(): string
@@ -118,10 +114,12 @@ class MerchantCrudController extends AbstractCrudController
                 // Se o campo 'reponse' estiver vazio, preenche com o texto automático
                 if (empty(trim($entityInstance->getReponse()))) {
                     $lastName = $user->getLastName();
-                  $automaticResponse = $this->translator->trans('merchant.approved_message', ['%name%' => $lastName]);
+                    $automaticResponse = sprintf(
+                        '%s, seja bem vindo (a). O seu pedido foi aceite! E pode aceder ao seu espaço Comerciante através do "botão comerciante" ou o "ícone azul" no cabeçalho da página.',
+                        $lastName
+                    );
                     $entityInstance->setReponse($automaticResponse);
-                    $this->addFlash('success', $this->translator->trans('merchant.approved_flash'));
-
+                    $this->addFlash('success', 'Comerciante aprovado com sucesso!');
                 }
             }
         } else {
@@ -133,10 +131,12 @@ class MerchantCrudController extends AbstractCrudController
                 // Se o campo 'reponse' estiver vazio, preenche com texto automático
                 if (empty(trim($entityInstance->getReponse()))) {
                     $lastName = $user->getLastName();
-                  $automaticResponse = $this->translator->trans('merchant.rejected_message', ['%name%' => $lastName]);
+                    $automaticResponse = sprintf(
+                        '%s, infelizmente o seu pedido não foi aceite devido a falta ou erro nas informações fornecidas. Para mais informações, contacte-nos através do botão "Contacto" no início da página.',
+                        $lastName
+                    );
                     $entityInstance->setReponse($automaticResponse);
-                    $this->addFlash('danger', $this->translator->trans('merchant.rejected_flash'));
-
+                    $this->addFlash('danger', 'Comerciante des-aprovado!');
                 }
             }
         }
