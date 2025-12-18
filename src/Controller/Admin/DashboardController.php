@@ -13,6 +13,7 @@ use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Shop;
 use App\Entity\User;
+use App\Repository\ContactRepository;
 use App\Repository\MerchantRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -31,7 +32,8 @@ class DashboardController extends AbstractDashboardController
 
     public function __construct(
         private AdminUrlGenerator $adminUrlGenerator,
-        private MerchantRepository $merchantRepository
+        private MerchantRepository $merchantRepository,
+        private ContactRepository $contactRepository 
     ) {
     }
     #[Route('/', name: 'admin')]
@@ -77,7 +79,10 @@ class DashboardController extends AbstractDashboardController
         if ($user->getRoles() === [0 => "ROLE_ADMIN", 1 => "ROLE_USER"]) {
 
             // 🔽 Contact
-            yield MenuItem::linkToCrud('Contactos', 'fas fa-envelope', Contact::class);
+            // yield MenuItem::linkToCrud('Contactos', 'fas fa-envelope', Contact::class);
+            $Count_c = $this->contactRepository->countContactsWithoutResponse();
+            yield MenuItem::linkToCrud('Contactos','fas fa-envelope',Contact::class
+            )->setBadge($Count_c > 0 ? (string) $Count_c : null, 'danger');
 
             yield MenuItem::subMenu('Users', 'fas fa-users')->setSubItems([
                 MenuItem::linkToCrud('Add User', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
@@ -99,7 +104,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
             yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
             // yield MenuItem::linkToCrud('Merchant request', 'fa-solid fa-shop-lock', Merchant::class);
-            $pendingCount = $this->merchantRepository->countPendingRequests();
+            $pendingCount = $this->merchantRepository->countPendingMerchants();
             yield MenuItem::linkToCrud(
                 'Merchant request',
                 'fa-solid fa-shop-lock',

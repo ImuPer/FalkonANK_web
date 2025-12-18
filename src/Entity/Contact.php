@@ -29,6 +29,9 @@ class Contact
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $datAct = null;
 
+    #[ORM\OneToOne(mappedBy: 'contact', targetEntity: Response::class)]
+    private ?Response $response = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,17 @@ class Contact
     {
         $this->datAct = $datAct;
 
+        return $this;
+    }
+
+    public function getResponse(): ?Response
+    {
+        return $this->response;
+    }
+
+    public function setResponse(?Response $response): static
+    {
+        $this->response = $response;
         return $this;
     }
 }
