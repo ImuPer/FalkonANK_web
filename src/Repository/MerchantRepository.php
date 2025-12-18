@@ -26,4 +26,14 @@ class MerchantRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countPendingMerchants(): int
+    {
+        return (int) $this->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->where('m.reponse IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }

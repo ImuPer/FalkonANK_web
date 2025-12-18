@@ -13,6 +13,7 @@ use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Shop;
 use App\Entity\User;
+use App\Repository\MerchantRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -29,9 +30,9 @@ class DashboardController extends AbstractDashboardController
 {
 
     public function __construct(
-        private AdminUrlGenerator $adminUrlGenerator
+        private AdminUrlGenerator $adminUrlGenerator,
+        private MerchantRepository $merchantRepository
     ) {
-
     }
     #[Route('/', name: 'admin')]
     public function index(): Response
@@ -51,19 +52,19 @@ class DashboardController extends AbstractDashboardController
         return $this->redirect($url);
     }
 
-   public function configureDashboard(): Dashboard
-{
-    return Dashboard::new()
-        ->setTitle('<img src="/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK" style="max-height: 40px; vertical-align: middle;"> <span style="margin-left:10px;">FalkonANK</span>');
-}
+    public function configureDashboard(): Dashboard
+    {
+        return Dashboard::new()
+            ->setTitle('<img src="/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK" style="max-height: 40px; vertical-align: middle;"> <span style="margin-left:10px;">FalkonANK</span>');
+    }
 
 
 
-public function configureAssets(): Assets
-{
-    return Assets::new()
-        ->addJsFile('build/refund_toggle.js');
-}
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            ->addJsFile('build/refund_toggle.js');
+    }
 
 
 
@@ -97,7 +98,15 @@ public function configureAssets(): Assets
             ]);
             yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
             yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
-            yield MenuItem::linkToCrud('Merchant request', 'fa-solid fa-shop-lock', Merchant::class);
+            // yield MenuItem::linkToCrud('Merchant request', 'fa-solid fa-shop-lock', Merchant::class);
+            $pendingCount = $this->merchantRepository->countPendingRequests();
+            yield MenuItem::linkToCrud(
+                'Merchant request',
+                'fa-solid fa-shop-lock',
+                Merchant::class
+            )
+                ->setBadge($pendingCount > 0 ? (string) $pendingCount : null, 'danger');
+
             yield MenuItem::linkToCrud('Shops', ' fas fa-store fa-2x text-primary', Shop::class);
             yield MenuItem::linkToCrud('BasketProducts', 'fas fa-eye', BasketProduct::class);
             yield MenuItem::linkToCrud('Orders', 'fas fa-shopping-cart', Order::class);
@@ -112,19 +121,19 @@ public function configureAssets(): Assets
                 yield MenuItem::section('Catálogos de produtos');
 
                 yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
-            
+
                 yield MenuItem::linkToCrud('Minha Loja', ' fas fa-store fa-2x text-primary', Shop::class);
 
                 yield MenuItem::subMenu('Encomendas', 'fas fa-shopping-cart')->setSubItems([
                     MenuItem::linkToCrud(
-                    'Ver encomendas',
-                    'fas fa-box',
-                    Order::class
+                        'Ver encomendas',
+                        'fas fa-box',
+                        Order::class
                     ),
                     MenuItem::linkToCrud(
-                    'Produtos das Encomendas',
-                    'fas fa-eye',
-                    BasketProduct::class
+                        'Produtos das Encomendas',
+                        'fas fa-eye',
+                        BasketProduct::class
                     ),
                 ]);
 
