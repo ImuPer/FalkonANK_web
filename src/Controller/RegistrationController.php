@@ -20,6 +20,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use function Symfony\Component\Clock\now;
 use App\Entity\Response as ResponseEntity; // attention au nom pour éviter conflit
@@ -196,11 +197,14 @@ class RegistrationController extends AbstractController
         int $id,
         Request $request,
         EntityManagerInterface $em,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        TranslatorInterface $translator
     ): Response {
         $contact = $em->getRepository(Contact::class)->find($id);
         if (!$contact) {
-            throw $this->createNotFoundException('Contact non trouvé');
+            throw $this->createNotFoundException(
+                $translator->trans('error.contact_not_found')
+            );
         }
 
         // Chercher si une réponse existe déjà pour ce contact
@@ -223,20 +227,36 @@ class RegistrationController extends AbstractController
                 $em->persist($response);
                 $em->flush();
 
+
                 // Envoi mail
+                $reponseText =
+                    '<strong>' . $translator->trans('email.request') . ' :</strong><br>' .
+                    nl2br(htmlspecialchars($contact->getMessage())) . '<br><br>' .
+                    '<strong>' . $translator->trans('email.response') . ' :</strong><br>' .
+                    nl2br(htmlspecialchars($request->request->get('reponse'))) .
+                    '<br><br>' .
+                    $translator->trans('email.signature');
+
                 $email = (new Email())
                     ->from('no-reply@tondomaine.com')
                     ->to($contact->getEmail())
                     ->subject('Re: ' . $contact->getSubject())
-                    ->text($reponseText);
+                    ->html($reponseText);
 
                 $mailer->send($email);
 
-                $this->addFlash('success', 'Réponse sauvegardée et envoyée avec succès !');
-
-                return $this->redirectToRoute('reponse', ['id' => $id]);
+                $this->addFlash(
+                    'success',
+                    $translator->trans('flash.reply_sent_success')
+                );
+                // return $this->redirectToRoute('reponse', ['id' => $id]);
+                return $this->redirectToRoute('admin');
             } else {
-                $this->addFlash('error', 'Veuillez écrire une réponse.');
+                if (!$contact) {
+                    throw $this->createNotFoundException(
+                        $translator->trans('error.contact_not_found')
+                    );
+                }
             }
         }
 

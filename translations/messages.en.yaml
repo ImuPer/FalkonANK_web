@@ -760,3 +760,15 @@ contract:
   merchant_name: "Merchant name"
   signed_in: "Signed in"
   closing: "Kind regards,"
+
+email:
+  request: "Your request"
+  response: "Reply"
+  signature: "Kind regards,<br>The Falkon Team"
+
+error:
+  contact_not_found: "Contact not found"
+
+flash:
+  reply_sent_success: "Reply saved and sent successfully!"
+  reply_required: "Please write a reply."

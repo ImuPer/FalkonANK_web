@@ -763,3 +763,15 @@ contract:
   merchant_name: "Nombre del comerciante"
   signed_in: "Firmado en"
   closing: "Atentamente,"
+
+email:
+  request: "Su solicitud"
+  response: "Respuesta"
+  signature: "Saludos cordiales,<br>El equipo Falkon"
+
+error:
+  contact_not_found: "Contacto no encontrado"
+
+flash:
+  reply_sent_success: "¡Respuesta guardada y enviada con éxito!"
+  reply_required: "Por favor, escriba una respuesta."

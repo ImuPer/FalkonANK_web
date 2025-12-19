@@ -7,3 +7,17 @@ tr.row-entregue-finalizado {
     background-color: #19ef4b !important; /* vert clair type succès Bootstrap */
 }
 
+.text-danger {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.text-success {
+    color: #198754;
+    font-weight: bold;
+}
+
+.text-warning {
+    color: #fd7e14;
+    font-weight: bold;
+}

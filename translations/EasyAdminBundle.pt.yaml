@@ -1,0 +1,3 @@
+label:
+  inaccessible: "{{ entity.order_status }}"
+  empty: "Entregado"

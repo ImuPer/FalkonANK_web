@@ -57,4 +57,17 @@ class OrderRepository extends ServiceEntityRepository
         return $secretCodOrder;
     }
 
+     /**
+     * Compte le nombre d'ordres en traitement ou sans merchantSecretCode
+     */
+    public function countPendingOrMissingSecret(): int
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('o.order_status = :status')
+            ->orWhere('o.merchantSecretCode IS NULL')
+            ->setParameter('status', 'Em processamento')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

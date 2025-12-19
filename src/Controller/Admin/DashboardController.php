@@ -15,6 +15,7 @@ use App\Entity\Shop;
 use App\Entity\User;
 use App\Repository\ContactRepository;
 use App\Repository\MerchantRepository;
+use App\Repository\OrderRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -33,7 +34,8 @@ class DashboardController extends AbstractDashboardController
     public function __construct(
         private AdminUrlGenerator $adminUrlGenerator,
         private MerchantRepository $merchantRepository,
-        private ContactRepository $contactRepository 
+        private ContactRepository $contactRepository,
+        private OrderRepository $orderRepository 
     ) {
     }
     #[Route('/', name: 'admin')]
@@ -129,6 +131,7 @@ class DashboardController extends AbstractDashboardController
 
                 yield MenuItem::linkToCrud('Minha Loja', ' fas fa-store fa-2x text-primary', Shop::class);
 
+                $Count_o = $this->orderRepository->countPendingOrMissingSecret();
                 yield MenuItem::subMenu('Encomendas', 'fas fa-shopping-cart')->setSubItems([
                     MenuItem::linkToCrud(
                         'Ver encomendas',
@@ -140,7 +143,7 @@ class DashboardController extends AbstractDashboardController
                         'fas fa-eye',
                         BasketProduct::class
                     ),
-                ]);
+                ])->setBadge($Count_o > 0 ? (string) $Count_o : null, 'danger');
 
                 // 🔽 Lien vers /merchant/accounting
                 yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');

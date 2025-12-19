@@ -144,6 +144,30 @@ class OrderCrudController extends AbstractCrudController
 
         return [
 
+            // Field::new('statusClass')->onlyOnIndex()
+            //     ->formatValue(function ($value, $entity) {
+            //         /** @var Order $entity */
+            //         if ($entity->getOrderStatus() === 'Em processamento' || $entity->getMerchantSecretCode() === null) {
+            //             return 'text-danger'; // Classe CSS pour le texte rouge
+            //         }
+            //         return '';
+            //     })
+            //     ->setCssClass('hidden'), // on ne veut pas afficher ce champ
+            // ===== INDEX : affichage coloré =====
+            TextField::new('orderStatus', 'Estado')
+                ->onlyOnIndex()
+                ->formatValue(function ($value, Order $order) {
+
+                    return match ($order->getOrderStatus()) {
+                        'Em processamento' => '<span class="text-danger">' . $value . '</span>',
+                        'Entregue e finalizado' => '<span class="text-success">' . $value . '</span>',
+                        'Reembolso' => '<span class="text-warning">' . $value . '</span>',
+                        default => $value,
+                    };
+                })
+                ->renderAsHtml(),
+
+
             Field::new('cssClass')->onlyOnIndex()
                 ->formatValue(function ($value, $entity) {
                     if ($entity->getMerchantSecretCode() !== null && $entity->getOrderStatus() === 'Entregue e finalizado') {
@@ -176,21 +200,22 @@ class OrderCrudController extends AbstractCrudController
             TextEditorField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
             TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
             TextEditorField::new('beneficiary_address', 'adereço')->hideOnForm(),
-
-            TextField::new('basketProductsList', 'Artigos')
+            TextEditorField::new('basketProductsList', 'Artigos')->hideOnForm(),
+            TextareaField::new('basketProductsList', 'Artigos')->hideOnIndex()
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
 
+            // ===== FORM (EDIT / NEW) : ChoiceField normal =====
             ChoiceField::new('orderStatus', 'Estado')
+                ->onlyOnForms()
                 ->setChoices([
-                    'Em processamento' =>'Em processamento',
-                    'Reenbolso' => 'Reembolso',
+                    'Em processamento' => 'Em processamento',
+                    'Reembolso' => 'Reembolso',
                     'Entregue e finalizado' => 'Entregue e finalizado',
                 ])
-                ->setRequired(true)
-                ->setFormTypeOption('attr', ['id' => 'Order_orderStatus']),
+                ->setRequired(true),
 
             TextareaField::new('internal_note', 'Notificação da loja')
-                ->hideOnIndex()
+                // ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
 
             TextField::new('merchantSecretCode', 'Código Secreto')
@@ -204,9 +229,9 @@ class OrderCrudController extends AbstractCrudController
                 ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
                 ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
 
-            TextEditorField::new('customer_note', 'Comentário do cliente')
+            TextEditorField::new('customer_note', 'Comentário cliente')
                 ->hideOnForm(),
-
+           
             BooleanField::new('refund', 'Reembolso')
                 ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_refund']),
@@ -225,6 +250,9 @@ class OrderCrudController extends AbstractCrudController
             TextareaField::new('refund_note', 'Notificação - reembolso')
                 ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_refund_note']),
+            
+            TextareaField::new('customer_note', 'Comentário do cliente')
+                ->hideOnIndex()->setFormTypeOption('disabled', true),
         ];
 
         // }
@@ -235,20 +263,20 @@ class OrderCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $verRecibo = Action::new('verRecibo', 'Ver Recibo')
-        ->linkToRoute('recibo_show', function (Order $order) {
-            return ['id' => $order->getId()];
-        })
-        ->displayIf(function (Order $order) {
-            return $order->getOrderStatus() !== 'Em processamento';
-        })
-        ->setCssClass('btn btn-success');
+            ->linkToRoute('recibo_show', function (Order $order) {
+                return ['id' => $order->getId()];
+            })
+            ->displayIf(function (Order $order) {
+                return $order->getOrderStatus() !== 'Em processamento';
+            })
+            ->setCssClass('btn btn-success');
 
-    return $actions
-        ->disable(Action::DELETE)
-        ->disable(Action::NEW)
-        ->add(Crud::PAGE_INDEX, $verRecibo)
-        ->add(Crud::PAGE_DETAIL, $verRecibo);
-        
+        return $actions
+            ->disable(Action::DELETE)
+            ->disable(Action::NEW)
+            ->add(Crud::PAGE_INDEX, $verRecibo)
+            ->add(Crud::PAGE_DETAIL, $verRecibo);
+
 
     }
 
@@ -269,7 +297,7 @@ class OrderCrudController extends AbstractCrudController
             $entityInstance->setRefundStatus('');
             if (empty($internalNote)) {
                 $entityInstance->setInternalNote("Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!");
-             }
+            }
         }
 
         // Si remboursement
