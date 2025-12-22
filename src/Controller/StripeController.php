@@ -390,20 +390,6 @@ class StripeController extends AbstractController
       <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
     </div>
 
-    <div style="text-align:center; margin:30px 0;">
-    <a href="https://falkon.click/order/print/{$ref_order}"
-        style="
-            background:#000;
-            color:#fff;
-            padding:12px 20px;
-            text-decoration:none;
-            border-radius:5px;
-            font-weight:bold;
-        ">
-        🖨️ Imprimer le reçu
-    </a>
-    </div>
-
     <p>Olá <strong>{$customerName}</strong>,</p>
 
     <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
@@ -446,27 +432,26 @@ EOD;
             ->html($receiptContent); // ✅ maintenant en HTML avec images
 
         //-------Reçu d'achat--------------------
-        // $options = new Options();
-        // $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-        // $options->set('isRemoteEnabled', true);
-        // $options->set('defaultFont', 'Arial');
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
+        $options->set('isRemoteEnabled', true);
+        $options->set('defaultFont', 'Arial');
 
-        // $dompdf = new Dompdf($options);
-        // $dompdf->loadHtml($receiptContent);
-        // $dompdf->setPaper('A4', 'portrait');
-        // $dompdf->render();
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($receiptContent);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
 
-        // // Enregistrement temporaire
-        // $pdfOutput = $dompdf->output();
-        // $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
-        // file_put_contents($tempPdfPath, $pdfOutput);
+        // Enregistrement temporaire
+        $pdfOutput = $dompdf->output();
+        $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
+        file_put_contents($tempPdfPath, $pdfOutput);
 
-        // // Attacher le fichier PDF à l'e-mail
-        // $emailClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
+        // Attacher le fichier PDF à l'e-mail
+        $emailClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
 
-        
         $mailer->send($emailClient);
-        // unlink($tempPdfPath);
+        unlink($tempPdfPath);
         //----------------------------------------------------------------------------------------------------------------
 
 
