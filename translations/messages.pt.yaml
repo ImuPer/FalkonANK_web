@@ -384,15 +384,64 @@ order:
     quantity: "Quantidade"
     total: "Total"
     date: "Data"
-    status: "Estado da Encomenda"
-    secret_code: "Seu código secreto"
+    status: "Estado da encomenda"
+    secret_code: "O seu código secreto"
     shop_note: "Notificação da loja"
     refund: "Reembolso"
-    customer_note: "Seu comentário atual"
-    no_comment: "Nenhum comentário ainda."
+    customer_note: "O seu comentário atual"
+    no_comment: "Ainda não há comentários."
     edit_comment: "Editar comentário"
-    comment_placeholder: "Escreva seu comentário..."
-    save_comment: "Salvar Comentário"
+    comment_placeholder: "Escreva o seu comentário..."
+    save_comment: "Guardar comentário"
+
+  field:
+    status: "Estado"
+    final_price: "Preço final"
+    reference: "Referência"
+    final_price2: "Preço final (Total + comissão da plataforma)"
+    beneficiary_name: "Beneficiário"
+    beneficiary_email: "Email do beneficiário"
+    beneficiary_address: "Endereço do beneficiário"
+    items: "Artigos"
+    internal_note: "Notificação da loja"
+    merchant_secret_code: "Código secreto"
+    customer_note2: "Comentário do cliente"
+    refund: "Reembolso"
+    refund_amount: "Montante"
+    refund_status: "Estado do reembolso"
+    refund_note: "Notificação - reembolso"
+
+  action:
+    view_receipt: "Ver Recibo"
+
+  help:
+    merchant_secret_code: "👉 Obrigatório para finalizar a encomenda."
+    currency_cve: "👉 CVE (escudos de Cabo Verde)"
+
+  note:
+    delivered: "Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!"
+    refund: "A encomenda foi cancelada."
+    refund_pending: "O reembolso está em curso."
+    refund_completed: "O reembolso foi concluído em %date%. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco."
+
+  flash:
+    refund_required: "❌ Reembolso: O montante e o estado do reembolso são obrigatórios."
+    merchant_invalid_code: "❌ O código secreto está incorreto. Por favor, insira o código correto."
+    merchant_success: "Registrado com sucesso"
+
+  status:
+    pending: Em curso
+    done: Reembolsado
+    processing: Em processamento
+    refund: Reembolso
+    completed: Entregue e finalizado
+
+  refund:
+    field:
+      status: Estado do reembolso
+
+
+
 
 currency:
   cve: "escudos"
@@ -762,3 +811,5 @@ error:
 flash:
   reply_sent_success: "Resposta guardada e enviada com sucesso!"
   reply_required: "Por favor, escreva uma resposta."
+
+

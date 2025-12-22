@@ -35,6 +35,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\FormBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -44,12 +45,13 @@ class OrderCrudController extends AbstractCrudController
     private RequestStack $requestStack;
     private RouterInterface $router;
 
-    public function __construct(Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router)
+    public function __construct(Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator)
     {
         $this->security = $security;
         $this->doctrine = $doctrine;
         $this->requestStack = $requestStack;
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public static function getEntityFqcn(): string
@@ -154,7 +156,7 @@ class OrderCrudController extends AbstractCrudController
             //     })
             //     ->setCssClass('hidden'), // on ne veut pas afficher ce champ
             // ===== INDEX : affichage coloré =====
-            TextField::new('orderStatus', 'Estado')
+            TextField::new('orderStatus', $this->translator->trans('order.field.status'))
                 ->onlyOnIndex()
                 ->formatValue(function ($value, Order $order) {
 
@@ -178,10 +180,10 @@ class OrderCrudController extends AbstractCrudController
                 ->setCssClass('hidden')
                 ->hideOnIndex(),
 
-            TextField::new('ref', 'Referencia')
+            TextField::new('ref', $this->translator->trans('order.field.reference'))
                 ->setFormTypeOption('attr', ['readonly' => true]),
 
-            DateTimeField::new('orderDate', 'Data')
+            DateTimeField::new('orderDate', $this->translator->trans('order.field.date'))
                 ->hideOnForm()
                 ->formatValue(function ($value) {
                     return $value ? $value->format('d/m/Y') : '';
@@ -190,36 +192,38 @@ class OrderCrudController extends AbstractCrudController
             MoneyField::new('totalAmount', 'Total')
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
                 ->setCurrency('CVE')
-                ->setHelp('👉 CVE (escudos de Cabo Verde)'),
-            MoneyField::new('amountFinal', 'Preço Final (Total + commição plataforma)')
+                ->setHelp($this->translator->trans('order.help.currency_cve')),
+            MoneyField::new('amountFinal', $this->translator->trans('order.field.final_price2'))
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
                 ->setCurrency('CVE')
                 ->hideOnIndex()
-                ->setHelp('👉 CVE (escudos de Cabo Verde)'),
+                ->setHelp($this->translator->trans('order.help.currency_cve')),
 
-            TextEditorField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
+            TextEditorField::new('beneficiary_name', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
             TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
-            TextEditorField::new('beneficiary_address', 'adereço')->hideOnForm(),
-            TextEditorField::new('basketProductsList', 'Artigos')->hideOnForm(),
-            TextareaField::new('basketProductsList', 'Artigos')->hideOnIndex()
+            TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
+            TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
+            TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
+                ->setFormTypeOption('mapped', false)
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
 
             // ===== FORM (EDIT / NEW) : ChoiceField normal =====
-            ChoiceField::new('orderStatus', 'Estado')
+            ChoiceField::new('orderStatus', $this->translator->trans('order.field.status'))
                 ->onlyOnForms()
                 ->setChoices([
-                    'Em processamento' => 'Em processamento',
-                    'Reembolso' => 'Reembolso',
-                    'Entregue e finalizado' => 'Entregue e finalizado',
+                    $this->translator->trans('order.status.processing') => 'Em processamento',
+                    $this->translator->trans('order.status.refund') => 'Reembolso',
+                    $this->translator->trans('order.status.completed') => 'Entregue e finalizado',
                 ])
                 ->setRequired(true),
 
-            TextareaField::new('internal_note', 'Notificação da loja')
+
+            TextareaField::new('internal_note', $this->translator->trans('order.field.internal_note'))
                 // ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
 
-            TextField::new('merchantSecretCode', 'Código Secreto')
-                ->setHelp('👉 Obrigatório para finalizar a encomenda.')
+            TextField::new('merchantSecretCode', $this->translator->trans('order.field.merchant_secret_code'))
+                ->setHelp($this->translator->trans('order.help.merchant_secret_code'))
                 ->setRequired(true)
                 ->setFormTypeOptions([
                     'required' => true,
@@ -229,29 +233,29 @@ class OrderCrudController extends AbstractCrudController
                 ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
                 ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
 
-            TextEditorField::new('customer_note', 'Comentário cliente')
+            TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note'))
                 ->hideOnForm(),
-           
-            BooleanField::new('refund', 'Reembolso')
+
+            BooleanField::new('refund', $this->translator->trans('order.field.refund'))
                 ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_refund']),
 
-            MoneyField::new('refund_amount', 'Montante')
+            MoneyField::new('refund_amount', $this->translator->trans('order.field.refund_amount'))
                 ->setCurrency('CVE')
                 ->hideOnIndex()
-                ->setHelp('👉 CVE (escudos de Cabo Verde)')
+                ->setHelp($this->translator->trans('order.help.currency_cve'))
                 ->setFormTypeOption('attr', ['id' => 'Order_refund_amount']),
 
-            ChoiceField::new('refund_status', 'Estado do reembolso')
+            ChoiceField::new('refund_status', $this->translator->trans('order.field.refund_status'))
                 ->setChoices($refundStatus)
                 ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_refund_status']),
 
-            TextareaField::new('refund_note', 'Notificação - reembolso')
+            TextareaField::new('refund_note', $this->translator->trans('order.field.refund_note'))
                 ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_refund_note']),
-            
-            TextareaField::new('customer_note', 'Comentário do cliente')
+
+            TextareaField::new('customer_note', $this->translator->trans('order.field.customer_note'))
                 ->hideOnIndex()->setFormTypeOption('disabled', true),
         ];
 
@@ -262,7 +266,7 @@ class OrderCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $verRecibo = Action::new('verRecibo', 'Ver Recibo')
+        $verRecibo = Action::new('verRecibo', $this->translator->trans('order.action.view_receipt'))
             ->linkToRoute('recibo_show', function (Order $order) {
                 return ['id' => $order->getId()];
             })
@@ -281,73 +285,74 @@ class OrderCrudController extends AbstractCrudController
     }
 
 
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        if (!$entityInstance instanceof Order) {
-            return;
-        }
 
-        $status = $entityInstance->getOrderStatus();
-        $internalNote = $entityInstance->getInternalNote();
+    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    // {
+    //     if (!$entityInstance instanceof Order) {
+    //         return;
+    //     }
 
-        // Si livré, on préremplit la note s'il n'y en a pas
-        if ($status === 'Entregue e finalizado') {
-            $entityInstance->setRefund(false);
-            $entityInstance->setRefundAmount(null);
-            $entityInstance->setRefundStatus('');
-            if (empty($internalNote)) {
-                $entityInstance->setInternalNote("Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!");
-            }
-        }
+    //     $status = $entityInstance->getOrderStatus();
+    //     $internalNote = $entityInstance->getInternalNote();
 
-        // Si remboursement
-        if ($status === 'Reembolso') {
-            $entityInstance->setRefund(true);
-            $entityInstance->setInternalNote('A encomenda foi cancelada.');
+    //     // Si livré, on préremplit la note s'il n'y en a pas
+    //     if ($status === 'Entregue e finalizado') {
+    //         $entityInstance->setRefund(false);
+    //         $entityInstance->setRefundAmount(null);
+    //         $entityInstance->setRefundStatus('');
+    //         if (empty($internalNote)) {
+    //             $entityInstance->setInternalNote("Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!");
+    //         }
+    //     }
 
-            // Validation obligatoire
-            if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
-                $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
+    //     // Si remboursement
+    //     if ($status === 'Reembolso') {
+    //         $entityInstance->setRefund(true);
+    //         $entityInstance->setInternalNote('A encomenda foi cancelada.');
 
-                $request = $this->requestStack->getCurrentRequest();
-                $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+    //         // Validation obligatoire
+    //         if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
+    //             $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
 
-                (new RedirectResponse($referer))->send();
-                exit;
-            }
-            if (empty($entityInstance->getRefundNote())) {
-                $entityInstance->setRefundNote('o reenbolso esta en courso.');
-            }
+    //             $request = $this->requestStack->getCurrentRequest();
+    //             $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
 
-            if ($entityInstance->getRefundStatus() === "Reembolsado") {
-                $entityInstance->setRefundNote(
-                    'O reembolso foi concluído em ' . (new \DateTime())->format('d/m/Y H:i') .
-                    '. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco.'
-                );
-            }
+    //             (new RedirectResponse($referer))->send();
+    //             exit;
+    //         }
+    //         if (empty($entityInstance->getRefundNote())) {
+    //             $entityInstance->setRefundNote('o reenbolso esta en courso.');
+    //         }
 
-        }
+    //         if ($entityInstance->getRefundStatus() === "Reembolsado") {
+    //             $entityInstance->setRefundNote(
+    //                 'O reembolso foi concluído em ' . (new \DateTime())->format('d/m/Y H:i') .
+    //                 '. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco.'
+    //             );
+    //         }
 
-        // Vérifie le code secret pour les merchants
-        if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
-            $merchantCode = $entityInstance->getMerchantSecretCode();
-            $autoCode = $entityInstance->getAutoSecretCode();
+    //     }
 
-            if ($merchantCode === null || $merchantCode !== $autoCode) {
-                $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
+    //     // Vérifie le code secret pour les merchants
+    //     if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
+    //         $merchantCode = $entityInstance->getMerchantSecretCode();
+    //         $autoCode = $entityInstance->getAutoSecretCode();
 
-                $request = $this->requestStack->getCurrentRequest();
-                $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
+    //         if ($merchantCode === null || $merchantCode !== $autoCode) {
+    //             $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
 
-                (new RedirectResponse($referer))->send();
-                exit;
-            } else {
-                $this->addFlash('success', 'Registrado com sucesso');
-            }
-        }
+    //             $request = $this->requestStack->getCurrentRequest();
+    //             $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
 
-        parent::updateEntity($entityManager, $entityInstance);
-    }
+    //             (new RedirectResponse($referer))->send();
+    //             exit;
+    //         } else {
+    //             $this->addFlash('success', 'Registrado com sucesso');
+    //         }
+    //     }
+
+    //     parent::updateEntity($entityManager, $entityInstance);
+    // }
 
 
 
@@ -382,6 +387,104 @@ class OrderCrudController extends AbstractCrudController
     //         parent::updateEntity($entityManager, $entityInstance);
 //     }
 
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Order) {
+            return;
+        }
+
+        $status = $entityInstance->getOrderStatus();
+        $internalNote = $entityInstance->getInternalNote();
+
+        // ===============================
+        // ✅ Commande livrée
+        // ===============================
+        if ($status === 'Entregue e finalizado') {
+            $entityInstance->setRefund(false);
+            $entityInstance->setRefundAmount(null);
+            $entityInstance->setRefundStatus('');
+
+            if (empty($internalNote)) {
+                $entityInstance->setInternalNote(
+                    $this->translator->trans('order.note.delivered')
+                );
+            }
+        }
+
+        // ===============================
+        // ✅ Remboursement
+        // ===============================
+        if ($status === 'Reembolso') {
+            $entityInstance->setRefund(true);
+            $entityInstance->setInternalNote(
+                $this->translator->trans('order.note.refund')
+            );
+
+            // 🔴 Validation obligatoire
+            if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
+                $this->addFlash(
+                    'danger',
+                    $this->translator->trans('order.flash.refund_required')
+                );
+
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer')
+                    ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            }
+
+            // 🟡 Remboursement en cours
+            if (empty($entityInstance->getRefundNote())) {
+                $entityInstance->setRefundNote(
+                    $this->translator->trans('order.note.refund_pending')
+                );
+            }
+
+            // 🟢 Remboursement terminé
+            if ($entityInstance->getRefundStatus() === 'Reembolsado') {
+                $entityInstance->setRefundNote(
+                    $this->translator->trans(
+                        'order.note.refund_completed',
+                        [
+                            '%date%' => (new \DateTime())->format('d/m/Y H:i'),
+                        ]
+                    )
+                );
+            }
+        }
+
+        // ===============================
+        // ✅ Vérification code secret (Merchant)
+        // ===============================
+        if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles(), true)) {
+            $merchantCode = $entityInstance->getMerchantSecretCode();
+            $autoCode = $entityInstance->getAutoSecretCode();
+
+            if ($merchantCode === null || $merchantCode !== $autoCode) {
+                $this->addFlash(
+                    'danger',
+                    $this->translator->trans('order.flash.merchant_invalid_code')
+                );
+
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer')
+                    ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            }
+
+            $this->addFlash(
+                'success',
+                $this->translator->trans('order.flash.merchant_success')
+            );
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
 
 
 

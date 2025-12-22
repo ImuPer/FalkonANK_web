@@ -391,6 +391,56 @@ order:
     edit_comment: "Edit comment"
     comment_placeholder: "Write your comment..."
     save_comment: "Save Comment"
+    
+  field:
+    status: Status
+    final_price: Final Price
+    reference: Reference
+    final_price2: Final Price (Total + platform fee)
+    beneficiary_name: Beneficiary
+    beneficiary_email: Beneficiary email
+    beneficiary_address: Beneficiary address
+    items: Items
+    internal_note: "Internal note"
+    merchant_secret_code: "Secret code"
+    customer_note2: "Customer note"
+    refund: "Refund"
+    refund_amount: "Amount"
+    refund_status: "Refund status"
+    refund_note: "Refund note"
+
+  action:
+    view_receipt: "View receipt"
+
+  help:
+    merchant_secret_code: "👉 Required to finalize the order."
+    currency_cve: "👉 CVE (Cape Verde escudos)"
+
+  note:
+    delivered: "All products have been delivered successfully. Thank you for your trust!"
+    refund: "The order has been canceled."
+    refund_pending: "Refund is in progress."
+    refund_completed: "The refund was completed on %date%. The amount will be available in your account within three to eight business days, depending on your bank."
+
+  flash:
+    refund_required: "❌ Refund: The amount and refund status are required."
+    merchant_invalid_code: "❌ Secret code is incorrect. Please enter the correct code."
+    merchant_success: "Successfully recorded"
+
+  status:
+    pending: In progress
+    done: Refunded
+    processing: Processing
+    refund: Refund
+    completed: Delivered and completed
+
+  refund:
+    field:
+      status: Refund status
+
+  
+
+
 
 currency:
   cve: "escudos"
@@ -772,3 +822,4 @@ error:
 flash:
   reply_sent_success: "Reply saved and sent successfully!"
   reply_required: "Please write a reply."
+

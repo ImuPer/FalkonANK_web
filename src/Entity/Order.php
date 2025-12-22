@@ -37,7 +37,7 @@ class Order
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $internal_note = null;
 
-    #[ORM\Column(type:Types::BOOLEAN)]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private ?bool $refund = false;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -78,8 +78,9 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $merchantSecretCode = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $stripePayId = null;
+
 
 
     public function __construct()
@@ -214,161 +215,161 @@ class Order
 
 
     public function getBeneficiaryName(): ?string
-{
-    return $this->beneficiaryName;
-}
-
-public function setBeneficiaryName(?string $beneficiaryName): self
-{
-    $this->beneficiaryName = $beneficiaryName;
-
-    return $this;
-}
-
-public function getBeneficiaryAddress(): ?string
-{
-    return $this->beneficiaryAddress;
-}
-
-public function setBeneficiaryAddress(?string $beneficiaryAddress): self
-{
-    $this->beneficiaryAddress = $beneficiaryAddress;
-
-    return $this;
-}
-
-public function getPhone(): ?string
-{
-    return $this->phone;
-}
-
-public function setPhone(?string $phone): self
-{
-    $this->phone = $phone;
-
-    return $this;
-}
-
-public function getCityBeneficiary(): ?City
-{
-    return $this->city_beneficiary;
-}
-
-public function setCityBeneficiary(?City $city_beneficiary): static
-{
-    $this->city_beneficiary = $city_beneficiary;
-
-    return $this;
-}
-
-public function getBeneficiaryEmail(): ?string
-{
-    return $this->beneficiary_email;
-}
-
-public function setBeneficiaryEmail(string $beneficiary_email): static
-{
-    $this->beneficiary_email = $beneficiary_email;
-
-    return $this;
-}
-
-/**
- * @return Collection<int, BasketProduct>
- */
-public function getBasketProducts(): Collection
-{
-    return $this->basketProducts;
-}
-
-public function addBasketProduct(BasketProduct $basketProduct): static
-{
-    if (!$this->basketProducts->contains($basketProduct)) {
-        $this->basketProducts[] = $basketProduct;
-        $basketProduct->setOrderC($this); // Très important pour garder la relation synchronisée
+    {
+        return $this->beneficiaryName;
     }
 
-    return $this;
-}
+    public function setBeneficiaryName(?string $beneficiaryName): self
+    {
+        $this->beneficiaryName = $beneficiaryName;
 
-public function removeBasketProduct(BasketProduct $basketProduct): static
-{
-    if ($this->basketProducts->removeElement($basketProduct)) {
-        // Set the owning side to null (unless already changed)
-        if ($basketProduct->getOrderC() === $this) {
-            $basketProduct->setOrderC(null);
+        return $this;
+    }
+
+    public function getBeneficiaryAddress(): ?string
+    {
+        return $this->beneficiaryAddress;
+    }
+
+    public function setBeneficiaryAddress(?string $beneficiaryAddress): self
+    {
+        $this->beneficiaryAddress = $beneficiaryAddress;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCityBeneficiary(): ?City
+    {
+        return $this->city_beneficiary;
+    }
+
+    public function setCityBeneficiary(?City $city_beneficiary): static
+    {
+        $this->city_beneficiary = $city_beneficiary;
+
+        return $this;
+    }
+
+    public function getBeneficiaryEmail(): ?string
+    {
+        return $this->beneficiary_email;
+    }
+
+    public function setBeneficiaryEmail(string $beneficiary_email): static
+    {
+        $this->beneficiary_email = $beneficiary_email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BasketProduct>
+     */
+    public function getBasketProducts(): Collection
+    {
+        return $this->basketProducts;
+    }
+
+    public function addBasketProduct(BasketProduct $basketProduct): static
+    {
+        if (!$this->basketProducts->contains($basketProduct)) {
+            $this->basketProducts[] = $basketProduct;
+            $basketProduct->setOrderC($this); // Très important pour garder la relation synchronisée
         }
+
+        return $this;
     }
 
-    return $this;
-}
+    public function removeBasketProduct(BasketProduct $basketProduct): static
+    {
+        if ($this->basketProducts->removeElement($basketProduct)) {
+            // Set the owning side to null (unless already changed)
+            if ($basketProduct->getOrderC() === $this) {
+                $basketProduct->setOrderC(null);
+            }
+        }
 
-public function getBasketProductsList(): string
-{
-    return implode(';  ', $this->basketProducts->map(function ($bp) {
-        return sprintf('%s x %d', $bp->getProduct()?->getName() ?? 'Inconnu', $bp->getQuantity());
-    })->toArray());
-}
+        return $this;
+    }
 
-public function getRefundAmount(): ?string
-{
-    return $this->refund_amount;
-}
+    public function getBasketProductsList(): string
+    {
+        return implode(';  ', $this->basketProducts->map(function ($bp) {
+            return sprintf('%s x %d', $bp->getProduct()?->getName() ?? 'Inconnu', $bp->getQuantity());
+        })->toArray());
+    }
 
-public function setRefundAmount(?string $refund_amount): static
-{
-    $this->refund_amount = $refund_amount;
+    public function getRefundAmount(): ?string
+    {
+        return $this->refund_amount;
+    }
 
-    return $this;
-}
+    public function setRefundAmount(?string $refund_amount): static
+    {
+        $this->refund_amount = $refund_amount;
 
-public function getAmountFinal(): ?string
-{
-    return $this->amount_final;
-}
+        return $this;
+    }
 
-public function setAmountFinal(?string $amount_final): static
-{
-    $this->amount_final = $amount_final;
+    public function getAmountFinal(): ?string
+    {
+        return $this->amount_final;
+    }
 
-    return $this;
-}
+    public function setAmountFinal(?string $amount_final): static
+    {
+        $this->amount_final = $amount_final;
 
-public function getAutoSecretCode(): ?string
-{
-    return $this->autoSecretCode;
-}
+        return $this;
+    }
 
-public function setAutoSecretCode(?string $autoSecretCode): static
-{
-    $this->autoSecretCode = $autoSecretCode;
+    public function getAutoSecretCode(): ?string
+    {
+        return $this->autoSecretCode;
+    }
 
-    return $this;
-}
+    public function setAutoSecretCode(?string $autoSecretCode): static
+    {
+        $this->autoSecretCode = $autoSecretCode;
 
-public function getMerchantSecretCode(): ?string
-{
-    return $this->merchantSecretCode;
-}
+        return $this;
+    }
 
-public function setMerchantSecretCode(?string $merchantSecretCode): static
-{
-    $this->merchantSecretCode = $merchantSecretCode;
+    public function getMerchantSecretCode(): ?string
+    {
+        return $this->merchantSecretCode;
+    }
 
-    return $this;
-}
+    public function setMerchantSecretCode(?string $merchantSecretCode): static
+    {
+        $this->merchantSecretCode = $merchantSecretCode;
 
-public function getStripePayId(): ?string
-{
-    return $this->stripePayId;
-}
+        return $this;
+    }
 
-public function setStripePayId(string $stripePayId): static
-{
-    $this->stripePayId = $stripePayId;
+    public function getStripePayId(): ?string
+    {
+        return $this->stripePayId;
+    }
 
-    return $this;
-}
+    public function setStripePayId(string $stripePayId): static
+    {
+        $this->stripePayId = $stripePayId;
+
+        return $this;
+    }
 
 
 

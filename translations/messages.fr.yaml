@@ -384,13 +384,61 @@ order:
     date: "Date"
     status: "Statut de la commande"
     secret_code: "Votre code secret"
-    shop_note: "Note de la boutique"
+    shop_note: "Note du magasin"
     refund: "Remboursement"
     customer_note: "Votre commentaire actuel"
-    no_comment: "Aucun commentaire pour l'instant."
+    no_comment: "Aucun commentaire pour le moment."
     edit_comment: "Modifier le commentaire"
     comment_placeholder: "Écrivez votre commentaire..."
     save_comment: "Enregistrer le commentaire"
+
+  field:
+    status: "Statut"
+    final_price: "Prix final"
+    reference: "Référence"
+    final_price2: "Prix final (Total + commission de la plateforme)"
+    beneficiary_name: "Bénéficiaire"
+    beneficiary_email: "Email du bénéficiaire"
+    beneficiary_address: "Adresse du bénéficiaire"
+    items: "Articles"
+    internal_note: "Note interne"
+    merchant_secret_code: "Code secret"
+    customer_note2: "Commentaire client"
+    refund: "Remboursement"
+    refund_amount: "Montant"
+    refund_status: "Statut du remboursement"
+    refund_note: "Note de remboursement"
+
+  action:
+    view_receipt: "Voir le reçu"
+
+  help:
+    merchant_secret_code: "👉 Obligatoire pour finaliser la commande."
+    currency_cve: "👉 CVE (escudos du Cap-Vert)"
+
+  note:
+    delivered: "Tous les produits ont été livrés avec succès, revenez toujours. Notre équipe vous remercie !"
+    refund: "La commande a été annulée."
+    refund_pending: "Le remboursement est en cours."
+    refund_completed: "Le remboursement a été effectué le %date%. Le montant sera disponible sur votre compte sous trois à huit jours ouvrables, selon votre banque."
+
+  flash:
+    refund_required: "❌ Remboursement : le montant et le statut du remboursement sont obligatoires."
+    merchant_invalid_code: "❌ Le code secret est incorrect. Veuillez saisir le code correct."
+    merchant_success: "Enregistré avec succès"
+
+  status:
+    pending: En cours
+    done: Remboursé
+    processing: En cours
+    refund: Remboursement
+    completed: Livré et finalisé
+
+  refund:
+    field:
+      status: Statut du remboursement
+
+
 
 currency:
   cve: "escudos"

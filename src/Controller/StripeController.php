@@ -190,13 +190,20 @@ class StripeController extends AbstractController
         $currency = $customer->currency;
 
         // récupérer l'ID du paiement associé (payment_intent)
-        $paymentIntentId = $customer->payment_intent;
+        $paymentIntentId = $customer->payment_intent; 
+
+        // Vérifier si la commande existe déjà
+        $existingOrder = $orderRepository->findOneBy([
+            'stripePayId' => $paymentIntentId
+        ]);
+        if ($existingOrder) {
+            $this->addFlash('success', ' Commande déjà enregistrée.');
+            return $this->redirectToRoute('app_user_orders');
+        }
 
         $paymentIntent = $this->gateway->paymentIntents->retrieve($paymentIntentId);
         $timestamp = $paymentIntent->created; // UNIX timestamp
         $paymentDate = (new \DateTime())->setTimestamp($timestamp);
-
-
 
         // Logique pour enregistrer la commande et les produits
         $user = $this->getUser();
@@ -285,6 +292,9 @@ class StripeController extends AbstractController
             $entityManager->flush();
         }
 
+        // initialiser  variables pour recuperer infos do shop
+        $shopEmail = "";
+        $shopName ="";
 
         //----------------------------send email to Customer((Message e liste de products Order))-------------------------------------
         // Récupérer l'adresse email du client
@@ -301,9 +311,9 @@ class StripeController extends AbstractController
 <table style='width: 100%; border-collapse: collapse;'>
     <thead>
         <tr>
-            <th style='text-align: left; padding: 8px;'>Imagem</th>
-            <th style='text-align: left; padding: 8px;'>Produto</th>
-            <th style='text-align: left; padding: 8px;'>Preço</th>
+            <th style='text-align: left; padding: 8px;'>Item</th>
+            <th style='text-align: left; padding: 8px;'></th>
+            <th style='text-align: left; padding: 8px;'></th>
             <th style='text-align: left; padding: 8px;'>Loja</th>
         </tr>
     </thead>
@@ -314,8 +324,8 @@ class StripeController extends AbstractController
 <table style='width: 100%; border-collapse: collapse;'>
     <thead>
         <tr>
-            <th style='text-align: left; padding: 8px;'>Imagem</th>
-            <th style='text-align: left; padding: 8px;'>Produto</th>
+            <th style='text-align: left; padding: 8px;'>Item</th>
+            <th style='text-align: left; padding: 8px;'></th>
             <th style='text-align: left; padding: 8px;'>Loja</th>
         </tr>
     </thead>
@@ -327,6 +337,8 @@ class StripeController extends AbstractController
             $quantity = $item->getQuantity();
             $shop = $product->getShop();
             $shopAddress = $shop->getAdress();
+            $shopEmail = $shop->getEmail();
+            $shopName = $shop->getName();
             $priceCVE = $product->getFinalPrice();
             $priceCVEformatted = number_format($priceCVE / 100, 2, ',', ' ');
 
@@ -378,6 +390,20 @@ class StripeController extends AbstractController
       <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
     </div>
 
+    <div style="text-align:center; margin:30px 0;">
+    <a href="https://falkon.click/order/print/{$ref_order}"
+        style="
+            background:#000;
+            color:#fff;
+            padding:12px 20px;
+            text-decoration:none;
+            border-radius:5px;
+            font-weight:bold;
+        ">
+        🖨️ Imprimer le reçu
+    </a>
+    </div>
+
     <p>Olá <strong>{$customerName}</strong>,</p>
 
     <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
@@ -420,28 +446,28 @@ EOD;
             ->html($receiptContent); // ✅ maintenant en HTML avec images
 
         //-------Reçu d'achat--------------------
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-        $options->set('isRemoteEnabled', true);
-        $options->set('defaultFont', 'Arial');
+        // $options = new Options();
+        // $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
+        // $options->set('isRemoteEnabled', true);
+        // $options->set('defaultFont', 'Arial');
 
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($receiptContent);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
+        // $dompdf = new Dompdf($options);
+        // $dompdf->loadHtml($receiptContent);
+        // $dompdf->setPaper('A4', 'portrait');
+        // $dompdf->render();
 
-        // Enregistrement temporaire
-        $pdfOutput = $dompdf->output();
-        $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
-        file_put_contents($tempPdfPath, $pdfOutput);
+        // // Enregistrement temporaire
+        // $pdfOutput = $dompdf->output();
+        // $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
+        // file_put_contents($tempPdfPath, $pdfOutput);
 
-        // Attacher le fichier PDF à l'e-mail
-        $emailClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
+        // // Attacher le fichier PDF à l'e-mail
+        // $emailClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
 
+        
         $mailer->send($emailClient);
-        unlink($tempPdfPath);
+        // unlink($tempPdfPath);
         //----------------------------------------------------------------------------------------------------------------
-
 
 
         //------------send email to benef.(Message e liste de products Order)---------------------------------------------------
@@ -482,39 +508,36 @@ EOD;
             $emailBenef = (new Email())
                 ->from(new Address('no-reply@tonsite.com', 'FalkonANK Alimentason'))
                 ->to($beneficiaryEmail)
-                ->subject('Récapitulatif de votre entrega')
+                ->subject('Recapitulação da entrega')
                 ->html($recapContent);
-
-            //------Lista de artigos--pdf-------------------------------------------------------------------------------
-            //     $options = new Options();
-            //     $options->set('isHtml5ParserEnabled', true);         // ✅ Active le support HTML5 (important)
-            //     $options->set('isRemoteEnabled', true);
-            //     $options->set('defaultFont', 'Arial');
-
-            //     $dompdf = new Dompdf($options);
-            //     $dompdf->loadHtml($recapContent);
-            //     $dompdf->setPaper('A4', 'portrait');
-            //     $dompdf->render();
-
-            //     // Enregistrement temporaire
-            //     $pdfOutput = $dompdf->output();
-            //     $tempPdfPath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
-            //     file_put_contents($tempPdfPath, $pdfOutput);
-
-            //     // Attacher le fichier PDF à l'e-mail
-            //     $emailBenef->attachFromPath($tempPdfPath, 'lista_artigos.pdf');
-
-
-            //     try {
-            //         $mailer->send($emailBenef);
-            //     } catch (\Exception $e) {
-            //         dump("Erro ao enviar email ao beneficiário: " . $e->getMessage());
-            //     }
-
             // envoier l'email sans pdf
             $mailer->send($emailBenef);
         }
         // ----------------------------------------------------------------------------------------------------------------
+
+        // ------------envoyer email au Shop---------------------
+        $recapContent = <<<EOD
+        <html>
+          <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">         
+           
+            <p>Olá loja: <strong>{$shopName}</strong>,</p>
+            <p><strong>Uma nova encomenda:</strong></p>
+            <p>A referencia é: <strong>{$ref_order}</strong></p>
+                           
+            <p style="margin-top: 30px;">Atenciosamente,<br>
+            <strong>FALKON-ANK Alimentason</strong></p>
+
+          </body>
+        </html>
+        EOD;
+        $emailShop = (new Email())
+                ->from(new Address('no-reply@tonsite.com', 'FalkonANK Alimentason'))
+                ->to($shopEmail)
+                ->subject('Novo encomenda')
+                ->html($recapContent);
+        // envoier l'email
+        $mailer->send($emailShop);
+
 
         // Afficher un message de succès
         return $this->render('stripe/index.html.twig', [

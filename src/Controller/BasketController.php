@@ -154,7 +154,7 @@ class BasketController extends AbstractController
             }
 
             $entityManager->flush();
-            return $this->redirectToRoute('app_home_page');
+            return $this->redirectToRoute('user_basket');
         } else {
             return $this->redirectToRoute('app_login');
         }

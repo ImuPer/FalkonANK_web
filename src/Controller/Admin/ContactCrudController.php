@@ -34,7 +34,7 @@ class ContactCrudController extends AbstractCrudController
             TextEditorField::new('subject', 'Assunto')->hideOnForm(),
             TextEditorField::new('message')->hideOnForm(),
             DateTimeField::new('datAct','Data')->hideOnForm(),
-            TextEditorField::new('response'),
+            TextEditorField::new('response.response', 'Réponse'),
         ];
     }
 

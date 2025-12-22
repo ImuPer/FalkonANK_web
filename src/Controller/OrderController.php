@@ -46,12 +46,14 @@ class OrderController extends AbstractController
 
 
     }
-    
+
     #[Route('/{id}', name: 'app_order_show', methods: ['GET'])]
     public function show(Order $order, BasketProductRepository $basketProductRepository): Response
     {
-        // dd(vars: $order);      
-        //recuperer tous les basketProduct de cette order
+        $user = $this->getUser();
+        if(!$user){
+            return $this->redirectToRoute('app_login');
+        }
         $basketProducts = $basketProductRepository->findBy(['orderC' => $order]);
         // dd($basketProducts);
         return $this->render('order/show.html.twig', [
@@ -103,4 +105,21 @@ class OrderController extends AbstractController
 
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
+
+    // reçu order - client
+
+    #[Route('/order/print/{ref}', name: 'order_print')]
+    public function print(OrderRepository $orderRepository, string $ref): Response
+    {
+        $order = $orderRepository->findOneBy(['ref' => $ref]);
+
+        if (!$order) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('order/print.html.twig', [
+            'order' => $order
+        ]);
+    }
+
 }

@@ -1,122 +1,148 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'order.detail.title'|trans }}
+	{{ 'order.detail.title'|trans }}
 {% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/order.css') }}">
-<link rel="stylesheet" href="{{ asset('css/basket.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/order.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/basket.css') }}">
 
-<div style="text-align: center;">
-    <h1>{{ 'order.detail.ref'|trans }} : {{ order.ref }}</h1>
+	<div style="text-align: center;">
+		<h1>{{ 'order.detail.ref'|trans }}
+			:
+			{{ order.ref }}</h1>
 
-    <div class="order-container">
+		<div class="order-container">
 
-        <div style="margin-right: 40%;">
-            <a class="btn btn-dark" href="{{ path('app_user_orders') }}">
-                {{ 'order.detail.back_list'|trans }}
-            </a>
-        </div>
+			<div style="margin-right: 40%;">
+				<a class="btn btn-dark" href="{{ path('app_user_orders') }}">
+					{{ 'order.detail.back_list'|trans }}
+				</a>
+			</div>
 
-        {% for basketP in basketPs %}
-            <div class="basket-item" data-id="{{ basketP.id }}">
-                <div class="item-image">
-                    <a href="{{ path('app_product_show', {'id': basketP.product.id}) }}">
-                        <img src="{{ asset('upload/images/products/' ~ basketP.product.img) }}" alt="">
-                    </a>
-                </div>
-                <div class="item-info">
-                    <h2 class="item-name">{{ basketP.product.name }}</h2>
-                    <p class="item-price">
-                        {{ (basketP.product.finalPrice / 100)|number_format(0, '.', ',') }}
-                        {{ 'currency.cve'|trans }}
-                    </p>
-                    <p class="item-info">
-                        {{ 'order.detail.quantity'|trans }} {{ basketP.quantity }}
-                    </p>
-                </div>
-            </div>
-        {% endfor %}
+			{% for basketP in basketPs %}
+				<div class="basket-item" data-id="{{ basketP.id }}">
+					<div class="item-image">
+						<a href="{{ path('app_product_show', {'id': basketP.product.id}) }}">
+							<img src="{{ asset('upload/images/products/' ~ basketP.product.img) }}" alt="">
+						</a>
+					</div>
+					<div class="item-info">
+						<h2 class="item-name">{{ basketP.product.name }}</h2>
+						<p class="item-price">
+							{{ (basketP.product.finalPrice / 100)|number_format(0, '.', ',') }}
+							{{ 'currency.cve'|trans }}
+						</p>
+						<p class="item-info">
+							{{ 'order.detail.quantity'|trans }}
+							{{ basketP.quantity }}
+						</p>
+					</div>
+				</div>
+			{% endfor %}
 
-        {% if basketPs|length > 0 %}
-            {% set totalPrice = order.amountFinal %}
-            <div class="basket-total">
-                <h3>
-                    {{ 'order.detail.total'|trans }} :
-                    {{ (totalPrice / 100)|number_format(2, '.', ',') }} {{ 'currency.cve'|trans }}
-                </h3>
+			{% if basketPs|length > 0 %}
+				{% set totalPrice = order.amountFinal %}
+				<div class="basket-total">
+					<h3>
+						{{ 'order.detail.total'|trans }}
+						:
+						{{ (totalPrice / 100)|number_format(2, '.', ',') }}
+						{{ 'currency.cve'|trans }}
+					</h3>
 
-                {% set conversionRate = 110 %}
-                {% set conversionRateDolar = 100 %}
+					{% set conversionRate = 110 %}
+					{% set conversionRateDolar = 100 %}
 
-                <p>
-                    {{ ((totalPrice/100) / conversionRate)|number_format(2, ',', '.') }}
-                    € ({{ 'currency.euro'|trans }})
-                </p>
-                <p>
-                    {{ ((totalPrice/100) / conversionRateDolar)|number_format(2, ',', '.') }}
-                    $ ({{ 'currency.usd'|trans }})
-                </p>
-            </div>
-        {% endif %}
-    </div>
+					<p>
+						{{ ((totalPrice/100) / conversionRate)|number_format(2, ',', '.') }}
+						€ ({{ 'currency.euro'|trans }})
+					</p>
+					<p>
+						{{ ((totalPrice/100) / conversionRateDolar)|number_format(2, ',', '.') }}
+						$ ({{ 'currency.usd'|trans }})
+					</p>
+				</div>
+			{% endif %}
+		</div>
 
-    <div class="order_table">
-        <table class="table table-dark">
-            <tbody>
-                <tr>
-                    <th>{{ 'order.detail.date'|trans }}</th>
-                    <td>{{ order.orderDate ? order.orderDate|date('d-m-Y H:i:s') : '' }}</td>
-                </tr>
+		<div class="order_table">
+			<table class="table table-dark">
+				<tbody>
+					<tr>
+						<th>{{ 'order.detail.date'|trans }}</th>
+						<td>
+							<div style="text-align:center; margin:30px 0;">
+								<a href="{{ path('order_print', {'ref': order.ref}) }}" style="
+										            background:#000;
+										            color:#fff;
+										            padding:12px 20px;
+										            text-decoration:none;
+										            border-radius:5px;
+										            font-weight:bold;
+										        ">
+									🖨️ Imprimer le reçu
+								</a>
+							</div>
+						</td>
+					</tr>
 
-                <tr>
-                    <th>{{ 'order.detail.total'|trans }}</th>
-                    <td>{{ order.amountFinal / 100 }} {{ 'currency.cve_full'|trans }}</td>
-                </tr>
+					<tr>
+						<th>{{ 'order.detail.date'|trans }}</th>
+						<td>{{ order.orderDate ? order.orderDate|date('d-m-Y H:i:s') : '' }}</td>
+					</tr>
 
-                <tr>
-                    <th>{{ 'order.detail.status'|trans }}</th>
-                    <td>{{ order.orderStatus|trans }}</td>
-                </tr>
+					<tr>
+						<th>{{ 'order.detail.total'|trans }}</th>
+						<td>{{ order.amountFinal / 100 }}
+							{{ 'currency.cve_full'|trans }}</td>
+					</tr>
 
-                <tr>
-                    <th>{{ 'order.detail.secret_code'|trans }}</th>
-                    <td>{{ order.autoSecretCode }}</td>
-                </tr>
+					<tr>
+						<th>{{ 'order.detail.status'|trans }}</th>
+						<td>{{ order.orderStatus|trans }}</td>
+					</tr>
 
-                {% if order.internalNote %}
-                    <tr>
-                        <th>{{ 'order.detail.shop_note'|trans }}</th>
-                        <td>{{ order.internalNote }}</td>
-                    </tr>
-                {% endif %}
+					<tr>
+						<th>{{ 'order.detail.secret_code'|trans }}</th>
+						<td>{{ order.autoSecretCode }}</td>
+					</tr>
 
-                {% if order.isRefund() %}
-                    <tr>
-                        <th>{{ 'order.detail.refund'|trans }}</th>
-                        <td>{{ order.refundStatus|trans }} – {{ order.refundNote }}</td>
-                    </tr>
-                {% endif %}
+					{% if order.internalNote %}
+						<tr>
+							<th>{{ 'order.detail.shop_note'|trans }}</th>
+							<td>{{ order.internalNote }}</td>
+						</tr>
+					{% endif %}
 
-                <tr>
-                    <th>{{ 'order.detail.customer_note'|trans }}</th>
-                    <td>{{ order.customerNote ?: 'order.detail.no_comment'|trans }}</td>
-                </tr>
+					{% if order.isRefund() %}
+						<tr>
+							<th>{{ 'order.detail.refund'|trans }}</th>
+							<td>{{ order.refundStatus|trans }}
+								–
+								{{ order.refundNote }}</td>
+						</tr>
+					{% endif %}
 
-                <tr>
-                    <td colspan="2">
-                        <form method="post" action="{{ path('app_order_comment', {'id': order.id}) }}">
-                            <div class="form-group">
-                                <label for="customer_note">{{ 'order.detail.edit_comment'|trans }}</label>
-                                <textarea name="customer_note" id="customer_note" rows="4" class="form-control" placeholder="{{ 'order.detail.comment_placeholder'|trans }}">{{ order.customerNote }}</textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">{{ 'order.detail.save_comment'|trans }}</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+					<tr>
+						<th>{{ 'order.detail.customer_note'|trans }}</th>
+						<td>{{ order.customerNote ?: 'order.detail.no_comment'|trans }}</td>
+					</tr>
+
+					<tr>
+						<td colspan="2">
+							<form method="post" action="{{ path('app_order_comment', {'id': order.id}) }}">
+								<div class="form-group">
+									<label for="customer_note">{{ 'order.detail.edit_comment'|trans }}</label>
+									<textarea name="customer_note" id="customer_note" rows="4" class="form-control" placeholder="{{ 'order.detail.comment_placeholder'|trans }}">{{ order.customerNote }}</textarea>
+								</div>
+								<button type="submit" class="btn btn-primary mt-2">{{ 'order.detail.save_comment'|trans }}</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

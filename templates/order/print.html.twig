@@ -1,0 +1,361 @@
+{# <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Reçu de commande {{ order.ref }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            margin: 40px;
+        }
+
+        /* ---------- LOGO ---------- */
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-width: 80px; /* logo plus petit */
+            height: auto;
+        }
+
+        /* ---------- TITRES ---------- */
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* ---------- TEXTE ---------- */
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        /* ---------- BOUTON ---------- */
+        .print-btn {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .print-btn button {
+            padding: 10px 18px;
+            font-size: 15px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* ---------- PRINT ---------- */
+        @media print {
+            .print-btn {
+                display: none;
+            }
+
+            body {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body onload="window.print()">
+
+    <div class="print-btn">
+        <button onclick="window.print()">🖨️ Imprimer</button>
+    </div>
+
+    <div class="logo">
+        <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png"
+             alt="FalkonANK Logo">
+    </div>
+
+    <h2>Reçu de commande</h2>
+
+    <p>
+        <strong>Référence :</strong> {{ order.ref }}
+    </p>
+
+    <p>
+        <strong>Total :</strong>
+        {{ (order.amountFinal / 100)|number_format(2, ',', ' ') }} CVE
+    </p>
+
+    <h3>Produtos :</h3>
+
+		<tbody>
+			{% for basketProduct in order.basketProducts %}
+				<tr>
+					<td data-label="Produto">
+						<div
+							class="item-image">
+							{{ basketProduct.product.name }}
+						</div>
+					</td>
+					<td data-label="Quantidade">
+						{{ basketProduct.quantity }}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="2">Nenhum produto</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+
+</body>
+</html>
+
+ #}
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="UTF-8">
+		<title>Recibo de Encomenda
+			{{ order.ref }}</title>
+
+
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+				color: #333;
+			}
+
+			.container-receipt {
+				max-width: 900px;
+				margin: 30px auto;
+				padding: 20px;
+				background: #fff;
+			}
+
+			.logo {
+				text-align: center;
+				margin-bottom: 20px;
+			}
+
+			.logo img {
+				max-width: 100px;
+				height: auto;
+			}
+
+			h3 {
+				border-bottom: 1px solid #ccc;
+				padding-bottom: 5px;
+				margin-top: 30px;
+			}
+
+			p {
+				margin: 8px 0;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 15px;
+			}
+
+			th,
+			td {
+				border: 1px solid #ddd;
+				padding: 8px;
+				text-align: left;
+			}
+
+			th {
+				background-color: #f5f5f5;
+			}
+
+			.warning {
+				color: #a00;
+				margin-top: 20px;
+				font-style: italic;
+			}
+
+			/* ---------- ACTION BUTTONS ---------- */
+			.actions {
+				text-align: center;
+				margin-bottom: 30px;
+			}
+
+			.btn {
+				display: inline-block;
+				padding: 12px 20px;
+				font-size: 15px;
+				border-radius: 5px;
+				text-decoration: none;
+				cursor: pointer;
+				margin: 5px;
+			}
+
+			.btn-print {
+				background: #000;
+				color: #fff;
+				border: none;
+			}
+
+			.btn-back {
+				background: #e5e5e5;
+				color: #000;
+			}
+
+			/* ---------- TABLE RESPONSIVE MOBILE ---------- */
+			@media(max-width: 600px) {
+
+				table,
+				thead,
+				tbody,
+				th,
+				td,
+				tr {
+					display: block;
+					width: 100%;
+				}
+
+				thead {
+					display: none;
+				}
+
+				tr {
+					margin-bottom: 15px;
+					border: 1px solid #ddd;
+					border-radius: 6px;
+					padding: 10px;
+					background: #fafafa;
+				}
+
+				td {
+					border: none;
+					border-bottom: 1px solid #eee;
+					position: relative;
+					padding-left: 50%;
+					text-align: left;
+				}
+
+				td:last-child {
+					border-bottom: none;
+				}
+
+				td::before {
+					content: attr(data-label);
+					position: absolute;
+					left: 10px;
+					top: 8px;
+					font-weight: bold;
+					color: #555;
+				}
+			}
+
+			/* ---------- PRINT ---------- */
+			@media print {
+				.actions {
+					display: none;
+				}
+
+				table {
+					display: table;
+				}
+
+				tr {
+					display: table-row;
+					border: none;
+					padding: 0;
+				}
+
+				td,
+				th {
+					display: table-cell;
+					padding: 8px;
+				}
+
+				td::before {
+					content: none;
+				}
+			}
+		</style>
+	</head>
+
+	<body onload="window.print()">
+    
+		<div class="actions">
+			<button class="btn btn-print" onclick="window.print()">🖨️ Imprimer</button>
+
+			<a href="https://falkon.click/{{ path('app_order_show', { id: order.id }) }}" class="btn btn-back">
+				⬅ aller à la commande
+			</a>
+		</div>
+
+
+		<div class="logo">
+			<img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo">
+		</div>
+        <h3>Recibo de Encomenda</h3>
+
+		<p>Olá
+			<strong>{{ order.Basket.user.firstName }}
+				{{ order.Basket.user.lastName }}</strong>,</p>
+		<p>Obrigado pela sua encomenda.</p>
+
+		{% set amountEUR = ((order.amountFinal / 100) * 0.00907)|number_format(2, ',', ' ') %}
+		{% set amountUSD = ((order.amountFinal / 100) * 0.0098)|number_format(2, ',', ' ') %}
+
+		<p>
+			<strong>Número da encomenda:</strong>
+			{{ order.ref }}<br>
+			<strong>Valor total:</strong>
+			{{ (order.amountFinal / 100)|number_format(2, ',', ' ') }}
+			CVE
+	        (<em>{{ amountEUR }}
+                €</em>
+			|
+			<em>{{ amountUSD }}
+				$</em>)
+		</p>
+
+		<h3>Produtos</h3>
+
+		<tbody>
+			{% for basketProduct in order.basketProducts %}
+				<tr>
+					<td data-label="Produto">
+						<div
+							class="item-image">
+                {{ basketProduct.product.name }} x <strong>{{ basketProduct.quantity }}</strong>
+						</div>
+					</td>
+					{# <td data-label="Quantidade">
+						{{ basketProduct.quantity }}
+					</td> #}
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="2">Nenhum produto</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+
+
+		<h3>Entrega para</h3>
+		<p>
+			<strong>Nome:</strong>
+			{{ order.beneficiaryName }}<br>
+			<strong>Endereço:</strong>
+			{{ order.beneficiaryAddress }}
+		</p>
+
+		<p style="margin-top: 40px;">
+			Atenciosamente,<br>
+			<strong>FALKON-ANK Alimentason</strong>
+		</p>
+
+	</body>
+</html>

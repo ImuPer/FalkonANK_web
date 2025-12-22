@@ -383,14 +383,63 @@ order:
     total: "Total"
     date: "Fecha"
     status: "Estado del pedido"
-    secret_code: "Su código secreto"
+    secret_code: "Tu código secreto"
     shop_note: "Nota de la tienda"
     refund: "Reembolso"
-    customer_note: "Su comentario actual"
+    customer_note: "Tu comentario actual"
     no_comment: "Aún no hay comentarios."
     edit_comment: "Editar comentario"
-    comment_placeholder: "Escriba su comentario..."
+    comment_placeholder: "Escribe tu comentario..."
     save_comment: "Guardar comentario"
+
+  field:
+    status: "Estado"
+    final_price: "Precio final"
+    reference: "Referencia"
+    final_price2: "Precio final (Total + comisión de la plataforma)"
+    beneficiary_name: "Beneficiario"
+    beneficiary_email: "Email del beneficiario"
+    beneficiary_address: "Dirección del beneficiario"
+    items: "Artículos"
+    internal_note: "Nota interna"
+    merchant_secret_code: "Código secreto"
+    customer_note2: "Comentario del cliente"
+    refund: "Reembolso"
+    refund_amount: "Importe"
+    refund_status: "Estado del reembolso"
+    refund_note: "Nota del reembolso"
+
+  action:
+    view_receipt: "Ver recibo"
+
+  help:
+    merchant_secret_code: "👉 Obligatorio para finalizar el pedido."
+    currency_cve: "👉 CVE (escudos de Cabo Verde)"
+
+  note:
+    delivered: "Todos los productos fueron entregados con éxito. ¡Gracias por su confianza!"
+    refund: "El pedido ha sido cancelado."
+    refund_pending: "El reembolso está en curso."
+    refund_completed: "El reembolso se completó el %date%. El monto estará disponible en su cuenta entre tres y ocho días hábiles, según los plazos de su banco."
+
+  flash:
+    refund_required: "❌ Reembolso: El importe y el estado del reembolso son obligatorios."
+    merchant_invalid_code: "❌ El código secreto es incorrecto. Por favor, ingrese el código correcto."
+    merchant_success: "Registrado con éxito"
+    
+  status:
+    pending: En curso
+    done: Reembolsado
+    processing: En proceso
+    refund: Reembolso
+    completed: Entregado y finalizado
+
+  refund:
+    field:
+      status: Estado del reembolso
+
+  
+
 
 currency:
   cve: "escudos"
