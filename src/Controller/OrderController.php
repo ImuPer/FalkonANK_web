@@ -21,6 +21,9 @@ class OrderController extends AbstractController
     public function index(BasketRepository $basketRepository): Response
     {
         $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $timezone = date_default_timezone_get();
         $basket = $basketRepository->findOneBy(['user' => $user]); //recuperer le basket user
         if ($basket) {
@@ -51,7 +54,7 @@ class OrderController extends AbstractController
     public function show(Order $order, BasketProductRepository $basketProductRepository): Response
     {
         $user = $this->getUser();
-        if(!$user){
+        if (!$user) {
             return $this->redirectToRoute('app_login');
         }
         $basketProducts = $basketProductRepository->findBy(['orderC' => $order]);
@@ -106,15 +109,23 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_order_show', ['id' => $order->getId()]);
     }
 
-    // reçu order - client
-
+    //------------------ reçu order - client----------------------------------------------------
     #[Route('/order/print/{ref}', name: 'order_print')]
     public function print(OrderRepository $orderRepository, string $ref): Response
     {
-        $order = $orderRepository->findOneBy(['ref' => $ref]);
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
+        $order = $orderRepository->findOneBy(['ref' => $ref]);
         if (!$order) {
-            throw $this->createNotFoundException();
+            $this->addFlash('error', '❌ Commande introuvable ou référence invalide.');
+            return $this->redirectToRoute('app_user_orders'); // ou app_login / orders_list
+        }
+        if ($order->getBasket()->getUser() !== $this->getUser()) {
+            $this->addFlash('error', '⛔ Accès refusé à cette commande.');
+            return $this->redirectToRoute('app_home_page');
         }
 
         return $this->render('order/print.html.twig', [
