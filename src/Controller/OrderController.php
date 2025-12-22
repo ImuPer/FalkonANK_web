@@ -110,7 +110,7 @@ class OrderController extends AbstractController
     }
 
     //------------------ reçu order - client----------------------------------------------------
-    #[Route('/order/print/{ref}/', name: 'order_print')]
+    #[Route('/order/print/{ref}', name: 'order_print', requirements: ['ref' => '.+'])]
     public function print(OrderRepository $orderRepository, string $ref): Response
     {
         $user = $this->getUser();
