@@ -1,143 +1,238 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ 'order.detail.title'|trans }}
+    {{ 'order.detail.title'|trans }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/order.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/basket.css') }}">
+
+    <style>
+        /* ---------- ORDER DETAIL TABLE RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+
+            .order-detail-table,
+            .order-detail-table tbody,
+            .order-detail-table tr,
+            .order-detail-table td,
+            .order-detail-table th {
+                display: block;
+                width: 100%;
+            }
+
+            .order-detail-table tr {
+                margin-bottom: 15px;
+                background: #1c1c1c;
+                border-radius: 6px;
+                padding: 10px;
+            }
+
+            .order-detail-table th {
+                display: none;
+            }
+
+            .order-detail-table td {
+                border: none;
+                padding-left: 50%;
+                position: relative;
+                text-align: left;
+                color: #fff;
+            }
+
+            .order-detail-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                top: 8px;
+                font-weight: bold;
+                color: #ccc;
+                white-space: nowrap;
+            }
+        }
+
+        /* ---------- PRINT FIX ---------- */
+        @media print {
+            .order-detail-table,
+            .order-detail-table tr,
+            .order-detail-table td,
+            .order-detail-table th {
+                display: table;
+            }
+
+            .order-detail-table td::before {
+                content: none;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
-	<link rel="stylesheet" href="{{ asset('css/order.css') }}">
-	<link rel="stylesheet" href="{{ asset('css/basket.css') }}">
 
-	<div style="text-align: center;">
-		<h1>{{ 'order.detail.ref'|trans }}
-			:
-			{{ order.ref }}</h1>
+<div style="text-align:center;">
+    <h1>
+        {{ 'order.detail.ref'|trans }} : {{ order.ref }}
+    </h1>
+</div>
 
-		<div class="order-container">
+<div class="order-container">
 
-			<div style="margin-right: 40%;">
-				<a class="btn btn-dark" href="{{ path('app_user_orders') }}">
-					{{ 'order.detail.back_list'|trans }}
-				</a>
-			</div>
+    <div style="margin-bottom:20px;">
+        <a class="btn btn-dark" href="{{ path('app_user_orders') }}">
+            ⬅ {{ 'order.detail.back_list'|trans }}
+        </a>
+    </div>
 
-			{% for basketP in basketPs %}
-				<div class="basket-item" data-id="{{ basketP.id }}">
-					<div class="item-image">
-						<a href="{{ path('app_product_show', {'id': basketP.product.id}) }}">
-							<img src="{{ asset('upload/images/products/' ~ basketP.product.img) }}" alt="">
-						</a>
-					</div>
-					<div class="item-info">
-						<h2 class="item-name">{{ basketP.product.name }}</h2>
-						<p class="item-price">
-							{{ (basketP.product.finalPrice / 100)|number_format(0, '.', ',') }}
-							{{ 'currency.cve'|trans }}
-						</p>
-						<p class="item-info">
-							{{ 'order.detail.quantity'|trans }}
-							{{ basketP.quantity }}
-						</p>
-					</div>
-				</div>
-			{% endfor %}
+    {# ---------- PRODUCTS LIST ---------- #}
+    {% for basketP in basketPs %}
+        <div class="basket-item" data-id="{{ basketP.id }}">
+            <div class="item-image">
+                <a href="{{ path('app_product_show', {'id': basketP.product.id}) }}">
+                    <img src="{{ asset('upload/images/products/' ~ basketP.product.img) }}" alt="">
+                </a>
+            </div>
 
-			{% if basketPs|length > 0 %}
-				{% set totalPrice = order.amountFinal %}
-				<div class="basket-total">
-					<h3>
-						{{ 'order.detail.total'|trans }}
-						:
-						{{ (totalPrice / 100)|number_format(2, '.', ',') }}
-						{{ 'currency.cve'|trans }}
-					</h3>
+            <div class="item-info">
+                <h2 class="item-name">{{ basketP.product.name }}</h2>
 
-					{% set conversionRate = 110 %}
-					{% set conversionRateDolar = 100 %}
+                <p class="item-price">
+                    {{ (basketP.product.finalPrice / 100)|number_format(0, '.', ',') }}
+                    {{ 'currency.cve'|trans }}
+                </p>
 
-					<p>
-						{{ ((totalPrice/100) / conversionRate)|number_format(2, ',', '.') }}
-						€ ({{ 'currency.euro'|trans }})
-					</p>
-					<p>
-						{{ ((totalPrice/100) / conversionRateDolar)|number_format(2, ',', '.') }}
-						$ ({{ 'currency.usd'|trans }})
-					</p>
-				</div>
-			{% endif %}
-		</div>
+                <p class="item-info">
+                    {{ 'order.detail.quantity'|trans }} : {{ basketP.quantity }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
 
-		<div class="order_table">
-			<div style="text-align:center; margin:30px 0;">
-				<a href="{{ path('order_print', {'ref': order.ref}) }}" style="
-																            background:#000;
-																            color:#fff;
-																            padding:12px 20px;
-																            text-decoration:none;
-																            border-radius:5px;
-																            font-weight:bold;
-																        ">
-					🖨️
-					{{ 'receipt.print'|trans }}
-				</a>
-			</div>
-			<table class="table table-dark">
-				<tbody>
-					<tr>
-						<th>{{ 'order.detail.date'|trans }}</th>
-						<td>{{ order.orderDate ? order.orderDate|date('d-m-Y H:i:s') : '' }}</td>
-					</tr>
+    {# ---------- TOTAL ---------- #}
+    {% if basketPs|length > 0 %}
+        {% set totalPrice = order.amountFinal %}
 
-					<tr>
-						<th>{{ 'order.detail.total'|trans }}</th>
-						<td>{{ order.amountFinal / 100 }}
-							{{ 'currency.cve_full'|trans }}</td>
-					</tr>
+        <div class="basket-total">
+            <h3>
+                {{ 'order.detail.total'|trans }} :
+                {{ (totalPrice / 100)|number_format(2, '.', ',') }}
+                {{ 'currency.cve'|trans }}
+            </h3>
 
-					<tr>
-						<th>{{ 'order.detail.status'|trans }}</th>
-						<td>{{ order.orderStatus|trans }}</td>
-					</tr>
+            {% set conversionRate = 110 %}
+            {% set conversionRateDolar = 100 %}
 
-					<tr>
-						<th>{{ 'order.detail.secret_code'|trans }}</th>
-						<td>{{ order.autoSecretCode }}</td>
-					</tr>
+            <p>
+                {{ ((totalPrice / 100) / conversionRate)|number_format(2, ',', '.') }}
+                € ({{ 'currency.euro'|trans }})
+            </p>
+            <p>
+                {{ ((totalPrice / 100) / conversionRateDolar)|number_format(2, ',', '.') }}
+                $ ({{ 'currency.usd'|trans }})
+            </p>
+        </div>
+    {% endif %}
 
-					{% if order.internalNote %}
-						<tr>
-							<th>{{ 'order.detail.shop_note'|trans }}</th>
-							<td>{{ order.internalNote }}</td>
-						</tr>
-					{% endif %}
+</div>
 
-					{% if order.isRefund() %}
-						<tr>
-							<th>{{ 'order.detail.refund'|trans }}</th>
-							<td>{{ order.refundStatus|trans }}
-								–
-								{{ order.refundNote }}</td>
-						</tr>
-					{% endif %}
+{# ---------- ORDER INFORMATION TABLE ---------- #}
+<div class="order_table">
 
-					<tr>
-						<th>{{ 'order.detail.customer_note'|trans }}</th>
-						<td>{{ order.customerNote ?: 'order.detail.no_comment'|trans }}</td>
-					</tr>
+    <div style="text-align:center; margin:30px 0;">
+        <a href="{{ path('order_print', {'ref': order.ref}) }}"
+           target="_blank"
+           style="
+                background:#000;
+                color:#fff;
+                padding:12px 20px;
+                text-decoration:none;
+                border-radius:5px;
+                font-weight:bold;
+           ">
+            🧾 {{ 'receipt.print'|trans }}
+        </a>
+    </div>
 
-					<tr>
-						<td colspan="2">
-							<form method="post" action="{{ path('app_order_comment', {'id': order.id}) }}">
-								<div class="form-group">
-									<label for="customer_note">{{ 'order.detail.edit_comment'|trans }}</label>
-									<textarea name="customer_note" id="customer_note" rows="4" class="form-control" placeholder="{{ 'order.detail.comment_placeholder'|trans }}">{{ order.customerNote }}</textarea>
-								</div>
-								<button type="submit" class="btn btn-primary mt-2">{{ 'order.detail.save_comment'|trans }}</button>
-							</form>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+    <table class="table table-dark order-detail-table">
+        <tbody>
+
+            <tr>
+                <th>{{ 'order.detail.date'|trans }}</th>
+                <td data-label="{{ 'order.detail.date'|trans }}">
+                    {{ order.orderDate ? order.orderDate|date('d-m-Y H:i:s') : '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <th>{{ 'order.detail.total'|trans }}</th>
+                <td data-label="{{ 'order.detail.total'|trans }}">
+                    {{ order.amountFinal / 100 }} {{ 'currency.cve_full'|trans }}
+                </td>
+            </tr>
+
+            <tr>
+                <th>{{ 'order.detail.status'|trans }}</th>
+                <td data-label="{{ 'order.detail.status'|trans }}">
+                    {{ order.orderStatus|trans }}
+                </td>
+            </tr>
+
+            <tr>
+                <th>{{ 'order.detail.secret_code'|trans }}</th>
+                <td data-label="{{ 'order.detail.secret_code'|trans }}">
+                    {{ order.autoSecretCode }}
+                </td>
+            </tr>
+
+            {% if order.internalNote %}
+                <tr>
+                    <th>{{ 'order.detail.shop_note'|trans }}</th>
+                    <td data-label="{{ 'order.detail.shop_note'|trans }}">
+                        {{ order.internalNote }}
+                    </td>
+                </tr>
+            {% endif %}
+
+            {% if order.isRefund() %}
+                <tr>
+                    <th>{{ 'order.detail.refund'|trans }}</th>
+                    <td data-label="{{ 'order.detail.refund'|trans }}">
+                        {{ order.refundStatus|trans }} – {{ order.refundNote }}
+                    </td>
+                </tr>
+            {% endif %}
+
+            <tr>
+                <th>{{ 'order.detail.customer_note'|trans }}</th>
+                <td data-label="{{ 'order.detail.customer_note'|trans }}">
+                    {{ order.customerNote ?: 'order.detail.no_comment'|trans }}
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <form method="post" action="{{ path('app_order_comment', {'id': order.id}) }}">
+                        <div class="form-group">
+                            <label for="customer_note">
+                                {{ 'order.detail.edit_comment'|trans }}
+                            </label>
+                            <textarea
+                                name="customer_note"
+                                id="customer_note"
+                                rows="4"
+                                class="form-control"
+                                placeholder="{{ 'order.detail.comment_placeholder'|trans }}"
+                            >{{ order.customerNote }}</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-2">
+                            {{ 'order.detail.save_comment'|trans }}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
