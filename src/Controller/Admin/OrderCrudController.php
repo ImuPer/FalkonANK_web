@@ -155,6 +155,8 @@ class OrderCrudController extends AbstractCrudController
             //         return '';
             //     })
             //     ->setCssClass('hidden'), // on ne veut pas afficher ce champ
+
+            
             // ===== INDEX : affichage coloré =====
             TextField::new('orderStatus', $this->translator->trans('order.field.status'))
                 ->onlyOnIndex()
