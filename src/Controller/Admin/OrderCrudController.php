@@ -218,7 +218,7 @@ class OrderCrudController extends AbstractCrudController
                 ->setRequired(true),
 
 
-            TextEditorField::new('internal_note', $this->translator->trans('order.field.internal_note'))
+            TextareaField::new('internal_note', $this->translator->trans('order.field.internal_note'))
                 // ->hideOnIndex()
                 ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
 
