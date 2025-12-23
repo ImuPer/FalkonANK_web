@@ -298,39 +298,41 @@ class StripeController extends AbstractController
 
         //----------------------------send email to Customer((Message e liste de products Order))-------------------------------------
         // Récupérer l'adresse email du client
+        $userName = $user->getFirstName()." ".$user->getLastName();
+        dd($userName);
         $customerEmail = $email ?? $user->getEmail();
-        $customerName = $name ?? $user->getUsername();
+        $customerName = $name ?? $userName;
 
         $amountFormatted = number_format($amount / 100, 2, ',', ' ');
         $cveToEur = 0.00907;
         $cveToUsd = 0.0098;
 
-        $baseUrl = $request->getSchemeAndHttpHost(); // https://tonsite.com
+        $baseUrl = $request->getSchemeAndHttpHost(); // https://site.com
 
         $productsList = "
-<table style='width: 100%; border-collapse: collapse;'>
-    <thead>
-        <tr>
-            <th style='text-align: left; padding: 8px;'>Item</th>
-            <th style='text-align: left; padding: 8px;'></th>
-            <th style='text-align: left; padding: 8px;'></th>
-            <th style='text-align: left; padding: 8px;'>Loja</th>
-        </tr>
-    </thead>
-    <tbody>
-";
+            <table style='width: 100%; border-collapse: collapse;'>
+                <thead>
+                    <tr>
+                        <th style='text-align: left; padding: 8px;'>Item</th>
+                        <th style='text-align: left; padding: 8px;'></th>
+                        <th style='text-align: left; padding: 8px;'></th>
+                        <th style='text-align: left; padding: 8px;'>Loja</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ";
 
-        $productsListBeneficiary = "
-<table style='width: 100%; border-collapse: collapse;'>
-    <thead>
-        <tr>
-            <th style='text-align: left; padding: 8px;'>Item</th>
-            <th style='text-align: left; padding: 8px;'></th>
-            <th style='text-align: left; padding: 8px;'>Loja</th>
-        </tr>
-    </thead>
-    <tbody>
-";
+                    $productsListBeneficiary = "
+            <table style='width: 100%; border-collapse: collapse;'>
+                <thead>
+                    <tr>
+                        <th style='text-align: left; padding: 8px;'>Item</th>
+                        <th style='text-align: left; padding: 8px;'></th>
+                        <th style='text-align: left; padding: 8px;'>Loja</th>
+                    </tr>
+                </thead>
+                <tbody>
+            ";
 
         foreach ($basketPs as $item) {
             $product = $item->getProduct();
@@ -343,17 +345,17 @@ class StripeController extends AbstractController
             $priceCVEformatted = number_format($priceCVE / 100, 2, ',', ' ');
 
             $productsList .= "
-        <tr>
-            <td style='padding: 8px;'>
-                 <img src='https://falkon.click/upload/images/products/" . rawurlencode($product->getImg()) . "' 
-                            alt='" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "' 
-                            style='width: 80px; height: auto;'>
-            </td>
-            <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
-            <td style='padding: 8px;'>{$priceCVEformatted} CVE</td>
-            <td style='padding: 8px;'>{$shop}, {$shopAddress}</td>
-        </tr>
-    ";
+                <tr>
+                    <td style='padding: 8px;'>
+                        <img src='https://falkon.click/upload/images/products/" . rawurlencode($product->getImg()) . "' 
+                                    alt='" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . "' 
+                                    style='width: 80px; height: auto;'>
+                    </td>
+                    <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
+                    <td style='padding: 8px;'>{$priceCVEformatted} CVE</td>
+                    <td style='padding: 8px;'>{$shop}, {$shopAddress}</td>
+                </tr>
+            ";
 
             $productsListBeneficiary .= "
                 <tr>
@@ -384,46 +386,38 @@ class StripeController extends AbstractController
 
 
         $receiptContent = <<<EOD
-<html>
-  <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
-    </div>
-
-    <p>Olá <strong>{$customerName}</strong>,</p>
-
-    <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
-
-    <p>
-      <strong>Número da encomenda:</strong> {$ref_order}<br>
-      <strong>Valor total:</strong> {$amountFormatted} {$currency}
-      (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
-    </p>
-
-    <p style="color: #a00;">
-      <em>O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o codigo secreto. </em>
-      <strong>Deves envia-lo essa referência : {$ref_order}</strong> e o <strong>codigo secreto : {$secretCode}</strong>
-    </p>
-    <br>
-
-    <div style="text-align: center;">
-        <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
-        {$productsList}
-    </div>
-
-    <h3>Entrega para:</h3>
-    <p>
-      <strong>Nome:</strong> {$beneficiaryName}<br>
-      <strong>Endereço:</strong> {$beneficiaryAddress}
-    </p>
-
-    <p style="margin-top: 30px;">Atenciosamente,<br>
-    <strong>FALKON-ANK Alimentason</strong></p>
-
-  </body>
-</html>
-EOD;
-
+        <html>
+            <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
+                </div>
+                <p>Olá <strong>{$customerName}</strong>,</p>
+                <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
+                <p>
+                    <strong>Número da encomenda:</strong> {$ref_order}<br>
+                    <strong>Valor total:</strong> {$amountFormatted} {$currency}
+                    (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
+                </p>
+                <p style="color: #a00;">
+                    <em>O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o codigo secreto. </em>
+                    <strong>Deves envia-lo essa referência : {$ref_order}</strong> e o <strong>codigo secreto : {$secretCode}</strong>
+                </p>
+                <br>
+                <div style="text-align: center;">
+                    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
+                    {$productsList}
+                </div>
+                <h3>Entrega para:</h3>
+                <p>
+                    <strong>Nome:</strong> {$beneficiaryName}<br>
+                    <strong>Endereço:</strong> {$beneficiaryAddress}
+                </p>
+                <p style="margin-top: 30px;">Atenciosamente,<br>
+                    <strong>FALKON-ANK Alimentason</strong>
+                </p>
+            </body>
+        </html>
+        EOD;
         // Envoi du mail au client
         $emailClient = (new Email())
             ->from(new Address('no-reply@FalkonANK.com', 'FalkonANK Alimentason'))
@@ -452,13 +446,10 @@ EOD;
 
         $mailer->send($emailClient);
         unlink($tempPdfPath);
-        //----------------------------------------------------------------------------------------------------------------
 
 
         //------------send email to benef.(Message e liste de products Order)---------------------------------------------------
-
         $beneficiaryEmail = $orderData['beneficiary_email'] ?? null;
-
         // Será entregue para você neste endereço:
         //     {$orderData['beneficiary_address']}
         // <p>Um pacote será entregue para você neste endereço:</p>
@@ -468,27 +459,27 @@ EOD;
         // dd($productsList);
         if ($beneficiaryEmail) {
             $recapContent = <<<EOD
-        <html>
-          <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-             <div style="text-align: center; margin-bottom: 20px;">
-                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
-            </div>
-          
-            <p>Olá <strong>{$orderData['beneficiary_name']}</strong>,</p>
-        
-            <p>Uma encomenda para voçe:</p>
-               
-            <div style="text-align: center;">
-                <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
-                {$productsListBeneficiary}
-            </div>
-                
-            <p style="margin-top: 30px;">Atenciosamente,<br>
-            <strong>FALKON-ANK Alimentason</strong></p>
-
-          </body>
-        </html>
-        EOD;
+            <html>
+                <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
+                    </div>          
+                    <p>Olá <strong>{$orderData['beneficiary_name']}</strong>,</p>
+                    <p>
+                        Há uma encomenda para você. Para a retirar, deves comparecer com:<br>
+                        • a referência (nº) da encomenda;<br>
+                        • o código secreto.<br>
+                        Estes dados devem ser solicitados ao cliente ({$userName}) que efetuou a compra.
+                    </p>                
+                    <div style="text-align: center;">
+                        <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
+                        {$productsListBeneficiary}
+                    </div>                
+                    <p style="margin-top: 30px;">Atenciosamente,<br>
+                    <strong>FALKON-ANK Alimentason</strong></p>
+                </body>
+            </html>
+            EOD;
 
             $emailBenef = (new Email())
                 ->from(new Address('no-reply@tonsite.com', 'FalkonANK Alimentason'))
@@ -498,21 +489,20 @@ EOD;
             // envoier l'email sans pdf
             $mailer->send($emailBenef);
         }
-        // ----------------------------------------------------------------------------------------------------------------
 
-        // ------------envoyer email au Shop---------------------
+        // ------------envoyer email au Shop----------------------------------------------------------------
         $recapContent = <<<EOD
         <html>
-          <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">         
-           
-            <p>Olá loja: <strong>{$shopName}</strong>,</p>
-            <p><strong>Uma nova encomenda:</strong></p>
-            <p>A referencia é: <strong>{$ref_order}</strong></p>
-                           
-            <p style="margin-top: 30px;">Atenciosamente,<br>
-            <strong>FALKON-ANK Alimentason</strong></p>
+            <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">         
+                <p>Olá loja: <strong>{$shopName}</strong>,</p>
+                <p><strong>Uma nova encomenda:</strong></p>
+                <p>A referencia é: <strong>{$ref_order}</strong></p>
 
-          </body>
+                <p style="margin-top: 30px;">
+                    Atenciosamente,<br>
+                    <strong>FALKON-ANK Alimentason</strong>
+                </p>
+            </body>
         </html>
         EOD;
         $emailShop = (new Email())
@@ -532,7 +522,7 @@ EOD;
         ]);
     }
 
-    // ------------cancel--------------------
+    // ------------------------cancel------------------------------------------------------------------------
     #[Route('/cancel', name: 'app_cancel')]
     public function cancel(Request $request): Response
     {
