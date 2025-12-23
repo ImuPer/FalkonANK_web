@@ -314,26 +314,30 @@ class StripeController extends AbstractController
             <table style='width: 100%; border-collapse: collapse;'>
                 <thead>
                     <tr>
-                        <th style='text-align: left; padding: 8px;'>Item</th>
+                        <th style='text-align: left; padding: 8px;'>
+                            {$translator->trans('products.table.item')}
+                        </th>
                         <th style='text-align: left; padding: 8px;'></th>
                         <th style='text-align: left; padding: 8px;'></th>
-                        <th style='text-align: left; padding: 8px;'>Loja</th>
+                        <th style='text-align: left; padding: 8px;'>
+                            {$translator->trans('products.table.store')}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
             ";
 
-                    $productsListBeneficiary = "
-            <table style='width: 100%; border-collapse: collapse;'>
-                <thead>
-                    <tr>
-                        <th style='text-align: left; padding: 8px;'>Item</th>
-                        <th style='text-align: left; padding: 8px;'></th>
-                        <th style='text-align: left; padding: 8px;'>Loja</th>
-                    </tr>
-                </thead>
-                <tbody>
-            ";
+            $productsListBeneficiary = "
+                <table style='width: 100%; border-collapse: collapse;'>
+                    <thead>
+                        <tr>
+                            <th style='text-align: left; padding: 8px;'>Item</th>
+                            <th style='text-align: left; padding: 8px;'></th>
+                            <th style='text-align: left; padding: 8px;'>Loja</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                ";
 
         foreach ($basketPs as $item) {
             $product = $item->getProduct();
@@ -354,7 +358,7 @@ class StripeController extends AbstractController
                     </td>
                     <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
                     <td style='padding: 8px;'>{$priceCVEformatted} CVE</td>
-                    <td style='padding: 8px;'>{$shop}, {$shopAddress}</td>
+                    <td style='padding: 5px;'>{$shop}, {$shopAddress}</td>
                 </tr>
             ";
 
@@ -366,7 +370,7 @@ class StripeController extends AbstractController
                             style='width: 80px; height: auto;'>
                     </td>
                     <td style='padding: 8px;'>" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . " x{$quantity}</td>
-                    <td style='padding: 8px;'>" . htmlspecialchars($shop, ENT_QUOTES, 'UTF-8') . ", " . htmlspecialchars($shopAddress, ENT_QUOTES, 'UTF-8') . "</td>
+                    <td style='padding: 5px;'>" . htmlspecialchars($shop, ENT_QUOTES, 'UTF-8') . ", " . htmlspecialchars($shopAddress, ENT_QUOTES, 'UTF-8') . "</td>
                 </tr>
             ";
         }
