@@ -233,7 +233,7 @@ class OrderCrudController extends AbstractCrudController
                 ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
                 ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
 
-            TextareaField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
+            TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
                 ->hideOnForm(),
 
             BooleanField::new('refund', $this->translator->trans('order.field.refund'))
