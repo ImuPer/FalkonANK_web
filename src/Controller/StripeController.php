@@ -358,7 +358,7 @@ class StripeController extends AbstractController
                     </td>
                     <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
                     <td style='padding: 8px;'>{$priceCVEformatted} CVE</td>
-                    <td style='padding: 5px;'>{$shop}, {$shopAddress}</td>
+                    <td style='padding: 8px; font-size:10px;'><strong>{$shop}</strong>, {$shopAddress}</td>
                 </tr>
             ";
 
@@ -370,7 +370,7 @@ class StripeController extends AbstractController
                             style='width: 80px; height: auto;'>
                     </td>
                     <td style='padding: 8px;'>" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . " x{$quantity}</td>
-                    <td style='padding: 5px;'>" . htmlspecialchars($shop, ENT_QUOTES, 'UTF-8') . ", " . htmlspecialchars($shopAddress, ENT_QUOTES, 'UTF-8') . "</td>
+                    <td style='padding: 8px; font-size:10px;'> <strong>" . htmlspecialchars($shop, ENT_QUOTES, 'UTF-8') . "</strong>, " . htmlspecialchars($shopAddress, ENT_QUOTES, 'UTF-8') . "</td>
                 </tr>
             ";
         }
