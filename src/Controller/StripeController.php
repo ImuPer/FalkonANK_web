@@ -402,7 +402,7 @@ class StripeController extends AbstractController
             </p>
 
             <p style="color:#a00;">
-                <em>{$translator->trans('receipt.notice')}</em><br>
+                <em>{$translator->trans('receipt.notice', ['%beneficiary%' => $beneficiaryName])}</em><br>
                 <strong>{$translator->trans('receipt.send_reference', [
                     '%ref%' => $ref_order,
                     '%code%' => $secretCode
