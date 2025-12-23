@@ -824,3 +824,16 @@ error:
 flash:
   reply_sent_success: "Réponse sauvegardée et envoyée avec succès !"
   reply_required: "Veuillez écrire une réponse."
+
+
+receipt.greeting: "Bonjour <strong>%name%</strong>,"
+receipt.thanks: "Merci pour votre commande. Voici le récapitulatif de votre achat :"
+receipt.order_number: "Numéro de commande"
+receipt.total_amount: "Montant total"
+receipt.notice: "Le bénéficiaire devra présenter une pièce d'identité, la référence de commande et le code secret."
+receipt.send_reference: "Veuillez transmettre la référence : %ref% et le code secret : %code%"
+receipt.products: "Produits"
+receipt.delivery: "Livraison à"
+receipt.name: "Nom"
+receipt.address: "Adresse"
+receipt.signature: "Cordialement,"

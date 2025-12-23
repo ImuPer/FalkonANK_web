@@ -813,3 +813,14 @@ flash:
   reply_required: "Por favor, escreva uma resposta."
 
 
+receipt.greeting: "Olá <strong>%name%</strong>,"
+receipt.thanks: "Obrigado pela sua encomenda. Aqui está o resumo da sua compra:"
+receipt.order_number: "Número da encomenda"
+receipt.total_amount: "Valor total"
+receipt.notice: "O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o codigo secreto."
+receipt.send_reference: "Deves envia-lo essa referência : %ref% e o codigo secreto : %code%"
+receipt.products: "Produtos"
+receipt.delivery: "Entrega para"
+receipt.name: "Nome"
+receipt.address: "Endereço"
+receipt.signature: "Atenciosamente,"

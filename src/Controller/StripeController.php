@@ -22,6 +22,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Mime\Part\File;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 
@@ -155,7 +156,8 @@ class StripeController extends AbstractController
         OrderRepository $orderRepository,
         EntityManagerInterface $entityManager,
         CityRepository $cityRepository,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        TranslatorInterface $translator,
     ): Response {
         // Récupérer l'ID de la session depuis la requête
         $id_sessions = $request->query->get('id_sessions');
@@ -380,43 +382,51 @@ class StripeController extends AbstractController
         $amountEUR = number_format(($amount / 100) * $cveToEur, 2, ',', ' ');
         $amountUSD = number_format(($amount / 100) * $cveToUsd, 2, ',', ' ');
 
+    // $locale = $customerLocale; // ex: 'fr', 'pt', 'en'
+    // $translator->setLocale($locale);
+    $receiptContent = <<<EOD
+    <html>
+        <body style="font-family: Arial; font-size: 16px; color: #333;">
+            <div style="text-align:center;">
+                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" style="max-width:100px;">
+            </div>
 
+            <p>{$translator->trans('receipt.greeting', ['%name%' => $customerName])}</p>
+            <p>{$translator->trans('receipt.thanks')}</p>
 
+            <p>
+                <strong>{$translator->trans('receipt.order_number')}:</strong> {$ref_order}<br>
+                <strong>{$translator->trans('receipt.total_amount')}:</strong>
+                {$amountFormatted} {$currency}
+                (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
+            </p>
 
+            <p style="color:#a00;">
+                <em>{$translator->trans('receipt.notice')}</em><br>
+                <strong>{$translator->trans('receipt.send_reference', [
+                    '%ref%' => $ref_order,
+                    '%code%' => $secretCode
+                ])}</strong>
+            </p>
 
-        $receiptContent = <<<EOD
-        <html>
-            <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
-                <div style="text-align: center; margin-bottom: 20px;">
-                <img src="https://falkon.click/image/FalkonANK/logo-transparent-png.png" alt="FalkonANK Logo" style="max-width: 100px; height: auto;">
-                </div>
-                <p>Olá <strong>{$customerName}</strong>,</p>
-                <p>Obrigado pela sua encomenda. Aqui está o resumo da sua compra:</p>
-                <p>
-                    <strong>Número da encomenda:</strong> {$ref_order}<br>
-                    <strong>Valor total:</strong> {$amountFormatted} {$currency}
-                    (<em>{$amountEUR} €</em> | <em>{$amountUSD} \$</em>)
-                </p>
-                <p style="color: #a00;">
-                    <em>O beneficiário deverá apresentar seu documento de identidade, referência da encomenda e o codigo secreto. </em>
-                    <strong>Deves envia-lo essa referência : {$ref_order}</strong> e o <strong>codigo secreto : {$secretCode}</strong>
-                </p>
-                <br>
-                <div style="text-align: center;">
-                    <h3 style="border-bottom: 1px solid #ccc; padding-bottom: 5px;">Produtos:</h3>
-                    {$productsList}
-                </div>
-                <h3>Entrega para:</h3>
-                <p>
-                    <strong>Nome:</strong> {$beneficiaryName}<br>
-                    <strong>Endereço:</strong> {$beneficiaryAddress}
-                </p>
-                <p style="margin-top: 30px;">Atenciosamente,<br>
-                    <strong>FALKON-ANK Alimentason</strong>
-                </p>
-            </body>
-        </html>
-        EOD;
+            <h3>{$translator->trans('receipt.products')}</h3>
+            {$productsList}
+
+            <h3>{$translator->trans('receipt.delivery')}</h3>
+            <p>
+                <strong>{$translator->trans('receipt.name')}:</strong> {$beneficiaryName}<br>
+                <strong>{$translator->trans('receipt.address')}:</strong> {$beneficiaryAddress}
+            </p>
+
+            <p>{$translator->trans('receipt.signature')}<br>
+                <strong>FALKON-ANK Alimentason</strong>
+            </p>
+        </body>
+    </html>
+    EOD;
+
+        
+        
         // Envoi du mail au client
         $emailClient = (new Email())
             ->from(new Address('no-reply@FalkonANK.com', 'FalkonANK Alimentason'))

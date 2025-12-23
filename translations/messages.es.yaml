@@ -824,3 +824,16 @@ error:
 flash:
   reply_sent_success: "¡Respuesta guardada y enviada con éxito!"
   reply_required: "Por favor, escriba una respuesta."
+
+
+receipt.greeting: "Hola <strong>%name%</strong>,"
+receipt.thanks: "Gracias por su pedido. Aquí está el resumen de su compra:"
+receipt.order_number: "Número de pedido"
+receipt.total_amount: "Importe total"
+receipt.notice: "El beneficiario deberá presentar un documento de identidad, la referencia del pedido y el código secreto."
+receipt.send_reference: "Debe enviar esta referencia: %ref% y el código secreto: %code%"
+receipt.products: "Productos"
+receipt.delivery: "Entrega para"
+receipt.name: "Nombre"
+receipt.address: "Dirección"
+receipt.signature: "Atentamente,"
