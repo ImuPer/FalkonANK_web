@@ -299,7 +299,6 @@ class StripeController extends AbstractController
         //----------------------------send email to Customer((Message e liste de products Order))-------------------------------------
         // Récupérer l'adresse email du client
         $userName = $user->getFirstName()." ".$user->getLastName();
-        dd($userName);
         $customerEmail = $email ?? $user->getEmail();
         $customerName = $name ?? $userName;
 
