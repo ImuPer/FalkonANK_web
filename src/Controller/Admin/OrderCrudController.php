@@ -183,7 +183,7 @@ class OrderCrudController extends AbstractCrudController
             TextField::new('ref', $this->translator->trans('order.field.reference'))
                 ->setFormTypeOption('attr', ['readonly' => true]),
 
-            DateTimeField::new('orderDate', $this->translator->trans('order.field.date'))
+            DateTimeField::new('orderDate', $this->translator->trans('orders.date'))
                 ->hideOnForm()
                 ->formatValue(function ($value) {
                     return $value ? $value->format('d/m/Y') : '';
