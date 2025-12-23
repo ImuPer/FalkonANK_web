@@ -837,3 +837,7 @@ receipt.delivery: "Livraison à"
 receipt.name: "Nom"
 receipt.address: "Adresse"
 receipt.signature: "Cordialement,"
+
+
+products.table.item: "Article"
+products.table.store: "Boutique"

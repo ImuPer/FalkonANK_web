@@ -824,3 +824,6 @@ receipt.delivery: "Entrega para"
 receipt.name: "Nome"
 receipt.address: "Endereço"
 receipt.signature: "Atenciosamente,"
+
+products.table.item: "Item"
+products.table.store: "Loja"

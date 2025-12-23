@@ -835,3 +835,7 @@ receipt.delivery: "Delivery to"
 receipt.name: "Name"
 receipt.address: "Address"
 receipt.signature: "Kind regards,"
+
+
+products.table.item: "Item"
+products.table.store: "Store"
