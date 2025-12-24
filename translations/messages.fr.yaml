@@ -403,6 +403,8 @@ order:
     items: "Articles"
     internal_note: "Note interne"
     merchant_secret_code: "Code secret"
+    customer: "Client"
+    customer_email: "Email du client"
     customer_note2: "Commentaire client"
     refund: "Remboursement"
     refund_amount: "Montant"
@@ -420,7 +422,7 @@ order:
     delivered: "Tous les produits ont été livrés avec succès, revenez toujours. Notre équipe vous remercie !"
     refund: "La commande a été annulée."
     refund_pending: "Le remboursement est en cours."
-    refund_completed: "Le remboursement a été effectué le %date%. Le montant sera disponible sur votre compte sous trois à huit jours ouvrables, selon votre banque."
+    refund_completed: "Le remboursement a été effectué le %date%. Le montant (%amountcve% escudos CV) sera disponible sur votre compte sous trois à huit jours ouvrables, selon votre banque."
 
   flash:
     refund_required: "❌ Remboursement : le montant et le statut du remboursement sont obligatoires."

@@ -57,7 +57,7 @@ class OrderRepository extends ServiceEntityRepository
         return $secretCodOrder;
     }
 
-     /**
+    /**
      * Compte le nombre d'ordres en traitement ou sans merchantSecretCode
      */
     public function countPendingOrMissingSecret(): int
@@ -70,4 +70,20 @@ class OrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * Compte le nombre de commandes en remboursement (en cours)
+     */
+    public function countRefundInProgress(): int
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('o.order_status = :status')
+            ->andWhere('o.refund_status = :refund')
+            ->setParameter('status', 'Reembolso')
+            ->setParameter('refund', 'Em curso')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }

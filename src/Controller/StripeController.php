@@ -495,7 +495,7 @@ class StripeController extends AbstractController
             EOD;
 
             $emailBenef = (new Email())
-                ->from(new Address('no-reply@tonsite.com', 'FalkonANK Alimentason'))
+                ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
                 ->to($beneficiaryEmail)
                 ->subject('Recapitulação da entrega')
                 ->html($recapContent);
@@ -519,7 +519,7 @@ class StripeController extends AbstractController
         </html>
         EOD;
         $emailShop = (new Email())
-                ->from(new Address('no-reply@tonsite.com', 'FalkonANK Alimentason'))
+                ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
                 ->to($shopEmail)
                 ->subject('Novo encomenda')
                 ->html($recapContent);

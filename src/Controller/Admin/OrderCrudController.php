@@ -5,7 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\Basket;
 use App\Entity\BasketProduct;
 use App\Entity\Order;
-use Doctrine\ORM\Query\FilterCollection;
+use App\Repository\UserRepository;
+// use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -27,15 +28,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Bundle\SecurityBundle\Security;
-
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\FormBuilderInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -45,13 +49,14 @@ class OrderCrudController extends AbstractCrudController
     private RequestStack $requestStack;
     private RouterInterface $router;
 
-    public function __construct(Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(private UserRepository $userRepository, Security $security, ManagerRegistry $doctrine, RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator, MailerInterface $mailer)
     {
         $this->security = $security;
         $this->doctrine = $doctrine;
         $this->requestStack = $requestStack;
         $this->router = $router;
         $this->translator = $translator;
+        $this->mailer = $mailer;
     }
 
     public static function getEntityFqcn(): string
@@ -69,8 +74,6 @@ class OrderCrudController extends AbstractCrudController
             ->setPageTitle(Crud::PAGE_DETAIL, fn(Order $order) => (string) $order->getRef());
     }
 
-
-
     public function configureAssets(Assets $assets): Assets
     {
         return Assets::new()
@@ -78,30 +81,52 @@ class OrderCrudController extends AbstractCrudController
             ->addJsFile('build/refund_toggle.js');
     }
 
+    // Méthode qui surchargera la requête pour filtrer les commandes selon l'utilisateuruse Doctrine\ORM\QueryBuilder;
 
-    // Méthode qui surchargera la requête pour filtrer les commandes selon l'utilisateur
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, \EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection $filters): QueryBuilder
-    {
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
         $user = $this->security->getUser();
         $qb = $this->doctrine->getRepository(Order::class)->createQueryBuilder('o');
 
-        if (in_array("ROLE_ADMIN", $user->getRoles())) {
+        // ===============================
+        // ADMIN
+        // ===============================
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             $qb->orderBy('o.order_date', 'DESC');
-            return $qb;
-        } elseif (in_array("ROLE_MERCHANT", $user->getRoles())) {
 
-            // Joindre la table BasketProduct pour obtenir les produits
-            $qb->join('o.basketProducts', 'bp')
-                ->join('bp.product', 'p')
-                ->join('p.shop', 's')
-                ->where('s.user = :merchant')
-                ->setParameter('merchant', $user)
-                ->orderBy('o.order_date', 'DESC'); // Tri par date décroissante
+            // 🔴 Filtrage spécial "Reembolso"
+            if ($entityDto->getFqcn() === Order::class) {
+                // ⚠️ Optionnel : seulement si tu viens du menu "Reembolso"
+                $request = $this->requestStack->getCurrentRequest();
+                if ($request && $request->query->get('filter') === 'reembolso') {
+                    $qb->andWhere('o.order_status = :status')
+                        ->andWhere('o.refund_status = :refund')
+                        ->setParameter('status', 'Reembolso')
+                        ->setParameter('refund', 'Em curso');
+                }
+            }
 
             return $qb;
         }
 
-        // Si ce n'est pas un "MERCHANT", renvoie simplement la requête de base
+        // ===============================
+        // MERCHANT
+        // ===============================
+        if (in_array('ROLE_MERCHANT', $user->getRoles(), true)) {
+            $qb->join('o.basketProducts', 'bp')
+                ->join('bp.product', 'p')
+                ->join('p.shop', 's')
+                ->andWhere('s.user = :merchant')
+                ->setParameter('merchant', $user)
+                ->orderBy('o.order_date', 'DESC');
+
+            return $qb;
+        }
+
         return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
     }
 
@@ -120,30 +145,8 @@ class OrderCrudController extends AbstractCrudController
                 'Reembolsado' => 'Reembolsado',
             ]);
         }
-        // Vérifier les rôles de l'utilisateur
-        // if (in_array("ROLE_ADMIN", $user->getRoles())) {
-        //     // Ajouter les champs spécifiques pour les utilisateurs avec les rôles ADMIN ou USER
-        //     return [
-        //         MoneyField::new('total_amount', 'Total')->setRequired(true)->setCurrency('CVE')->hideOnForm(),
-        //MoneyField::new('amountFinal', 'Total Final')->setFormTypeOption('attr', ['readonly' => true])->setCurrency('CVE')->setHelp('👉 CVE (escudos de Cabo Verde)'),
-        //         TextField::new('basketProductsList', 'Todos artigos'),
-
-        //         TextField::new('order_status', 'Estatus'),
-        //         TextField::new('beneficiary_name', 'Beneficiario')->hideOnForm(),
-        //         TextField::new('beneficiary_email', 'Email do Beneficiario')->hideOnForm(),
-        //         TextField::new('beneficiary_address', 'adereço do Beneficiario')->hideOnForm(),
-        //         TextareaField::new('internal_note', 'Notificação da loja')->hideOnForm(),
-        //         TextField::new('customer_note', 'Comentário do cliente')->hideOnForm(),
-        //         // Transfert vers BasketProduct
-        //         BooleanField::new('refund', 'Reembolso')->hideOnForm(),
-        //         TextField::new('refund_status', 'Status do reembolso')->hideOnForm(),
-        //         TextareaField::new('refund_note', 'Notificaçõ do reembolso')->hideOnForm(),
-        //     ];
-        // } else {
-
-
+        
         // Champ virtuel pour la classe CSS
-
         return [
 
             // Field::new('statusClass')->onlyOnIndex()
@@ -156,7 +159,7 @@ class OrderCrudController extends AbstractCrudController
             //     })
             //     ->setCssClass('hidden'), // on ne veut pas afficher ce champ
 
-            
+
             // ===== INDEX : affichage coloré =====
             TextField::new('orderStatus', $this->translator->trans('order.field.status'))
                 ->onlyOnIndex()
@@ -185,6 +188,9 @@ class OrderCrudController extends AbstractCrudController
             TextField::new('ref', $this->translator->trans('order.field.reference'))
                 ->setFormTypeOption('attr', ['readonly' => true]),
 
+            TextField::new('basket.user.lastName', $this->translator->trans('order.field.customer'))->hideOnIndex(),
+            TextField::new('basket.user.email', $this->translator->trans('order.field.customer_email'))->hideOnIndex(),
+
             DateTimeField::new('orderDate', $this->translator->trans('orders.date'))
                 ->hideOnForm()
                 ->formatValue(function ($value) {
@@ -206,7 +212,7 @@ class OrderCrudController extends AbstractCrudController
             TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
             TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
             TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
-                ->setFormTypeOption('mapped', false)
+                // ->setFormTypeOption('mapped', false)
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
 
             // ===== FORM (EDIT / NEW) : ChoiceField normal =====
@@ -261,7 +267,6 @@ class OrderCrudController extends AbstractCrudController
                 ->hideOnIndex()->setFormTypeOption('disabled', true),
         ];
 
-        // }
     }
 
 
@@ -288,110 +293,17 @@ class OrderCrudController extends AbstractCrudController
 
 
 
-    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    // {
-    //     if (!$entityInstance instanceof Order) {
-    //         return;
-    //     }
-
-    //     $status = $entityInstance->getOrderStatus();
-    //     $internalNote = $entityInstance->getInternalNote();
-
-    //     // Si livré, on préremplit la note s'il n'y en a pas
-    //     if ($status === 'Entregue e finalizado') {
-    //         $entityInstance->setRefund(false);
-    //         $entityInstance->setRefundAmount(null);
-    //         $entityInstance->setRefundStatus('');
-    //         if (empty($internalNote)) {
-    //             $entityInstance->setInternalNote("Todos os produtos foram entregues com sucesso, volte sempre. Nossa Equipa agradece!");
-    //         }
-    //     }
-
-    //     // Si remboursement
-    //     if ($status === 'Reembolso') {
-    //         $entityInstance->setRefund(true);
-    //         $entityInstance->setInternalNote('A encomenda foi cancelada.');
-
-    //         // Validation obligatoire
-    //         if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
-    //             $this->addFlash('danger', '❌ Reembolso: O montante e o estado do reembolso são obrigatórios.');
-
-    //             $request = $this->requestStack->getCurrentRequest();
-    //             $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
-
-    //             (new RedirectResponse($referer))->send();
-    //             exit;
-    //         }
-    //         if (empty($entityInstance->getRefundNote())) {
-    //             $entityInstance->setRefundNote('o reenbolso esta en courso.');
-    //         }
-
-    //         if ($entityInstance->getRefundStatus() === "Reembolsado") {
-    //             $entityInstance->setRefundNote(
-    //                 'O reembolso foi concluído em ' . (new \DateTime())->format('d/m/Y H:i') .
-    //                 '. O valor estará disponível na sua conta entre três e oito dias úteis, conforme os prazos do seu banco.'
-    //             );
-    //         }
-
-    //     }
-
-    //     // Vérifie le code secret pour les merchants
-    //     if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
-    //         $merchantCode = $entityInstance->getMerchantSecretCode();
-    //         $autoCode = $entityInstance->getAutoSecretCode();
-
-    //         if ($merchantCode === null || $merchantCode !== $autoCode) {
-    //             $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
-
-    //             $request = $this->requestStack->getCurrentRequest();
-    //             $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
-
-    //             (new RedirectResponse($referer))->send();
-    //             exit;
-    //         } else {
-    //             $this->addFlash('success', 'Registrado com sucesso');
-    //         }
-    //     }
-
-    //     parent::updateEntity($entityManager, $entityInstance);
-    // }
-
-
-
-
-
-    // public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-//     {
-//         if (!$entityInstance instanceof Order) {
-//             return;
-//         }
-
-    //         if (in_array('ROLE_MERCHANT', $this->security->getUser()->getRoles())) {
-//             $merchantCode = $entityInstance->getMerchantSecretCode();
-//             $autoCode = $entityInstance->getAutoSecretCode();
-
-    //             if ($merchantCode === null || $merchaantCode !== $autoCode) {
-//                 $this->addFlash('danger', '❌ O código secreto está incorreto. Por favor, insira o código correto.');
-
-    //                 // Redirige proprement vers la même page
-//                 $request = $this->requestStack->getCurrentRequest();
-//                 $referer = $request->headers->get('referer') ?? $this->router->generate('admin');
-
-    //                 // Envoi d'une réponse de redirection
-//                 (new RedirectResponse($referer))->send();
-//                 exit;
-//             } else {
-//                 $this->addFlash('success', ' Registrado com sucesso');
-
-    //             }
-//         }
-
-    //         parent::updateEntity($entityManager, $entityInstance);
-//     }
-
-
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance, ): void
     {
+        $clientName = $entityInstance->getBasket()->getUser()->getFirstName() . " " . $entityInstance->getBasket()->getUser()->getLastName();
+        $ref_order = $entityInstance->getRef();
+        $clientEmail = $entityInstance->getBasket()->getUser()->getEmail();
+        $admins = $this->userRepository->findAdmins();
+        $adminEmails = array_map(
+            fn($admin) => $admin->getEmail(),
+            $admins
+        );
+
         if (!$entityInstance instanceof Order) {
             return;
         }
@@ -412,6 +324,28 @@ class OrderCrudController extends AbstractCrudController
                     $this->translator->trans('order.note.delivered')
                 );
             }
+
+            // ------------envoyer email au client----------------------------------------------------------------
+            $recapContent = <<<EOD
+            <html>
+                <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">         
+                    <p>Olá, <strong>{$clientName}</strong>,</p>
+                    <p>A sua encomenda referencia: <strong>{$ref_order}</strong> foi entregue e finalizado. Obrigado e volta sempre.</p>
+                    
+                    <p style="margin-top: 30px;">
+                        Atenciosamente,<br>
+                        <strong>FALKON-ANK Alimentason</strong>
+                    </p>
+                </body>
+            </html>
+            EOD;
+            $emailClient = (new Email())
+                ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
+                ->to($clientEmail)
+                ->subject('Novo encomenda')
+                ->html($recapContent);
+            // envoier l'email
+            $this->mailer->send($emailClient);
         }
 
         // ===============================
@@ -443,18 +377,66 @@ class OrderCrudController extends AbstractCrudController
                 $entityInstance->setRefundNote(
                     $this->translator->trans('order.note.refund_pending')
                 );
+
+                // ------------envoyer email au admin----------------------------------------------------------------
+                $recapContent = <<<EOD
+                <html>
+                    <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">         
+                        <p>Olá Adim, <strong>{$clientName}</strong>,</p>
+                        <p>Uma encomenda a ser reembolsada, referencia: <strong>{$ref_order}</p>
+                        
+                        <p style="margin-top: 30px;">
+                            Atenciosamente,<br>
+                            <strong>FALKON-ANK Alimentason</strong>
+                        </p>
+                    </body>
+                </html>
+                EOD;
+                $emailAdmin = (new Email())
+                    ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
+                    ->to(...$adminEmails)
+                    ->subject('Novo Reembolso')
+                    ->html($recapContent);
+                // envoier l'email
+                $this->mailer->send($emailAdmin);
             }
 
             // 🟢 Remboursement terminé
             if ($entityInstance->getRefundStatus() === 'Reembolsado') {
+                $amountCVe = $entityInstance->getRefundAmount() / 100;
                 $entityInstance->setRefundNote(
                     $this->translator->trans(
                         'order.note.refund_completed',
                         [
                             '%date%' => (new \DateTime())->format('d/m/Y H:i'),
+                            '%amountcve%' => $amountCVe,
                         ]
                     )
                 );
+                $entityInstance->setOrderStatus("Reembolsado");
+
+                // ------------envoyer email au client----------------------------------------------------------------
+                $recapContent = <<<EOD
+                <html>
+                    <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">         
+                        <p>Olá, <strong>{$clientName}</strong>,</p>
+                        <p>A sua encomenda referencia: <strong>{$ref_order}</strong> foi anulada, e reembolsada.</p>
+                        <p>{$this->translator->trans('order.note.refund_completed', ['%date%' => (new \DateTime())->format('d/m/Y H:i'), '%amountcve%' => $amountCVe,])}</p>
+                        
+                        <p style="margin-top: 30px;">
+                            Atenciosamente,<br>
+                            <strong>FALKON-ANK Alimentason</strong>
+                        </p>
+                    </body>
+                </html>
+                EOD;
+                $emailClient = (new Email())
+                    ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
+                    ->to($clientEmail)
+                    ->subject('Encomenda Reembolsada')
+                    ->html($recapContent);
+                // envoier l'email
+                $this->mailer->send($emailClient);
             }
         }
 

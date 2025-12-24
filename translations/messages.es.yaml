@@ -403,6 +403,8 @@ order:
     items: "Artículos"
     internal_note: "Nota interna"
     merchant_secret_code: "Código secreto"
+    customer: "Cliente"
+    customer_email: "Correo electrónico del cliente"
     customer_note2: "Comentario cliente"
     refund: "Reembolso"
     refund_amount: "Importe"
@@ -420,7 +422,7 @@ order:
     delivered: "Todos los productos fueron entregados con éxito. ¡Gracias por su confianza!"
     refund: "El pedido ha sido cancelado."
     refund_pending: "El reembolso está en curso."
-    refund_completed: "El reembolso se completó el %date%. El monto estará disponible en su cuenta entre tres y ocho días hábiles, según los plazos de su banco."
+    refund_completed: "El reembolso se completó el %date%. El monto (%amountcve% escudos CV) estará disponible en su cuenta entre tres y ocho días hábiles, según los plazos de su banco."
 
   flash:
     refund_required: "❌ Reembolso: El importe y el estado del reembolso son obligatorios."

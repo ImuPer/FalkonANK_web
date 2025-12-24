@@ -403,6 +403,8 @@ order:
     items: Items
     internal_note: "Internal note"
     merchant_secret_code: "Secret code"
+    customer: "Customer"
+    customer_email: "Customer email"
     customer_note2: "Customer note"
     refund: "Refund"
     refund_amount: "Amount"
@@ -420,7 +422,7 @@ order:
     delivered: "All products have been delivered successfully. Thank you for your trust!"
     refund: "The order has been canceled."
     refund_pending: "Refund is in progress."
-    refund_completed: "The refund was completed on %date%. The amount will be available in your account within three to eight business days, depending on your bank."
+    refund_completed: "The refund was completed on %date%. The amount (%amountcve% escudos CV) will be available in your account within three to eight business days, depending on your bank."
 
   flash:
     refund_required: "❌ Refund: The amount and refund status are required."

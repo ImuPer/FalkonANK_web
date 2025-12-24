@@ -35,7 +35,7 @@ class DashboardController extends AbstractDashboardController
         private AdminUrlGenerator $adminUrlGenerator,
         private MerchantRepository $merchantRepository,
         private ContactRepository $contactRepository,
-        private OrderRepository $orderRepository 
+        private OrderRepository $orderRepository
     ) {
     }
     #[Route('/', name: 'admin')]
@@ -83,7 +83,10 @@ class DashboardController extends AbstractDashboardController
             // 🔽 Contact
             // yield MenuItem::linkToCrud('Contactos', 'fas fa-envelope', Contact::class);
             $Count_c = $this->contactRepository->countContactsWithoutResponse();
-            yield MenuItem::linkToCrud('Contactos','fas fa-envelope',Contact::class
+            yield MenuItem::linkToCrud(
+                'Contactos',
+                'fas fa-envelope',
+                Contact::class
             )->setBadge($Count_c > 0 ? (string) $Count_c : null, 'danger');
 
             yield MenuItem::subMenu('Users', 'fas fa-users')->setSubItems([
@@ -111,12 +114,44 @@ class DashboardController extends AbstractDashboardController
                 'Merchant request',
                 'fa-solid fa-shop-lock',
                 Merchant::class
-            )
-                ->setBadge($pendingCount > 0 ? (string) $pendingCount : null, 'danger');
+            )->setBadge($pendingCount > 0 ? (string) $pendingCount : null, 'danger');
 
             yield MenuItem::linkToCrud('Shops', ' fas fa-store fa-2x text-primary', Shop::class);
             yield MenuItem::linkToCrud('BasketProducts', 'fas fa-eye', BasketProduct::class);
+
+            // Menu principal "Orders"
             yield MenuItem::linkToCrud('Orders', 'fas fa-shopping-cart', Order::class);
+
+            // Compteur des commandes "Reembolso" en cours
+            $countRefundInProgress = $this->orderRepository->countRefundInProgress();
+
+            // Sous-menu "Reembolso" à l'intérieur d'Orders
+            yield MenuItem::linkToUrl(
+                'Reembolso',
+                'fa-solid fa-shop-lock',
+                $this->adminUrlGenerator
+                    ->setController(OrderCrudController::class)
+                    ->setAction(Crud::PAGE_INDEX)
+                    ->set('filter', 'reembolso')
+                    ->generateUrl()
+            )
+            ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
+
+            // yield MenuItem::linkToCrud(
+            //     'Reembolso',
+            //     'fa-solid fa-shop-lock',
+            //     Order::class
+            // )
+            //     ->setController(OrderCrudController::class) // si nécessaire pour rediriger vers le CRUD
+            //     ->setUrl(
+            //         $this->adminUrlGenerator
+            //             ->setController(OrderCrudController::class)
+            //             ->setAction('index')
+            //             ->set('filter', 'reembolso')
+            //             ->generateUrl()
+            //     )
+            //     ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
+
 
             // 🔽 Lien vers /merchant/accounting
             yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');
