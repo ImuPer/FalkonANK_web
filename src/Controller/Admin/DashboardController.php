@@ -162,10 +162,8 @@ class DashboardController extends AbstractDashboardController
                 yield MenuItem::section('E-Commerce');
                 yield MenuItem::section('Catálogos de produtos');
 
-                yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
-
                 yield MenuItem::linkToCrud('Minha Loja', ' fas fa-store fa-2x text-primary', Shop::class);
-
+                yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
                 $Count_o = $this->orderRepository->countPendingOrMissingSecret();
                 yield MenuItem::subMenu('Encomendas', 'fas fa-shopping-cart')->setSubItems([
                     MenuItem::linkToCrud(
