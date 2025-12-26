@@ -115,7 +115,7 @@ checkout.select_city: "Selecione uma cidade"
 checkout.name: "Nome"
 checkout.address: "Endereço do Beneficiário"
 checkout.email: "Email (opcional)"
-checkout.phone: "Número de telemóvel (opcional)"
+checkout.phone: "Número de telemóvel (Telefone)"
 checkout.confirm: "Confirmar e Pagar"
 
 
@@ -142,7 +142,27 @@ page:
   title: "Molduras Digitais Personalizadas"
   subtitle: "(Família / Profissional)"
   
+
 product:
+  label:
+    singular: "Produto"
+    plural: "Produtos"
+  page:
+    index: "Produtos"
+    new: "Novo Produto"
+    edit: "Editar Produto"
+  field:
+    label: "Rótulo do produto"
+    weight: "Peso (Kg)"
+    name: "Nome"
+    price: "Preço"
+    dimension: "Dimensão  (cm)"
+    description: "Descrição"
+    image: "Imagem"
+  help:
+    price: "👉 CVE (escudos de Cabo Verde)"
+    dimension: "👉 Dimensão no formato: L × H × C (largura × altura × comprimento)"
+    image: "Se não selecionar uma nova imagem, a imagem atual será mantida."
   detail:
     title: "Artigo"
     add_to_cart: "Adicionar ao Carrinho"
@@ -400,7 +420,7 @@ order:
     reference: "Referência"
     final_price2: "Preço final (Total + comissão da plataforma)"
     beneficiary_name: "Beneficiário"
-    beneficiary_email: "Email do beneficiário"
+    beneficiary_email: "Email"
     beneficiary_address: "Endereço beneficiário"
     items: "Artigos"
     internal_note: "Notificação loja"
@@ -441,8 +461,6 @@ order:
   refund:
     field:
       status: Estado do reembolso
-
-
 
 
 currency:
@@ -829,3 +847,4 @@ receipt.signature: "Atenciosamente,"
 
 products.table.item: "Item"
 products.table.store: "Loja"
+

@@ -116,7 +116,7 @@ checkout.select_city: "Selecciona una ciudad"
 checkout.name: "Nombre"
 checkout.address: "Dirección del Beneficiario"
 checkout.email: "Correo electrónico (opcional)"
-checkout.phone: "Número de teléfono (opcional)"
+checkout.phone: "Número de teléfono"
 checkout.confirm: "Confirmar y Pagar"
 
 
@@ -142,6 +142,25 @@ page:
   subtitle: "(Familiar / Profesional)"
 
 product:
+  label:
+    singular: "Producto"
+    plural: "Productos"
+  page:
+    index: "Productos"
+    new: "Nuevo producto"
+    edit: "Editar producto"
+  field:
+    label: "Etiqueta del producto"
+    weight: "Peso (Kg)"
+    name: "Nombre"
+    price: "Precio"
+    dimension: "Dimensiones  (cm)"
+    description: "Descripción"
+    image: "Imagen"
+  help:
+    price: "👉 CVE (escudo caboverdiano)"
+    dimension: "👉 Formato de dimensiones: A × H × L (ancho × alto × largo)"
+    image: "Si no se selecciona una nueva imagen, se mantendrá la imagen actual."
   detail:
     title: "Artículo"
     add_to_cart: "Añadir al Carrito"

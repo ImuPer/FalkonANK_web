@@ -59,6 +59,12 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Shop $shop = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $weight = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $dimension = null;
+
     
     public function __construct()
     {
@@ -287,5 +293,29 @@ class Product
 //         'final_price' => $finalPrice
 //     ];
 // }
+
+public function getWeight(): ?string
+{
+    return $this->weight;
+}
+
+public function setWeight(?string $weight): static
+{
+    $this->weight = $weight;
+
+    return $this;
+}
+
+public function getDimension(): ?string
+{
+    return $this->dimension;
+}
+
+public function setDimension(?string $dimension): static
+{
+    $this->dimension = $dimension;
+
+    return $this;
+}
 
 }

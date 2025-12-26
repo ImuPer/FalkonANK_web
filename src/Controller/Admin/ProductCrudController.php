@@ -22,6 +22,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,13 +46,17 @@ class ProductCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInPlural('Produtos')
-            ->setEntityLabelInSingular('Produto')
-            ->setPageTitle(Crud::PAGE_INDEX, 'Produtos')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Editar Produto')
-            ->setPageTitle(Crud::PAGE_NEW, 'Novo Produto')
-            ->setPageTitle(Crud::PAGE_DETAIL, fn(Product $product) => (string) $product->getName());
+            ->setEntityLabelInPlural('product.label.plural')
+            ->setEntityLabelInSingular('product.label.singular')
+            ->setPageTitle(Crud::PAGE_INDEX, 'product.page.index')
+            ->setPageTitle(Crud::PAGE_NEW, 'product.page.new')
+            ->setPageTitle(Crud::PAGE_EDIT, 'product.page.edit')
+            ->setPageTitle(
+                Crud::PAGE_DETAIL,
+                fn(Product $product) => $product->getName()
+            );
     }
+
 
     public static function getEntityFqcn(): string
     {
@@ -65,9 +70,9 @@ class ProductCrudController extends AbstractCrudController
             ->setCssClass('btn btn-info');
 
         if ($this->isGranted('ROLE_ADMIN')) {
-        // Si admin, on désactive aussi INDEX
-        $actions = $actions
-            ->disable(Action::NEW);
+            // Si admin, on désactive aussi INDEX
+            $actions = $actions
+                ->disable(Action::NEW);
         }
 
 
@@ -83,18 +88,21 @@ class ProductCrudController extends AbstractCrudController
         $isEditPage = $pageName === Crud::PAGE_EDIT;  // Vérifie si c'est la page d'édition
 
         return [
-            TextField::new('name', 'Nome do Produto')->setRequired(true),
-            MoneyField::new('price', 'Preço')->setRequired(true)->setCurrency('CVE')
-            ->setHelp('👉 CVE (escudos de Cabo Verde)'),
-            TextField::new('label', 'Rótulo de Produto')->setRequired(true),
-            TextareaField::new('description')->setRequired(true),
-            ImageField::new('img', 'imagem')
+            TextField::new('name', 'product.field.name')->setRequired(true),
+            MoneyField::new('price', 'product.field.price')->setRequired(true)->setCurrency('CVE')
+                ->setHelp('product.help.price'),
+            TextField::new('label', 'product.field.label')->setRequired(true),
+            TextEditorField::new('description', 'product.field.description')->setRequired(true)->hideOnIndex(),
+            TextField::new('weight', 'product.field.weight')->hideOnIndex(),
+            TextField::new('dimension', 'product.field.dimension')->hideOnIndex()
+                ->setHelp('product.help.dimension'),
+            ImageField::new('img', 'product.field.image')
                 ->setBasePath(self::PRODUCTS_BASE_PATH)
                 ->setUploadDir(self::PRODUCTS_UPLOAD_DIR)
                 ->setSortable(false)
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
                 //->onlyOnForms()  // Afficher seulement dans le formulaire
-                ->setHelp('Em caso de modificação, se não selecionar uma nova imagem, a imagem atual será mantida.')
+                ->setHelp('product.help.image')
                 ->setRequired($isCreatePage),  // L'image est requise uniquement sur la page de création (Add Product)
 
             AssociationField::new('category')->setQueryBuilder(function (QueryBuilder $queryBuilder) {

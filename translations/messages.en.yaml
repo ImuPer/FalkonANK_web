@@ -116,7 +116,7 @@ checkout.select_city: "Select a city"
 checkout.name: "Name"
 checkout.address: "Beneficiary Address"
 checkout.email: "Email (optional)"
-checkout.phone: "Phone number (optional)"
+checkout.phone: "Phone number"
 checkout.confirm: "Confirm and Pay"
 
 
@@ -142,6 +142,25 @@ page:
   subtitle: "(Family / Professional)"
   
 product:
+  label:
+    singular: "Product"
+    plural: "Products"
+  page:
+    index: "Products"
+    new: "New Product"
+    edit: "Edit Product"
+  field:
+    label: "Product label"
+    weight: "Weight (Kg)"
+    name: "Name"
+    price: "Price"
+    dimension: "Dimensions  (cm)"
+    description: "Description"
+    image: "Image"
+  help:
+    price: "👉 CVE (Cape Verdean escudo)"
+    dimension: "👉 Dimensions format: W × H × L (width × height × length)"
+    image: "If no new image is selected, the current image will be kept."
   detail:
     title: "Product"
     add_to_cart: "Add to Cart"

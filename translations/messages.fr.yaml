@@ -116,7 +116,7 @@ checkout.select_city: "Sélectionnez une ville"
 checkout.name: "Nom"
 checkout.address: "Adresse du bénéficiaire"
 checkout.email: "Email (optionnel)"
-checkout.phone: "Numéro de téléphone (optionnel)"
+checkout.phone: "Numéro de téléphone"
 checkout.confirm: "Confirmer et payer"
 
 
@@ -143,6 +143,25 @@ page:
   subtitle: "(Famille / Professionnel)"
   
 product:
+  label:
+    singular: "Produit"
+    plural: "Produits"
+  page:
+    index: "Produits"
+    new: "Nouveau produit"
+    edit: "Modifier le produit"
+  field:
+    label: "Libellé du produit"
+    weight: "Poids (Kg)"
+    name: "Nom"
+    price: "Prix"
+    dimension: "Dimensions  (cm)"
+    description: "Description"
+    image: "Image"
+  help:
+    price: "👉 CVE (escudos du Cap-Vert)"
+    dimension: "👉 Format : L × H × C (largeur × hauteur × longueur)"
+    image: "Si aucune image n’est sélectionnée, l’image actuelle sera conservée."
   detail:
     title: "Article"
     add_to_cart: "Ajouter au panier"

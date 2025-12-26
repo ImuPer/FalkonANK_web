@@ -312,5 +312,4 @@ public function removeMerchant(Merchant $merchant): static
 }
 
 
-
 }

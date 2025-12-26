@@ -207,8 +207,9 @@ class OrderCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->setHelp($this->translator->trans('order.help.currency_cve')),
 
-            TextEditorField::new('beneficiary_name', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
+            TextEditorField::new('beneficiaryName', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
             TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
+            TextEditorField::new('phone',)->hideOnForm(),
             TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
             TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
             TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
@@ -241,8 +242,8 @@ class OrderCrudController extends AbstractCrudController
                 ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
                 ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
 
-            TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
-                ->hideOnForm(),
+            // TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
+            //     ->hideOnForm(),
 
             BooleanField::new('refund', $this->translator->trans('order.field.refund'))
                 ->hideOnIndex()
