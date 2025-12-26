@@ -155,6 +155,9 @@ product:
     name: "Nombre"
     price: "Precio"
     dimension: "Dimensiones  (cm)"
+    dimensionW: "ancho (cm)"
+    dimensionH: "alto (cm)"
+    dimensionL: "largo (cm)"
     description: "Descripción"
     image: "Imagen"
   help:

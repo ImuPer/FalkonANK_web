@@ -48,11 +48,11 @@
 
             {% if product.weight %}
                 <h5 style="margin-top: 1%;">{{ 'product.field.weight'|trans }}</h5>
-                <p>{{ product.weight }}</p>
+                <p><small>{{ product.weight }}</small></p>
             {% endif %}
-            {% if product.dimension %}
+            {% if product.dimensionW and product.dimensionH and product.dimensionL %}
                 <h5 style="margin-top: 1%;">{{ 'product.field.dimension'|trans }}</h5>
-                <p>{{ product.dimension }}</p>
+                <p><small>({{ product.dimensionW }} x {{ product.dimensionH }} x {{ product.dimensionL }})</small></p>
             {% endif %}
         </div>
 

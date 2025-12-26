@@ -37,6 +37,7 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $img = null;
 
+    // 💰 Prix (DECIMAL → string en PHP)
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
@@ -50,26 +51,34 @@ class Product
     #[ORM\Column]
     private ?bool $active = null;
 
-    /**
-     * @var Collection<int, BasketProduct>
-     */
-    #[ORM\OneToMany(targetEntity: BasketProduct::class, mappedBy: 'product')]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: BasketProduct::class)]
     private Collection $basketProducts;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Shop $shop = null;
 
+    // ⚖️ Poids (ex: "1.5 kg")
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $weight = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $dimension = null;
+    // 📐 Dimensions en cm (DECIMAL)
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
+    private ?string $dimensionW = null;
 
-    
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
+    private ?string $dimensionH = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
+    private ?string $dimensionL = null;
+
     public function __construct()
     {
         $this->basketProducts = new ArrayCollection();
     }
+
+    // =====================
+    // Getters / Setters
+    // =====================
 
     public function getId(): ?int
     {
@@ -84,7 +93,6 @@ class Product
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -96,7 +104,6 @@ class Product
     public function setLabel(string $label): static
     {
         $this->label = $label;
-
         return $this;
     }
 
@@ -108,7 +115,6 @@ class Product
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -120,7 +126,6 @@ class Product
     public function setDateAt(\DateTimeImmutable $date_at): static
     {
         $this->date_at = $date_at;
-
         return $this;
     }
 
@@ -132,7 +137,6 @@ class Product
     public function setUpdateAt(?\DateTimeImmutable $update_at): static
     {
         $this->update_at = $update_at;
-
         return $this;
     }
 
@@ -144,7 +148,6 @@ class Product
     public function setUserEmail(string $user_email): static
     {
         $this->user_email = $user_email;
-
         return $this;
     }
 
@@ -156,7 +159,6 @@ class Product
     public function setImg(string $img): static
     {
         $this->img = $img;
-
         return $this;
     }
 
@@ -168,7 +170,6 @@ class Product
     public function setPrice(string $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -180,7 +181,6 @@ class Product
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
-
         return $this;
     }
 
@@ -192,7 +192,6 @@ class Product
     public function setStock(int $stock): static
     {
         $this->stock = $stock;
-
         return $this;
     }
 
@@ -204,37 +203,6 @@ class Product
     public function setActive(bool $active): static
     {
         $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BasketProduct>
-     */
-    public function getBasketProducts(): Collection
-    {
-        return $this->basketProducts;
-    }
-
-    public function addBasketProduct(BasketProduct $basketProduct): static
-    {
-        if (!$this->basketProducts->contains($basketProduct)) {
-            $this->basketProducts->add($basketProduct);
-            $basketProduct->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBasketProduct(BasketProduct $basketProduct): static
-    {
-        if ($this->basketProducts->removeElement($basketProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($basketProduct->getProduct() === $this) {
-                $basketProduct->setProduct(null);
-            }
-        }
-
         return $this;
     }
 
@@ -246,76 +214,66 @@ class Product
     public function setShop(?Shop $shop): static
     {
         $this->shop = $shop;
-
         return $this;
     }
 
-    public function getFinalPrice(float $platformRate = 0.10, float $stripeRate = 0.029, float $stripeFixed = 0.25): float
-{
-    // Prix de base (depuis la BDD)
-    $basePrice = (float) $this->price;
+    public function getWeight(): ?string
+    {
+        return $this->weight;
+    }
 
-    // Commission de la plateforme (ex : 10%)
-    $platformCommission = $basePrice * $platformRate;
+    public function setWeight(?string $weight): static
+    {
+        $this->weight = $weight;
+        return $this;
+    }
 
-    // Prix temporaire avant Stripe
-    $subtotal = $basePrice + $platformCommission;
+    public function getDimensionW(): ?string
+    {
+        return $this->dimensionW;
+    }
 
-    // Commission Stripe (ex : 2.9% + 0.25€)
-    $stripeCommission = ($subtotal * $stripeRate) + $stripeFixed;
+    public function setDimensionW(?string $dimensionW): static
+    {
+        $this->dimensionW = $dimensionW;
+        return $this;
+    }
 
-    // Prix total que le client doit payer
-    return round($subtotal + $stripeCommission, 2);
-}
+    public function getDimensionH(): ?string
+    {
+        return $this->dimensionH;
+    }
 
-// public function getFinalPriceDetails(float $platformRate = 0.10, float $stripeRate = 0.029, float $stripeFixed = 0.25): array
-// {
-//     // Prix de base (ex : prix du produit depuis la BDD)
-//     $basePrice = (float) $this->price;
+    public function setDimensionH(?string $dimensionH): static
+    {
+        $this->dimensionH = $dimensionH;
+        return $this;
+    }
 
-//     // Commission de la plateforme
-//     $platformCommission = $basePrice * $platformRate;
+    public function getDimensionL(): ?string
+    {
+        return $this->dimensionL;
+    }
 
-//     // Prix après ajout de la commission de la plateforme
-//     $subtotal = $basePrice + $platformCommission;
+    public function setDimensionL(?string $dimensionL): static
+    {
+        $this->dimensionL = $dimensionL;
+        return $this;
+    }
 
-//     // Commission Stripe
-//     $stripeCommission = ($subtotal * $stripeRate) + $stripeFixed;
+    // =====================
+    // Prix final (exemple)
+    // =====================
+    public function getFinalPrice(
+        float $platformRate = 0.10,
+        float $stripeRate = 0.029,
+        float $stripeFixed = 0.25
+    ): float {
+        $basePrice = (float) $this->price;
+        $platformCommission = $basePrice * $platformRate;
+        $subtotal = $basePrice + $platformCommission;
+        $stripeCommission = ($subtotal * $stripeRate) + $stripeFixed;
 
-//     // Prix final payé par le client
-//     $finalPrice = round($subtotal + $stripeCommission, 2);
-
-//     // Retour sous forme de tableau associatif
-//     return [
-//         'base_price' => round($basePrice, 2),
-//         'platform_commission' => round($platformCommission, 2),
-//         'stripe_commission' => round($stripeCommission, 2),
-//         'final_price' => $finalPrice
-//     ];
-// }
-
-public function getWeight(): ?string
-{
-    return $this->weight;
-}
-
-public function setWeight(?string $weight): static
-{
-    $this->weight = $weight;
-
-    return $this;
-}
-
-public function getDimension(): ?string
-{
-    return $this->dimension;
-}
-
-public function setDimension(?string $dimension): static
-{
-    $this->dimension = $dimension;
-
-    return $this;
-}
-
+        return round($subtotal + $stripeCommission, 2);
+    }
 }

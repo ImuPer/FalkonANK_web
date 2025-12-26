@@ -21,6 +21,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -94,8 +95,29 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('label', 'product.field.label')->setRequired(true),
             TextEditorField::new('description', 'product.field.description')->setRequired(true)->hideOnIndex(),
             TextField::new('weight', 'product.field.weight')->hideOnIndex(),
-            TextField::new('dimension', 'product.field.dimension')->hideOnIndex()
-                ->setHelp('product.help.dimension'),
+
+            NumberField::new('dimensionW', 'product.field.dimensionW')
+                ->setNumDecimals(2)
+                ->hideOnIndex()
+                ->setRequired(true)
+                ->setHelp('product.help.dimension')
+                ->setColumns(4),
+
+            NumberField::new('dimensionH', 'product.field.dimensionH')
+                ->setNumDecimals(2)
+                ->hideOnIndex()
+                ->setRequired(true)
+                // ->setHelp('product.help.dimension')
+                ->setColumns(4),
+
+            NumberField::new('dimensionL', 'product.field.dimensionL')
+                ->setNumDecimals(2)
+                ->hideOnIndex()
+                ->setRequired(true)
+                // ->setHelp('product.help.dimension')
+                ->setColumns(4),
+
+
             ImageField::new('img', 'product.field.image')
                 ->setBasePath(self::PRODUCTS_BASE_PATH)
                 ->setUploadDir(self::PRODUCTS_UPLOAD_DIR)
