@@ -8,7 +8,7 @@
         <li><strong>Email:</strong> {{ shop.email }}</li>
         <li><strong>Téléphone fixe:</strong> {{ shop.phone }}</li>
         <li><strong>Téléphone portable:</strong> {{ shop.mobile_phone }}</li>
-        <li><strong>Description:</strong> {{ shop.description }}</li>
+        <li><strong>Description:</strong> {{ shop.description|raw }}</li>
         <li><strong>Horaires:</strong> {{ shop.horario }}</li>
     </ul>
 {% endblock %}

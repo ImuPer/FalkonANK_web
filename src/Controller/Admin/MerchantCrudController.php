@@ -115,7 +115,7 @@ class MerchantCrudController extends AbstractCrudController
                 if (empty(trim($entityInstance->getReponse()))) {
                     $lastName = $user->getLastName();
                     $automaticResponse = sprintf(
-                        '%s, seja bem vindo (a). O seu pedido foi aceite! E pode aceder ao seu espaço Comerciante através do "botão comerciante" ou o "ícone azul" no cabeçalho da página.',
+                        '%s, seja bem-vindo(a)! O seu pedido foi aceite com sucesso. Já pode aceder ao seu Espaço Comerciante através do botão "Comerciante" ou do ícone azul no cabeçalho da página. No seu espaço, deverá registar oficialmente a sua loja e, em seguida, adicionar os seus produtos.',
                         $lastName
                     );
                     $entityInstance->setReponse($automaticResponse);

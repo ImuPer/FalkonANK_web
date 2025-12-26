@@ -63,8 +63,7 @@ class ShopCrudController extends AbstractCrudController
             TextEditorField::new('email', 'Email da loja')->hideOnForm(),
             TextField::new('email', 'Email da loja')->setRequired(true)->hideOnIndex()->setHelp('👉 é o nome que vai aparcer para os clientes!'),
 
-            TextEditorField::new('description', 'Descriçao')->hideOnForm(),
-            TextareaField::new('description', 'Descriçao')->setRequired(true)->hideOnIndex(),
+            TextEditorField::new('description', 'Descriçao')->setRequired(true),
 
             TextEditorField::new('horario', 'Horario ')->hideOnForm(),
             TextareaField::new('horario', 'Horario ')->setRequired(true)->hideOnIndex(),
