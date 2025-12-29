@@ -167,8 +167,6 @@ class AccountingService
         return $conn->executeQuery($sql)->fetchAllAssociative();
     }
 
-
-
     /**
      * Chiffre d'affaires global par produit (avec nom & email shop).
      */
@@ -233,26 +231,26 @@ class AccountingService
         $conn = $this->em->getConnection();
 
         $sql = "
-        SELECT 
-            DATE_FORMAT(o.order_date, '%Y-%m') AS month,
-            o.ref AS order_ref,
-            o.stripe_pay_id AS stripe_pay_id,
-            o.amount_final AS amount_final,
-            o.order_date,
-            o.order_status,
-            o.refund_amount,
-            SUM(bp.quantity * p.price) AS total_amount,
-            u.email AS customer_email
-        FROM basket_product bp
-        JOIN product p ON bp.product_id = p.id
-        JOIN shop s ON p.shop_id = s.id
-        JOIN `user` u ON s.user_id = u.id
-        JOIN `order` o ON bp.order_c_id = o.id
-        WHERE o.order_status = 'Entregue e finalizado'
-          AND s.id = :shopId
-        GROUP BY month, o.id, o.order_date, o.order_status, o.refund_amount, u.email
-        ORDER BY month DESC, o.order_date DESC
-    ";
+            SELECT 
+                DATE_FORMAT(o.order_date, '%Y-%m') AS month,
+                o.ref AS order_ref,
+                o.stripe_pay_id AS stripe_pay_id,
+                o.amount_final AS amount_final,
+                o.order_date,
+                o.order_status,
+                o.refund_amount,
+                SUM(bp.quantity * p.price) AS total_amount,
+                u.email AS customer_email
+            FROM basket_product bp
+            JOIN product p ON bp.product_id = p.id
+            JOIN shop s ON p.shop_id = s.id
+            JOIN `user` u ON s.user_id = u.id
+            JOIN `order` o ON bp.order_c_id = o.id
+            WHERE o.order_status = 'Entregue e finalizado'
+            AND s.id = :shopId
+            GROUP BY month, o.id, o.order_date, o.order_status, o.refund_amount, u.email
+            ORDER BY month DESC, o.order_date DESC
+            ";
 
         return $conn->executeQuery($sql, ['shopId' => $shopId])->fetchAllAssociative();
     }

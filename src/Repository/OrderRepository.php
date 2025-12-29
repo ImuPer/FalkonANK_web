@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -72,6 +73,34 @@ class OrderRepository extends ServiceEntityRepository
     }
 
     /**
+     * Compte le nombre d'ordres en traitement ou sans merchantSecretCode pour un merchant spécifique
+     */
+    public function countPendingOrMissingSecretByMerchant(User $merchantUser): int
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        // Join com basketProducts → product → shop → user
+        $qb->select('COALESCE(COUNT(DISTINCT o.id), 0)')
+            ->join('o.basketProducts', 'bp')
+            ->join('bp.product', 'p')
+            ->join('p.shop', 's')
+            ->join('s.user', 'u')
+            ->where('u = :merchantUser')
+            ->andWhere(
+                $qb->expr()->orX(
+                    'o.order_status = :status',
+                    'o.merchantSecretCode IS NULL'
+                )
+            )
+            ->setParameter('merchantUser', $merchantUser)
+            ->setParameter('status', 'Em processamento');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+
+    }
+
+
+    /**
      * Compte le nombre de commandes en remboursement (en cours)
      */
     public function countRefundInProgress(): int
@@ -84,6 +113,72 @@ class OrderRepository extends ServiceEntityRepository
             ->setParameter('refund', 'Em curso')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+    
+       /**
+     * Compte le nombre de commandes en remboursement (Em processamento), pour un userMerchant en specific
+     */
+    public function countOrderInProgressByMerchant(User $merchantUser): int
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        // Join avec basketProducts → product → shop → user
+        $qb->select('COALESCE(COUNT(DISTINCT o.id), 0)')
+            ->join('o.basketProducts', 'bp')
+            ->join('bp.product', 'p')
+            ->join('p.shop', 's')
+            ->join('s.user', 'u')
+            ->where('u = :merchantUser')
+            ->andWhere('o.order_status = :orderStatus')
+            ->setParameter('merchantUser', $merchantUser)
+            ->setParameter('orderStatus', 'Em processamento');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+
+     /**
+     * Compte le nombre de commandes en remboursement (en cours), pour un userMerchant en specific
+     */
+    public function countRefundInProgressByMerchant(User $merchantUser): int
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        // Join avec basketProducts → product → shop → user
+        $qb->select('COALESCE(COUNT(DISTINCT o.id), 0)')
+            ->join('o.basketProducts', 'bp')
+            ->join('bp.product', 'p')
+            ->join('p.shop', 's')
+            ->join('s.user', 'u')
+            ->where('u = :merchantUser')
+            ->andWhere('o.order_status = :orderStatus')
+            ->andWhere('o.refund_status = :refundStatus')
+            ->setParameter('merchantUser', $merchantUser)
+            ->setParameter('orderStatus', 'Reembolso')
+            ->setParameter('refundStatus', 'Em curso');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+     /**
+     * Compte le nombre de commandes deja remboursé (en cours), pour un userMerchant en specific
+     */
+    public function countRefundFinishByMerchant(User $merchantUser): int
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        // Join avec basketProducts → product → shop → user
+        $qb->select('COALESCE(COUNT(DISTINCT o.id), 0)')
+            ->join('o.basketProducts', 'bp')
+            ->join('bp.product', 'p')
+            ->join('p.shop', 's')
+            ->join('s.user', 'u')
+            ->where('u = :merchantUser')
+            ->andWhere('o.refund_status = :refundStatus')
+            ->setParameter('merchantUser', $merchantUser)
+            ->setParameter('refundStatus', 'Reembolsado');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
 }

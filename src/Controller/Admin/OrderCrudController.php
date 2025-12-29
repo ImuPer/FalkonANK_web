@@ -124,8 +124,27 @@ class OrderCrudController extends AbstractCrudController
                 ->setParameter('merchant', $user)
                 ->orderBy('o.order_date', 'DESC');
 
+            // 🔹 Vérifie le filtre dans l'URL
+            $request = $this->requestStack->getCurrentRequest();
+            if ($request) {
+                $filter = $request->query->get('filter');
+                if ($filter === 'Em processamento') {
+                    $qb->andWhere('o.order_status = :status')
+                        ->setParameter('status', 'Em processamento');
+                }elseif ($filter === 'reembolso') {
+                    $qb->andWhere('o.order_status = :status')
+                        ->andWhere('o.refund_status = :refund')
+                        ->setParameter('status', 'Reembolso')
+                        ->setParameter('refund', 'Em curso');
+                } elseif ($filter === 'reembolsado') {
+                    $qb->andWhere('o.refund_status = :refund')
+                        ->setParameter('refund', 'Reembolsado');
+                }
+            }
+
             return $qb;
         }
+
 
         return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
     }
@@ -145,7 +164,7 @@ class OrderCrudController extends AbstractCrudController
                 'Reembolsado' => 'Reembolsado',
             ]);
         }
-        
+
         // Champ virtuel pour la classe CSS
         return [
 
@@ -209,7 +228,7 @@ class OrderCrudController extends AbstractCrudController
 
             TextEditorField::new('beneficiaryName', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
             TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
-            TextEditorField::new('phone',)->hideOnForm(),
+            TextEditorField::new('phone', )->hideOnForm(),
             TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
             TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
             TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
@@ -273,29 +292,40 @@ class OrderCrudController extends AbstractCrudController
 
 
     public function configureActions(Actions $actions): Actions
-    {
-        $verRecibo = Action::new('verRecibo', $this->translator->trans('order.action.view_receipt'))
-            ->linkToRoute('recibo_show', function (Order $order) {
-                return ['id' => $order->getId()];
-            })
-            ->displayIf(function (Order $order) {
-                return $order->getOrderStatus() !== 'Em processamento';
-            })
-            ->setCssClass('btn btn-success');
+{
+    $user = $this->security->getUser();
 
-        return $actions
-            ->disable(Action::DELETE)
-            ->disable(Action::NEW)
-            ->add(Crud::PAGE_INDEX, $verRecibo)
-            ->add(Crud::PAGE_DETAIL, $verRecibo);
+    // Action existante pour voir le reçu
+    $verRecibo = Action::new('verRecibo', $this->translator->trans('order.action.view_receipt'))
+        ->linkToRoute('recibo_show', fn(Order $order) => ['id' => $order->getId()])
+        ->displayIf(fn(Order $order) => $order->getOrderStatus() !== 'Em processamento')
+        ->setCssClass('btn btn-success');
 
+    $actions
+        ->disable(Action::DELETE)
+        ->disable(Action::NEW)
+        ->add(Crud::PAGE_INDEX, $verRecibo)
+        ->add(Crud::PAGE_DETAIL, $verRecibo);
 
+    // Désactiver Edit sur INDEX et DETAIL pour merchants si refund_status = Reembolsado
+    if (in_array('ROLE_MERCHANT', $user->getRoles(), true)) {
+        $actions
+            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->displayIf(fn(Order $order) => $order->getRefundStatus() !== 'Reembolsado'))
+            ->update(Crud::PAGE_DETAIL, Action::EDIT, fn(Action $action) => $action->displayIf(fn(Order $order) => $order->getRefundStatus() !== 'Reembolsado'));
     }
+
+    return $actions;
+}
+
 
 
 
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance, ): void
     {
+        if (!$entityInstance instanceof Order) {
+            return;
+        }
+
         $clientName = $entityInstance->getBasket()->getUser()->getFirstName() . " " . $entityInstance->getBasket()->getUser()->getLastName();
         $ref_order = $entityInstance->getRef();
         $clientEmail = $entityInstance->getBasket()->getUser()->getEmail();
@@ -305,9 +335,6 @@ class OrderCrudController extends AbstractCrudController
             $admins
         );
 
-        if (!$entityInstance instanceof Order) {
-            return;
-        }
 
         $status = $entityInstance->getOrderStatus();
         $internalNote = $entityInstance->getInternalNote();

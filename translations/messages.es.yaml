@@ -865,3 +865,40 @@ receipt.signature: "Atentamente,"
 
 products.table.item: "Artículo"
 products.table.store: "Tienda"
+
+refund:
+  closed_and_finished: 'El pedido ha sido cerrado, reembolso completado.'
+
+
+menu:
+  home: "Inicio"
+  contacts: Contactos
+  users: Usuarios
+  user:
+    add: Añadir usuario
+    list: Lista de usuarios
+  category: categoría
+  categorys:
+    add: Añadir categoría
+    view: Ver categorías
+
+  section:
+    ecommerce: Comercio electrónico
+    catalogs: Catálogos de productos
+
+  shop:
+    my: Mi tienda
+    add: Añadir tienda
+    view: Ver tienda
+
+  products: Productos
+
+  orders0: Pedidos
+  orders:
+    new: Nuevos pedidos
+    all: Todos los pedidos
+    products: Productos de los pedidos
+    refund: Reembolso
+    refunded: Reembolsado
+
+  accounting: Contabilidad

@@ -863,3 +863,40 @@ receipt.signature: "Kind regards,"
 
 products.table.item: "Item"
 products.table.store: "Store"
+
+refund:
+    closed_and_finished: 'The order has been closed, refund completed!'
+
+
+menu:
+  home: "Home"
+  contacts: Contacts
+  users: Users
+  user:
+    add: Add user
+    list: User list
+  category: "category"
+  categorys:
+    add: Add category
+    view: View categories
+
+  section:
+    ecommerce: E-Commerce
+    catalogs: Product catalogs
+
+  shop:
+    my: My Shop
+    add: Add Shop
+    view: View Shop
+
+  products: Products
+
+  orders0: Orders
+  orders:
+    new: New orders
+    all: All orders
+    products: Order products
+    refund: Refund
+    refunded: Refunded
+
+  accounting: Accounting

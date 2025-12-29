@@ -865,3 +865,39 @@ receipt.signature: "Cordialement,"
 
 products.table.item: "Article"
 products.table.store: "Boutique"
+
+refund:
+  closed_and_finished: 'La commande a été clôturée, remboursement terminé !'
+
+
+menu:
+  home: "Accueil"
+  contacts: Contacts
+  users: Utilisateurs
+  user:
+    add: Ajouter un utilisateur
+    list: Liste des utilisateurs
+  category: "catégorie"
+  categorys:
+    add: Ajouter une catégorie
+    view: Voir les catégories
+  section:
+    ecommerce: E-Commerce
+    catalogs: Catalogues de produits
+
+  shop:
+    my: Ma boutique
+    add: Ajouter une boutique
+    view: Voir la boutique
+
+  products: Produits
+
+  orders0: Commandes
+  orders:
+    new: Nouvelles commandes
+    all: Toutes les commandes
+    products: Produits des commandes
+    refund: Remboursement
+    refunded: Remboursé
+
+  accounting: Comptabilité

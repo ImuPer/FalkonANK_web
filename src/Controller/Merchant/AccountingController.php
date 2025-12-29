@@ -68,6 +68,7 @@ class AccountingController extends AbstractController
         ]);
     }
 
+    // ROLE_ADMIN------------------------------------------------------------------------------------------------
     #[Route('/{id}', name: 'orders_shop')]
     public function ordersShop(Shop $shop, AccountingService $accountingService)
     {
@@ -110,6 +111,8 @@ class AccountingController extends AbstractController
         // }
     }
 
+
+    
     //-----------Recu commende finalsé---------------------------------------------------
     #[Route('/recibo/{id}', name: 'recibo_show')]
     public function show(Order $order, BasketProductRepository $basketProductRepository): Response

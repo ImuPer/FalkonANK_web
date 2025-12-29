@@ -851,3 +851,38 @@ receipt.signature: "Atenciosamente,"
 products.table.item: "Item"
 products.table.store: "Loja"
 
+refund:
+  closed_and_finished: 'A encomenda foi fechada, reembolso terminado!'
+
+
+menu:
+  home: "Início"
+  contacts: Contactos
+  users: Utilizadores
+  user:
+    add: Adicionar utilizador
+    list: Lista de utilizadores
+  category: "Categoria"
+  categorys:
+    add: "Adicionar categoria"
+    view: "Ver categorias"
+  section:
+    ecommerce: E-Commerce
+    catalogs: Catálogos de produtos
+
+  shop:
+    my: Minha Loja
+    add: Adicionar Loja
+    view: Ver loja
+
+  products: Produtos
+
+  orders0: Encomendas
+  orders:
+    new: Novas encomendas
+    all: Todas encomendas
+    products: Produtos das Encomendas
+    refund: Reembolso
+    refunded: Reembolsado
+
+  accounting: Contabilidade

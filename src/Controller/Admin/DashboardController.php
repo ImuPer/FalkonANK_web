@@ -24,6 +24,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[is_granted('ROLE_MERCHANT')]
 #[Route('admin')]
@@ -35,7 +36,8 @@ class DashboardController extends AbstractDashboardController
         private AdminUrlGenerator $adminUrlGenerator,
         private MerchantRepository $merchantRepository,
         private ContactRepository $contactRepository,
-        private OrderRepository $orderRepository
+        private OrderRepository $orderRepository,
+        private TranslatorInterface $translator
     ) {
     }
     #[Route('/', name: 'admin')]
@@ -74,7 +76,7 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToRoute('Home', 'fa fa-home', 'app_home_page');
+        yield MenuItem::linkToRoute($this->translator->trans('menu.home'), 'fa fa-home', 'app_home_page');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         // Vérifie le rôle USER
         $user = $this->getUser();
@@ -84,31 +86,31 @@ class DashboardController extends AbstractDashboardController
             // yield MenuItem::linkToCrud('Contactos', 'fas fa-envelope', Contact::class);
             $Count_c = $this->contactRepository->countContactsWithoutResponse();
             yield MenuItem::linkToCrud(
-                'Contactos',
+                $this->translator->trans('menu.contacts'),
                 'fas fa-envelope',
                 Contact::class
             )->setBadge($Count_c > 0 ? (string) $Count_c : null, 'danger');
 
-            yield MenuItem::subMenu('Users', 'fas fa-users')->setSubItems([
-                MenuItem::linkToCrud('Add User', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
-                MenuItem::linkToCrud('Listen Users', 'fas fa-eye', User::class),
+            yield MenuItem::subMenu($this->translator->trans('menu.users'), 'fas fa-users')->setSubItems([
+                MenuItem::linkToCrud($this->translator->trans('menu.user.add'), 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud($this->translator->trans('menu.user.list'), 'fas fa-eye', User::class),
             ]);
 
-            yield MenuItem::subMenu('Category', 'fas fa-bars')->setSubItems([
+            yield MenuItem::subMenu($this->translator->trans('menu.category'), 'fas fa-bars')->setSubItems([
                 MenuItem::linkToCrud(
-                    'Add Category',
+                    $this->translator->trans('menu.categorys.add'),
                     'fas fa-plus',
                     Category::class
                 )->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud(
-                    'Listen Category',
+                    $this->translator->trans('menu.categorys.view'),
                     'fas fa-eye',
                     Category::class
                 ),
             ]);
-            yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
+            yield MenuItem::linkToCrud($this->translator->trans('menu.products'), 'fas fa-eye', Product::class);
             yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
-            // yield MenuItem::linkToCrud('Merchant request', 'fa-solid fa-shop-lock', Merchant::class);
+
             $pendingCount = $this->merchantRepository->countPendingMerchants();
             yield MenuItem::linkToCrud(
                 'Merchant request',
@@ -120,14 +122,12 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('BasketProducts', 'fas fa-eye', BasketProduct::class);
 
             // Menu principal "Orders"
-            yield MenuItem::linkToCrud('Orders', 'fas fa-shopping-cart', Order::class);
-
+            yield MenuItem::linkToCrud($this->translator->trans('menu.orders0'), 'fas fa-shopping-cart', Order::class);
             // Compteur des commandes "Reembolso" en cours
             $countRefundInProgress = $this->orderRepository->countRefundInProgress();
-
             // Sous-menu "Reembolso" à l'intérieur d'Orders
             yield MenuItem::linkToUrl(
-                'Reembolso',
+                $this->translator->trans('menu.orders.refund'),
                 'fa-solid fa-shop-lock',
                 $this->adminUrlGenerator
                     ->setController(OrderCrudController::class)
@@ -135,23 +135,7 @@ class DashboardController extends AbstractDashboardController
                     ->set('filter', 'reembolso')
                     ->generateUrl()
             )
-            ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
-
-            // yield MenuItem::linkToCrud(
-            //     'Reembolso',
-            //     'fa-solid fa-shop-lock',
-            //     Order::class
-            // )
-            //     ->setController(OrderCrudController::class) // si nécessaire pour rediriger vers le CRUD
-            //     ->setUrl(
-            //         $this->adminUrlGenerator
-            //             ->setController(OrderCrudController::class)
-            //             ->setAction('index')
-            //             ->set('filter', 'reembolso')
-            //             ->generateUrl()
-            //     )
-            //     ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
-
+                ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
 
             // 🔽 Lien vers /merchant/accounting
             yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');
@@ -162,24 +146,60 @@ class DashboardController extends AbstractDashboardController
                 yield MenuItem::section('E-Commerce');
                 yield MenuItem::section('Catálogos de produtos');
 
-                yield MenuItem::linkToCrud('Minha Loja', ' fas fa-store fa-2x text-primary', Shop::class);
-                yield MenuItem::linkToCrud('Produtos', 'fas fa-eye', Product::class);
-                $Count_o = $this->orderRepository->countPendingOrMissingSecret();
-                yield MenuItem::subMenu('Encomendas', 'fas fa-shopping-cart')->setSubItems([
+                yield MenuItem::linkToCrud($this->translator->trans('menu.shop.my'), ' fas fa-store fa-2x text-primary', Shop::class);
+                yield MenuItem::linkToCrud($this->translator->trans('menu.products'), 'fas fa-eye', Product::class);
+
+                $merchant = $this->getUser();
+                $Count_o = $this->orderRepository->countPendingOrMissingSecretByMerchant($merchant);
+                $countOrderInProgress = $this->orderRepository->countOrderInProgressByMerchant($merchant);
+                $countRefundInProgress = $this->orderRepository->countRefundInProgressByMerchant($merchant);
+                $countRefundFinish = $this->orderRepository->countRefundFinishByMerchant($merchant);
+                yield MenuItem::subMenu($this->translator->trans('menu.orders0'), 'fas fa-shopping-cart')->setSubItems([
+                    MenuItem::linkToUrl(
+                        $this->translator->trans('menu.orders.new'),
+                        'fa-solid fa-shop-lock',
+                        $this->adminUrlGenerator
+                            ->setController(OrderCrudController::class)
+                            ->setAction(Crud::PAGE_INDEX)
+                            ->set('filter', 'Em processamento')
+                            ->generateUrl()
+                    )
+                        ->setBadge($countOrderInProgress > 0 ? (string) $countOrderInProgress : null, 'danger'),
+                    MenuItem::linkToUrl(
+                        $this->translator->trans('menu.orders.refund'),
+                        'fa-solid fa-shop-lock',
+                        $this->adminUrlGenerator
+                            ->setController(OrderCrudController::class)
+                            ->setAction(Crud::PAGE_INDEX)
+                            ->set('filter', 'reembolso')
+                            ->generateUrl()
+                    )
+                        ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'warning'),
+                    MenuItem::linkToUrl(
+                        $this->translator->trans('menu.orders.refunded'),
+                        'fa-solid fa-shop-lock',
+                        $this->adminUrlGenerator
+                            ->setController(OrderCrudController::class)
+                            ->setAction(Crud::PAGE_INDEX)
+                            ->set('filter', 'Reembolsado')
+                            ->generateUrl()
+                    )
+                        ->setBadge($countRefundFinish > 0 ? (string) $countRefundFinish : null, 'refund'),
                     MenuItem::linkToCrud(
-                        'Ver encomendas',
-                        'fas fa-box',
+                        $this->translator->trans('menu.orders.all'),
+                        'fas fa-eye',
                         Order::class
                     ),
                     MenuItem::linkToCrud(
-                        'Produtos das Encomendas',
+                        $this->translator->trans('menu.orders.products'),
                         'fas fa-eye',
                         BasketProduct::class
                     ),
                 ])->setBadge($Count_o > 0 ? (string) $Count_o : null, 'danger');
 
+
                 // 🔽 Lien vers /merchant/accounting
-                yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');
+                yield MenuItem::linkToRoute($this->translator->trans('menu.accounting'), 'fas fa-calculator', 'merchant_accounting');
 
 
 
@@ -189,9 +209,9 @@ class DashboardController extends AbstractDashboardController
                     'crudAction' => 'new',
                     'crudControllerFqcn' => Shop::class,
                 ]);
-                yield MenuItem::subMenu('Loja', 'fas fa-store fa-2x text-primary')->setSubItems([
-                    MenuItem::linkToCrud('Adicionar Loja', 'fas fa-plus', Shop::class)->setAction(Crud::PAGE_NEW),
-                    MenuItem::linkToCrud('Ver loja', 'fas fa-eye', Shop::class),
+                yield MenuItem::subMenu($this->translator->trans('menu.shop'), 'fas fa-store fa-2x text-primary')->setSubItems([
+                    MenuItem::linkToCrud($this->translator->trans('menu.shop.add'), 'fas fa-plus', Shop::class)->setAction(Crud::PAGE_NEW),
+                    MenuItem::linkToCrud($this->translator->trans('menu.shop.view'), 'fas fa-eye', Shop::class),
                 ]);
             }
 
