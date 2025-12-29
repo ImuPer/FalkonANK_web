@@ -136,7 +136,7 @@ class OrderCrudController extends AbstractCrudController
                         ->andWhere('o.refund_status = :refund')
                         ->setParameter('status', 'Reembolso')
                         ->setParameter('refund', 'Em curso');
-                } elseif ($filter === 'reembolsado') {
+                } elseif ($filter === 'Reembolsado') {
                     $qb->andWhere('o.refund_status = :refund')
                         ->setParameter('refund', 'Reembolsado');
                 }
