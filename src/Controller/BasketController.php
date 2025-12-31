@@ -25,7 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class BasketController extends AbstractController
 {
 
-     private TranslatorInterface $translator;
+    private TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
     {
@@ -67,7 +67,7 @@ class BasketController extends AbstractController
             // Récupérer le produit du panier par son ID
             $basketProduct = $basketProductRepository->find($id);
             if (!$basketProduct) {
-                return new JsonResponse(['success' => false,  'message' => $this->translator->trans('basket.product_not_found')], 404);
+                return new JsonResponse(['success' => false, 'message' => $this->translator->trans('basket.product_not_found')], 404);
             }
 
             // Récupérer le panier de l'utilisateur
@@ -207,6 +207,77 @@ class BasketController extends AbstractController
     }
 
     // ------------------fin show user basket --------------------------------
+
+    // Delivery---------------------------------------------------------------------------------------
+    #[Route('/delivery/calculate', name: 'app_delivery_calculate', methods: ['POST'])]
+    public function calculateDelivery(
+        Request $request,
+        BasketProductRepository $basketProductRepository
+    ): JsonResponse {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $cityId = $data['city_id'] ?? null;
+        $method = $data['method'] ?? 'standard';
+
+        $basket = $user->getBasket();
+        $basketProducts = $basketProductRepository->findBasketProductsByBasketId($basket);
+
+        $totalWeight = 0.0; // kg
+        $totalVolume = 0.0; // cm³
+
+        foreach ($basketProducts as $bp) {
+            $product = $bp->getProduct();
+            $qty = $bp->getQuantity();
+
+            // ⚖️ poids
+            $weight = (float) ($product->getWeight() ?? 0);
+            $totalWeight += $weight * $qty;
+
+            // 📐 volume
+            $w = (float) ($product->getDimensionW() ?? 0);
+            $h = (float) ($product->getDimensionH() ?? 0);
+            $l = (float) ($product->getDimensionL() ?? 0);
+
+            if ($w > 0 && $h > 0 && $l > 0) {
+                $totalVolume += ($w * $h * $l) * $qty;
+            }
+        }
+
+        // =========================
+        // RÈGLES DE TARIFICATION
+        // =========================
+        $price = 300; // base CVE
+
+        // surcharge distance (exemple)
+        if ($cityId) {
+            $price += 200;
+        }
+
+        // poids
+        $price += $totalWeight * 50; // 50 CVE / kg
+
+        // volume (conversion cm³ → dm³)
+        $price += ($totalVolume / 1000) * 30;
+
+        // express
+        if ($method === 'express') {
+            $price += 300;
+        }
+        // dd($price);
+
+        return $this->json([
+            'success' => true,
+            'price' => round($price, 2),
+            'debug' => [
+                'weight' => $totalWeight,
+                'volume_cm3' => $totalVolume
+            ]
+        ]);
+    }
 
 
 }

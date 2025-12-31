@@ -148,24 +148,56 @@ class AccountingService
         $sql = "
         SELECT 
             DATE_FORMAT(o.order_date, '%Y-%m') AS month,
-            s.id AS shop_id,  -- Ajout de l'ID de la boutique
-            SUM(bp.quantity * p.price) AS revenue,
-            IFNULL(SUM(o.refund_amount), 0) AS refund_amount,
+
+            -- 🏪 Shop
+            s.id AS shop_id,
             s.name AS shop_name,
             u.email AS shop_email,
-            ROUND(SUM(bp.quantity * p.price) * 0.10, 2) AS commission  -- Commission de 10%
+
+            -- 💰 Chiffre d'affaires produits
+            SUM(bp.quantity * p.price) AS revenue,
+
+            -- 🔁 Remboursements
+            IFNULL(SUM(o.refund_amount), 0) AS refund_amount,
+
+            -- 🚚 Méthodes de livraison
+            GROUP_CONCAT(DISTINCT d.delivery_method SEPARATOR ', ') AS delivery_methods,
+
+            -- 🚚 Coût livraison total
+            IFNULL(SUM(d.shipping_cost), 0) AS total_shipping_cost,
+
+            -- 💵 Montant final + livraison
+            IFNULL(SUM(o.amount_final), 0) 
+              + IFNULL(SUM(d.shipping_cost), 0) 
+              AS final_amount_with_delivery,
+
+            -- 🏦 Commission 10%
+            ROUND(SUM(bp.quantity * p.price) * 0.10, 2) AS commission
+
         FROM basket_product bp
         JOIN product p ON bp.product_id = p.id
         JOIN shop s ON p.shop_id = s.id
         JOIN `user` u ON s.user_id = u.id
         JOIN `order` o ON bp.order_c_id = o.id
+
+        -- 🚚 Livraison (peut être NULL)
+        LEFT JOIN delivery d ON d.order_customer_id = o.id
+
         WHERE o.order_status = 'Entregue e finalizado'
-        GROUP BY month, s.id, s.name, u.email
+
+        GROUP BY 
+            month,
+            s.id,
+            s.name,
+            u.email
+
         ORDER BY month DESC
     ";
 
         return $conn->executeQuery($sql)->fetchAllAssociative();
     }
+
+
 
     /**
      * Chiffre d'affaires global par produit (avec nom & email shop).
@@ -180,6 +212,7 @@ class AccountingService
             SUM(bp.quantity * p.price) AS revenue,
             IFNULL(SUM(o.refund_amount), 0) AS refund_amount,  -- Ajout du montant du remboursement
             s.name AS shop_name,
+            s.id As shop_id,
             u.email AS shop_email
         FROM basket_product bp
         JOIN product p ON bp.product_id = p.id

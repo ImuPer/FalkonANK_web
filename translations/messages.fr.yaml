@@ -432,6 +432,10 @@ order:
     refund_amount: "Montant"
     refund_status: "Statut du remboursement"
     refund_note: "Note de remboursement"
+    total: "Total"
+    total_shipping: "Prix livraison"
+    delivery_method: "Méthode de livraison"
+    final_with_delivery: "Total avec livraison (Prix final + livraison)"
 
   action:
     view_receipt: "Voir le reçu"
@@ -447,6 +451,8 @@ order:
     refund_completed: "Le remboursement a été effectué le %date%. Le montant (%amountcve% escudos CV) sera disponible sur votre compte sous trois à huit jours ouvrables, selon votre banque."
 
   flash:
+    note:
+      refund_required: "Une 'Note interne' est requise pour effectuer le remboursement. Veuillez indiquer le motif. Le remboursement ne peut pas être partiel. Le client ou le bénéficiaire peut remplacer les articles conformément aux règles de votre boutique."
     refund_required: "❌ Remboursement : le montant et le statut du remboursement sont obligatoires."
     merchant_invalid_code: "❌ Le code secret est incorrect. Veuillez saisir le code correct."
     merchant_success: "Enregistré avec succès"
@@ -901,3 +907,13 @@ menu:
     refunded: Remboursé
 
   accounting: Comptabilité
+
+checkout:
+  select_city_first: Veuillez d'abord sélectionner une ville
+  delivery_method: Mode de livraison
+  delivery_price: Prix de livraison
+
+delivery:
+  title: Livraison à domicile
+  standard: Standard
+  express: Express

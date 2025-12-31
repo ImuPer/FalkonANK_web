@@ -1,142 +1,171 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'accounting.title'|trans }}{% endblock %}
+{% block title %}
+	{{ 'accounting.title'|trans }}
+{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 {% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    {% if isAdmin %}
-        <h1 class="mb-4"> {{ 'accounting.all_shops'|trans }}</h1>
-    {% else %}
-        <h1 class="mb-4"> {{ 'accounting.your_shop'|trans }}</h1>
-    {% endif %}
+	<div class="container mt-4">
+		{% if isAdmin %}
+			<h1 class="mb-4">
+				{{ 'accounting.all_shops'|trans }}</h1>
+		{% else %}
+			<h1 class="mb-4">
+				{{ 'accounting.your_shop'|trans }}</h1>
+		{% endif %}
 
-    <!-- Boutons pour choisir le type de revenu -->
-    <div class="mb-4 text-center">
-        <button class="btn btn-primary" onclick="showDiv('monthlyDiv')">{{ 'accounting.monthly_revenue'|trans }}</button>
-        <button class="btn btn-primary" onclick="showDiv('productDiv')">{{ 'accounting.product_revenue'|trans }}</button>
-        <button class="btn btn-primary" onclick="showDiv('categoryDiv')">{{ 'accounting.category_revenue'|trans }}</button>
-    </div>
+		<!-- Boutons pour choisir le type de revenu -->
+		<div class="mb-4 text-center">
+			<button class="btn btn-primary" onclick="showDiv('monthlyDiv')">{{ 'accounting.monthly_revenue'|trans }}</button>
+			<button class="btn btn-primary" onclick="showDiv('productDiv')">{{ 'accounting.product_revenue'|trans }}</button>
+			<button class="btn btn-primary" onclick="showDiv('categoryDiv')">{{ 'accounting.category_revenue'|trans }}</button>
+		</div>
 
-    <!-- Monthly Revenue -->
-    <div id="monthlyDiv">
-        <h2 class="text-center"> {{ 'accounting.monthly_revenue'|trans }}</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>{{ 'accounting.month'|trans }}</th>
-                        <th>{{ 'accounting.revenue'|trans }} (CVE)</th>
-                        {% if isAdmin %}
-                            <th>{{ 'accounting.commission'|trans }}</th>
-                            <th>{{ 'accounting.final_price'|trans }}</th>
-                        {% endif %}
-                        <th>{{ 'accounting.refund'|trans }} (CVE)</th>
-                        <th>{{ 'accounting.shop_name'|trans }}</th>
-                        <th>{{ 'accounting.shop_email'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in monthlyRevenue %}
-                        <tr class="clickable-row" style="cursor: pointer;" onclick="window.location.href='{{ path('orders_shop', {'id': row.shop_id}) }}'">
-                            <td>{{ row.month }}</td>
-                            <td>{{ (row.revenue / 100)|number_format(0, ',', ' ') }} escudos</td>
-                            {% if isAdmin and row.commission %}
-                                <td>{{ (row.commission / 100)|number_format(0, ',', ' ') }}</td>
-                                <td>{{ ((row.revenue + row.commission) / 100)|number_format(0, ',', ' ') }}</td>
-                            {% endif %}
-                            <td>{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }} escudos</td>
-                            <td>{{ row.shop_name }}</td>
-                            <td>{{ row.shop_email }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="7">{{ 'accounting.no_data'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+		<!-- Monthly Revenue -->
+		<div id="monthlyDiv">
+			<h2 class="text-center">
+				{{ 'accounting.monthly_revenue'|trans }}</h2>
+			<div class="table-responsive">
+				<div class="table-responsive">
+					<table class="table table-striped table-sm">
+						<thead>
+							<tr>
+								<th>{{ 'accounting.month'|trans }}</th>
+								<th>{{ 'accounting.revenue'|trans }}
+									(CVE)</th>
+								{% if isAdmin %}
+									<th>{{ 'accounting.commission'|trans }}</th>
+									<th>{{ 'accounting.final_price'|trans }}</th>
+									<th>{{ 'order.field.total_shipping'|trans }}</th>
+									<th>{{ 'order.field.final_with_delivery'|trans }}</th>
+								{% endif %}
+								<th>{{ 'accounting.refund'|trans }}
+									(CVE)</th>
+								<th>{{ 'accounting.shop_email'|trans }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for row in monthlyRevenue %}
+								<tr class="clickable-row" style="cursor:pointer;" onclick="window.location.href='{{ path('orders_shop', {'id': row.shop_id}) }}'">
+									<td data-label="{{ 'accounting.month'|trans }}">{{ row.month }}</td>
+									<td data-label="{{ 'accounting.revenue'|trans }}">{{ (row.revenue / 100)|number_format(0, ',', ' ') }}
+										escudos</td>
+									{% if isAdmin and row.commission %}
+										<td data-label="{{ 'accounting.commission'|trans }}">{{ (row.commission / 100)|number_format(0, ',', ' ') }}</td>
+										<td data-label="{{ 'accounting.final_price'|trans }}">{{ ((row.revenue + row.commission) / 100)|number_format(0, ',', ' ') }}</td>
+										<td data-label="{{ 'order.field.total_shipping'|trans }}">{{ (row.total_shipping_cost / 100)|number_format(0, ',', ' ') }}</td>
+										<td data-label="{{ 'order.field.final_with_delivery'|trans }}">{{ (row.final_amount_with_delivery / 100)|number_format(0, ',', ' ') }}</td>
+									{% endif %}
+									<td data-label="{{ 'accounting.refund'|trans }}">{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }}
+										escudos</td>
+									<td data-label="{{ 'accounting.shop_email'|trans }}">
+										<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="{{ isAdmin ? 7 : 3 }}">{{ 'accounting.no_data'|trans }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
 
-    <!-- Product Revenue -->
-    <div id="productDiv" style="display:none;">
-        <h2 class="text-center"> {{ 'accounting.product_revenue'|trans }}</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>{{ 'accounting.product'|trans }}</th>
-                        <th>{{ 'accounting.revenue'|trans }} (CVE)</th>
-                        <th>{{ 'accounting.refund'|trans }} (CVE)</th>
-                        <th>{{ 'accounting.shop_name'|trans }}</th>
-                        <th>{{ 'accounting.shop_email'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in productRevenue %}
-                        <tr>
-                            <td>{{ row.product }}</td>
-                            <td>{{ (row.revenue / 100)|number_format(0, ',', ' ') }} escudos</td>
-                            <td>{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }} escudos</td>
-                            <td>{{ row.shop_name }}</td>
-                            <td>{{ row.shop_email }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">{{ 'accounting.no_data'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+			</div>
+		</div>
 
-    <!-- Category Revenue -->
-    <div id="categoryDiv" style="display:none;">
-        <h2 class="text-center"> {{ 'accounting.category_revenue'|trans }}</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>{{ 'accounting.category'|trans }}</th>
-                        <th>{{ 'accounting.revenue'|trans }} (CVE)</th>
-                        <th>{{ 'accounting.refund'|trans }} (CVE)</th>
-                        <th>{{ 'accounting.shop_name'|trans }}</th>
-                        <th>{{ 'accounting.shop_email'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in categoryRevenue %}
-                        <tr>
-                            <td>{{ row.category }}</td>
-                            <td>{{ (row.revenue / 100)|number_format(0, ',', ' ') }} escudos</td>
-                            <td>{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }} escudos</td>
-                            <td>{{ row.shop_name }}</td>
-                            <td>{{ row.shop_email }}</td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">{{ 'accounting.no_data'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+		<!-- Product Revenue -->
+		<div id="productDiv" style="display:none;">
+			<h2 class="text-center">{{ 'accounting.product_revenue'|trans }}</h2>
+			<div class="table-responsive">
+				<table class="table table-striped table-sm">
+					<thead>
+						<tr>
+							<th>{{ 'accounting.product'|trans }}</th>
+							<th>{{ 'accounting.revenue'|trans }}
+								(CVE)</th>
+							<th>{{ 'accounting.refund'|trans }}
+								(CVE)</th>
+							{# <th>{{ 'accounting.shop_name'|trans }}</th> #}
+							<th>{{ 'accounting.shop_email'|trans }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for row in productRevenue %}
+							<tr class="clickable-row" style="cursor:pointer;">
+								<td data-label="{{ 'accounting.product'|trans }}">{{ row.product }}</td>
+								<td data-label="{{ 'accounting.revenue'|trans }}">{{ (row.revenue / 100)|number_format(0, ',', ' ') }}
+									escudos</td>
+								<td data-label="{{ 'accounting.refund'|trans }}">{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }}
+									escudos</td>
+								{# <td data-label="{{ 'accounting.shop_name'|trans }}">{{ row.shop_name }}</td> #}
+								<td data-label="{{ 'accounting.shop_email'|trans }}">
+									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5">{{ 'accounting.no_data'|trans }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-</div>
+		<!-- Category Revenue -->
+		<div id="categoryDiv" style="display:none;">
+			<h2 class="text-center">{{ 'accounting.category_revenue'|trans }}</h2>
+			<div class="table-responsive">
+				<table class="table table-striped table-sm">
+					<thead>
+						<tr>
+							<th>{{ 'accounting.category'|trans }}</th>
+							<th>{{ 'accounting.revenue'|trans }}
+								(CVE)</th>
+							<th>{{ 'accounting.refund'|trans }}
+								(CVE)</th>
+							<th>{{ 'accounting.shop_name'|trans }}</th>
+							<th>{{ 'accounting.shop_email'|trans }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for row in categoryRevenue %}
+							<tr class="clickable-row" style="cursor:pointer;">
+								<td data-label="{{ 'accounting.category'|trans }}">{{ row.category }}</td>
+								<td data-label="{{ 'accounting.revenue'|trans }}">{{ (row.revenue / 100)|number_format(0, ',', ' ') }}
+									escudos</td>
+								<td data-label="{{ 'accounting.refund'|trans }}">{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }}
+									escudos</td>
+								<td data-label="{{ 'accounting.shop_name'|trans }}">{{ row.shop_name }}</td>
+								<td data-label="{{ 'accounting.shop_email'|trans }}">
+									<a href="mailto:{{ row.shop_email }}">{{ row.shop_email }}</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5">{{ 'accounting.no_data'|trans }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-<script>
-function showDiv(divId) {
-    const divs = ['monthlyDiv', 'productDiv', 'categoryDiv'];
-    divs.forEach(id => {
-        document.getElementById(id).style.display = (id === divId) ? 'block' : 'none';
-    });
+
+	</div>
+
+	<script>
+		function showDiv(divId) {
+const divs = ['monthlyDiv', 'productDiv', 'categoryDiv'];
+divs.forEach(id => {
+document.getElementById(id).style.display = (id === divId) ? 'block' : 'none';
+});
 }
-</script>
+	</script>
 
 {% endblock %}

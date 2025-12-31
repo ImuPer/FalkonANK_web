@@ -81,11 +81,18 @@ class Order
     #[ORM\Column(length: 255, unique: true)]
     private ?string $stripePayId = null;
 
+    /**
+     * @var Collection<int, Delivery>
+     */
+    #[ORM\OneToMany(targetEntity: Delivery::class, mappedBy: 'order_customer')]
+    private Collection $deliveries;
+
 
 
     public function __construct()
     {
         $this->basketProducts = new ArrayCollection();
+        $this->deliveries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -371,6 +378,65 @@ class Order
         return $this;
     }
 
+    /**
+     * @return Collection<int, Delivery>
+     */
+    public function getDeliveries(): Collection
+    {
+        return $this->deliveries;
+    }
 
+    public function addDelivery(Delivery $delivery): static
+    {
+        if (!$this->deliveries->contains($delivery)) {
+            $this->deliveries->add($delivery);
+            $delivery->setOrderCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDelivery(Delivery $delivery): static
+    {
+        if ($this->deliveries->removeElement($delivery)) {
+            // set the owning side to null (unless already changed)
+            if ($delivery->getOrderCustomer() === $this) {
+                $delivery->setOrderCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotalShippingCost(): float
+    {
+        $total = 0;
+
+        foreach ($this->deliveries as $delivery) {
+            $total += $delivery->getShippingCost() ?? 0;
+        }
+
+        return $total;
+    }
+
+    public function getDeliveryMethods(): string
+    {
+        if ($this->deliveries->isEmpty()) {
+            return 'pas de delivery';
+        }
+
+        return implode(', ', $this->deliveries->map(
+            fn($delivery) => $delivery->getDeliveryMethod() ?? ''
+        )->toArray());
+    }
+
+
+    public function getFinalAmountWithDelivery(): float
+    {
+        $amountFinal = (float) $this->amount_final; // amount_final peut être string
+        $totalDelivery = $this->getTotalShippingCost();
+
+        return $amountFinal + $totalDelivery;
+    }
 
 }

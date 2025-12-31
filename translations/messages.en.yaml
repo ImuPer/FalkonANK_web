@@ -432,6 +432,10 @@ order:
     refund_amount: "Amount"
     refund_status: "Refund status"
     refund_note: "Refund note"
+    total: "Total"
+    total_shipping: "Shipping price"
+    delivery_method: "Delivery method"
+    final_with_delivery: "Total with delivery (Final Price + Shipping)"
 
   action:
     view_receipt: "View receipt"
@@ -447,6 +451,8 @@ order:
     refund_completed: "The refund was completed on %date%. The amount (%amountcve% escudos CV) will be available in your account within three to eight business days, depending on your bank."
 
   flash:
+    note:
+      refund_required: "A 'Internal note' is required to process the refund. Please specify the reason. The refund cannot be partial. The customer or beneficiary may replace the items according to your store’s rules."
     refund_required: "❌ Refund: The amount and refund status are required."
     merchant_invalid_code: "❌ Secret code is incorrect. Please enter the correct code."
     merchant_success: "Successfully recorded"
@@ -900,3 +906,13 @@ menu:
     refunded: Refunded
 
   accounting: Accounting
+
+checkout:
+  select_city_first: Please select a city first
+  delivery_method: Delivery method
+  delivery_price: Delivery price
+
+delivery:
+  title: Home delivery
+  standard: Standard
+  express: Express

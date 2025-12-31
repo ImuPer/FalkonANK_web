@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Delivery;
 use App\Entity\Order;
 use App\Repository\BasketProductRepository;
 use App\Repository\BasketRepository;
 use App\Repository\CityRepository;
+use App\Repository\DeliveryRepository;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\StripeClient;
@@ -119,6 +121,30 @@ class StripeController extends AbstractController
             ];
         }
 
+        $deliveryPrice = (float) $request->request->get('delivery_price', 0);
+
+        $deliveryMethod = $request->request->get('delivery_method');
+        $session->set('order_info', array_merge(
+            $session->get('order_info'),
+            [
+                'delivery_price' => $deliveryPrice,
+                'delivery_method' => $deliveryMethod,
+            ]
+        ));
+
+
+        $lineItems[] = [
+            'price_data' => [
+                'currency' => $_ENV['STRIPE_CURRENCY'],
+                'product_data' => [
+                    'name' => 'Delivery',
+                ],
+                'unit_amount' => intval($deliveryPrice * 100),
+            ],
+            'quantity' => 1,
+        ];
+
+
         // Générer les URLs de succès et d'annulation avec un placeholder
         $baseUrl = $_ENV['APP_BASE_URL'];
 
@@ -158,6 +184,7 @@ class StripeController extends AbstractController
         CityRepository $cityRepository,
         MailerInterface $mailer,
         TranslatorInterface $translator,
+        DeliveryRepository $deliveryRepository,
     ): Response {
         // Récupérer l'ID de la session depuis la requête
         $id_sessions = $request->query->get('id_sessions');
@@ -250,6 +277,10 @@ class StripeController extends AbstractController
 
         //infos de beneficiario
         $orderData = $request->getSession()->get('order_info');
+        $deliveryPrice = isset($orderData['delivery_price']) ? (float) $orderData['delivery_price'] : 0;
+        $deliveryPrice = $deliveryPrice * 100;
+        $deliveryMethod = $orderData['delivery_method'] ?? null;
+        $amount = (float) ($amount - $deliveryPrice);
 
         if (!$orderData || !isset($orderData['city_id'])) {
             return $this->render('stripe/index.html.twig', [
@@ -260,7 +291,7 @@ class StripeController extends AbstractController
         $order->setRef($ref_order);
         $order->setOrderDate(new \DateTime());
         $order->setTotalAmount((float) $orderData['totalAmountSansComission']);//envoier total amonut sans commissions
-        $order->setAmountFinal($amount);
+        $order->setAmountFinal((float) $amount);
         $order->setOrderStatus("Em processamento");
         $order->setRefund(false);
 
@@ -279,6 +310,26 @@ class StripeController extends AbstractController
         $entityManager->persist($order);
         $entityManager->flush();
 
+        // si > 0; creer delevery
+        $trackingNumber = $deliveryRepository->generateUniqueTrackingNumber();
+        // dd($trackingNumber);
+        if($deliveryMethod != null){
+            $delivery = new Delivery();
+            $delivery->setDeliveryMethod($deliveryMethod);
+            $delivery->setOrderCustomer($order);
+            $delivery->setDeliveryStatus("processing");
+            $delivery->setEstimatedDeliveryDate((new \DateTimeImmutable())->modify('+3 days'));
+            $delivery->setShippingCost($deliveryPrice);
+            $delivery->setFullAddress($order->getBeneficiaryAddress());
+
+            // Attribution du tracking number UNIQUE
+            $delivery->setTrackingNumber($trackingNumber);
+
+            $entityManager->persist($delivery);
+            $entityManager->flush();
+
+        }
+        
         // Mettre à jour les produits du panier
         foreach ($basketPs as $basketP) {
             $basketP->setPayment(true);

@@ -8,6 +8,7 @@ use App\Entity\BasketProduct;
 use App\Entity\Category;
 use App\Entity\City;
 use App\Entity\Contact;
+use App\Entity\Delivery;
 use App\Entity\Merchant;
 use App\Entity\Order;
 use App\Entity\Product;
@@ -122,21 +123,27 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToCrud('BasketProducts', 'fas fa-eye', BasketProduct::class);
 
             // Menu principal "Orders"
-            yield MenuItem::linkToCrud($this->translator->trans('menu.orders0'), 'fas fa-shopping-cart', Order::class);
             // Compteur des commandes "Reembolso" en cours
             $countRefundInProgress = $this->orderRepository->countRefundInProgress();
-            // Sous-menu "Reembolso" à l'intérieur d'Orders
-            yield MenuItem::linkToUrl(
-                $this->translator->trans('menu.orders.refund'),
-                'fa-solid fa-shop-lock',
-                $this->adminUrlGenerator
-                    ->setController(OrderCrudController::class)
-                    ->setAction(Crud::PAGE_INDEX)
-                    ->set('filter', 'reembolso')
-                    ->generateUrl()
-            )
-                ->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
-
+            yield MenuItem::subMenu($this->translator->trans('menu.orders0'), 'fas fa-shopping-cart')->setSubItems([
+                    // Sous-menu "Reembolso" à l'intérieur d'Orders
+                MenuItem::linkToUrl(
+                    $this->translator->trans('menu.orders.refund'),
+                    'fa-solid fa-shop-lock',
+                    $this->adminUrlGenerator
+                        ->setController(OrderCrudController::class)
+                        ->setAction(Crud::PAGE_INDEX)
+                        ->set('filter', 'reembolso')
+                        ->generateUrl()
+                )->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger'),
+                MenuItem::linkToCrud(
+                        $this->translator->trans('menu.orders.all'),
+                        'fas fa-eye',
+                        Order::class
+                    ),
+            ])->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
+            
+            yield MenuItem::linkToCrud('Delivery', 'fas fa-truck', entityFqcn: Delivery::class);
             // 🔽 Lien vers /merchant/accounting
             yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');
             yield MenuItem::linkToCrud('Ads', 'fas fa-bullhorn', Ads::class);

@@ -25,7 +25,7 @@
             <a href="{{ path('app_home_page') }}"><i class="fas fa-home"></i></a>
             <a href="{{ path('app_about_page') }}">{{ 'about'|trans }}</a>
             <a href="{{ path('contact_nous') }}">{{ 'contact.us'|trans }}</a>
-            <a href="{{ path('app_cadre_photo') }}">{{ 'photos'|trans }}</a>
+            {# <a href="{{ path('app_cadre_photo') }}">{{ 'photos'|trans }}</a> #}
 
             {% if app.user %}
                 <li style="position: relative;">
@@ -67,9 +67,9 @@
                 </li>
             {% endif %}
 
-            <a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank">
+            {# <a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank">
                 <i class="fab fa-facebook-f"></i>
-            </a>
+            </a> #}
 
             <div class="busca">
                 <form class="d-flex" role="search" method="get" action="{{ path('product_search') }}">

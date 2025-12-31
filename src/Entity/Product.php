@@ -58,7 +58,7 @@ class Product
     private ?Shop $shop = null;
 
     // ⚖️ Poids (ex: "1.5 kg")
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
     private ?string $weight = null;
 
     // 📐 Dimensions en cm (DECIMAL)

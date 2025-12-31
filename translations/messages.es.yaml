@@ -432,6 +432,10 @@ order:
     refund_amount: "Importe"
     refund_status: "Estado del reembolso"
     refund_note: "Nota del reembolso"
+    total: "Total"
+    total_shipping: "Precio de envío"
+    delivery_method: "Método de entrega"
+    final_with_delivery: "Total con entrega (Precio final + envío)"
 
   action:
     view_receipt: "Ver recibo"
@@ -447,6 +451,8 @@ order:
     refund_completed: "El reembolso se completó el %date%. El monto (%amountcve% escudos CV) estará disponible en su cuenta entre tres y ocho días hábiles, según los plazos de su banco."
 
   flash:
+    note:
+      refund_required: "Se requiere una 'Nota interna' para realizar el reembolso. Indique el motivo. El reembolso no puede ser parcial. El cliente o beneficiario puede sustituir los artículos de acuerdo con las normas de su tienda."
     refund_required: "❌ Reembolso: El importe y el estado del reembolso son obligatorios."
     merchant_invalid_code: "❌ El código secreto es incorrecto. Por favor, ingrese el código correcto."
     merchant_success: "Registrado con éxito"
@@ -902,3 +908,13 @@ menu:
     refunded: Reembolsado
 
   accounting: Contabilidad
+
+checkout:
+  select_city_first: Por favor, seleccione primero una ciudad
+  delivery_method: Método de entrega
+  delivery_price: Precio de entrega
+
+delivery:
+  title: Entrega a domicilio
+  standard: Estándar
+  express: Exprés

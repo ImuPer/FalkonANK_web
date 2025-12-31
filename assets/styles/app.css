@@ -26,3 +26,8 @@ tr.row-entregue-finalizado {
     color: #9f9e80;
     font-weight: bold;
 }
+
+.internal-note.is-invalid {
+    border-color: #dc3545;
+    background-color: #f8d7da;
+}

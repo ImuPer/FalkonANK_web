@@ -154,11 +154,22 @@ class OrderCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $user = $this->getUser();
+         $orderStatus = ([
+            $this->translator->trans('order.status.processing') => 'Em processamento',
+            $this->translator->trans('order.status.refund') => 'Reembolso',
+            $this->translator->trans('order.status.completed') => 'Entregue e finalizado',
+        ]);
         $refundStatus = ([
             'Em curso' => 'Em curso',
             // 'Reembolsado' => 'Reembolsado',
-        ]);
+        ]);    
+
         if (in_array("ROLE_ADMIN", $user->getRoles())) {
+            $orderStatus = ([
+                $this->translator->trans('order.status.processing') => 'Em processamento',
+                $this->translator->trans('order.status.refund') => 'Reembolso',
+                // $this->translator->trans('order.status.completed') => 'Entregue e finalizado',
+            ]);
             $refundStatus = ([
                 'Em curso' => 'Em curso',
                 'Reembolsado' => 'Reembolsado',
@@ -208,7 +219,8 @@ class OrderCrudController extends AbstractCrudController
                 ->setFormTypeOption('attr', ['readonly' => true]),
 
             TextField::new('basket.user.lastName', $this->translator->trans('order.field.customer'))->hideOnIndex(),
-            TextField::new('basket.user.email', $this->translator->trans('order.field.customer_email'))->hideOnIndex(),
+            TextField::new('basket.user.email', $this->translator->trans('order.field.customer_email'))->hideOnIndex()
+            ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'v']),
 
             DateTimeField::new('orderDate', $this->translator->trans('orders.date'))
                 ->hideOnForm()
@@ -216,15 +228,33 @@ class OrderCrudController extends AbstractCrudController
                     return $value ? $value->format('d/m/Y') : '';
                 }),
 
-            MoneyField::new('totalAmount', 'Total')
+            MoneyField::new('totalAmount', 'order.field.total')
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
                 ->setCurrency('CVE')
-                ->setHelp($this->translator->trans('order.help.currency_cve')),
-            MoneyField::new('amountFinal', $this->translator->trans('order.field.final_price2'))
+                ->setHelp('order.help.currency_cve'),
+
+            MoneyField::new('amountFinal', 'order.field.final_price2')
                 ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
                 ->setCurrency('CVE')
-                ->hideOnIndex()
-                ->setHelp($this->translator->trans('order.help.currency_cve')),
+                ->hideOnIndex(),
+
+            MoneyField::new('totalShippingCost', 'order.field.total_shipping')
+                ->setCurrency('CVE')
+                ->setFormTypeOption('attr', ['readonly' => true])
+                ->setColumns(4)
+                ->hideOnIndex(),
+
+            TextField::new('deliveryMethods', 'order.field.delivery_method')
+                ->setFormTypeOption('mapped', false) // important !
+                ->setFormTypeOption('attr', ['readonly' => true])
+                ->setColumns(4)
+                ->hideOnIndex(),
+
+            MoneyField::new('finalAmountWithDelivery', 'order.field.final_with_delivery')
+                ->setCurrency('CVE')
+                ->setFormTypeOption('attr', ['readonly' => true])
+                ->setColumns(4)
+                ->hideOnIndex(),
 
             TextEditorField::new('beneficiaryName', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
             TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
@@ -238,16 +268,13 @@ class OrderCrudController extends AbstractCrudController
             // ===== FORM (EDIT / NEW) : ChoiceField normal =====
             ChoiceField::new('orderStatus', $this->translator->trans('order.field.status'))
                 ->onlyOnForms()
-                ->setChoices([
-                    $this->translator->trans('order.status.processing') => 'Em processamento',
-                    $this->translator->trans('order.status.refund') => 'Reembolso',
-                    $this->translator->trans('order.status.completed') => 'Entregue e finalizado',
-                ])
+                ->setChoices($orderStatus)
                 ->setRequired(true),
 
 
             TextareaField::new('internal_note', $this->translator->trans('order.field.internal_note'))
                 // ->hideOnIndex()
+                  ->setFormTypeOption('attr', ['class' => 'internal-note'])
                 ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
 
             TextField::new('merchantSecretCode', $this->translator->trans('order.field.merchant_secret_code'))
@@ -320,12 +347,13 @@ class OrderCrudController extends AbstractCrudController
 
 
 
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance, ): void
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if (!$entityInstance instanceof Order) {
             return;
         }
 
+        
         $clientName = $entityInstance->getBasket()->getUser()->getFirstName() . " " . $entityInstance->getBasket()->getUser()->getLastName();
         $ref_order = $entityInstance->getRef();
         $clientEmail = $entityInstance->getBasket()->getUser()->getEmail();
@@ -380,10 +408,19 @@ class OrderCrudController extends AbstractCrudController
         // ✅ Remboursement
         // ===============================
         if ($status === 'Reembolso') {
-            $entityInstance->setRefund(true);
-            $entityInstance->setInternalNote(
-                $this->translator->trans('order.note.refund')
-            );
+            // $entityInstance->setInternalNote($this->translator->trans('order.note.refund'));
+            if (empty($entityInstance->getInternalNote())){
+                $this->addFlash(
+                    'danger',
+                    $this->translator->trans('order.flash.note.refund_required')
+                );
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer')
+                    ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            }
 
             // 🔴 Validation obligatoire
             if (empty($entityInstance->getRefundAmount()) || empty($entityInstance->getRefundStatus())) {
@@ -466,7 +503,29 @@ class OrderCrudController extends AbstractCrudController
                 // envoier l'email
                 $this->mailer->send($emailClient);
             }
+            $entityInstance->setRefund(true);
         }
+
+        // ===============================
+        // ✅ Vérification o montante, ou o estado, do Reemboso et o estado da encomenda
+        // ===============================
+        if (
+            (!empty($entityInstance->getRefundAmount()) || !empty($entityInstance->getRefundStatus())) 
+            && ($status === 'Entregue e finalizado' || $status === 'Em processamento')
+        ) {
+            $this->addFlash(
+                'danger',
+                $this->translator->trans(
+                    "Verifica o Montante ou Estado do Reembolso, se corresponde ao 'Estado da Encomenda'."
+                )
+            );
+            $request = $this->requestStack->getCurrentRequest();
+            $referer = $request->headers->get('referer')
+                ?? $this->router->generate('admin');
+            (new RedirectResponse($referer))->send();
+            exit;
+        }
+
 
         // ===============================
         // ✅ Vérification code secret (Merchant)
