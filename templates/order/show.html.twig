@@ -144,17 +144,17 @@
 	<div class="order_table">
 
 		<div style="text-align:center; margin:30px 0;">
-			<a href="{{ path('order_print', {'ref': order.ref}) }}" target="_blank" style="
-										                background:#000;
-										                color:#fff;
-										                padding:12px 20px;
-										                text-decoration:none;
-										                border-radius:5px;
-										                font-weight:bold;
-										           ">
+			<a href="{{ path('order_print', {'ref': order.ref}) }}" target="_blank" 
+				style="background:#000; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
 				🧾
 				{{ 'receipt.print'|trans }}
 			</a>
+			{% if order.deliveries is not empty %}
+				<a href="{{ path('app_delivery_index', {'id': order.id}) }}"
+					style="background:#000; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
+					🚚 {{ 'delivery.title'|trans }}
+				</a>
+			{% endif %}
 		</div>
 
 		<table class="table table-dark order-detail-table">

@@ -60,7 +60,8 @@ class AccountingService
         SELECT 
             p.name AS product,
             SUM(bp.quantity * p.price) AS revenue,
-            IFNULL(SUM(o.refund_amount), 0) AS refund_amount,  -- Ajout du montant du remboursement
+            IFNULL(SUM(o.refund_amount), 0) AS refund_amount,
+            s.id AS shop_id,                 -- ✅ AJOUT
             s.name AS shop_name,
             u.email AS shop_email
         FROM basket_product bp
@@ -70,7 +71,11 @@ class AccountingService
         JOIN `order` o ON bp.order_c_id = o.id
         WHERE u.id = :merchantUserId
           AND o.order_status = 'Entregue e finalizado'
-        GROUP BY p.id, s.id, u.email
+        GROUP BY 
+            p.id,
+            s.id,
+            s.name,
+            u.email
         ORDER BY revenue DESC
     ";
 
@@ -78,6 +83,7 @@ class AccountingService
             'merchantUserId' => $merchant->getUser()->getId()
         ])->fetchAllAssociative();
     }
+
 
 
     /**
@@ -91,7 +97,8 @@ class AccountingService
         SELECT 
             c.name AS category,
             SUM(bp.quantity * p.price) AS revenue,
-            IFNULL(SUM(o.refund_amount), 0) AS refund_amount,  -- Ajout du montant du remboursement
+            IFNULL(SUM(o.refund_amount), 0) AS refund_amount,
+            s.id AS shop_id,                -- ✅ AJOUT
             s.name AS shop_name,
             u.email AS shop_email
         FROM basket_product bp
@@ -102,7 +109,11 @@ class AccountingService
         JOIN `order` o ON bp.order_c_id = o.id
         WHERE u.id = :merchantUserId
           AND o.order_status = 'Entregue e finalizado'
-        GROUP BY c.id, s.id, u.email
+        GROUP BY 
+            c.id,
+            s.id,
+            s.name,
+            u.email
         ORDER BY revenue DESC
     ";
 
@@ -110,6 +121,7 @@ class AccountingService
             'merchantUserId' => $merchant->getUser()->getId()
         ])->fetchAllAssociative();
     }
+
 
 
     // -------------------- ADMIN (GLOBAL) --------------------
@@ -240,6 +252,7 @@ class AccountingService
             c.name AS category,
             SUM(bp.quantity * p.price) AS revenue,
             IFNULL(SUM(o.refund_amount), 0) AS refund_amount,  -- Ajout du montant du remboursement
+            s.id AS shop_id,
             s.name AS shop_name,
             u.email AS shop_email
         FROM basket_product bp

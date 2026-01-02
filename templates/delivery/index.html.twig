@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'delivery.title'|trans }}{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-4 fw-bold">📦 {{ 'delivery.title'|trans }}</h1>
+
+    <div class="table-responsive shadow rounded">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>{{ 'delivery.status.title'|trans }}</th>
+                    <th>{{ 'delivery.tracking_number'|trans }}</th>
+                    {# <th>{{ 'delivery.estimated_delivery'|trans }}</th> #}
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for delivery in deliveries %}
+                    <tr>
+                        <td class="text-center">
+                            <span class="badge bg-primary">
+                                {# Dynamically translate the status #}
+                                {% if delivery.deliveryStatus == 'pending' %}
+                                    {{ 'delivery.status.pending'|trans }}
+                                {% elseif delivery.deliveryStatus == 'processing' %}
+                                    {{ 'delivery.status.processing'|trans }}
+                                {% elseif delivery.deliveryStatus == 'shipped' %}
+                                    {{ 'delivery.status.shipped'|trans }}
+                                {% elseif delivery.deliveryStatus == 'in_transit' %}
+                                    {{ 'delivery.status.in_transit'|trans }}
+                                {% elseif delivery.deliveryStatus == 'out_for_delivery' %}
+                                    {{ 'delivery.status.out_for_delivery'|trans }}
+                                {% elseif delivery.deliveryStatus == 'delivered' %}
+                                    {{ 'delivery.status.delivered'|trans }}
+                                {% elseif delivery.deliveryStatus == 'failed' %}
+                                    {{ 'delivery.status.failed'|trans }}
+                                {% elseif delivery.deliveryStatus == 'cancelled' %}
+                                    {{ 'delivery.status.cancelled'|trans }}
+                                {% elseif delivery.deliveryStatus == 'returned' %}
+                                    {{ 'delivery.status.returned'|trans }}
+                                {% else %}
+                                    {{ 'delivery.status.unknown'|trans }}
+                                {% endif %}
+                            </span>
+                        </td>
+
+                        <td>{{ delivery.trackingNumber }}</td>
+
+                        {# <td>
+                            {{ delivery.estimatedDeliveryDate ? delivery.estimatedDeliveryDate|date('d/m/Y') : '—' }}
+                        </td> #}
+
+                        <td class="text-center">
+                            <a href="{{ path('app_delivery_show', {'id': delivery.id}) }}" class="btn btn-sm btn-outline-primary">
+                                {{ 'common.view'|trans }}
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">
+                            {{ 'delivery.no_deliveries'|trans }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{{ path('app_order_show', {'id': order.id}) }}" class="btn btn-outline-secondary">
+            ← {{ 'common.back_to_orders'|trans }}
+        </a>
+    </div>
+</div>
+
+{# JS pour rendre <tr> cliquable #}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.clickable-row').forEach(row => {
+        row.addEventListener('click', () => {
+            window.location.href = row.dataset.href;
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -917,3 +917,36 @@ delivery:
   title: Livraison à domicile
   standard: Standard
   express: Express
+  details: "Détails de la livraison"
+  title0: "Livraison"
+  tracking_number: "Numéro de suivi"
+  method: "Mode de livraison"
+  shipment_date: "Date d’expédition"
+  estimated_delivery: "Livraison estimée"
+  shipping_cost: "Frais de livraison"
+  address: "Adresse de livraison"
+  address_missing: "Veuillez modifier l’adresse"
+  beneficiary_address: "Adresse du bénéficiaire"
+  address_warning: "L’adresse du bénéficiaire est différente. Veuillez vérifier l’adresse de livraison."
+  edit_address: "Modifier l’adresse de livraison"
+  carrier: Transporteur
+  processing: "En traitement"
+  status:
+    title: "Statut"
+    pending: "En attente"
+    processing: "En traitement"
+    shipped: "Expédié"
+    in_transit: "En cours de livraison"
+    out_for_delivery: "En livraison"
+    delivered: "Livré"
+    failed: "Échec de la livraison"
+    cancelled: "Annulé"
+    returned: "Retourné"
+    unknown: "Statut inconnu"
+
+common:
+  back: "Retour aux livraisons"
+  not_available: "—"
+  back_to_orders: "Retour aux commande"
+  view: "Voir"
+

@@ -914,7 +914,41 @@ checkout:
   delivery_method: Método de entrega
   delivery_price: Precio de entrega
 
+
 delivery:
   title: Entrega a domicilio
   standard: Estándar
   express: Exprés
+  details: "Detalles de la entrega"
+  title0: "Entrega"
+  tracking_number: "Número de seguimiento"
+  method: "Método de entrega"
+  shipment_date: "Fecha de envío"
+  estimated_delivery: "Entrega estimada"
+  shipping_cost: "Coste de envío"
+  address: "Dirección de entrega"
+  address_missing: "Por favor, edite la dirección"
+  beneficiary_address: "Dirección del beneficiario"
+  address_warning: "La dirección del beneficiario es diferente. Por favor, verifique que la dirección de entrega sea correcta."
+  edit_address: "Editar dirección de entrega"
+  delivery:
+  carrier: Transportista
+  processing: "En proceso"
+  status:
+    title: Estado
+    pending: "Pendiente"
+    processing: "En proceso"
+    shipped: "Enviado"
+    in_transit: "En tránsito"
+    out_for_delivery: "En reparto"
+    delivered: "Entregado"
+    failed: "Fallido"
+    cancelled: "Cancelado"
+    returned: "Devuelto"
+    unknown: "Estado desconocido"
+
+common:
+  back: "Volver a las entregas"
+  not_available: "—"
+  back_to_orders: "Volver a los pedido"
+  view: "Ver"

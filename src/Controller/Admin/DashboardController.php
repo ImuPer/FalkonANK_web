@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 // use App\Controller\Admin\is_granted;
 use App\Entity\Ads;
 use App\Entity\BasketProduct;
+use App\Entity\Carrier;
 use App\Entity\Category;
 use App\Entity\City;
 use App\Entity\Contact;
@@ -143,7 +144,8 @@ class DashboardController extends AbstractDashboardController
                     ),
             ])->setBadge($countRefundInProgress > 0 ? (string) $countRefundInProgress : null, 'danger');
             
-            yield MenuItem::linkToCrud('Delivery', 'fas fa-truck', entityFqcn: Delivery::class);
+            yield MenuItem::linkToCrud('Carrier', 'fas fa-truck', entityFqcn: Carrier::class);
+            yield MenuItem::linkToCrud('Delivery', 'fas fa-shipping-fast', entityFqcn: Delivery::class);
             // 🔽 Lien vers /merchant/accounting
             yield MenuItem::linkToRoute('Contabilidade', 'fas fa-calculator', 'merchant_accounting');
             yield MenuItem::linkToCrud('Ads', 'fas fa-bullhorn', Ads::class);

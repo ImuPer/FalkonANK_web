@@ -45,7 +45,7 @@
 								{% endif %}
 								<th>{{ 'accounting.refund'|trans }}
 									(CVE)</th>
-								<th>{{ 'accounting.shop_email'|trans }}</th>
+								<th>{{ 'accounting.shop_name'|trans }}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -62,8 +62,8 @@
 									{% endif %}
 									<td data-label="{{ 'accounting.refund'|trans }}">{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }}
 										escudos</td>
-									<td data-label="{{ 'accounting.shop_email'|trans }}">
-										<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
+									<td data-label="{{ 'accounting.shop_name'|trans }}">
+										<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_name }}</a>
 									</td>
 								</tr>
 							{% else %}
@@ -90,8 +90,8 @@
 								(CVE)</th>
 							<th>{{ 'accounting.refund'|trans }}
 								(CVE)</th>
-							{# <th>{{ 'accounting.shop_name'|trans }}</th> #}
-							<th>{{ 'accounting.shop_email'|trans }}</th>
+							<th>{{ 'accounting.shop_name'|trans }}</th>
+							{# <th>{{ 'accounting.shop_email'|trans }}</th> #}
 						</tr>
 					</thead>
 					<tbody>
@@ -102,10 +102,12 @@
 									escudos</td>
 								<td data-label="{{ 'accounting.refund'|trans }}">{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }}
 									escudos</td>
-								{# <td data-label="{{ 'accounting.shop_name'|trans }}">{{ row.shop_name }}</td> #}
-								<td data-label="{{ 'accounting.shop_email'|trans }}">
-									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
+								<td data-label="{{ 'accounting.shop_name'|trans }}">
+									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_name }}</a>
 								</td>
+								{# <td data-label="{{ 'accounting.shop_email'|trans }}">
+									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
+								</td> #}
 							</tr>
 						{% else %}
 							<tr>
@@ -130,7 +132,7 @@
 							<th>{{ 'accounting.refund'|trans }}
 								(CVE)</th>
 							<th>{{ 'accounting.shop_name'|trans }}</th>
-							<th>{{ 'accounting.shop_email'|trans }}</th>
+							{# <th>{{ 'accounting.shop_email'|trans }}</th> #}
 						</tr>
 					</thead>
 					<tbody>
@@ -141,10 +143,12 @@
 									escudos</td>
 								<td data-label="{{ 'accounting.refund'|trans }}">{{ (row.refund_amount / 100)|number_format(0, ',', ' ') }}
 									escudos</td>
-								<td data-label="{{ 'accounting.shop_name'|trans }}">{{ row.shop_name }}</td>
-								<td data-label="{{ 'accounting.shop_email'|trans }}">
-									<a href="mailto:{{ row.shop_email }}">{{ row.shop_email }}</a>
+								<td data-label="{{ 'accounting.shop_name'|trans }}">
+									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_name }}</a>
 								</td>
+								{# <td data-label="{{ 'accounting.shop_email'|trans }}">
+									<a href="mailto:{{ row.shop_email }}">{{ row.shop_email }}</a>
+								</td> #}
 							</tr>
 						{% else %}
 							<tr>

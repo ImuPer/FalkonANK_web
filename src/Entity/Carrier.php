@@ -30,6 +30,10 @@ class Carrier
     #[ORM\OneToMany(targetEntity: Delivery::class, mappedBy: 'carrier')]
     private Collection $deliveries;
 
+    #[ORM\ManyToOne(inversedBy: 'carriers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
     public function __construct()
     {
         $this->deliveries = new ArrayCollection();
@@ -102,6 +106,18 @@ class Carrier
                 $delivery->setCarrier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

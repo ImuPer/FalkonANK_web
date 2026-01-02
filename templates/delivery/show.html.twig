@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ 'delivery.details'|trans }}
+{% endblock %}
+
+{% block body %}
+	<div class="container my-5">
+
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h1 class="h3 mb-0">
+				🚚
+				{{ 'delivery.title0'|trans }}
+			</h1>
+
+			<span class="badge bg-dark">
+				{% if delivery.deliveryStatus == 'pending' %}
+					{{ 'delivery.status.pending'|trans }}
+				{% elseif delivery.deliveryStatus == 'processing' %}
+					{{ 'delivery.status.processing'|trans }}
+				{% elseif delivery.deliveryStatus == 'shipped' %}
+					{{ 'delivery.status.shipped'|trans }}
+				{% elseif delivery.deliveryStatus == 'in_transit' %}
+					{{ 'delivery.status.in_transit'|trans }}
+				{% elseif delivery.deliveryStatus == 'out_for_delivery' %}
+					{{ 'delivery.status.out_for_delivery'|trans }}
+				{% elseif delivery.deliveryStatus == 'delivered' %}
+					{{ 'delivery.status.delivered'|trans }}
+				{% elseif delivery.deliveryStatus == 'failed' %}
+					{{ 'delivery.status.failed'|trans }}
+				{% elseif delivery.deliveryStatus == 'cancelled' %}
+					{{ 'delivery.status.cancelled'|trans }}
+				{% elseif delivery.deliveryStatus == 'returned' %}
+					{{ 'delivery.status.returned'|trans }}
+				{% else %}
+					{{ 'delivery.status.unknown'|trans }}
+				{% endif %}
+			</span>
+		</div>
+
+		<div class="card shadow-sm">
+			<div class="card-body">
+
+				<div class="table-responsive">
+					<table class="table table-borderless align-middle mb-0">
+						<tbody>
+							<tr>
+								<th class="text-muted">{{ 'delivery.tracking_number'|trans }}</th>
+								<td class="fw-semibold">{{ delivery.trackingNumber }}</td>
+							</tr>
+
+							<tr>								
+                                <th class="text-muted">{{ 'delivery.method'|trans }}</th>
+                                <td>
+                                    {% if delivery.deliveryMethod == 'standard' %}
+                                        {{ 'delivery.standard'|trans }}
+                                    {% elseif delivery.deliveryMethod == 'express' %}
+                                        {{ 'delivery.express'|trans }}
+                                    {% else %}
+                                        {{ delivery.deliveryMethod|trans }}
+                                    {% endif %}
+                                </td>
+							</tr>
+
+							<tr>
+								<th class="text-muted">{{ 'delivery.shipment_date'|trans }}</th>
+								<td>
+									{{ delivery.shipmentDate
+                                    ? delivery.shipmentDate|date('d/m/Y H:i')
+                                    : 'common.not_available'|trans }}
+								</td>
+							</tr>
+
+							<tr>
+								<th class="text-muted">{{ 'delivery.estimated_delivery'|trans }}</th>
+								<td>
+									{{ delivery.estimatedDeliveryDate
+                                    ? delivery.estimatedDeliveryDate|date('d/m/Y H:i')
+                                    : 'common.not_available'|trans }}
+								</td>
+							</tr>
+
+							<tr>
+								<th class="text-muted">{{ 'delivery.shipping_cost'|trans }}</th>
+								<td>
+									{% set costCVE = delivery.shippingCost / 100 %}
+									{% set costEUR = costCVE / 110 %}
+									{% set costUSD = costEUR * 1.10 %}
+
+									<span class="badge bg-success mb-1 d-inline-block">
+										{{ costCVE | number_format(2, ',', '.') }}
+										CVE
+									</span>
+									<br>
+
+									<small class="text-muted">
+										{{ costEUR | number_format(2, ',', '.') }}
+										€ ·
+										{{ costUSD | number_format(2, ',', '.') }}
+										$
+									</small>
+								</td>
+							</tr>
+
+                            {% if delivery.orderCustomer
+                            and delivery.orderCustomer.beneficiaryAddress
+                            and delivery.fullAddress != delivery.orderCustomer.beneficiaryAddress %}
+								<tr>
+									<th class="text-muted">{{ 'delivery.beneficiary_address'|trans }}</th>
+									<td>
+										{{ delivery.orderCustomer.beneficiaryAddress }}<br>
+										<small class="fw-bold">
+											⚠️
+											{{ 'delivery.address_warning'|trans }}
+										</small>
+									</td>
+								</tr>
+							{% endif %}
+
+							<tr>
+								<th class="text-muted">{{ 'delivery.address'|trans }}</th>
+								<td class="text-wrap">
+									{{ delivery.fullAddress
+                                    ?: '<span class="badge bg-warning">' ~ 'delivery.address_missing'|trans ~ '</span>'|raw }}
+								</td>
+							</tr>
+							
+							<tr>
+								<th class="text-muted">{{ 'delivery.carrier'|trans }}</th>
+								<td class="text-wrap">
+									{{ delivery.carrier 
+                                        ?: ('<span class="badge bg-dark mb-1 d-inline-block">' ~ 'delivery.processing'|trans ~ '</span>')|raw 
+                                    }}
+								</td>
+							</tr>
+
+							<tr>
+								<th class="text-muted">
+									<strong>#Order</strong>
+								</th>
+								<td class="text-wrap">
+									{{ delivery.orderCustomer.ref }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="d-flex flex-wrap gap-2 mt-4">
+			<a href="{{ path('app_delivery_index', {'id': delivery.orderCustomer.id}) }}" class="btn btn-outline-secondary">
+				←
+				{{ 'common.back'|trans }}
+			</a>
+
+			<a href="{{ path('app_delivery_edit', {'id': delivery.id}) }}" class="btn btn-dark">
+				✏️
+				{{ 'delivery.edit_address'|trans }}
+			</a>
+		</div>
+	</div>
+{% endblock %}

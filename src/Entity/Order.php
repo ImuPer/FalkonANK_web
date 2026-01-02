@@ -439,4 +439,8 @@ class Order
         return $amountFinal + $totalDelivery;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->Basket ? $this->Basket->getUser() : null;
+    }
 }

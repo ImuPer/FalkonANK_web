@@ -43,11 +43,18 @@ class City
     #[ORM\OneToMany(targetEntity: Merchant::class, mappedBy: 'city')]
     private Collection $merchants;
 
+    /**
+     * @var Collection<int, Carrier>
+     */
+    #[ORM\OneToMany(targetEntity: Carrier::class, mappedBy: 'city')]
+    private Collection $carriers;
+
     public function __construct()
     {
         $this->shops = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->merchants = new ArrayCollection();
+        $this->carriers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,4 +192,34 @@ class City
 {
     return $this->name; // ou autre propriété que tu veux afficher
 }
+
+    /**
+     * @return Collection<int, Carrier>
+     */
+    public function getCarriers(): Collection
+    {
+        return $this->carriers;
+    }
+
+    public function addCarrier(Carrier $carrier): static
+    {
+        if (!$this->carriers->contains($carrier)) {
+            $this->carriers->add($carrier);
+            $carrier->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarrier(Carrier $carrier): static
+    {
+        if ($this->carriers->removeElement($carrier)) {
+            // set the owning side to null (unless already changed)
+            if ($carrier->getCity() === $this) {
+                $carrier->setCity(null);
+            }
+        }
+
+        return $this;
+    }
 }

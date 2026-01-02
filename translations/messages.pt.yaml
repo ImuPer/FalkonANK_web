@@ -898,7 +898,41 @@ checkout:
   delivery_method: Método de entrega
   delivery_price: Preço da entrega
 
-delivery: 
+delivery:
   title: Entrega ao domicílio
-  standard: Normal
+  standard: Padrão
   express: Expresso
+  details: "Detalhes da entrega"
+  title0: "Entrega"
+  tracking_number: "Número de rastreamento"
+  method: "Método de entrega"
+  shipment_date: "Data de envio"
+  estimated_delivery: "Entrega estimada"
+  shipping_cost: "Custo de envio"
+  address: "Endereço de entrega"
+  address_missing: "Por favor, edite o endereço"
+  beneficiary_address: "Endereço do beneficiário"
+  address_warning: "O endereço do beneficiário é diferente. Por favor, verifique se o endereço de entrega está correto."
+  edit_address: "Editar endereço de entrega"
+  delivery:
+  carrier: Transportadora
+  processing: "Em processamento"
+  status:
+    title: "Status"
+    pending: "Pendente"
+    processing: "Em processamento"
+    shipped: "Enviado"
+    in_transit: "Em trânsito"
+    out_for_delivery: "Em entrega"
+    delivered: "Entregue"
+    failed: "Falhou"
+    cancelled: "Cancelado"
+    returned: "Devolvido"
+    unknown: "Status desconhecido"
+
+
+common:
+  back: "Voltar às entrega"
+  not_available: "—"
+  back_to_orders: "Voltar às encomendas"
+  view: "Ver"

@@ -916,3 +916,36 @@ delivery:
   title: Home delivery
   standard: Standard
   express: Express
+  details: "Delivery details"
+  title0: "Delivery"
+  tracking_number: "Tracking number"
+  method: "Delivery method"
+  shipment_date: "Shipment date"
+  estimated_delivery: "Estimated delivery"
+  shipping_cost: "Shipping cost"
+  address: "Delivery address"
+  address_missing: "Please edit the address"
+  beneficiary_address: "Beneficiary address"
+  address_warning: "The beneficiary address is different. Please check that your delivery address is correct."
+  edit_address: "Edit delivery address"
+  carrier: Carrier
+  processing: "Processing"
+  status:
+    title: "Status"
+    pending: "Pending"
+    processing: "Processing"
+    shipped: "Shipped"
+    in_transit: "In transit"
+    out_for_delivery: "Out for delivery"
+    delivered: "Delivered"
+    failed: "Failed"
+    cancelled: "Cancelled"
+    returned: "Returned"
+    unknown: "Unknown status"
+
+
+common:
+  back: "Back to deliveries"
+  not_available: "—"
+  back_to_orders: "Back to order"
+  view: "View"
