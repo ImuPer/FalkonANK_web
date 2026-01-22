@@ -138,7 +138,8 @@ class StripeController extends AbstractController
         ));
 
 
-        $lineItems[] = [
+        if($deliveryMethod){
+            $lineItems[] = [
             'price_data' => [
                 'currency' => $_ENV['STRIPE_CURRENCY'],
                 'product_data' => [
@@ -148,6 +149,7 @@ class StripeController extends AbstractController
             ],
             'quantity' => 1,
         ];
+        }        
 
 
         // Générer les URLs de succès et d'annulation avec un placeholder
