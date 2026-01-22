@@ -36,7 +36,7 @@
                         <li>
                             <a class="dropdown-item" href="{{ path('app_user_show') }}">{{ 'profile_h'|trans }}</a>
                         </li>
-                        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+                        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') and not is_granted('ROLE_CARRIER') %}
                             <li>
                                 <a class="dropdown-item" href="{{ path('app_user_orders') }}">{{ 'orders'|trans }}</a>
                             </li>
@@ -67,6 +67,11 @@
                 </li>
             {% endif %}
 
+             {% if is_granted('ROLE_CARRIER') %}
+                <li class="link_admin">
+                    <a href="{{ path('admin') }}" <i class="fas fa-truck"></i></a>
+                </li>
+            {% endif %}
             {# <a href="https://www.facebook.com/profile.php?id=61577545040892&sk=about_privacy_and_legal_info" target="_blank">
                 <i class="fab fa-facebook-f"></i>
             </a> #}
@@ -100,7 +105,7 @@
             </li>
         </div>
 
-        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT') %}
+        {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_MERCHANT')  and not is_granted('ROLE_CARRIER') %}
             <a class="shoping_header" href="{{ path('user_basket') }}">
                 <i class="fas fa-shopping-cart"></i>
                 {% if is_granted('ROLE_USER') %}

@@ -131,7 +131,10 @@ class OrderCrudController extends AbstractCrudController
                 if ($filter === 'Em processamento') {
                     $qb->andWhere('o.order_status = :status')
                         ->setParameter('status', 'Em processamento');
-                }elseif ($filter === 'reembolso') {
+                } elseif ($filter === 'Entregue e finalizado') {
+                    $qb->andWhere('o.order_status = :status')
+                        ->setParameter('status', 'Entregue e finalizado');
+                } elseif ($filter === 'reembolso') {
                     $qb->andWhere('o.order_status = :status')
                         ->andWhere('o.refund_status = :refund')
                         ->setParameter('status', 'Reembolso')
@@ -154,195 +157,317 @@ class OrderCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $user = $this->getUser();
-         $orderStatus = ([
-            $this->translator->trans('order.status.processing') => 'Em processamento',
+
+        /** @var Order|null $order */
+        $order = $this->getContext()?->getEntity()?->getInstance();
+        $hasDelivery = $order instanceof Order && !$order->getDeliveries()->isEmpty();
+
+        // ===== STATUTS PAR DÉFAUT =====
+        $orderStatus = [
             $this->translator->trans('order.status.refund') => 'Reembolso',
             $this->translator->trans('order.status.completed') => 'Entregue e finalizado',
-        ]);
-        $refundStatus = ([
-            'Em curso' => 'Em curso',
-            // 'Reembolsado' => 'Reembolsado',
-        ]);    
+        ];
 
-        if (in_array("ROLE_ADMIN", $user->getRoles())) {
-            $orderStatus = ([
-                $this->translator->trans('order.status.processing') => 'Em processamento',
+        $refundStatus = [
+            'Em curso' => 'Em curso',
+        ];
+
+        // ===== SI LIVRAISONS EXISTENT =====
+        if ($order instanceof Order && !$order->getDeliveries()->isEmpty()) {
+            $orderStatus = [
                 $this->translator->trans('order.status.refund') => 'Reembolso',
+                $this->translator->trans('order.status.carrier') => 'Entregue ao transportador',
                 // $this->translator->trans('order.status.completed') => 'Entregue e finalizado',
-            ]);
-            $refundStatus = ([
-                'Em curso' => 'Em curso',
-                'Reembolsado' => 'Reembolsado',
-            ]);
+            ];
         }
 
-        // Champ virtuel pour la classe CSS
-        return [
+        // ===== ADMIN =====
+        if ($user && in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            $orderStatus = [
+                $this->translator->trans('order.status.pending0') => 'Em espera',
+                $this->translator->trans('order.status.refund') => 'Reembolso',
+            ];
 
-            // Field::new('statusClass')->onlyOnIndex()
-            //     ->formatValue(function ($value, $entity) {
-            //         /** @var Order $entity */
-            //         if ($entity->getOrderStatus() === 'Em processamento' || $entity->getMerchantSecretCode() === null) {
-            //             return 'text-danger'; // Classe CSS pour le texte rouge
-            //         }
-            //         return '';
-            //     })
-            //     ->setCssClass('hidden'), // on ne veut pas afficher ce champ
+            $refundStatus = [
+                'Em curso' => 'Em curso',
+                'Reembolsado' => 'Reembolsado',
+            ];
+        }
 
+        if ($hasDelivery) {
+            // Champ virtuel pour la classe CSS
+            return [
 
-            // ===== INDEX : affichage coloré =====
-            TextField::new('orderStatus', $this->translator->trans('order.field.status'))
-                ->onlyOnIndex()
-                ->formatValue(function ($value, Order $order) {
+                // ===== INDEX : affichage coloré =====
+                TextField::new('orderStatus', $this->translator->trans('order.field.status'))
+                    ->onlyOnIndex()
+                    ->formatValue(function ($value, Order $order) {
 
-                    return match ($order->getOrderStatus()) {
-                        'Em processamento' => '<span class="text-danger">' . $value . '</span>',
-                        'Entregue e finalizado' => '<span class="text-success">' . $value . '</span>',
-                        'Reembolso' => '<span class="text-warning">' . $value . '</span>',
-                        default => $value,
-                    };
-                })
-                ->renderAsHtml(),
-
-
-            Field::new('cssClass')->onlyOnIndex()
-                ->formatValue(function ($value, $entity) {
-                    if ($entity->getMerchantSecretCode() !== null && $entity->getOrderStatus() === 'Entregue e finalizado') {
-                        return 'row-entregue-finalizado';
-                    }
-                    return '';
-                })
-                ->setCssClass('hidden')
-                ->hideOnIndex(),
-
-            TextField::new('ref', $this->translator->trans('order.field.reference'))
-                ->setFormTypeOption('attr', ['readonly' => true]),
-
-            TextField::new('basket.user.lastName', $this->translator->trans('order.field.customer'))->hideOnIndex(),
-            TextField::new('basket.user.email', $this->translator->trans('order.field.customer_email'))->hideOnIndex()
-            ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'v']),
-
-            DateTimeField::new('orderDate', $this->translator->trans('orders.date'))
-                ->hideOnForm()
-                ->formatValue(function ($value) {
-                    return $value ? $value->format('d/m/Y') : '';
-                }),
-
-            MoneyField::new('totalAmount', 'order.field.total')
-                ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
-                ->setCurrency('CVE')
-                ->setHelp('order.help.currency_cve'),
-
-            MoneyField::new('amountFinal', 'order.field.final_price2')
-                ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
-                ->setCurrency('CVE')
-                ->hideOnIndex(),
-
-            MoneyField::new('totalShippingCost', 'order.field.total_shipping')
-                ->setCurrency('CVE')
-                ->setFormTypeOption('attr', ['readonly' => true])
-                ->setColumns(4)
-                ->hideOnIndex(),
-
-            TextField::new('deliveryMethods', 'order.field.delivery_method')
-                ->setFormTypeOption('mapped', false) // important !
-                ->setFormTypeOption('attr', ['readonly' => true])
-                ->setColumns(4)
-                ->hideOnIndex(),
-
-            MoneyField::new('finalAmountWithDelivery', 'order.field.final_with_delivery')
-                ->setCurrency('CVE')
-                ->setFormTypeOption('attr', ['readonly' => true])
-                ->setColumns(4)
-                ->hideOnIndex(),
-
-            TextEditorField::new('beneficiaryName', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
-            TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
-            TextEditorField::new('phone', )->hideOnForm(),
-            TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
-            TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
-            TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
-                // ->setFormTypeOption('mapped', false)
-                ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
-
-            // ===== FORM (EDIT / NEW) : ChoiceField normal =====
-            ChoiceField::new('orderStatus', $this->translator->trans('order.field.status'))
-                ->onlyOnForms()
-                ->setChoices($orderStatus)
-                ->setRequired(true),
+                        return match ($order->getOrderStatus()) {
+                            'Em processamento' => '<span class="text-danger">' . $value . '</span>',
+                            'Entregue e finalizado' => '<span class="text-success">' . $value . '</span>',
+                            'Reembolso' => '<span class="text-warning">' . $value . '</span>',
+                            default => $value,
+                        };
+                    })
+                    ->renderAsHtml(),
 
 
-            TextareaField::new('internal_note', $this->translator->trans('order.field.internal_note'))
-                // ->hideOnIndex()
-                  ->setFormTypeOption('attr', ['class' => 'internal-note'])
-                ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
+                Field::new('cssClass')->onlyOnIndex()
+                    ->formatValue(function ($value, $entity) {
+                        if ($entity->getMerchantSecretCode() !== null && $entity->getOrderStatus() === 'Entregue e finalizado') {
+                            return 'row-entregue-finalizado';
+                        }
+                        return '';
+                    })
+                    ->setCssClass('hidden')
+                    ->hideOnIndex(),
 
-            TextField::new('merchantSecretCode', $this->translator->trans('order.field.merchant_secret_code'))
-                ->setHelp($this->translator->trans('order.help.merchant_secret_code'))
-                ->setRequired(true)
-                ->setFormTypeOptions([
-                    'required' => true,
-                    'constraints' => [],
-                    'mapped' => true,
-                ])
-                ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
-                ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
+                TextField::new('ref', $this->translator->trans('order.field.reference'))
+                    ->setFormTypeOption('attr', ['readonly' => true])->setColumns(4),
 
-            // TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
-            //     ->hideOnForm(),
+                TextField::new('basket.user.lastName', $this->translator->trans('order.field.customer'))->hideOnIndex()->setColumns(4)
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'v']),
+                TextField::new('basket.user.email', $this->translator->trans('order.field.customer_email'))->hideOnIndex()->setColumns(4)
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'v']),
 
-            BooleanField::new('refund', $this->translator->trans('order.field.refund'))
-                ->hideOnIndex()
-                ->setFormTypeOption('attr', ['id' => 'Order_refund']),
+                DateTimeField::new('orderDate', $this->translator->trans('orders.date'))
+                    ->hideOnForm()
+                    ->formatValue(function ($value) {
+                        return $value ? $value->format('d/m/Y') : '';
+                    }),
 
-            MoneyField::new('refund_amount', $this->translator->trans('order.field.refund_amount'))
-                ->setCurrency('CVE')
-                ->hideOnIndex()
-                ->setHelp($this->translator->trans('order.help.currency_cve'))
-                ->setFormTypeOption('attr', ['id' => 'Order_refund_amount']),
+                MoneyField::new('totalAmount', 'order.field.total')
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
+                    ->setCurrency('CVE')
+                    ->setHelp('order.help.currency_cve'),
 
-            ChoiceField::new('refund_status', $this->translator->trans('order.field.refund_status'))
-                ->setChoices($refundStatus)
-                ->hideOnIndex()
-                ->setFormTypeOption('attr', ['id' => 'Order_refund_status']),
+                MoneyField::new('amountFinal', 'order.field.final_price2')
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
+                    ->setCurrency('CVE')
+                    ->hideOnIndex(),
 
-            TextareaField::new('refund_note', $this->translator->trans('order.field.refund_note'))
-                ->hideOnIndex()
-                ->setFormTypeOption('attr', ['id' => 'Order_refund_note']),
+                TextField::new('deliveryMethods', 'order.field.delivery_method')
+                    ->setFormTypeOption('mapped', false)
+                    ->setFormTypeOption('attr', ['readonly' => true])
+                    ->setColumns(4)
+                    ->hideOnIndex(),
+                MoneyField::new('totalShippingCost', 'order.field.total_shipping')
+                    ->setCurrency('CVE')
+                    ->setFormTypeOption('attr', ['readonly' => true])
+                    ->setColumns(4)
+                    ->hideOnIndex(),
+                MoneyField::new('finalAmountWithDelivery', 'order.field.final_with_delivery')
+                    ->setCurrency('CVE')
+                    ->setFormTypeOption('attr', ['readonly' => true])
+                    ->setColumns(4)
+                    ->hideOnIndex(),
 
-            TextareaField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
-                ->hideOnIndex()->setFormTypeOption('disabled', true),
-        ];
+                TextEditorField::new('beneficiaryName', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
+                TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
+                TextEditorField::new('phone', )->hideOnForm(),
+                TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
+                TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
+                TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
+                    // ->setFormTypeOption('mapped', false)
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
+
+                // ===== FORM (EDIT / NEW) : ChoiceField normal =====
+                ChoiceField::new('orderStatus', $this->translator->trans('order.field.status'))
+                    ->onlyOnForms()
+                    ->setChoices($orderStatus)
+                    ->setRequired(true),
+
+
+                TextareaField::new('internal_note', $this->translator->trans('order.field.internal_note'))
+                    // ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['class' => 'internal-note'])
+                    ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
+
+                TextField::new('merchantSecretCode', $this->translator->trans('order.field.merchant_secret_code'))
+                    ->setHelp($this->translator->trans('order.help.merchant_secret_code'))
+                    ->setRequired(true)
+                    ->setFormTypeOptions([
+                        'required' => true,
+                        'constraints' => [],
+                        'mapped' => true,
+                    ])
+                    ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
+                    ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
+
+                // TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
+                //     ->hideOnForm(),
+
+                BooleanField::new('refund', $this->translator->trans('order.field.refund'))
+                    ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund']),
+
+                MoneyField::new('refund_amount', $this->translator->trans('order.field.refund_amount'))
+                    ->setCurrency('CVE')
+                    ->hideOnIndex()
+                    ->setHelp($this->translator->trans('order.help.currency_cve'))
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund_amount']),
+
+                ChoiceField::new('refund_status', $this->translator->trans('order.field.refund_status'))
+                    ->setChoices($refundStatus)
+                    ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund_status']),
+
+                TextareaField::new('refund_note', $this->translator->trans('order.field.refund_note'))
+                    ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund_note']),
+
+                TextareaField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
+                    ->hideOnIndex()->setFormTypeOption('disabled', true),
+            ];
+        } else {
+            return [
+
+                // ===== INDEX : affichage coloré =====
+                TextField::new('orderStatus', $this->translator->trans('order.field.status'))
+                    ->onlyOnIndex()
+                    ->formatValue(function ($value, Order $order) {
+
+                        return match ($order->getOrderStatus()) {
+                            'Em processamento' => '<span class="text-danger">' . $value . '</span>',
+                            'Entregue e finalizado' => '<span class="text-success">' . $value . '</span>',
+                            'Reembolso' => '<span class="text-warning">' . $value . '</span>',
+                            default => $value,
+                        };
+                    })
+                    ->renderAsHtml(),
+
+
+                Field::new('cssClass')->onlyOnIndex()
+                    ->formatValue(function ($value, $entity) {
+                        if ($entity->getMerchantSecretCode() !== null && $entity->getOrderStatus() === 'Entregue e finalizado') {
+                            return 'row-entregue-finalizado';
+                        }
+                        return '';
+                    })
+                    ->setCssClass('hidden')
+                    ->hideOnIndex(),
+
+                TextField::new('ref', $this->translator->trans('order.field.reference'))
+                    ->setFormTypeOption('attr', ['readonly' => true]),
+
+                TextField::new('basket.user.lastName', $this->translator->trans('order.field.customer'))->hideOnIndex(),
+                TextField::new('basket.user.email', $this->translator->trans('order.field.customer_email'))->hideOnIndex()
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'v']),
+
+                DateTimeField::new('orderDate', $this->translator->trans('orders.date'))
+                    ->hideOnForm()
+                    ->formatValue(function ($value) {
+                        return $value ? $value->format('d/m/Y') : '';
+                    }),
+
+                MoneyField::new('totalAmount', 'order.field.total')
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
+                    ->setCurrency('CVE')
+                    ->setHelp('order.help.currency_cve'),
+
+                MoneyField::new('amountFinal', 'order.field.final_price2')
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_totalAmount'])
+                    ->setCurrency('CVE')
+                    ->hideOnIndex(),
+
+                TextField::new('deliveryMethods', 'order.field.delivery_method')
+                    ->setFormTypeOption('mapped', false)
+                    ->setFormTypeOption('data', 'sem Entrega, retirada na Loja')
+                    ->setFormTypeOption('attr', ['readonly' => true])
+                    ->setColumns(4)
+                    ->hideOnIndex(),
+
+                TextEditorField::new('beneficiaryName', $this->translator->trans('order.field.beneficiary_name'))->hideOnForm(),
+                TextEditorField::new('beneficiary_email', 'Email')->hideOnForm(),
+                TextEditorField::new('phone', )->hideOnForm(),
+                TextEditorField::new('beneficiary_address', $this->translator->trans('order.field.beneficiary_address'))->hideOnForm(),
+                TextEditorField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnForm(),
+                TextareaField::new('basketProductsList', $this->translator->trans('order.field.items'))->hideOnIndex()
+                    // ->setFormTypeOption('mapped', false)
+                    ->setFormTypeOption('attr', ['readonly' => true, 'id' => 'Order_basketProductsList']),
+
+                // ===== FORM (EDIT / NEW) : ChoiceField normal =====
+                ChoiceField::new('orderStatus', $this->translator->trans('order.field.status'))
+                    ->onlyOnForms()
+                    ->setChoices($orderStatus)
+                    ->setRequired(true),
+
+
+                TextareaField::new('internal_note', $this->translator->trans('order.field.internal_note'))
+                    // ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['class' => 'internal-note'])
+                    ->setFormTypeOption('attr', ['id' => 'Order_internal_note']),
+
+                TextField::new('merchantSecretCode', $this->translator->trans('order.field.merchant_secret_code'))
+                    ->setHelp($this->translator->trans('order.help.merchant_secret_code'))
+                    ->setRequired(true)
+                    ->setFormTypeOptions([
+                        'required' => true,
+                        'constraints' => [],
+                        'mapped' => true,
+                    ])
+                    ->addFormTheme('@EasyAdmin/crud/form_theme.html.twig')
+                    ->setFormTypeOption('attr', ['autocomplete' => 'off', 'id' => 'Order_merchantSecretCode']),
+
+                // TextEditorField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
+                //     ->hideOnForm(),
+
+                BooleanField::new('refund', $this->translator->trans('order.field.refund'))
+                    ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund']),
+
+                MoneyField::new('refund_amount', $this->translator->trans('order.field.refund_amount'))
+                    ->setCurrency('CVE')
+                    ->hideOnIndex()
+                    ->setHelp($this->translator->trans('order.help.currency_cve'))
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund_amount']),
+
+                ChoiceField::new('refund_status', $this->translator->trans('order.field.refund_status'))
+                    ->setChoices($refundStatus)
+                    ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund_status']),
+
+                TextareaField::new('refund_note', $this->translator->trans('order.field.refund_note'))
+                    ->hideOnIndex()
+                    ->setFormTypeOption('attr', ['id' => 'Order_refund_note']),
+
+                TextareaField::new('customer_note', $this->translator->trans('order.field.customer_note2'))
+                    ->hideOnIndex()->setFormTypeOption('disabled', true),
+            ];
+        }
+
+
 
     }
 
 
 
     public function configureActions(Actions $actions): Actions
-{
-    $user = $this->security->getUser();
+    {
+        $user = $this->security->getUser();
 
-    // Action existante pour voir le reçu
-    $verRecibo = Action::new('verRecibo', $this->translator->trans('order.action.view_receipt'))
-        ->linkToRoute('recibo_show', fn(Order $order) => ['id' => $order->getId()])
-        ->displayIf(fn(Order $order) => $order->getOrderStatus() !== 'Em processamento')
-        ->setCssClass('btn btn-success');
+        // Action existante pour voir le reçu
+        $verRecibo = Action::new('verRecibo', $this->translator->trans('order.action.view_receipt'))
+            ->linkToRoute('recibo_show', fn(Order $order) => ['id' => $order->getId()])
+            ->displayIf(fn(Order $order) => $order->getOrderStatus() !== 'Em processamento')
+            ->setCssClass('btn btn-success');
 
-    $actions
-        ->disable(Action::DELETE)
-        ->disable(Action::NEW)
-        ->add(Crud::PAGE_INDEX, $verRecibo)
-        ->add(Crud::PAGE_DETAIL, $verRecibo);
-
-    // Désactiver Edit sur INDEX et DETAIL pour merchants si refund_status = Reembolsado
-    if (in_array('ROLE_MERCHANT', $user->getRoles(), true)) {
         $actions
-            ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->displayIf(fn(Order $order) => $order->getRefundStatus() !== 'Reembolsado'))
-            ->update(Crud::PAGE_DETAIL, Action::EDIT, fn(Action $action) => $action->displayIf(fn(Order $order) => $order->getRefundStatus() !== 'Reembolsado'));
-    }
+            ->disable(Action::DELETE)
+            ->disable(Action::NEW)
+            ->add(Crud::PAGE_INDEX, $verRecibo)
+            ->add(Crud::PAGE_DETAIL, $verRecibo);
 
-    return $actions;
-}
+        // Désactiver Edit sur INDEX et DETAIL pour merchants si refund_status = Reembolsado
+        if (in_array('ROLE_MERCHANT', $user->getRoles(), true)) {
+            $actions
+                ->update(Crud::PAGE_INDEX, Action::EDIT, fn(Action $action) => $action->displayIf(fn(Order $order) => $order->getRefundStatus() !== 'Reembolsado'))
+                ->update(Crud::PAGE_DETAIL, Action::EDIT, fn(Action $action) => $action->displayIf(fn(Order $order) => $order->getRefundStatus() !== 'Reembolsado'));
+        }
+
+        return $actions;
+    }
 
 
 
@@ -353,7 +478,7 @@ class OrderCrudController extends AbstractCrudController
             return;
         }
 
-        
+
         $clientName = $entityInstance->getBasket()->getUser()->getFirstName() . " " . $entityInstance->getBasket()->getUser()->getLastName();
         $ref_order = $entityInstance->getRef();
         $clientEmail = $entityInstance->getBasket()->getUser()->getEmail();
@@ -363,12 +488,83 @@ class OrderCrudController extends AbstractCrudController
             $admins
         );
 
-
         $status = $entityInstance->getOrderStatus();
         $internalNote = $entityInstance->getInternalNote();
+        $deliverys = $entityInstance->getDeliveries();
 
         // ===============================
-        // ✅ Commande livrée
+        // ✅ Commande en espera
+        // ================================
+        if ($status === 'Em espera') {
+            $entityInstance->setRefund(false);
+            $entityInstance->setRefundAmount(null);
+            $entityInstance->setRefundStatus('');
+
+            if (empty($internalNote)) {
+                $this->addFlash(
+                    'danger',
+                    $this->translator->trans('order.flash.note.pending0')
+                );
+
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer')
+                    ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            }
+        }
+
+        // ===============================
+        // ✅ Commande donnée au livreur (carrier)
+        // ===============================
+        if ($status === 'Entregue ao transportador') {
+            $entityInstance->setRefund(false);
+            $entityInstance->setRefundAmount(null);
+            $entityInstance->setRefundStatus('');
+
+            if (empty($internalNote)) {
+                $this->addFlash(
+                    'danger',
+                    $this->translator->trans('order.flash.note.carrier')
+                );
+
+                $request = $this->requestStack->getCurrentRequest();
+                $referer = $request->headers->get('referer')
+                    ?? $this->router->generate('admin');
+
+                (new RedirectResponse($referer))->send();
+                exit;
+            }
+
+            // actualiser les infos du livraisons
+            if (!empty($deliverys)) {
+                foreach ($deliverys as $delivery) {
+                    $carrier = $delivery->getCarrier();
+                    if (empty($carrier)) {
+                        $this->addFlash(
+                            'danger',
+                            $this->translator->trans('order.flash.note.carrier0')
+                        );
+
+                        $request = $this->requestStack->getCurrentRequest();
+                        $referer = $request->headers->get('referer')
+                            ?? $this->router->generate('admin');
+
+                        (new RedirectResponse($referer))->send();
+                        exit;
+                    } else {
+                        $delivery->setShipmentDate(new \DateTime());
+                        $delivery->setDeliveryStatus("in_transit");
+                    }
+
+                }
+            }
+        }
+
+
+        // ===============================
+        // ✅ Commande sans livraison - retire ao magasin
         // ===============================
         if ($status === 'Entregue e finalizado') {
             $entityInstance->setRefund(false);
@@ -409,7 +605,7 @@ class OrderCrudController extends AbstractCrudController
         // ===============================
         if ($status === 'Reembolso') {
             // $entityInstance->setInternalNote($this->translator->trans('order.note.refund'));
-            if (empty($entityInstance->getInternalNote())){
+            if (empty($entityInstance->getInternalNote())) {
                 $this->addFlash(
                     'danger',
                     $this->translator->trans('order.flash.note.refund_required')
@@ -510,7 +706,7 @@ class OrderCrudController extends AbstractCrudController
         // ✅ Vérification o montante, ou o estado, do Reemboso et o estado da encomenda
         // ===============================
         if (
-            (!empty($entityInstance->getRefundAmount()) || !empty($entityInstance->getRefundStatus())) 
+            (!empty($entityInstance->getRefundAmount()) || !empty($entityInstance->getRefundStatus()))
             && ($status === 'Entregue e finalizado' || $status === 'Em processamento')
         ) {
             $this->addFlash(

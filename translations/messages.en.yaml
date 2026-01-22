@@ -452,17 +452,22 @@ order:
 
   flash:
     note:
+      carrier0: "Livreur non encore attribué. Veuillez contacter l’administration à l’adresse suivante : falkon674@gmail.com, Merci."
+      carrier: A notification is mandatory. You must specify all products handed over to the courier and provide any additional information if necessary.
+      pending0: "A notification is required; you must indicate the reason for the delay."
       refund_required: "A 'Internal note' is required to process the refund. Please specify the reason. The refund cannot be partial. The customer or beneficiary may replace the items according to your store’s rules."
     refund_required: "❌ Refund: The amount and refund status are required."
     merchant_invalid_code: "❌ Secret code is incorrect. Please enter the correct code."
     merchant_success: "Successfully recorded"
 
   status:
+    pending0: Pending
     pending: In progress
     done: Refunded
     processing: Processing
     refund: Refund
     completed: Delivered and completed
+    carrier: Remis au transporteur
 
   refund:
     field:

@@ -31,6 +31,7 @@ class UserCrudController extends AbstractCrudController
                 ChoiceField::new('roles')->renderAsBadges()->allowMultipleChoices()->setChoices(['Client'
                     =>'ROLE_USER',
                     'Comerciante'=>'ROLE_MERCHANT',
+                    'Carrier'=>'ROLE_CARRIER',
                 ])    ,
             ];
         }

@@ -40,17 +40,17 @@ security:
             # switch_user: true
     role_hierarchy:
         ROLE_MERCHANT:     ROLE_USER
+        ROLE_CARRIER:      ROLE_CARRIER
         ROLE_ADMIN:        ROLE_MERCHANT
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_MERCHANT }
-        - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/admin-merchant, roles: ROLE_MERCHANT }
-        
-        - { path: ^/contabilidade, roles: [ROLE_ADMIN, ROLE_MERCHANT] }
+    - { path: ^/admin, roles: [ROLE_CARRIER, ROLE_MERCHANT, ROLE_ADMIN] }
+    - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/contabilidade, roles: [ROLE_ADMIN, ROLE_MERCHANT, ROLE_CARRIER] }
+
 
 
 when@test:

@@ -452,17 +452,22 @@ order:
 
   flash:
     note:
+      carrier0: "Repartidor aún no asignado. Por favor, contacte con la administración en la siguiente dirección: falkon674@gmail.com, Gracias."
+      carrier: La notificación es obligatoria. Debe indicar todos los productos entregados al repartidor y proporcionar cualquier información adicional si es necesario.
+      pending0: "Se requiere una notificación; debes indicar el motivo de la espera."
       refund_required: "Se requiere una 'Nota interna' para realizar el reembolso. Indique el motivo. El reembolso no puede ser parcial. El cliente o beneficiario puede sustituir los artículos de acuerdo con las normas de su tienda."
     refund_required: "❌ Reembolso: El importe y el estado del reembolso son obligatorios."
     merchant_invalid_code: "❌ El código secreto es incorrecto. Por favor, ingrese el código correcto."
     merchant_success: "Registrado con éxito"
     
   status:
+    pending0: Em espera
     pending: En curso
     done: Reembolsado
     processing: En proceso
     refund: Reembolso
     completed: Entregado y finalizado
+    carrier: Entregado al transportista
 
   refund:
     field:

@@ -312,7 +312,8 @@ class StripeController extends AbstractController
 
         // si > 0; creer delevery
         $trackingNumber = $deliveryRepository->generateUniqueTrackingNumber();
-        // dd($trackingNumber);
+        // $deliveryHeader = '';
+        // $deliveryBody = '';
         if($deliveryMethod != null){
             $delivery = new Delivery();
             $delivery->setDeliveryMethod($deliveryMethod);
@@ -320,7 +321,7 @@ class StripeController extends AbstractController
             $delivery->setDeliveryStatus("processing");
             $delivery->setEstimatedDeliveryDate((new \DateTimeImmutable())->modify('+3 days'));
             $delivery->setShippingCost($deliveryPrice);
-            $delivery->setFullAddress($order->getBeneficiaryAddress());
+            // $delivery->setFullAddress($order->getBeneficiaryAddress());
 
             // Attribution du tracking number UNIQUE
             $delivery->setTrackingNumber($trackingNumber);
@@ -328,6 +329,19 @@ class StripeController extends AbstractController
             $entityManager->persist($delivery);
             $entityManager->flush();
 
+            //  $deliveryHeader = "
+            //     <th style='text-align: left; padding: 8px;'>
+            //         {$translator->trans('delivery.title0')}
+            //     </th>
+            // ";
+
+            // $deliveryBody = "
+            //     <td style='padding: 8px; font-size:10px;'>
+            //         <strong>{$deliveryPrice} escudos (CVE)</strong>
+            //     </td>
+            // ";
+        }else{
+            $deliveryMethod = "Retirar na loja";
         }
         
         // Mettre à jour les produits du panier
@@ -373,6 +387,9 @@ class StripeController extends AbstractController
                         <th style='text-align: left; padding: 8px;'>
                             {$translator->trans('products.table.store')}
                         </th>
+                        <th style='text-align: left; padding: 8px;'>
+                            {$translator->trans('delivery.title0')}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -385,6 +402,7 @@ class StripeController extends AbstractController
                             <th style='text-align: left; padding: 8px;'>Item</th>
                             <th style='text-align: left; padding: 8px;'></th>
                             <th style='text-align: left; padding: 8px;'>Loja</th>
+                            <th style='text-align: left; padding: 8px;'>Entrega</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -410,6 +428,7 @@ class StripeController extends AbstractController
                     <td style='padding: 8px;'>{$product->getName()} x{$quantity}</td>
                     <td style='padding: 8px;'>{$priceCVEformatted} CVE</td>
                     <td style='padding: 8px; font-size:10px;'><strong>{$shop}</strong>, {$shopAddress}</td>
+                    <td style='padding: 8px; font-size:10px;'><strong>{$deliveryMethod}</strong>, {$deliveryPrice}</td>
                 </tr>
             ";
 
@@ -422,6 +441,7 @@ class StripeController extends AbstractController
                     </td>
                     <td style='padding: 8px;'>" . htmlspecialchars($product->getName(), ENT_QUOTES, 'UTF-8') . " x{$quantity}</td>
                     <td style='padding: 8px; font-size:10px;'> <strong>" . htmlspecialchars($shop, ENT_QUOTES, 'UTF-8') . "</strong>, " . htmlspecialchars($shopAddress, ENT_QUOTES, 'UTF-8') . "</td>
+                    <td style='padding: 8px; font-size:10px;'> <strong>" . htmlspecialchars($deliveryMethod, ENT_QUOTES, 'UTF-8') . "</strong>,</td>
                 </tr>
             ";
         }
@@ -506,7 +526,7 @@ class StripeController extends AbstractController
         file_put_contents($tempPdfPath, $pdfOutput);
 
         // Attacher le fichier PDF à l'e-mail
-        $emailClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
+        $emanilClient->attachFromPath($tempPdfPath, 'reçu-commande.pdf');
 
         $mailer->send($emailClient);
         unlink($tempPdfPath);
@@ -522,7 +542,7 @@ class StripeController extends AbstractController
         // </p>
         // dd($productsList);
         if ($beneficiaryEmail) {
-            $recapContent = <<<EOD
+            $recapContetB = <<<EOD
             <html>
                 <body style="font-family: Arial, sans-serif; font-size: 16px; color: #333;">
                     <div style="text-align: center; margin-bottom: 20px;">
@@ -549,7 +569,7 @@ class StripeController extends AbstractController
                 ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
                 ->to($beneficiaryEmail)
                 ->subject('Recapitulação da entrega')
-                ->html($recapContent);
+                ->html($recapContentB);
             // envoier l'email sans pdf
             $mailer->send($emailBenef);
         }
@@ -572,7 +592,7 @@ class StripeController extends AbstractController
         $emailShop = (new Email())
                 ->from(new Address('no-reply@falkonclick.com', 'FalkonANK Alimentason'))
                 ->to($shopEmail)
-                ->subject('Novo encomenda')
+                ->subject('Nova encomenda')
                 ->html($recapContent);
         // envoier l'email
         $mailer->send($emailShop);

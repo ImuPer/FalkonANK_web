@@ -121,4 +121,10 @@ class Carrier
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        // Retourne un label lisible pour l’admin
+        return $this->name; // ou $this->title, selon ton entité
+    }
 }

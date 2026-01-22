@@ -304,6 +304,7 @@ Em processamento: "Em processamento"
 Em curso: "Em curso"
 Reembolso: "Reembolso"
 
+
 button.delete: "Eliminar"
 
 button.save: "Guardar"
@@ -455,6 +456,9 @@ order:
 
   flash:
     note:
+      carrier0: "Entregador ainda não atribuído. Por favor, entre em contato com a administração no seguinte endereço: falkon674@gmail.com, Obrigado."
+      carrier: A notificação é obrigatória. Deve indicar todos os produtos entregues ao estafeta e fornecer quaisquer informações adicionais, se necessário.
+      pending0: "Uma notificaçao é obrigatorio, deves indicar o motivo, da espera."
       refund_required: "É necessária uma 'Notificação loja' para efetuar o reembolso. Indique o motivo. O reembolso não pode ser parcial. O cliente ou beneficiário pode substituir os artigos de acordo com as regras da sua loja."
     refund_required: "❌ Reembolso: O montante e o estado do reembolso são obrigatórios."
     merchant_invalid_code: "❌ O código secreto está incorreto. Por favor, insira o código correto."
@@ -462,10 +466,12 @@ order:
 
   status:
     pending: Em curso
+    pending0: Em Espera
     done: Reembolsado
     processing: Em processamento
     refund: Reembolso
     completed: Entregue e finalizado
+    carrier: Entregue ao transportador
 
   refund:
     field:

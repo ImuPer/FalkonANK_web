@@ -18,12 +18,21 @@
 				{{ 'accounting.your_shop'|trans }}</h1>
 		{% endif %}
 
-		<!-- Boutons pour choisir le type de revenu -->
+		<!-- Menu pour choisir le type de revenu -->
 		<div class="mb-4 text-center">
-			<button class="btn btn-primary" onclick="showDiv('monthlyDiv')">{{ 'accounting.monthly_revenue'|trans }}</button>
-			<button class="btn btn-primary" onclick="showDiv('productDiv')">{{ 'accounting.product_revenue'|trans }}</button>
-			<button class="btn btn-primary" onclick="showDiv('categoryDiv')">{{ 'accounting.category_revenue'|trans }}</button>
+			<select class="form-select w-auto mx-auto" onchange="showDiv(this.value)">
+				<option value="monthlyDiv" selected>
+					{{ 'accounting.monthly_revenue'|trans }}
+				</option>
+				<option value="productDiv">
+					{{ 'accounting.product_revenue'|trans }}
+				</option>
+				<option value="categoryDiv">
+					{{ 'accounting.category_revenue'|trans }}
+				</option>
+			</select>
 		</div>
+
 
 		<!-- Monthly Revenue -->
 		<div id="monthlyDiv">
@@ -106,8 +115,8 @@
 									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_name }}</a>
 								</td>
 								{# <td data-label="{{ 'accounting.shop_email'|trans }}">
-									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
-								</td> #}
+																	<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_email }}</a>
+																</td> #}
 							</tr>
 						{% else %}
 							<tr>
@@ -147,8 +156,8 @@
 									<a href="{{ path('app_shop_loja', {'id': row.shop_id}) }}">{{ row.shop_name }}</a>
 								</td>
 								{# <td data-label="{{ 'accounting.shop_email'|trans }}">
-									<a href="mailto:{{ row.shop_email }}">{{ row.shop_email }}</a>
-								</td> #}
+																	<a href="mailto:{{ row.shop_email }}">{{ row.shop_email }}</a>
+																</td> #}
 							</tr>
 						{% else %}
 							<tr>
@@ -165,11 +174,13 @@
 
 	<script>
 		function showDiv(divId) {
-const divs = ['monthlyDiv', 'productDiv', 'categoryDiv'];
-divs.forEach(id => {
-document.getElementById(id).style.display = (id === divId) ? 'block' : 'none';
-});
-}
+			const divs = ['monthlyDiv', 'productDiv', 'categoryDiv'];
+			divs.forEach(id => {
+				document.getElementById(id).style.display =
+					(id === divId) ? 'block' : 'none';
+			});
+		}
 	</script>
+
 
 {% endblock %}
