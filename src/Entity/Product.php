@@ -265,7 +265,7 @@ class Product
     // Prix final (exemple)
     // =====================
     public function getFinalPrice(
-        float $platformRate = 0.5,
+        float $platformRate = 0.05,
         float $stripeRate = 0.029,
         float $stripeFixed = 0.25
     ): float {
