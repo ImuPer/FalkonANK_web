@@ -41,7 +41,7 @@ class StripeController extends AbstractController
 
     //--------------checkout--------------------------------------------------
     #[Route('/checkout', name: 'app_checkout', methods: ['POST'])]
-    public function checkout(Request $request, BasketProductRepository $basketProductRepository): Response
+    public function checkout(Request $request, BasketProductRepository $basketProductRepository, TranslatorInterface $translator): Response
     {
         $basket = $this->getUser()->getBasket();
         $basketProducts = $basketProductRepository->findBasketProductsByBasketId($basket);
@@ -59,8 +59,13 @@ class StripeController extends AbstractController
 
         // Vérifie si le montant est inférieur à 1500 escudos CVE (~ 13,6 €)
         if ($totalAmount < 1500) { // 1500 escudos CVE
-            $this->addFlash('error', "O valor total da compra deve ser superior a 250 CVE(escudos).");
-            return $this->redirectToRoute('user_basket');
+            $this->addFlash(
+        'error',
+        $translator->trans('purchase.total_minimum', [
+            '%amount%' => 1500,
+            '%currency%' => 'CVE',
+        ])
+    );return $this->redirectToRoute('user_basket');
         }
 
         // Vérifie que tous les produits appartiennent au même shop

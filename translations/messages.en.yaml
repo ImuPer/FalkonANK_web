@@ -954,3 +954,7 @@ common:
   not_available: "—"
   back_to_orders: "Back to order"
   view: "View"
+
+
+purchase:
+    total_minimum: 'The total purchase amount must be greater than %amount% %currency% (escudos).'

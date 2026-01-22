@@ -955,3 +955,6 @@ common:
   back_to_orders: "Retour aux commande"
   view: "Voir"
 
+
+purchase:
+    total_minimum: 'Le montant total de l’achat doit être supérieur à %amount% %currency% (escudos).'

@@ -942,3 +942,7 @@ common:
   not_available: "—"
   back_to_orders: "Voltar às encomendas"
   view: "Ver"
+
+
+purchase:
+    total_minimum: 'O valor total da compra deve ser superior a %amount% %currency% (escudos).'
