@@ -921,6 +921,7 @@ delivery:
   title: Home delivery
   standard: Standard
   express: Express
+  none: 'Sans livraison (retrait sur place)'
   details: "Delivery details"
   title0: "Delivery"
   tracking_number: "Tracking number"

@@ -924,6 +924,7 @@ delivery:
   title: Entrega a domicilio
   standard: Estándar
   express: Exprés
+  none: 'Sin entrega (recogida en tienda)'
   details: "Detalles de la entrega"
   title0: "Entrega"
   tracking_number: "Número de seguimiento"

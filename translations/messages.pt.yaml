@@ -908,6 +908,7 @@ delivery:
   title: Entrega ao domicílio
   standard: Padrão
   express: Expresso
+  none: 'Sem entrega (retirada na loja)'
   details: "Detalhes da entrega"
   title0: "Entrega"
   tracking_number: "Número de rastreamento"

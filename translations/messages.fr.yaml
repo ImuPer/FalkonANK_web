@@ -958,3 +958,4 @@ common:
 
 purchase:
     total_minimum: 'Le montant total de l’achat doit être supérieur à %amount% %currency% (escudos).'
+

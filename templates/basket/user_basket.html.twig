@@ -128,6 +128,13 @@
 										</label>
 
 										<div class="form-check">
+											<input class="form-check-input delivery-radio" type="radio" name="delivery_method" value="none">
+											<label class="form-check-label">
+												{{ 'delivery.none'|trans }}
+											</label>
+										</div>
+
+										<div class="form-check">
 											<input class="form-check-input delivery-radio" type="radio" name="delivery_method" value="standard">
 											<label class="form-check-label">
 												{{ 'delivery.standard'|trans }}
@@ -138,13 +145,6 @@
 											<input class="form-check-input delivery-radio" type="radio" name="delivery_method" value="express">
 											<label class="form-check-label">
 												{{ 'delivery.express'|trans }}
-											</label>
-										</div>
-
-										<div class="form-check">
-											<input class="form-check-input delivery-radio" type="radio" name="delivery_method" value="none">
-											<label class="form-check-label">
-												{{ 'delivery.none'|trans }}
 											</label>
 										</div>
 
@@ -264,28 +264,40 @@ calculateDelivery();
 });
 
 function calculateDelivery() {
-const cityId = document.getElementById('city').value;
-const method = document.querySelector('input[name="delivery_method"]:checked');
+    const cityId = document.getElementById('city').value;
+    const method = document.querySelector('input[name="delivery_method"]:checked');
 
-if (! cityId || ! method) 
-return;
+    if (!method) return;
 
+    // ✅ Sans livraison
+    if (method.value === 'none') {
+        document.getElementById('delivery-price').innerText = '0';
+        document.getElementById('delivery_price_input').value = 0;
+        return;
+    }
 
-fetch("{{ path('app_delivery_calculate') }}", {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-'X-Requested-With': 'XMLHttpRequest'
-},
-body: JSON.stringify(
-{city_id: cityId, method: method.value}
-)
-}).then(res => res.json()).then(data => {
-if (data.success) {
-document.getElementById('delivery-price').innerText = data.price;
-document.getElementById('delivery_price_input').value = data.price;
-}
-}).catch(err => console.error(err));
+    // 🚚 Livraison normale
+    if (!cityId) return;
+
+    fetch("{{ path('app_delivery_calculate') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            city_id: cityId,
+            method: method.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('delivery-price').innerText = data.price;
+            document.getElementById('delivery_price_input').value = data.price;
+        }
+    })
+    .catch(err => console.error(err));
 }
 	</script>
 
