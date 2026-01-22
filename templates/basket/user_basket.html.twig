@@ -120,8 +120,9 @@
 									<input type="hidden" name="total" value="{{ totalPrice }}"/>
 									{# <br> #}
 									{# delivery---------------------------------------------------------------------------------------------------- #}
-									{# <hr> #}
-                                    <h5>{{ 'delivery.title'|trans }} :</h5>
+									{# <hr> #}<h5>
+										{{ 'delivery.title'|trans }}:
+									</h5>
 										<div class="mb-3"> <label class="form-label">
 											{{ 'checkout.delivery_method'|trans }}
 										</label>
@@ -139,6 +140,14 @@
 												{{ 'delivery.express'|trans }}
 											</label>
 										</div>
+
+										<div class="form-check">
+											<input class="form-check-input delivery-radio" type="radio" name="delivery_method" value="none">
+											<label class="form-check-label">
+												{{ 'delivery.none'|trans }}
+											</label>
+										</div>
+
 									</div>
 
 									<div class="mb-3">
@@ -218,70 +227,67 @@ console.error('Erreur lors de la mise à jour du panier:', data.message);
 
 	{# Delivery Script------------------- #}
 	<script>
-document.querySelectorAll('.delivery-radio').forEach(radio => {
-    radio.addEventListener('change', function () {
-        const citySelect = document.getElementById('city');
-        const warning = document.getElementById('delivery-warning');
+		document.querySelectorAll('.delivery-radio').forEach(radio => {
+radio.addEventListener('change', function () {
+const citySelect = document.getElementById('city');
+const warning = document.getElementById('delivery-warning');
 
-        if (!citySelect.value) {
-            // ❌ pas de ville sélectionnée
-            this.checked = false;
+if (! citySelect.value) { // ❌ pas de ville sélectionnée
+this.checked = false;
 
-            if (warning) {
-                warning.classList.remove('d-none');
-            }
+if (warning) {
+warning.classList.remove('d-none');
+}
 
-            citySelect.focus();
-            return;
-        }
+citySelect.focus();
+return;
+}
 
-        if (warning) {
-            warning.classList.add('d-none');
-        }
+if (warning) {
+warning.classList.add('d-none');
+}
 
-        calculateDelivery();
-    });
+calculateDelivery();
+});
 });
 
 document.getElementById('city').addEventListener('change', function () {
-    const warning = document.getElementById('delivery-warning');
-    if (warning) {
-        warning.classList.add('d-none');
-    }
+const warning = document.getElementById('delivery-warning');
+if (warning) {
+warning.classList.add('d-none');
+}
 
-    const checkedMethod = document.querySelector('input[name="delivery_method"]:checked');
-    if (checkedMethod) {
-        calculateDelivery();
-    }
+const checkedMethod = document.querySelector('input[name="delivery_method"]:checked');
+if (checkedMethod) {
+calculateDelivery();
+}
 });
 
 function calculateDelivery() {
-    const cityId = document.getElementById('city').value;
-    const method = document.querySelector('input[name="delivery_method"]:checked');
+const cityId = document.getElementById('city').value;
+const method = document.querySelector('input[name="delivery_method"]:checked');
 
-    if (!cityId || !method) return;
+if (! cityId || ! method) 
+return;
 
-    fetch("{{ path('app_delivery_calculate') }}", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify({
-            city_id: cityId,
-            method: method.value
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById('delivery-price').innerText = data.price;
-            document.getElementById('delivery_price_input').value = data.price;
-        }
-    })
-    .catch(err => console.error(err));
+
+fetch("{{ path('app_delivery_calculate') }}", {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-Requested-With': 'XMLHttpRequest'
+},
+body: JSON.stringify(
+{city_id: cityId, method: method.value}
+)
+}).then(res => res.json()).then(data => {
+if (data.success) {
+document.getElementById('delivery-price').innerText = data.price;
+document.getElementById('delivery_price_input').value = data.price;
 }
-</script>
+}).catch(err => console.error(err));
+}
+	</script>
 
 
 {% endblock %}
