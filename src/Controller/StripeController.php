@@ -57,8 +57,8 @@ class StripeController extends AbstractController
         $totalAmount = $totalAmount / 100;
         $totalAmountSansComission = (float) $totalAmountSansComission;
 
-        // Vérifie si le montant est inférieur à 0,150 €
-        if ($totalAmount < 250) { // 250 centimes en centimes
+        // Vérifie si le montant est inférieur à 1500 escudos CVE (~ 13,6 €)
+        if ($totalAmount < 1500) { // 1500 escudos CVE
             $this->addFlash('error', "O valor total da compra deve ser superior a 250 CVE(escudos).");
             return $this->redirectToRoute('user_basket');
         }
