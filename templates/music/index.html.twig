@@ -1,3 +1,4 @@
+```twig
 {# templates/music/index.html.twig #}
 
 {% extends 'base.html.twig' %}
@@ -62,15 +63,14 @@ body{
         inset 0 0 15px rgba(255,255,255,0.03);
     transition:0.3s;
     overflow:hidden;
-    position:relative;
 }
 
 .music-card:hover{
-    transform:translateY(-8px) scale(1.02);
+    transform:translateY(-8px);
 }
 
 /* =========================
-   CD DISC
+   CD
 ========================= */
 
 .cd-wrapper{
@@ -97,7 +97,12 @@ body{
         0 0 25px rgba(0,0,0,0.7),
         inset 0 0 20px rgba(255,255,255,0.1);
 
-    animation:spin 10s linear infinite;
+    transition:0.3s;
+}
+
+/* rotation uniquement quand musique joue */
+.cd-disc.playing{
+    animation:spin 5s linear infinite;
 }
 
 .cd-disc img{
@@ -107,7 +112,7 @@ body{
     border-radius:50%;
 }
 
-/* trou du CD */
+/* trou CD */
 .cd-disc::after{
     content:"";
     position:absolute;
@@ -122,7 +127,7 @@ body{
     z-index:10;
 }
 
-/* reflets CD */
+/* reflet */
 .cd-disc::before{
     content:"";
     position:absolute;
@@ -136,7 +141,7 @@ body{
 }
 
 /* =========================
-   MUSIC INFO
+   TEXT
 ========================= */
 
 .music-title{
@@ -153,7 +158,7 @@ body{
 }
 
 /* =========================
-   AUDIO PLAYER
+   PLAYER
 ========================= */
 
 audio{
@@ -185,7 +190,7 @@ audio{
 }
 
 /* =========================
-   SPIN
+   ANIMATION
 ========================= */
 
 @keyframes spin{
@@ -215,7 +220,7 @@ audio{
 
             <div class="cd-wrapper">
 
-                <div class="cd-disc">
+                <div class="cd-disc" id="disc-{{ loop.index }}">
 
                     {% if music.coverImage %}
                         <img
@@ -241,13 +246,16 @@ audio{
                 {{ music.artist }}
             </div>
 
-            <audio controls loop>
-
+            <audio
+                controls
+                loop
+                class="music-player"
+                data-disc="disc-{{ loop.index }}"
+            >
                 <source
                     src="{{ asset('uploads/music/' ~ music.audioFile) }}"
                     type="audio/mpeg"
                 >
-
             </audio>
 
         </div>
@@ -261,5 +269,31 @@ audio{
     {% endfor %}
 
 </div>
+
+<script>
+
+document.querySelectorAll('.music-player').forEach(player => {
+
+    const discId = player.dataset.disc;
+    const disc = document.getElementById(discId);
+
+    // quand play
+    player.addEventListener('play', () => {
+        disc.classList.add('playing');
+    });
+
+    // quand pause
+    player.addEventListener('pause', () => {
+        disc.classList.remove('playing');
+    });
+
+    // quand musique finie
+    player.addEventListener('ended', () => {
+        disc.classList.remove('playing');
+    });
+
+});
+
+</script>
 
 {% endblock %}
