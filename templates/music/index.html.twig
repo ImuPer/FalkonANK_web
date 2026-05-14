@@ -1,0 +1,15 @@
+{# templates/music/index.html.twig #}
+
+<h1>🎵 Musiques de {{ product.name }}</h1>
+
+{% for music in musics %}
+    <div>
+        <h3>{{ music.title }}</h3>
+
+        <audio controls>
+            <source src="/uploads/music/{{ music.audioFile }}" type="audio/mpeg">
+        </audio>
+    </div>
+{% else %}
+    <p>Aucune musique disponible</p>
+{% endfor %}
