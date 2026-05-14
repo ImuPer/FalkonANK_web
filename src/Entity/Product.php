@@ -71,9 +71,16 @@ class Product
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2, nullable: true)]
     private ?string $dimensionL = null;
 
+    /**
+     * @var Collection<int, Music>
+     */
+    #[ORM\OneToMany(targetEntity: Music::class, mappedBy: 'product')]
+    private Collection $music;
+
     public function __construct()
     {
         $this->basketProducts = new ArrayCollection();
+        $this->music = new ArrayCollection();
     }
 
     // =====================
@@ -275,5 +282,35 @@ class Product
         $stripeCommission = ($subtotal * $stripeRate) + $stripeFixed;
 
         return round($subtotal + $stripeCommission, 2);
+    }
+
+    /**
+     * @return Collection<int, Music>
+     */
+    public function getMusic(): Collection
+    {
+        return $this->music;
+    }
+
+    public function addMusic(Music $music): static
+    {
+        if (!$this->music->contains($music)) {
+            $this->music->add($music);
+            $music->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMusic(Music $music): static
+    {
+        if ($this->music->removeElement($music)) {
+            // set the owning side to null (unless already changed)
+            if ($music->getProduct() === $this) {
+                $music->setProduct(null);
+            }
+        }
+
+        return $this;
     }
 }

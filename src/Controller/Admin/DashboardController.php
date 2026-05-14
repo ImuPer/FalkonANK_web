@@ -11,6 +11,7 @@ use App\Entity\City;
 use App\Entity\Contact;
 use App\Entity\Delivery;
 use App\Entity\Merchant;
+use App\Entity\Music;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Shop;
@@ -160,7 +161,7 @@ class DashboardController extends AbstractDashboardController
 
                 yield MenuItem::linkToCrud($this->translator->trans('menu.shop.my'), ' fas fa-store fa-2x text-primary', Shop::class);
                 yield MenuItem::linkToCrud($this->translator->trans('menu.products'), 'fas fa-apple-alt', Product::class);
-
+                yield MenuItem::linkToCrud('Musiques', 'fa fa-music', Music::class);
                 $merchant = $this->getUser();
                 $Count_o = $this->orderRepository->countPendingOrMissingSecretByMerchant($merchant);
                 $countOrderInProgress = $this->orderRepository->countOrderInProgressByMerchant($merchant);
