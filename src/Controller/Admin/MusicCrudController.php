@@ -93,7 +93,7 @@ class MusicCrudController extends AbstractCrudController
        
         if (!$entityInstance instanceof Music)
             return;
-        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
 
         parent::persistEntity($entityManager, $entityInstance);
 
