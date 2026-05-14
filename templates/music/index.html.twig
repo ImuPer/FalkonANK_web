@@ -10,6 +10,10 @@
 
 body{
     background:#0b0b0b;
+    color:white;
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 /* =========================
@@ -18,20 +22,63 @@ body{
 
 .album-header{
     text-align:center;
-    padding:40px 20px 10px;
-    color:white;
+    padding:40px 20px;
 }
 
 .album-header h1{
-    font-size:clamp(28px,5vw,50px);
-    font-weight:800;
+    font-size:clamp(30px,5vw,55px);
     margin-bottom:10px;
 }
 
 .album-header h2{
-    color:#bbb;
-    font-size:18px;
-    letter-spacing:2px;
+    color:#aaa;
+    font-weight:300;
+}
+
+/* =========================
+   GLOBAL PLAYER
+========================= */
+
+.global-player{
+    position:sticky;
+    top:0;
+    z-index:999;
+    background:#111;
+    border-bottom:1px solid #222;
+    padding:15px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+}
+
+.global-player button{
+    background:#1db954;
+    border:none;
+    color:white;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+    transition:0.3s;
+}
+
+.global-player button:hover{
+    transform:scale(1.1);
+}
+
+.now-playing{
+    font-size:16px;
+    color:#fff;
+    min-width:200px;
+    text-align:center;
+}
+
+#main-player{
+    width:100%;
+    max-width:500px;
 }
 
 /* =========================
@@ -41,7 +88,7 @@ body{
 .album-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:35px;
+    gap:30px;
     padding:30px;
     max-width:1400px;
     margin:auto;
@@ -52,20 +99,16 @@ body{
 ========================= */
 
 .music-card{
-    background:linear-gradient(145deg,#1b1b1b,#101010);
-    border-radius:25px;
-    padding:25px;
+    background:#111;
+    border-radius:20px;
+    padding:20px;
     text-align:center;
-    color:white;
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.5),
-        inset 0 0 15px rgba(255,255,255,0.03);
     transition:0.3s;
-    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.5);
 }
 
 .music-card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-5px);
 }
 
 /* =========================
@@ -76,7 +119,6 @@ body{
     width:220px;
     height:220px;
     margin:auto;
-    position:relative;
 }
 
 .cd-disc{
@@ -85,21 +127,13 @@ body{
     border-radius:50%;
     overflow:hidden;
     position:relative;
-
-    background:
-        radial-gradient(circle at center,
-        #222 0%,
-        #000 60%,
-        #111 100%);
-
+    background:black;
     box-shadow:
-        0 0 25px rgba(0,0,0,0.7),
-        inset 0 0 20px rgba(255,255,255,0.1);
-
-    transition:0.3s;
+        0 0 20px rgba(0,0,0,0.6),
+        inset 0 0 15px rgba(255,255,255,0.1);
 }
 
-/* rotation uniquement quand musique joue */
+/* tourne seulement en lecture */
 .cd-disc.playing{
     animation:spin 5s linear infinite;
 }
@@ -111,32 +145,17 @@ body{
     border-radius:50%;
 }
 
-/* trou CD */
 .cd-disc::after{
     content:"";
     position:absolute;
     top:50%;
     left:50%;
-    width:45px;
-    height:45px;
+    width:40px;
+    height:40px;
     transform:translate(-50%,-50%);
-    border-radius:50%;
     background:#111;
     border:5px solid #444;
-    z-index:10;
-}
-
-/* reflet */
-.cd-disc::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-40%;
-    width:60%;
-    height:100%;
-    background:rgba(255,255,255,0.08);
-    transform:skewX(-20deg);
-    z-index:5;
+    border-radius:50%;
 }
 
 /* =========================
@@ -144,26 +163,33 @@ body{
 ========================= */
 
 .music-title{
-    margin-top:25px;
+    margin-top:20px;
     font-size:22px;
-    font-weight:700;
+    font-weight:bold;
 }
 
 .music-artist{
     color:#aaa;
     margin-top:5px;
-    margin-bottom:18px;
-    font-size:15px;
+    margin-bottom:15px;
 }
 
 /* =========================
-   PLAYER
+   BUTTON
 ========================= */
 
-audio{
-    width:100%;
+.play-btn{
+    background:#1db954;
+    color:white;
+    border:none;
+    padding:10px 18px;
     border-radius:30px;
-    margin-top:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.play-btn:hover{
+    background:#18a349;
 }
 
 /* =========================
@@ -172,24 +198,19 @@ audio{
 
 @media(max-width:768px){
 
-    .album-grid{
-        padding:15px;
-        gap:25px;
-    }
-
-    .music-card{
-        padding:20px;
-    }
-
     .cd-wrapper{
         width:180px;
         height:180px;
     }
 
+    .album-grid{
+        padding:15px;
+    }
+
 }
 
 /* =========================
-   ANIMATION
+   SPIN
 ========================= */
 
 @keyframes spin{
@@ -203,6 +224,30 @@ audio{
 
 </style>
 
+{# =========================
+   GLOBAL PLAYER
+========================= #}
+
+<div class="global-player">
+
+    <button id="prevBtn">⏮</button>
+
+    <button id="playPauseBtn">▶</button>
+
+    <button id="nextBtn">⏭</button>
+
+    <div class="now-playing" id="nowPlaying">
+        Aucun morceau
+    </div>
+
+    <audio id="main-player" controls></audio>
+
+</div>
+
+{# =========================
+   HEADER
+========================= #}
+
 <div class="album-header">
 
     <h1>🎵 {{ product.name }}</h1>
@@ -211,87 +256,228 @@ audio{
 
 </div>
 
+{# =========================
+   ALBUM GRID
+========================= #}
+
 <div class="album-grid">
 
-    {% for music in musics %}
+{% for music in musics %}
 
-        <div class="music-card">
+    <div class="music-card">
 
-            <div class="cd-wrapper">
+        <div class="cd-wrapper">
 
-                <div class="cd-disc" id="disc-{{ loop.index }}">
+            <div class="cd-disc" id="disc-{{ loop.index0 }}">
 
-                    {% if music.coverImage %}
-                        <img
-                            src="{{ asset('uploads/images/' ~ music.coverImage) }}"
-                            alt="{{ music.title }}"
-                        >
-                    {% else %}
-                        <img
-                            src="{{ asset('images/default-music.jpg') }}"
-                            alt="default"
-                        >
-                    {% endif %}
-
-                </div>
+                {% if music.coverImage %}
+                    <img
+                        src="{{ asset('uploads/images/' ~ music.coverImage) }}"
+                        alt="{{ music.title }}"
+                    >
+                {% else %}
+                    <img
+                        src="{{ asset('images/default-music.jpg') }}"
+                        alt="default"
+                    >
+                {% endif %}
 
             </div>
-
-            <div class="music-title">
-                {{ music.title }}
-            </div>
-
-            <div class="music-artist">
-                {{ music.artist }}
-            </div>
-
-            <audio
-                controls
-                loop
-                class="music-player"
-                data-disc="disc-{{ loop.index }}"
-            >
-                <source
-                    src="{{ asset('uploads/music/' ~ music.audioFile) }}"
-                    type="audio/mpeg"
-                >
-            </audio>
 
         </div>
 
-    {% else %}
-
-        <div style="color:white;text-align:center;width:100%;">
-            🎧 Aucune musique disponible
+        <div class="music-title">
+            {{ music.title }}
         </div>
 
-    {% endfor %}
+        <div class="music-artist">
+            {{ music.artist }}
+        </div>
+
+        <button
+            class="play-btn"
+            data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
+            data-title="{{ music.title }}"
+            data-index="{{ loop.index0 }}"
+        >
+            ▶ Lire
+        </button>
+
+    </div>
+
+{% endfor %}
 
 </div>
 
 <script>
 
-document.querySelectorAll('.music-player').forEach(player => {
+const player = document.getElementById('main-player');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nowPlaying = document.getElementById('nowPlaying');
 
-    const discId = player.dataset.disc;
-    const disc = document.getElementById(discId);
+const tracks = document.querySelectorAll('.play-btn');
 
-    // quand play
-    player.addEventListener('play', () => {
-        disc.classList.add('playing');
-    });
+let currentIndex = 0;
 
-    // quand pause
-    player.addEventListener('pause', () => {
-        disc.classList.remove('playing');
-    });
+/* =========================
+   LOAD TRACK
+========================= */
 
-    // quand musique finie
-    player.addEventListener('ended', () => {
-        disc.classList.remove('playing');
+function loadTrack(index){
+
+    const track = tracks[index];
+
+    player.src = track.dataset.src;
+
+    nowPlaying.innerHTML = "🎵 " + track.dataset.title;
+
+    currentIndex = index;
+
+    updateDiscs();
+
+}
+
+/* =========================
+   PLAY TRACK
+========================= */
+
+tracks.forEach(track => {
+
+    track.addEventListener('click', () => {
+
+        currentIndex = parseInt(track.dataset.index);
+
+        loadTrack(currentIndex);
+
+        player.play();
+
     });
 
 });
+
+/* =========================
+   PLAY / PAUSE
+========================= */
+
+playPauseBtn.addEventListener('click', () => {
+
+    if(player.paused){
+
+        player.play();
+
+    }else{
+
+        player.pause();
+
+    }
+
+});
+
+/* =========================
+   PLAYER EVENTS
+========================= */
+
+player.addEventListener('play', () => {
+
+    playPauseBtn.innerHTML = '⏸';
+
+    updateDiscs(true);
+
+});
+
+player.addEventListener('pause', () => {
+
+    playPauseBtn.innerHTML = '▶';
+
+    updateDiscs(false);
+
+});
+
+/* =========================
+   NEXT
+========================= */
+
+nextBtn.addEventListener('click', () => {
+
+    currentIndex++;
+
+    if(currentIndex >= tracks.length){
+        currentIndex = 0;
+    }
+
+    loadTrack(currentIndex);
+
+    player.play();
+
+});
+
+/* =========================
+   PREV
+========================= */
+
+prevBtn.addEventListener('click', () => {
+
+    currentIndex--;
+
+    if(currentIndex < 0){
+        currentIndex = tracks.length - 1;
+    }
+
+    loadTrack(currentIndex);
+
+    player.play();
+
+});
+
+/* =========================
+   AUTO NEXT
+========================= */
+
+player.addEventListener('ended', () => {
+
+    currentIndex++;
+
+    if(currentIndex >= tracks.length){
+        currentIndex = 0;
+    }
+
+    loadTrack(currentIndex);
+
+    player.play();
+
+});
+
+/* =========================
+   DISC ANIMATION
+========================= */
+
+function updateDiscs(play = false){
+
+    document.querySelectorAll('.cd-disc').forEach(disc => {
+        disc.classList.remove('playing');
+    });
+
+    if(play){
+
+        const activeDisc = document.getElementById('disc-' + currentIndex);
+
+        if(activeDisc){
+            activeDisc.classList.add('playing');
+        }
+
+    }
+
+}
+
+/* =========================
+   INIT
+========================= */
+
+if(tracks.length > 0){
+    loadTrack(0);
+}
 
 </script>
 
