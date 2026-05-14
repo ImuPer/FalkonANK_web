@@ -1,83 +1,15 @@
-{% extends 'base.html.twig' %}
+{# templates/music/index.html.twig #}
 
-{% block title %}Album Player{% endblock %}
+<h1>🎵 Musiques de {{ product.name }}</h1>
 
-{% block body %}
+{% for music in musics %}
+    <div>
+        <h3>{{ music.title }}</h3>
 
-<style>
-.album-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 40px;
-}
-
-.cd {
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #111 30%, #000 70%);
-    border: 8px solid #333;
-    box-shadow: 0 0 30px rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: spin 6s linear infinite;
-}
-
-.cd img {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #555;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.album-info {
-    margin-top: 20px;
-    text-align: center;
-    color: #fff;
-}
-
-.player-box {
-    margin-top: 25px;
-    width: 320px;
-    background: #111;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
-}
-
-audio {
-    width: 100%;
-    outline: none;
-}
-</style>
-
-<div class="album-container">
-
-    <div class="cd">
-        <img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="cover">
-    </div>
-
-    <div class="album-info">
-        <h2>{{ music.title }}</h2>
-        <p>{{ music.artist }}</p>
-        <small>{{ music.album }}</small>
-    </div>
-
-    <div class="player-box">
-        <audio id="audioPlayer" controls autoplay loop>
-            <source src="{{ asset('uploads/music/' ~ music.audioFile) }}" type="audio/mpeg">
+        <audio controls>
+            <source src="/uploads/music/{{ music.audioFile }}" type="audio/mpeg">
         </audio>
     </div>
-
-</div>
-
-{% endblock %}
+{% else %}
+    <p>Aucune musique disponible</p>
+{% endfor %}
