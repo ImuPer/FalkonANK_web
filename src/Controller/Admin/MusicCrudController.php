@@ -11,6 +11,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class MusicCrudController extends AbstractCrudController
 {
@@ -31,36 +33,58 @@ class MusicCrudController extends AbstractCrudController
     {
         return [
 
-            IdField::new('id')
-                ->hideOnForm(),
+            IdField::new('id')->hideOnForm(),
 
             TextField::new('title', 'Titre'),
-
             TextField::new('artist', 'Artiste'),
 
-            TextField::new('album', 'Album')
-                ->hideOnIndex(),
+            TextField::new('album', 'Album')->hideOnIndex(),
 
-            IntegerField::new('duration', 'Durée (sec)')
-                ->hideOnIndex(),
+            IntegerField::new('duration', 'Durée (sec)')->hideOnIndex(),
 
             TextField::new('genre', 'Genre'),
 
-            DateField::new('releaseDate', 'Date de sortie')
-                ->hideOnIndex(),
+            DateField::new('releaseDate', 'Date de sortie')->hideOnIndex(),
 
-            TextField::new('coverImage', 'Image')
-                ->hideOnIndex(),
+            // =========================
+            // IMAGE UPLOAD + PREVIEW
+            // =========================
+            ImageField::new('coverImage', 'Image')
+                ->setBasePath('/uploads/images')
+                ->onlyOnIndex(),
 
-            TextField::new('audioFile', 'Fichier audio')
-                ->hideOnIndex(),
+            TextField::new('coverImageFile', 'Image (upload)')
+                ->setFormType(FileType::class)
+                ->onlyOnForms()
+                ->setHelp('Upload une image (jpg, png, etc.)'),
+
+            // =========================
+            // AUDIO UPLOAD
+            // =========================
+            TextField::new('audioFileFile', 'Fichier MP3')
+                ->setFormType(FileType::class)
+                ->onlyOnForms()
+                ->setHelp('Upload un fichier MP3'),
+
+            TextField::new('audioFile', 'Audio')
+                ->onlyOnIndex()
+                ->formatValue(function ($value) {
+                    if (!$value) return null;
+
+                    return sprintf(
+                        '<audio controls style="width:180px;">
+                            <source src="/uploads/music/%s" type="audio/mpeg">
+                        </audio>',
+                        $value
+                    );
+                })
+                ->renderAsHtml(),
 
             IntegerField::new('views', 'Vues'),
 
             BooleanField::new('isPublished', 'Publié'),
 
-            DateTimeField::new('createdAt', 'Créé le')
-                ->hideOnForm(),
+            DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
         ];
     }
 }
