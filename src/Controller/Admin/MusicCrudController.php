@@ -87,4 +87,15 @@ class MusicCrudController extends AbstractCrudController
             DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
         ];
     }
+
+    public function persistEntity(\Doctrine\ORM\EntityManagerInterface $entityManager, $entityInstance): void
+    {
+       
+        if (!$entityInstance instanceof Music)
+            return;
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+
+        parent::persistEntity($entityManager, $entityInstance);
+
+    }
 }
