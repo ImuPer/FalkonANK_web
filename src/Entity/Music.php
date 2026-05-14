@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\MusicRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: MusicRepository::class)]
+#[Vich\Uploadable]
 class Music
 {
     #[ORM\Id]
@@ -23,7 +26,7 @@ class Music
     private ?string $album = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $duration = null; // durée en secondes
+    private ?int $duration = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $genre = null;
@@ -31,11 +34,29 @@ class Music
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $releaseDate = null;
 
+    // =====================
+    // IMAGE
+    // =====================
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $coverImage = null;
 
+    #[Vich\UploadableField(mapping: 'music_image', fileNameProperty: 'coverImage')]
+    private ?File $coverImageFile = null;
+
+    // =====================
+    // AUDIO
+    // =====================
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $audioFile = null;
+
+    #[Vich\UploadableField(mapping: 'music_file', fileNameProperty: 'audioFile')]
+    private ?File $audioFileFile = null;
+
+    // =====================
+    // STATS
+    // =====================
 
     #[ORM\Column]
     private ?int $views = 0;
@@ -46,20 +67,30 @@ class Music
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     #[ORM\ManyToOne(inversedBy: 'music')]
     private ?Product $product = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
-    // GETTERS & SETTERS
+    // =====================
+    // ID
+    // =====================
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    // =====================
+    // TITLE
+    // =====================
 
     public function getTitle(): ?string
     {
@@ -69,9 +100,12 @@ class Music
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
+
+    // =====================
+    // ARTIST
+    // =====================
 
     public function getArtist(): ?string
     {
@@ -81,9 +115,12 @@ class Music
     public function setArtist(string $artist): static
     {
         $this->artist = $artist;
-
         return $this;
     }
+
+    // =====================
+    // ALBUM
+    // =====================
 
     public function getAlbum(): ?string
     {
@@ -93,9 +130,12 @@ class Music
     public function setAlbum(?string $album): static
     {
         $this->album = $album;
-
         return $this;
     }
+
+    // =====================
+    // DURATION
+    // =====================
 
     public function getDuration(): ?int
     {
@@ -105,9 +145,12 @@ class Music
     public function setDuration(?int $duration): static
     {
         $this->duration = $duration;
-
         return $this;
     }
+
+    // =====================
+    // GENRE
+    // =====================
 
     public function getGenre(): ?string
     {
@@ -117,9 +160,12 @@ class Music
     public function setGenre(?string $genre): static
     {
         $this->genre = $genre;
-
         return $this;
     }
+
+    // =====================
+    // RELEASE DATE
+    // =====================
 
     public function getReleaseDate(): ?\DateTimeInterface
     {
@@ -129,8 +175,25 @@ class Music
     public function setReleaseDate(?\DateTimeInterface $releaseDate): static
     {
         $this->releaseDate = $releaseDate;
-
         return $this;
+    }
+
+    // =====================
+    // IMAGE FILE
+    // =====================
+
+    public function setCoverImageFile(?File $file = null): void
+    {
+        $this->coverImageFile = $file;
+
+        if ($file) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getCoverImageFile(): ?File
+    {
+        return $this->coverImageFile;
     }
 
     public function getCoverImage(): ?string
@@ -141,8 +204,25 @@ class Music
     public function setCoverImage(?string $coverImage): static
     {
         $this->coverImage = $coverImage;
-
         return $this;
+    }
+
+    // =====================
+    // AUDIO FILE
+    // =====================
+
+    public function setAudioFileFile(?File $file = null): void
+    {
+        $this->audioFileFile = $file;
+
+        if ($file) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getAudioFileFile(): ?File
+    {
+        return $this->audioFileFile;
     }
 
     public function getAudioFile(): ?string
@@ -153,9 +233,12 @@ class Music
     public function setAudioFile(?string $audioFile): static
     {
         $this->audioFile = $audioFile;
-
         return $this;
     }
+
+    // =====================
+    // VIEWS
+    // =====================
 
     public function getViews(): ?int
     {
@@ -165,9 +248,12 @@ class Music
     public function setViews(int $views): static
     {
         $this->views = $views;
-
         return $this;
     }
+
+    // =====================
+    // PUBLISHED
+    // =====================
 
     public function isPublished(): ?bool
     {
@@ -177,9 +263,12 @@ class Music
     public function setIsPublished(bool $isPublished): static
     {
         $this->isPublished = $isPublished;
-
         return $this;
     }
+
+    // =====================
+    // CREATED AT
+    // =====================
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -189,9 +278,27 @@ class Music
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
+
+    // =====================
+    // UPDATED AT
+    // =====================
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    // =====================
+    // PRODUCT
+    // =====================
 
     public function getProduct(): ?Product
     {
@@ -201,7 +308,6 @@ class Music
     public function setProduct(?Product $product): static
     {
         $this->product = $product;
-
         return $this;
     }
 }
