@@ -28,11 +28,11 @@ class MusicController extends AbstractController
         ]);
     }
 
-    #[Route('/music/{id}/player', name: 'app_music_player')]
-    public function player(Music $music): Response
-    {
-        return $this->render('music/album_player.html.twig', [
-            'music' => $music
-        ]);
-    }
+    // #[Route('/music/{id}/player', name: 'app_music_player')]
+    // public function player(Music $music): Response
+    // {
+    //     return $this->render('music/album_player.html.twig', [
+    //         'music' => $music
+    //     ]);
+    // }
 }
