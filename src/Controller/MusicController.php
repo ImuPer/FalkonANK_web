@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Music;
 use App\Repository\MusicRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,4 +27,12 @@ class MusicController extends AbstractController
             'musics' => $musics,
         ]);
     }
+
+    // #[Route('/music/{id}/player', name: 'app_music_player')]
+    // public function player(Music $music): Response
+    // {
+    //     return $this->render('music/index.html.twig', [
+    //         'music' => $music
+    //     ]);
+    // }
 }
