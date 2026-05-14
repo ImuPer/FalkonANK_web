@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Music;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -69,7 +70,8 @@ class MusicCrudController extends AbstractCrudController
             TextField::new('audioFile', 'Audio')
                 ->onlyOnIndex()
                 ->formatValue(function ($value) {
-                    if (!$value) return null;
+                    if (!$value)
+                        return null;
 
                     return sprintf(
                         '<audio controls style="width:180px;">
@@ -85,12 +87,16 @@ class MusicCrudController extends AbstractCrudController
             BooleanField::new('isPublished', 'Publié'),
 
             DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
+
+            AssociationField::new('product', 'Produit')
+                ->setFormTypeOption('choice_label', 'name')
+                ->autocomplete(),
         ];
     }
 
     public function persistEntity(\Doctrine\ORM\EntityManagerInterface $entityManager, $entityInstance): void
     {
-       
+
         if (!$entityInstance instanceof Music)
             return;
         $entityInstance->setUpdatedAt(new \DateTimeImmutable());
