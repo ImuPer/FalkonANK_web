@@ -89,7 +89,6 @@ class MusicCrudController extends AbstractCrudController
             DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
 
             AssociationField::new('product', 'Produit')
-                ->setFormTypeOption('choice_label', 'name')
                 ->autocomplete(),
         ];
     }
