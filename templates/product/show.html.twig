@@ -1,77 +1,109 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'product.detail.title'|trans }}{% endblock %}
+{% block title %}
+	{{ 'product.detail.title'|trans }}
+{% endblock %}
 
 {% block body %}
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/home.css') }}">
 
-    <div class="general_showP">
-        <h1 style="margin: 5% 0; color:green">{{ product.name }}</h1>
+	<div class="general_showP">
+		<h1 style="margin: 5% 0; color:green">{{ product.name }}</h1>
 
-        <div class="img_showP">
-            <img src="{{ asset('upload/images/products/' ~ product.img ) }}" style="width: 300px; height: 400px">
-        </div>
+		<div class="img_showP">
+			<img src="{{ asset('upload/images/products/' ~ product.img ) }}" style="width: 300px; height: 400px">
+		</div>
 
-        <div class="desc_showP">
-            <p class="label">{{ product.label }}</p>
-            <h4 style="color:green;">
-                {{ (product.getFinalPrice() / 100) | number_format(0, ',', '.') }}
-                {{ 'currency.cve'|trans }}
-            </h4>
+		<div class="desc_showP">
+			<p class="label">{{ product.label }}</p>
+			<h4 style="color:green;">
+				{{ (product.getFinalPrice() / 100) | number_format(0, ',', '.') }}
+				{{ 'currency.cve'|trans }}
 
-            {% if product.stock > 0 %}
-                {% if app.user %}
-                    {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles %}
-                        <p class="p_a_c">{{ 'product.detail.purchase_note'|trans }}</p>
-                    {% else %}
-                        <a href="{{ path('app_add', {'id': product.id}) }}">
-                            <button type="button" class="btn btn-success">
-                                {{ 'product.detail.add_to_cart'|trans }}
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </a>
-                    {% endif %}
-                {% else %}
-                    <a href="{{ path('app_add', {'id': product.id}) }}">
-                        <button type="button" class="btn btn-success">
-                            {{ 'product.detail.add_to_cart'|trans }}
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </a>
-                {% endif %}
-            {% else %}
-                <p class="ruptureStock">{{ 'product.detail.stock_out'|trans }}</p>
-            {% endif %}
+				{% if product.category and product.category.name == 'Livros' %}
+					<a href="{{ path('app_music_by_product', {'id': product.id}) }}">
+						<button type="button" class="btn btn-primary">
+							🎵 Voir les musiques
+						</button>
+					</a>
+				{% endif %}
+			</h4>
 
-            <h3 style="margin-top: 1%;">{{ 'product.detail.description'|trans }}</h3>
-            <p>{{ product.description|raw }}</p>
+			{% if product.stock > 0 %}
+				{% if app.user %}
+					{% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_MERCHANT' in app.user.roles %}
+						<p class="p_a_c">{{ 'product.detail.purchase_note'|trans }}</p>
+					{% else %}
+						<a href="{{ path('app_add', {'id': product.id}) }}">
+							<button type="button" class="btn btn-success">
+								{{ 'product.detail.add_to_cart'|trans }}
+								<i class="fas fa-shopping-cart"></i>
+							</button>
+						</a>
+					{% endif %}
+				{% else %}
+					<a href="{{ path('app_add', {'id': product.id}) }}">
+						<button type="button" class="btn btn-success">
+							{{ 'product.detail.add_to_cart'|trans }}
+							<i class="fas fa-shopping-cart"></i>
+						</button>
+					</a>
+				{% endif %}
+			{% else %}
+				<p class="ruptureStock">{{ 'product.detail.stock_out'|trans }}</p>
+			{% endif %}
 
-            {% if product.weight %}
-                <h5 style="margin-top: 1%;">{{ 'product.field.weight'|trans }}</h5>
-                <p><small>{{ product.weight }}</small></p>
-            {% endif %}
-            {% if product.dimensionW and product.dimensionH and product.dimensionL %}
-                <h5 style="margin-top: 1%;">{{ 'product.field.dimension'|trans }}</h5>
-                <p><small>({{ product.dimensionW }} x {{ product.dimensionH }} x {{ product.dimensionL }})</small></p>
-            {% endif %}
-        </div>
+			<h3 style="margin-top: 1%;">{{ 'product.detail.description'|trans }}</h3>
+			<p>{{ product.description|raw }}</p>
 
-        {# div shop #}
-        <div class="shop_dv container">
-            <h3 class="text-center mb-4">{{ 'product.detail.shop'|trans }}</h3>
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <p><strong>{{ 'product.detail.shop_name'|trans }}:</strong> {{ product.getShop().getName() }}</p>
-                    <p><strong>{{ 'product.detail.location'|trans }}:</strong> {{ product.getShop().getCity() }}</p>
-                    <p><strong>{{ 'product.detail.address'|trans }}:</strong> {{ product.getShop().getAdress() }}</p>
-                    <p><strong>{{ 'product.detail.email'|trans }}:</strong> {{ product.getShop().getEmail() }}</p>
-                </div>
-                <div class="col-12 col-md-6">
-                    <p><strong>{{ 'product.detail.phone'|trans }}:</strong> {{ product.getShop().getPhone() }}</p>
-                    <p><strong>{{ 'product.detail.mobile'|trans }}:</strong> {{ product.getShop().getMobilePhone() }}</p>
-                    <p><strong>{{ 'product.detail.schedule'|trans }}:</strong> {{ product.getShop().getHorario() }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+			{% if product.weight %}
+				<h5 style="margin-top: 1%;">{{ 'product.field.weight'|trans }}</h5>
+				<p>
+					<small>{{ product.weight }}</small>
+				</p>
+			{% endif %}
+			{% if product.dimensionW and product.dimensionH and product.dimensionL %}
+				<h5 style="margin-top: 1%;">{{ 'product.field.dimension'|trans }}</h5>
+				<p>
+					<small>({{ product.dimensionW }}
+						x
+						{{ product.dimensionH }}
+						x
+						{{ product.dimensionL }})</small>
+				</p>
+			{% endif %}
+		</div>
+
+		{# div shop #}
+		<div class="shop_dv container">
+			<h3 class="text-center mb-4">{{ 'product.detail.shop'|trans }}</h3>
+			<div class="row">
+				<div class="col-12 col-md-6">
+					<p>
+						<strong>{{ 'product.detail.shop_name'|trans }}:</strong>
+						{{ product.getShop().getName() }}</p>
+					<p>
+						<strong>{{ 'product.detail.location'|trans }}:</strong>
+						{{ product.getShop().getCity() }}</p>
+					<p>
+						<strong>{{ 'product.detail.address'|trans }}:</strong>
+						{{ product.getShop().getAdress() }}</p>
+					<p>
+						<strong>{{ 'product.detail.email'|trans }}:</strong>
+						{{ product.getShop().getEmail() }}</p>
+				</div>
+				<div class="col-12 col-md-6">
+					<p>
+						<strong>{{ 'product.detail.phone'|trans }}:</strong>
+						{{ product.getShop().getPhone() }}</p>
+					<p>
+						<strong>{{ 'product.detail.mobile'|trans }}:</strong>
+						{{ product.getShop().getMobilePhone() }}</p>
+					<p>
+						<strong>{{ 'product.detail.schedule'|trans }}:</strong>
+						{{ product.getShop().getHorario() }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
