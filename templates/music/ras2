@@ -133,6 +133,7 @@ body{
         inset 0 0 15px rgba(255,255,255,0.1);
 }
 
+/* tourne seulement en lecture */
 .cd-disc.playing{
     animation:spin 5s linear infinite;
 }
@@ -191,14 +192,6 @@ body{
     background:#18a349;
 }
 
-.locked-btn{
-    background:#444;
-}
-
-.locked-btn:hover{
-    background:#555;
-}
-
 /* =========================
    RESPONSIVE
 ========================= */
@@ -230,12 +223,6 @@ body{
 }
 
 </style>
-
-{# =========================
-   USER STATUS
-========================= #}
-
-{% set isLoggedIn = app.user ? true : false %}
 
 {# =========================
    GLOBAL PLAYER
@@ -277,17 +264,6 @@ body{
 
 {% for music in musics %}
 
-    {# 
-       RÈGLES :
-       - connecté => accès total
-       - non connecté :
-           * 2 premiers morceaux = complet
-           * reste = seulement 60 secondes
-    #}
-
-    {% set isFreeTrack = loop.index0 < 2 %}
-    {% set canPlayFull = isLoggedIn or isFreeTrack %}
-
     <div class="music-card">
 
         <div class="cd-wrapper">
@@ -319,19 +295,12 @@ body{
         </div>
 
         <button
-            class="play-btn {% if not canPlayFull %}locked-btn{% endif %}"
+            class="play-btn"
             data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
             data-title="{{ music.title }}"
             data-index="{{ loop.index0 }}"
-            data-full="{{ canPlayFull ? '1' : '0' }}"
         >
-
-            {% if canPlayFull %}
-                ▶ Lire
-            {% else %}
-                🔒 Connecte-toi
-            {% endif %}
-
+            ▶ Lire
         </button>
 
     </div>
@@ -423,27 +392,6 @@ player.addEventListener('pause', () => {
     playPauseBtn.innerHTML = '▶';
 
     updateDiscs(false);
-
-});
-
-/* =========================
-   LIMIT 60s FOR GUESTS
-========================= */
-
-player.addEventListener('timeupdate', () => {
-
-    const currentTrack = tracks[currentIndex];
-
-    const fullAccess = currentTrack.dataset.full === "1";
-
-    // si pas connecté ET morceau premium
-    if(!fullAccess && player.currentTime >= 60){
-
-        player.pause();
-
-        alert("🔒 Connecte-toi pour écouter la musique complète.");
-
-    }
 
 });
 
