@@ -19,21 +19,6 @@
 			<h4 style="color:green;">
 				{{ (product.getFinalPrice() / 100) | number_format(0, ',', '.') }}
 				{{ 'currency.cve'|trans }}
-
-				{% if product.category and product.category.name == 'Livros' %}
-					<a href="{{ path('app_music_by_product', {'id': product.id}) }}">
-						{# <button type="button" class="btn btn-primary"> #}
-							🎵 Voir les musiques
-						{# </button> #}
-					</a>
-
-					{# <a href="{{ path('app_music_player', {'id': music.id}) }}"> #}
-                    {# <a href="#">
-						<button class="btn btn-dark">
-							🎧 Mode Album CD
-						</button>
-					</a> #}
-				{% endif %}
 			</h4>
 
 			{% if product.stock > 0 %}
@@ -58,6 +43,15 @@
 				{% endif %}
 			{% else %}
 				<p class="ruptureStock">{{ 'product.detail.stock_out'|trans }}</p>
+			{% endif %}
+
+			{% if product.category and product.category.name == 'Livros' %}
+				<a
+					href="{{ path('app_music_by_product', {'id': product.id}) }}">
+					{# <button type="button" class="btn btn-primary"> #}
+					🎵 Voir les musiques
+					{# </button> #}
+				</a>
 			{% endif %}
 
 			<h3 style="margin-top: 1%;">{{ 'product.detail.description'|trans }}</h3>
