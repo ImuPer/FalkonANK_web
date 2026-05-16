@@ -2,347 +2,443 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}🎵 Album - {{ product.name }}{% endblock %}
+{% block title %}🎵 Album -
+	{{ product.name }}
+{% endblock %}
 
 {% block body %}
 
-<style>
+	<style>
 
-body{
-    background:#0b0b0b;
-    color:white;
-    margin:0;
-    padding:0;
-    font-family:Arial, Helvetica, sans-serif;
-}
+		body {
+			background: #0b0b0b;
+			color: white;
+			margin: 0;
+			padding: 0;
+			font-family: Arial, Helvetica, sans-serif;
+		}
 
-/* =========================
+		/* =========================
    HEADER
 ========================= */
 
-.album-header{
-    text-align:center;
-    padding:40px 20px;
-}
+		.album-header {
+			text-align: center;
+			padding: 40px 20px;
+		}
 
-.album-header h1{
-    font-size:clamp(30px,5vw,55px);
-    margin-bottom:10px;
-}
+		.album-header h1 {
+			font-size: clamp(30px, 5vw, 55px);
+			margin-bottom: 10px;
+		}
 
-.album-header h2{
-    color:#aaa;
-    font-weight:300;
-}
+		.album-header h2 {
+			color: #aaa;
+			font-weight: 300;
+		}
 
-/* =========================
+		/* =========================
    GLOBAL PLAYER
 ========================= */
 
-.global-player{
-    position:sticky;
-    top:0;
-    z-index:999;
-    background:#111;
-    border-bottom:1px solid #222;
-    padding:15px;
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:center;
-    gap:15px;
-}
+		.global-player {
+			position: sticky;
+			top: 0;
+			z-index: 999;
+			background: #111;
+			border-bottom: 1px solid #222;
+			padding: 15px;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+			gap: 15px;
+		}
 
-.global-player button{
-    background:#1db954;
-    border:none;
-    color:white;
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    cursor:pointer;
-    font-size:20px;
-    transition:0.3s;
-}
+		.global-player button {
+			background: #1db954;
+			border: none;
+			color: white;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			cursor: pointer;
+			font-size: 20px;
+			transition: 0.3s;
+		}
 
-.global-player button:hover{
-    transform:scale(1.1);
-}
+		.global-player button:hover {
+			transform: scale(1.1);
+		}
 
-.now-playing{
-    font-size:16px;
-    color:#fff;
-    min-width:200px;
-    text-align:center;
-}
+		.now-playing {
+			font-size: 16px;
+			color: #fff;
+			min-width: 200px;
+			text-align: center;
+		}
 
-#main-player{
-    width:100%;
-    max-width:500px;
-}
+		#main-player {
+			width: 100%;
+			max-width: 500px;
+		}
 
-/* =========================
+		/* =========================
    GRID
 ========================= */
 
-.album-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:30px;
-    padding:30px;
-    max-width:1400px;
-    margin:auto;
-}
+		.album-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+			gap: 30px;
+			padding: 30px;
+			max-width: 1400px;
+			margin: auto;
+		}
 
-/* =========================
+		/* =========================
    CARD
 ========================= */
 
-.music-card{
-    background:#111;
-    border-radius:20px;
-    padding:20px;
-    text-align:center;
-    transition:0.3s;
-    box-shadow:0 10px 25px rgba(0,0,0,0.5);
-}
+		.music-card {
+			background: #111;
+			border-radius: 20px;
+			padding: 20px;
+			text-align: center;
+			transition: 0.3s;
+			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+		}
 
-.music-card:hover{
-    transform:translateY(-5px);
-}
+		.music-card:hover {
+			transform: translateY(-5px);
+		}
 
-/* =========================
+		/* =========================
    CD
 ========================= */
 
-.cd-wrapper{
-    width:220px;
-    height:220px;
-    margin:auto;
-}
+		.cd-wrapper {
+			width: 220px;
+			height: 220px;
+			margin: auto;
+		}
 
-.cd-disc{
-    width:100%;
-    height:100%;
-    border-radius:50%;
-    overflow:hidden;
-    position:relative;
-    background:black;
-    box-shadow:
-        0 0 20px rgba(0,0,0,0.6),
-        inset 0 0 15px rgba(255,255,255,0.1);
-}
+		.cd-disc {
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			overflow: hidden;
+			position: relative;
+			background: black;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.1);
+		}
 
-.cd-disc.playing{
-    animation:spin 5s linear infinite;
-}
+		.cd-disc.playing {
+			animation: spin 5s linear infinite;
+		}
 
-.cd-disc img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:50%;
-}
+		.cd-disc img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: 50%;
+		}
 
-.cd-disc::after{
-    content:"";
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:40px;
-    height:40px;
-    transform:translate(-50%,-50%);
-    background:#111;
-    border:5px solid #444;
-    border-radius:50%;
-}
+		.cd-disc::after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 40px;
+			height: 40px;
+			transform: translate(-50%, -50%);
+			background: #111;
+			border: 5px solid #444;
+			border-radius: 50%;
+		}
 
-/* =========================
+		/* =========================
    TEXT
 ========================= */
 
-.music-title{
-    margin-top:20px;
-    font-size:22px;
-    font-weight:bold;
-}
+		.music-title {
+			margin-top: 20px;
+			font-size: 22px;
+			font-weight: bold;
+		}
 
-.music-artist{
-    color:#aaa;
-    margin-top:5px;
-    margin-bottom:15px;
-}
+		.music-artist {
+			color: #aaa;
+			margin-top: 5px;
+			margin-bottom: 15px;
+		}
 
-/* =========================
+		/* =========================
    BUTTON
 ========================= */
 
-.play-btn{
-    background:#1db954;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:30px;
-    cursor:pointer;
-    transition:0.3s;
-}
+		.play-btn {
+			background: #1db954;
+			color: white;
+			border: none;
+			padding: 10px 18px;
+			border-radius: 30px;
+			cursor: pointer;
+			transition: 0.3s;
+		}
 
-.play-btn:hover{
-    background:#18a349;
-}
+		.play-btn:hover {
+			background: #18a349;
+		}
 
-.locked-btn{
-    background:#444;
-}
+		.locked-btn {
+			background: #444;
+		}
 
-.locked-btn:hover{
-    background:#555;
-}
+		.locked-btn:hover {
+			background: #555;
+		}
 
-/* =========================
+		/* =========================
    RESPONSIVE
 ========================= */
 
-@media(max-width:768px){
+		@media(max-width:768px) {
 
-    .cd-wrapper{
-        width:180px;
-        height:180px;
-    }
+			.cd-wrapper {
+				width: 180px;
+				height: 180px;
+			}
 
-    .album-grid{
-        padding:15px;
-    }
+			.album-grid {
+				padding: 15px;
+			}
 
-}
+		}
 
-/* =========================
+		/* =========================
    SPIN
 ========================= */
 
-@keyframes spin{
-    from{
-        transform:rotate(0deg);
-    }
-    to{
-        transform:rotate(360deg);
-    }
-}
+		@keyframes spin {
+			from {
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
 
-</style>
+		/* =========================
+   LYRICS BUTTON
+========================= */
 
-{# =========================
-   USER STATUS
-========================= #}
+		.lyrics-btn {
+			margin-top: 12px;
+			background: #222;
+			border: none;
+			color: white;
+			width: 45px;
+			height: 45px;
+			border-radius: 50%;
+			cursor: pointer;
+			font-size: 20px;
+			transition: 0.3s;
+		}
 
-{% set isLoggedIn = app.user ? true : false %}
+		.lyrics-btn:hover {
+			background: #1db954;
+			transform: scale(1.1);
+		}
 
-{# =========================
-   GLOBAL PLAYER
-========================= #}
+		/* =========================
+   MODAL LYRICS
+========================= */
 
-<div class="global-player">
+		.lyrics-modal {
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.9);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 5000;
+			padding: 20px;
+		}
 
-    <button id="prevBtn">⏮</button>
+		.lyrics-content {
+			background: #111;
+			width: min(700px, 95%);
+			max-height: 85vh;
+			overflow-y: auto;
+			border-radius: 20px;
+			padding: 30px;
+			box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+			position: relative;
+			animation: zoomIn 0.3s ease;
+		}
 
-    <button id="playPauseBtn">▶</button>
+		.lyrics-content h2 {
+			margin-top: 0;
+			margin-bottom: 20px;
+			text-align: center;
+		}
 
-    <button id="nextBtn">⏭</button>
+		.lyrics-text {
+			white-space: pre-line;
+			line-height: 1.8;
+			color: #ddd;
+			font-size: 18px;
+		}
 
-    <div class="now-playing" id="nowPlaying">
-        Aucun morceau
-    </div>
+		.close-lyrics {
+			position: absolute;
+			top: 15px;
+			right: 20px;
+			font-size: 28px;
+			cursor: pointer;
+			color: white;
+		}
 
-    <audio id="main-player" controls></audio>
+		.close-lyrics:hover {
+			color: #1db954;
+		}
 
-</div>
+		@keyframes zoomIn {
+			from {
+				transform: scale(0.7);
+				opacity: 0;
+			}
+			to {
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
+	</style>
 
-{# =========================
-   HEADER
-========================= #}
+	{# =========================
+			   USER STATUS
+			========================= #}
 
-<div class="album-header">
+	{% set isLoggedIn = app.user ? true : false %}
 
-    <h1>🎵 {{ product.name }}</h1>
+	{# =========================
+			   GLOBAL PLAYER
+			========================= #}
 
-    <h2>💿 Album Musical</h2>
+	<div class="global-player">
 
-</div>
+		<button id="prevBtn">⏮</button>
 
-{# =========================
-   ALBUM GRID
-========================= #}
+		<button id="playPauseBtn">▶</button>
 
-<div class="album-grid">
+		<button id="nextBtn">⏭</button>
 
-{% for music in musics %}
+		<div class="now-playing" id="nowPlaying">
+			Aucun morceau
+		</div>
 
-    {# 
-       RÈGLES :
-       - connecté => accès total
-       - non connecté :
-           * 2 premiers morceaux = complet
-           * reste = seulement 60 secondes
-    #}
+		<audio id="main-player" controls></audio>
 
-    {% set isFreeTrack = loop.index0 < 2 %}
-    {% set canPlayFull = isLoggedIn or isFreeTrack %}
+	</div>
 
-    <div class="music-card">
+	{# =========================
+			   HEADER
+			========================= #}
 
-        <div class="cd-wrapper">
+	<div class="album-header">
 
-            <div class="cd-disc" id="disc-{{ loop.index0 }}">
+		<h1>🎵
+			{{ product.name }}</h1>
 
-                {% if music.coverImage %}
-                    <img
-                        src="{{ asset('uploads/images/' ~ music.coverImage) }}"
-                        alt="{{ music.title }}"
-                    >
-                {% else %}
-                    <img
-                        src="{{ asset('images/default-music.jpg') }}"
-                        alt="default"
-                    >
-                {% endif %}
+		<h2>💿 Album Musical</h2>
 
-            </div>
+	</div>
 
-        </div>
+	{# =========================
+			   ALBUM GRID
+			========================= #}
 
-        <div class="music-title">
-            {{ music.title }}
-        </div>
+	<div class="album-grid">
 
-        <div class="music-artist">
-            {{ music.artist }}
-        </div>
+		{% for music in musics %}
 
-        <button
-            class="play-btn {% if not canPlayFull %}locked-btn{% endif %}"
-            data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
-            data-title="{{ music.title }}"
-            data-index="{{ loop.index0 }}"
-            data-full="{{ canPlayFull ? '1' : '0' }}"
-        >
+			{# 
+									       RÈGLES :
+									       - connecté => accès total
+									       - non connecté :
+									           * 2 premiers morceaux = complet
+									           * reste = seulement 60 secondes
+									    #}
 
-            {% if canPlayFull %}
-                ▶ Lire
-            {% else %}
-                🔒 Connecte-toi
-            {% endif %}
+			{% set isFreeTrack = loop.index0 < 2 %}
+			{% set canPlayFull = isLoggedIn or isFreeTrack %}
 
-        </button>
+			<div class="music-card">
 
-    </div>
+				<div class="cd-wrapper">
 
-{% endfor %}
+					<div class="cd-disc" id="disc-{{ loop.index0 }}">
 
-</div>
+						{% if music.coverImage %}
+							<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
+						{% else %}
+							<img src="{{ asset('images/default-music.jpg') }}" alt="default">
+						{% endif %}
 
-<script>
+					</div>
 
-const player = document.getElementById('main-player');
+				</div>
+
+				<div class="music-title">
+					{{ music.title }}
+				</div>
+
+				<div class="music-artist">
+					{{ music.artist }}
+				</div>
+
+				<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
+
+					{% if canPlayFull %}
+						▶ Lire
+					{% else %}
+						🔒 Connecte-toi
+					{% endif %}
+
+				</button>
+
+				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
+					🎤
+				</button>
+
+			</div>
+
+		{% endfor %}
+
+	</div>
+
+	<div class="lyrics-modal" id="lyricsModal">
+
+		<div class="lyrics-content">
+
+			<span class="close-lyrics" id="closeLyrics">
+				✖
+			</span>
+
+			<h2 id="lyricsTitle">
+				Lyrics
+			</h2>
+
+			<div class="lyrics-text" id="lyricsText"></div>
+
+		</div>
+
+	</div>
+
+	<script>
+
+		const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -356,17 +452,17 @@ let currentIndex = 0;
    LOAD TRACK
 ========================= */
 
-function loadTrack(index){
+function loadTrack(index) {
 
-    const track = tracks[index];
+const track = tracks[index];
 
-    player.src = track.dataset.src;
+player.src = track.dataset.src;
 
-    nowPlaying.innerHTML = "🎵 " + track.dataset.title;
+nowPlaying.innerHTML = "🎵 " + track.dataset.title;
 
-    currentIndex = index;
+currentIndex = index;
 
-    updateDiscs();
+updateDiscs();
 
 }
 
@@ -376,15 +472,15 @@ function loadTrack(index){
 
 tracks.forEach(track => {
 
-    track.addEventListener('click', () => {
+track.addEventListener('click', () => {
 
-        currentIndex = parseInt(track.dataset.index);
+currentIndex = parseInt(track.dataset.index);
 
-        loadTrack(currentIndex);
+loadTrack(currentIndex);
 
-        player.play();
+player.play();
 
-    });
+});
 
 });
 
@@ -394,15 +490,15 @@ tracks.forEach(track => {
 
 playPauseBtn.addEventListener('click', () => {
 
-    if(player.paused){
+if (player.paused) {
 
-        player.play();
+player.play();
 
-    }else{
+} else {
 
-        player.pause();
+player.pause();
 
-    }
+}
 
 });
 
@@ -412,17 +508,17 @@ playPauseBtn.addEventListener('click', () => {
 
 player.addEventListener('play', () => {
 
-    playPauseBtn.innerHTML = '⏸';
+playPauseBtn.innerHTML = '⏸';
 
-    updateDiscs(true);
+updateDiscs(true);
 
 });
 
 player.addEventListener('pause', () => {
 
-    playPauseBtn.innerHTML = '▶';
+playPauseBtn.innerHTML = '▶';
 
-    updateDiscs(false);
+updateDiscs(false);
 
 });
 
@@ -432,18 +528,18 @@ player.addEventListener('pause', () => {
 
 player.addEventListener('timeupdate', () => {
 
-    const currentTrack = tracks[currentIndex];
+const currentTrack = tracks[currentIndex];
 
-    const fullAccess = currentTrack.dataset.full === "1";
+const fullAccess = currentTrack.dataset.full === "1";
 
-    // si pas connecté ET morceau premium
-    if(!fullAccess && player.currentTime >= 60){
+// si pas connecté ET morceau premium
+if (! fullAccess && player.currentTime >= 60) {
 
-        player.pause();
+player.pause();
 
-        alert("🔒 Connecte-toi pour écouter la musique complète.");
+alert("🔒 Connecte-toi pour écouter la musique complète.");
 
-    }
+}
 
 });
 
@@ -453,15 +549,15 @@ player.addEventListener('timeupdate', () => {
 
 nextBtn.addEventListener('click', () => {
 
-    currentIndex++;
+currentIndex++;
 
-    if(currentIndex >= tracks.length){
-        currentIndex = 0;
-    }
+if (currentIndex >= tracks.length) {
+currentIndex = 0;
+}
 
-    loadTrack(currentIndex);
+loadTrack(currentIndex);
 
-    player.play();
+player.play();
 
 });
 
@@ -471,15 +567,15 @@ nextBtn.addEventListener('click', () => {
 
 prevBtn.addEventListener('click', () => {
 
-    currentIndex--;
+currentIndex--;
 
-    if(currentIndex < 0){
-        currentIndex = tracks.length - 1;
-    }
+if (currentIndex < 0) {
+currentIndex = tracks.length - 1;
+}
 
-    loadTrack(currentIndex);
+loadTrack(currentIndex);
 
-    player.play();
+player.play();
 
 });
 
@@ -489,15 +585,15 @@ prevBtn.addEventListener('click', () => {
 
 player.addEventListener('ended', () => {
 
-    currentIndex++;
+currentIndex++;
 
-    if(currentIndex >= tracks.length){
-        currentIndex = 0;
-    }
+if (currentIndex >= tracks.length) {
+currentIndex = 0;
+}
 
-    loadTrack(currentIndex);
+loadTrack(currentIndex);
 
-    player.play();
+player.play();
 
 });
 
@@ -505,21 +601,21 @@ player.addEventListener('ended', () => {
    DISC ANIMATION
 ========================= */
 
-function updateDiscs(play = false){
+function updateDiscs(play = false) {
 
-    document.querySelectorAll('.cd-disc').forEach(disc => {
-        disc.classList.remove('playing');
-    });
+document.querySelectorAll('.cd-disc').forEach(disc => {
+disc.classList.remove('playing');
+});
 
-    if(play){
+if (play) {
 
-        const activeDisc = document.getElementById('disc-' + currentIndex);
+const activeDisc = document.getElementById('disc-' + currentIndex);
 
-        if(activeDisc){
-            activeDisc.classList.add('playing');
-        }
+if (activeDisc) {
+activeDisc.classList.add('playing');
+}
 
-    }
+}
 
 }
 
@@ -527,10 +623,55 @@ function updateDiscs(play = false){
    INIT
 ========================= */
 
-if(tracks.length > 0){
-    loadTrack(0);
+if (tracks.length > 0) {
+loadTrack(0);
 }
 
-</script>
+/* =========================
+   LYRICS MODAL
+========================= */
+
+const lyricsButtons = document.querySelectorAll('.lyrics-btn');
+
+const lyricsModal = document.getElementById('lyricsModal');
+
+const lyricsText = document.getElementById('lyricsText');
+
+const lyricsTitle = document.getElementById('lyricsTitle');
+
+const closeLyrics = document.getElementById('closeLyrics');
+
+lyricsButtons.forEach(btn => {
+
+btn.addEventListener('click', () => {
+
+lyricsTitle.innerHTML = "🎤 " + btn.dataset.title;
+
+lyricsText.innerHTML = btn.dataset.lyrics ? btn.dataset.lyrics : "Aucune parole disponible.";
+
+lyricsModal.style.display = 'flex';
+
+});
+
+});
+
+/* CLOSE */
+
+closeLyrics.addEventListener('click', () => {
+
+lyricsModal.style.display = 'none';
+
+});
+
+lyricsModal.addEventListener('click', (e) => {
+
+if (e.target === lyricsModal) {
+
+lyricsModal.style.display = 'none';
+
+}
+
+});
+	</script>
 
 {% endblock %}

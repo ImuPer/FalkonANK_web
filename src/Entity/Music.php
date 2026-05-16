@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MusicRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -72,6 +73,9 @@ class Music
 
     #[ORM\ManyToOne(inversedBy: 'music')]
     private ?Product $product = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $lyrics = null;
 
     public function __construct()
     {
@@ -308,6 +312,18 @@ class Music
     public function setProduct(?Product $product): static
     {
         $this->product = $product;
+        return $this;
+    }
+
+    public function getLyrics(): ?string
+    {
+        return $this->lyrics;
+    }
+
+    public function setLyrics(?string $lyrics): static
+    {
+        $this->lyrics = $lyrics;
+
         return $this;
     }
 }
