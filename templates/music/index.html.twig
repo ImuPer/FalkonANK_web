@@ -314,17 +314,22 @@
 				opacity: 1;
 			}
 		}
+
+		.music-card.active {
+			border: 2px solid #1db954;
+			box-shadow: 0 0 25px rgba(29, 185, 84, 0.5);
+		}
 	</style>
 
 	{# =========================
-				   USER STATUS
-				========================= #}
+					   USER STATUS
+					========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-				   GLOBAL PLAYER
-				========================= #}
+					   GLOBAL PLAYER
+					========================= #}
 
 	<div class="global-player">
 
@@ -343,8 +348,8 @@
 	</div>
 
 	{# =========================
-				   HEADER
-				========================= #}
+					   HEADER
+					========================= #}
 
 	<div class="album-header">
 
@@ -356,20 +361,20 @@
 		</div>
 
 		{# =========================
-					   ALBUM GRID
-					========================= #}
+							   ALBUM GRID
+							========================= #}
 
 		<div class="album-grid">
 
 			{% for music in musics %}
 
 				{# 
-													       RÈGLES :
-													       - connecté => accès total
-													       - non connecté :
-													           * 2 premiers morceaux = complet
-													           * reste = seulement 60 secondes
-													    #}
+																	       RÈGLES :
+																	       - connecté => accès total
+																	       - non connecté :
+																	           * 2 premiers morceaux = complet
+																	           * reste = seulement 60 secondes
+																	    #}
 
 				{% set isFreeTrack = loop.index0 < 2 %}
 				{% set canPlayFull = isLoggedIn or isFreeTrack %}
@@ -470,28 +475,21 @@ updateDiscs();
    AUTO SCROLL ACTIVE CARD
 ========================= */
 
-function scrollToCurrentCard() {
+function scrollToCurrentCard() { // retire ancienne active
+document.querySelectorAll('.music-card').forEach(card => {
+card.classList.remove('active');
+});
 
-	// retire ancienne active
-	document.querySelectorAll('.music-card').forEach(card => {
-		card.classList.remove('active');
-	});
+// card actuelle
+const activeCard = document.getElementById('card-' + currentIndex);
 
-	// card actuelle
-	const activeCard = document.getElementById('card-' + currentIndex);
+if (activeCard) { // ajoute style active
+activeCard.classList.add('active');
 
-	if (activeCard) {
+// scroll smooth
+activeCard.scrollIntoView({behavior: 'smooth', block: 'center'});
 
-		// ajoute style active
-		activeCard.classList.add('active');
-
-		// scroll smooth
-		activeCard.scrollIntoView({
-			behavior: 'smooth',
-			block: 'center'
-		});
-
-	}
+}
 
 }
 
