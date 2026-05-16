@@ -194,3 +194,8 @@ a {
     right: 0;
     margin-bottom: 0.5rem; /* espace entre le bouton et le menu */
 }
+
+.dropdown-menu {
+	z-index: 99999 !important;
+	position: absolute;
+}
