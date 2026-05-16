@@ -461,37 +461,46 @@ let currentIndex = 0;
 
 function loadTrack(index) {
 
-const track = tracks[index];
+	const track = tracks[index];
 
-player.src = track.dataset.src;
+	player.src = track.dataset.src;
 
-nowPlaying.innerHTML = "🎵 " + track.dataset.title;
+	nowPlaying.innerHTML = "🎵 " + track.dataset.title;
 
-currentIndex = index;
+	currentIndex = index;
 
-updateDiscs();
+	updateDiscs();
+
+	scrollToCurrentCard();
+
+}
 
 /* =========================
    AUTO SCROLL ACTIVE CARD
 ========================= */
 
-function scrollToCurrentCard() { // retire ancienne active
-document.querySelectorAll('.music-card').forEach(card => {
-card.classList.remove('active');
-});
+function scrollToCurrentCard() {
 
-// card actuelle
-const activeCard = document.getElementById('card-' + currentIndex);
+	// retire ancienne active
+	document.querySelectorAll('.music-card').forEach(card => {
+		card.classList.remove('active');
+	});
 
-if (activeCard) { // ajoute style active
-activeCard.classList.add('active');
+	// récupère la card actuelle
+	const activeCard = document.getElementById('card-' + currentIndex);
 
-// scroll smooth
-activeCard.scrollIntoView({behavior: 'smooth', block: 'center'});
+	if (activeCard) {
 
-}
+		// active style
+		activeCard.classList.add('active');
 
-}
+		// scroll vers la card
+		activeCard.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center'
+		});
+
+	}
 
 }
 
