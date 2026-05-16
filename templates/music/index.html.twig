@@ -317,14 +317,14 @@
 	</style>
 
 	{# =========================
-			   USER STATUS
-			========================= #}
+				   USER STATUS
+				========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-			   GLOBAL PLAYER
-			========================= #}
+				   GLOBAL PLAYER
+				========================= #}
 
 	<div class="global-player">
 
@@ -343,102 +343,104 @@
 	</div>
 
 	{# =========================
-			   HEADER
-			========================= #}
+				   HEADER
+				========================= #}
 
 	<div class="album-header">
 
 		<h1>
 			{# 🎵{{ product.name }}</h1> #}
 
-		<h2>💿 Album Musical</h2>
-
-	</div>
-
-	{# =========================
-			   ALBUM GRID
-			========================= #}
-
-	<div class="album-grid">
-
-		{% for music in musics %}
-
-			{# 
-									       RÈGLES :
-									       - connecté => accès total
-									       - non connecté :
-									           * 2 premiers morceaux = complet
-									           * reste = seulement 60 secondes
-									    #}
-
-			{% set isFreeTrack = loop.index0 < 2 %}
-			{% set canPlayFull = isLoggedIn or isFreeTrack %}
-
-			<div class="music-card">
-
-				<div class="cd-wrapper">
-
-					<div class="cd-disc" id="disc-{{ loop.index0 }}">
-
-						{% if music.coverImage %}
-							<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
-						{% else %}
-							<img src="{{ asset('images/default-music.jpg') }}" alt="default">
-						{% endif %}
-
-					</div>
-
-				</div>
-
-				<div class="music-title">
-					{{ music.title }}
-				</div>
-
-				<div class="music-artist">
-					{{ music.artist }}
-				</div>
-
-				<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
-
-					{% if canPlayFull %}
-						▶ Lire
-					{% else %}
-						🔒 Connecte-toi
-					{% endif %}
-
-				</button>
-
-				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
-					🎤
-				</button>
-
-			</div>
-
-		{% endfor %}
-
-	</div>
-
-	<div class="lyrics-modal" id="lyricsModal">
-
-		<div class="lyrics-content">
-
-			<span class="close-lyrics" id="closeLyrics">
-				✖
-			</span>
-
-			<h2 id="lyricsTitle">
-				Lyrics
-			</h2>
-
-			<div class="lyrics-text" id="lyricsText"></div>
+			<h2>💿 Album Musical</h2>
 
 		</div>
 
-	</div>
+		{# =========================
+					   ALBUM GRID
+					========================= #}
 
-	<script>
+		<div class="album-grid">
 
-		const player = document.getElementById('main-player');
+			{% for music in musics %}
+
+				{# 
+													       RÈGLES :
+													       - connecté => accès total
+													       - non connecté :
+													           * 2 premiers morceaux = complet
+													           * reste = seulement 60 secondes
+													    #}
+
+				{% set isFreeTrack = loop.index0 < 2 %}
+				{% set canPlayFull = isLoggedIn or isFreeTrack %}
+
+				<div class="music-card">
+
+					<div class="cd-wrapper">
+
+						<div class="cd-disc" id="disc-{{ loop.index0 }}">
+
+							{% if music.coverImage %}
+								<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
+							{% else %}
+								<img src="{{ asset('images/default-music.jpg') }}" alt="default">
+							{% endif %}
+
+						</div>
+
+					</div>
+
+					<div class="music-title">
+						{{ music.title }}
+					</div>
+
+					<div class="music-artist">
+						{{ music.artist }}
+					</div>
+
+					<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
+
+						{% if canPlayFull %}
+							▶ Lire
+						{% else %}
+							<a href="{{ path('app_login', {'id': product.id}) }}">
+								🔒 Connecte-toi
+							</a>
+						{% endif %}
+
+					</button>
+
+					<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
+						🎤
+					</button>
+
+				</div>
+
+			{% endfor %}
+
+		</div>
+
+		<div class="lyrics-modal" id="lyricsModal">
+
+			<div class="lyrics-content">
+
+				<span class="close-lyrics" id="closeLyrics">
+					✖
+				</span>
+
+				<h2 id="lyricsTitle">
+					Lyrics
+				</h2>
+
+				<div class="lyrics-text" id="lyricsText"></div>
+
+			</div>
+
+		</div>
+
+		<script>
+
+			const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -672,6 +674,6 @@ lyricsModal.style.display = 'none';
 }
 
 });
-	</script>
+		</script>
 
-{% endblock %}
+	{% endblock %}
