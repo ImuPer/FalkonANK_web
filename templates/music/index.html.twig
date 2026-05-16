@@ -319,17 +319,41 @@
 			border: 2px solid #1db954;
 			box-shadow: 0 0 25px rgba(29, 185, 84, 0.5);
 		}
+
+		.album-header {
+			text-align: center;
+			padding: 100px 20px;
+			position: relative;
+			background-image: url("{{ asset('upload/images/products/' ~ product.img ) }}");
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			border-radius: 0 0 30px 30px;
+			overflow: hidden;
+		}
+		.album-header::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.55);
+		}
+		.album-header h1,
+		.album-header h2 {
+			position: relative;
+			z-index: 2;
+			color: white;
+		}
 	</style>
 
 	{# =========================
-							   USER STATUS
-							========================= #}
+								   USER STATUS
+								========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-							   HEADER
-							========================= #}
+								   HEADER
+								========================= #}
 
 	<div class="album-header">
 
@@ -342,8 +366,8 @@
 	</div>
 
 	{# =========================
-							   GLOBAL PLAYER
-							========================= #}
+								   GLOBAL PLAYER
+								========================= #}
 
 	<div class="global-player">
 
@@ -363,20 +387,20 @@
 
 
 	{# =========================
-										   ALBUM GRID
-										========================= #}
+											   ALBUM GRID
+											========================= #}
 
 	<div class="album-grid">
 
 		{% for music in musics %}
 
 			{# 
-																								       RÈGLES :
-																								       - connecté => accès total
-																								       - non connecté :
-																								           * 2 premiers morceaux = complet
-																								           * reste = seulement 60 secondes
-																								    #}
+																											       RÈGLES :
+																											       - connecté => accès total
+																											       - non connecté :
+																											           * 2 premiers morceaux = complet
+																											           * reste = seulement 60 secondes
+																											    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
 			{% set canPlayFull = isLoggedIn or isFreeTrack %}
