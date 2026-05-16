@@ -675,6 +675,7 @@ login:
   email_label: "Email"
   password_label: "Password"
   forgot_password: "Forgot your password?"
+  have_account: "If you don’t have an account yet,"
   submit: "Login"
   already_logged_in: "You are already logged in as %user%"
   logout: "Logout"

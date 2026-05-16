@@ -1,88 +1,84 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'login.title'|trans }}
+	{{ 'login.title'|trans }}
 {% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/login.css') }}">
-<br>
-<div id="global">
+	<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+	<br>
+	<div id="global">
 
-    <div id="container">
+		<div id="container">
 
-        <form method="post">
-            {% if error %}
-                <div class="alert alert-danger">
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                </div>
-            {% endif %}
+			<form method="post">
+				{% if error %}
+					<div class="alert alert-danger">
+						{{ error.messageKey|trans(error.messageData, 'security') }}
+					</div>
+				{% endif %}
 
-            <div id="d_head">
-                <h1>{{ 'login.heading'|trans }}</h1>
-            </div>
+				<div id="d_head">
+					<h1>{{ 'login.heading'|trans }}</h1>
+				</div>
 
-            {% if app.user %}
-                <div class="mb-3">
-                    {{ 'login.already_logged_in'|trans({'%user%': app.user.userIdentifier}) }}
-                    <a href="{{ path('app_logout') }}">{{ 'login.logout'|trans }}</a>
-                </div>
-            {% endif %}
-            <hr>
+				{% if app.user %}
+					<div class="mb-3">
+						{{ 'login.already_logged_in'|trans({'%user%': app.user.userIdentifier}) }}
+						<a href="{{ path('app_logout') }}">{{ 'login.logout'|trans }}</a>
+					</div>
+				{% endif %}
+				<hr>
 
-            <label for="username">{{ 'login.email_label'|trans }}</label>
-            <input type="email"
-                   value="{{ last_username }}"
-                   name="_username"
-                   id="username"
-                   class="form-control"
-                   autocomplete="email"
-                   required
-                   autofocus>
+				<label for="username">{{ 'login.email_label'|trans }}</label>
+				<input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
 
-            <label for="password">{{ 'login.password_label'|trans }}</label>
-            <div style="position: relative;">
-                <input type="password"
-                       name="_password"
-                       id="password"
-                       class="form-control"
-                       autocomplete="current-password"
-                       required>
-                <span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
-                    👁️
-                </span>
-                <p style="color:red;">
-                    <a style="color:red;" href="{{ path('app_forgot_password_request') }}">
-                        {{ 'login.forgot_password'|trans }}
-                    </a>
-                </p>
-            </div>
+				<label for="password">{{ 'login.password_label'|trans }}</label>
+				<div style="position: relative;">
+					<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+					<span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">
+						👁️
+					</span>
+				</div>
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<input
+				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            {# Uncomment to enable remember_me functionality
-                <div class="checkbox mb-3">
-                    <input type="checkbox" name="_remember_me" id="_remember_me">
-                    <label for="_remember_me">Remember me</label>
-                </div>
-            #}
+				{# Uncomment to enable remember_me functionality
+				                <div class="checkbox mb-3">
+				                    <input type="checkbox" name="_remember_me" id="_remember_me">
+				                    <label for="_remember_me">Remember me</label>
+				                </div>
+				            #}
 
-            <input type="submit" id="submit" value="{{ 'login.submit'|trans }}">
-        </form>
+				<input type="submit" id="submit" value="{{ 'login.submit'|trans }}">
+				<p style="color:red;">
+					<a style="color:red;" href="{{ path('app_forgot_password_request') }}">
+						{{ 'login.forgot_password'|trans }}
+					</a>
+				</p>
+                <p style="color:Black;">
+                    se vous n'avez pas de compte
+					<a style="color:red;" href="{{ path('app_register') }}">
+						{{ 'register.title'|trans }}
+                        Créer un compte                        
+					</a>
+				</p>
+			</form>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const togglePassword = document.getElementById('togglePassword');
-                const passwordInput = document.getElementById('password');
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+const togglePassword = document.getElementById('togglePassword');
+const passwordInput = document.getElementById('password');
 
-                togglePassword.addEventListener('click', function () {
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
-                    this.textContent = type === 'password' ? '👁️' : '🙈';
-                });
-            });
-        </script>
+togglePassword.addEventListener('click', function () {
+const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+passwordInput.setAttribute('type', type);
+this.textContent = type === 'password' ? '👁️' : '🙈';
+});
+});
+			</script>
 
-    </div>
-</div>
+		</div>
+	</div>
 {% endblock %}

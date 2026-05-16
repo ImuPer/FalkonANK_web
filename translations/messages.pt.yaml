@@ -665,6 +665,7 @@ login:
   email_label: "E-mail"
   password_label: "Senha"
   forgot_password: "Esqueceu a sua senha?"
+  have_account: "Se você ainda não tem uma conta,"
   submit: "Login"
   already_logged_in: "Você já está logado como %user%"
   logout: "Sair"

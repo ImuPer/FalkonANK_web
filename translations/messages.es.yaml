@@ -677,6 +677,7 @@ login:
   email_label: "Correo electrónico"
   password_label: "Contraseña"
   forgot_password: "¿Olvidó su contraseña?"
+  have_account: "Si aún no tienes una cuenta,"
   submit: "Iniciar sesión"
   already_logged_in: "Ya ha iniciado sesión como %user%"
   logout: "Cerrar sesión"
