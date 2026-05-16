@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -39,7 +40,7 @@ class MusicCrudController extends AbstractCrudController
             TextField::new('title', 'Titre'),
             TextField::new('artist', 'Artiste'),
 
-            TextField::new('lyrics', 'Paroles')->hideOnIndex(),
+            TextEditorField::new('lyrics', 'Paroles')->hideOnIndex(),
 
             TextField::new('album', 'Album')->hideOnIndex(),
 
