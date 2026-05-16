@@ -374,7 +374,7 @@
 				{% set isFreeTrack = loop.index0 < 2 %}
 				{% set canPlayFull = isLoggedIn or isFreeTrack %}
 
-				<div class="music-card">
+				<div class="music-card" id="card-{{ loop.index0 }}">
 
 					<div class="cd-wrapper">
 
@@ -465,6 +465,35 @@ nowPlaying.innerHTML = "🎵 " + track.dataset.title;
 currentIndex = index;
 
 updateDiscs();
+
+/* =========================
+   AUTO SCROLL ACTIVE CARD
+========================= */
+
+function scrollToCurrentCard() {
+
+	// retire ancienne active
+	document.querySelectorAll('.music-card').forEach(card => {
+		card.classList.remove('active');
+	});
+
+	// card actuelle
+	const activeCard = document.getElementById('card-' + currentIndex);
+
+	if (activeCard) {
+
+		// ajoute style active
+		activeCard.classList.add('active');
+
+		// scroll smooth
+		activeCard.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center'
+		});
+
+	}
+
+}
 
 }
 
