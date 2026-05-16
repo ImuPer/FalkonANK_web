@@ -322,14 +322,28 @@
 	</style>
 
 	{# =========================
-					   USER STATUS
-					========================= #}
+							   USER STATUS
+							========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-					   GLOBAL PLAYER
-					========================= #}
+							   HEADER
+							========================= #}
+
+	<div class="album-header">
+
+		<h1>
+			{# 🎵{{ product.name }} #}
+		</h1>
+
+		<h2>💿 Album Musical</h2>
+
+	</div>
+
+	{# =========================
+							   GLOBAL PLAYER
+							========================= #}
 
 	<div class="global-player">
 
@@ -347,105 +361,93 @@
 
 	</div>
 
+
 	{# =========================
-					   HEADER
-					========================= #}
+										   ALBUM GRID
+										========================= #}
 
-	<div class="album-header">
+	<div class="album-grid">
 
-		<h1>
-			{# 🎵{{ product.name }}</h1> #}
+		{% for music in musics %}
 
-			<h2>💿 Album Musical</h2>
+			{# 
+																								       RÈGLES :
+																								       - connecté => accès total
+																								       - non connecté :
+																								           * 2 premiers morceaux = complet
+																								           * reste = seulement 60 secondes
+																								    #}
 
-		</div>
+			{% set isFreeTrack = loop.index0 < 2 %}
+			{% set canPlayFull = isLoggedIn or isFreeTrack %}
 
-		{# =========================
-							   ALBUM GRID
-							========================= #}
+			<div class="music-card" id="card-{{ loop.index0 }}">
 
-		<div class="album-grid">
+				<div class="cd-wrapper">
 
-			{% for music in musics %}
+					<div class="cd-disc" id="disc-{{ loop.index0 }}">
 
-				{# 
-																	       RÈGLES :
-																	       - connecté => accès total
-																	       - non connecté :
-																	           * 2 premiers morceaux = complet
-																	           * reste = seulement 60 secondes
-																	    #}
-
-				{% set isFreeTrack = loop.index0 < 2 %}
-				{% set canPlayFull = isLoggedIn or isFreeTrack %}
-
-				<div class="music-card" id="card-{{ loop.index0 }}">
-
-					<div class="cd-wrapper">
-
-						<div class="cd-disc" id="disc-{{ loop.index0 }}">
-
-							{% if music.coverImage %}
-								<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
-							{% else %}
-								<img src="{{ asset('images/default-music.jpg') }}" alt="default">
-							{% endif %}
-
-						</div>
-
-					</div>
-
-					<div class="music-title">
-						{{ music.title }}
-					</div>
-
-					<div class="music-artist">
-						{{ music.artist }}
-					</div>
-
-					<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
-
-						{% if canPlayFull %}
-							▶ Lire
+						{% if music.coverImage %}
+							<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
 						{% else %}
-							<a href="{{ path('app_login', {'id': product.id}) }}">
-								🔒 Connecte-toi
-							</a>
+							<img src="{{ asset('images/default-music.jpg') }}" alt="default">
 						{% endif %}
 
-					</button>
-
-					<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
-						🎤
-					</button>
+					</div>
 
 				</div>
 
-			{% endfor %}
+				<div class="music-title">
+					{{ music.title }}
+				</div>
 
-		</div>
+				<div class="music-artist">
+					{{ music.artist }}
+				</div>
 
-		<div class="lyrics-modal" id="lyricsModal">
+				<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
 
-			<div class="lyrics-content">
+					{% if canPlayFull %}
+						▶ Lire
+					{% else %}
+						<a href="{{ path('app_login', {'id': product.id}) }}">
+							🔒 Connecte-toi
+						</a>
+					{% endif %}
 
-				<span class="close-lyrics" id="closeLyrics">
-					✖
-				</span>
+				</button>
 
-				<h2 id="lyricsTitle">
-					Lyrics
-				</h2>
-
-				<div class="lyrics-text" id="lyricsText"></div>
+				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
+					🎤
+				</button>
 
 			</div>
 
+		{% endfor %}
+
+	</div>
+
+	<div class="lyrics-modal" id="lyricsModal">
+
+		<div class="lyrics-content">
+
+			<span class="close-lyrics" id="closeLyrics">
+				✖
+			</span>
+
+			<h2 id="lyricsTitle">
+				Lyrics
+			</h2>
+
+			<div class="lyrics-text" id="lyricsText"></div>
+
 		</div>
 
-		<script>
+	</div>
 
-			const player = document.getElementById('main-player');
+	<script>
+
+		const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -461,17 +463,17 @@ let currentIndex = 0;
 
 function loadTrack(index) {
 
-	const track = tracks[index];
+const track = tracks[index];
 
-	player.src = track.dataset.src;
+player.src = track.dataset.src;
 
-	nowPlaying.innerHTML = "🎵 " + track.dataset.title;
+nowPlaying.innerHTML = "🎵 " + track.dataset.title;
 
-	currentIndex = index;
+currentIndex = index;
 
-	updateDiscs();
+updateDiscs();
 
-	scrollToCurrentCard();
+scrollToCurrentCard();
 
 }
 
@@ -479,28 +481,21 @@ function loadTrack(index) {
    AUTO SCROLL ACTIVE CARD
 ========================= */
 
-function scrollToCurrentCard() {
+function scrollToCurrentCard() { // retire ancienne active
+document.querySelectorAll('.music-card').forEach(card => {
+card.classList.remove('active');
+});
 
-	// retire ancienne active
-	document.querySelectorAll('.music-card').forEach(card => {
-		card.classList.remove('active');
-	});
+// récupère la card actuelle
+const activeCard = document.getElementById('card-' + currentIndex);
 
-	// récupère la card actuelle
-	const activeCard = document.getElementById('card-' + currentIndex);
+if (activeCard) { // active style
+activeCard.classList.add('active');
 
-	if (activeCard) {
+// scroll vers la card
+activeCard.scrollIntoView({behavior: 'smooth', block: 'center'});
 
-		// active style
-		activeCard.classList.add('active');
-
-		// scroll vers la card
-		activeCard.scrollIntoView({
-			behavior: 'smooth',
-			block: 'center'
-		});
-
-	}
+}
 
 }
 
@@ -710,6 +705,6 @@ lyricsModal.style.display = 'none';
 }
 
 });
-		</script>
+	</script>
 
-	{% endblock %}
+{% endblock %}
