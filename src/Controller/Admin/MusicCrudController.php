@@ -36,6 +36,7 @@ class MusicCrudController extends AbstractCrudController
         return [
 
             IdField::new('id')->hideOnForm(),
+            IntegerField::new('track', 'Piste')->hideOnIndex(),
 
             TextField::new('title', 'Titre'),
             TextField::new('artist', 'Artiste'),

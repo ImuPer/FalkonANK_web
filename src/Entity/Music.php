@@ -77,6 +77,9 @@ class Music
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $lyrics = null;
 
+    #[ORM\Column]
+    private ?int $track = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -323,6 +326,18 @@ class Music
     public function setLyrics(?string $lyrics): static
     {
         $this->lyrics = $lyrics;
+
+        return $this;
+    }
+
+    public function getTrack(): ?int
+    {
+        return $this->track;
+    }
+
+    public function setTrack(int $track): static
+    {
+        $this->track = $track;
 
         return $this;
     }

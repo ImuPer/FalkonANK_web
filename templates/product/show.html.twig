@@ -12,17 +12,16 @@
 
 		<div class="img_showP">
 			<img src="{{ asset('upload/images/products/' ~ product.img ) }}" style="width: 300px; height: 400px">
-			<p>
-				{% if product.category and product.category.name == 'Livros' %}
-					<a
-						href="{{ path('app_music_by_product', {'id': product.id}) }}">
-						<button type="button" class="btn btn-primary">
-						🎵 Voir les musiques
-						</button>
-					</a>
-				{% endif %}
-			</p>
 		</div>
+		<p>
+			{% if product.category and product.category.name == 'Livros' %}
+				<a href="{{ path('app_music_by_product', {'id': product.id}) }}">
+					<button type="button" class="btn btn-primary">
+						🎵 Voir les musiques
+					</button>
+				</a>
+			{% endif %}
+		</p>
 
 
 		<div class="desc_showP">
