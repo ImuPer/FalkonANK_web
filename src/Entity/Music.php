@@ -80,6 +80,9 @@ class Music
     #[ORM\Column]
     private ?int $track = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $composer = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -338,6 +341,18 @@ class Music
     public function setTrack(int $track): static
     {
         $this->track = $track;
+
+        return $this;
+    }
+
+    public function getComposer(): ?string
+    {
+        return $this->composer;
+    }
+
+    public function setComposer(string $composer): static
+    {
+        $this->composer = $composer;
 
         return $this;
     }

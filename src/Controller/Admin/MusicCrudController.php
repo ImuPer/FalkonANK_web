@@ -39,7 +39,10 @@ class MusicCrudController extends AbstractCrudController
             IntegerField::new('track', 'Piste')->setRequired(true),
 
             TextField::new('title', 'Titre'),
+
             TextField::new('artist', 'Artiste'),
+
+            TextField::new('composer', 'Compositeur')->setRequired(true)->hideOnIndex(),
 
             TextEditorField::new('lyrics', 'Paroles')->hideOnIndex(),
 
