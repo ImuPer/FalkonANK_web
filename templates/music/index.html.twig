@@ -324,7 +324,7 @@
 			text-align: center;
 			padding: 100px 20px;
 			position: relative;
-			background-image: url("{{ asset('upload/images/products/' ~ product.img ) }}");
+			background-image: url("{{ asset('upload/images/products/' ~ product.img) }}");
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -346,14 +346,14 @@
 	</style>
 
 	{# =========================
-								   USER STATUS
-								========================= #}
+											   USER STATUS
+											========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-								   HEADER
-								========================= #}
+											   HEADER
+											========================= #}
 
 	<div class="album-header">
 
@@ -366,8 +366,8 @@
 	</div>
 
 	{# =========================
-								   GLOBAL PLAYER
-								========================= #}
+											   GLOBAL PLAYER
+											========================= #}
 
 	<div class="global-player">
 
@@ -387,20 +387,20 @@
 
 
 	{# =========================
-											   ALBUM GRID
-											========================= #}
+														   ALBUM GRID
+														========================= #}
 
 	<div class="album-grid">
 
 		{% for music in musics %}
 
 			{# 
-																											       RÈGLES :
-																											       - connecté => accès total
-																											       - non connecté :
-																											           * 2 premiers morceaux = complet
-																											           * reste = seulement 60 secondes
-																											    #}
+																																				       RÈGLES :
+																																				       - connecté => accès total
+																																				       - non connecté :
+																																				           * 2 premiers morceaux = complet
+																																				           * reste = seulement 60 secondes
+																																				    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
 			{% set canPlayFull = isLoggedIn or isFreeTrack %}
@@ -429,8 +429,13 @@
 					{{ music.artist }}
 				</div>
 
-				<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
+				<div class="music-views">
+					👁
+					{{ music.views }}
+					vues
+				</div>
 
+				<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-id="{{ music.id }}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
 					{% if canPlayFull %}
 						▶ Lire
 					{% else %}
@@ -586,16 +591,23 @@ updateDiscs(false);
 player.addEventListener('timeupdate', () => {
 
 const currentTrack = tracks[currentIndex];
+const musicId = currentTrack.dataset.id;
+
+// compter une seule vue
+if (player.currentTime >= 5 && !viewedTracks.includes(musicId)) {
+
+viewedTracks.push(musicId);
+
+fetch('/music/' + musicId + '/view', {method: 'POST'});
+}
 
 const fullAccess = currentTrack.dataset.full === "1";
 
-// si pas connecté ET morceau premium
 if (! fullAccess && player.currentTime >= 60) {
 
 player.pause();
 
 alert("🔒 Connecte-toi pour écouter la musique complète.");
-
 }
 
 });
@@ -729,6 +741,8 @@ lyricsModal.style.display = 'none';
 }
 
 });
+
+let viewedTracks = [];
 	</script>
 
 {% endblock %}
