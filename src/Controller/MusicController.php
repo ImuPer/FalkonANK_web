@@ -20,7 +20,21 @@ class MusicController extends AbstractController
             throw $this->createNotFoundException('Product not found');
         }
 
-        $musics = $musicRepository->findBy(['product' => $product]);
+        // $musics = $musicRepository->findBy(['product' => $product]);
+        // $musics = $musicRepository->findBy([
+        //     'product' => $product,
+        //     'isPublished' => true
+        // ]);
+
+        $musics = $musicRepository->findBy(
+            [
+                'product' => $product,
+                'isPublished' => true
+            ],
+            [
+                'track' => 'ASC'
+            ]
+        );
 
         return $this->render('music/index.html.twig', [
             'product' => $product,
@@ -28,11 +42,4 @@ class MusicController extends AbstractController
         ]);
     }
 
-    // #[Route('/music/{id}/player', name: 'app_music_player')]
-    // public function player(Music $music): Response
-    // {
-    //     return $this->render('music/album_player.html.twig', [
-    //         'music' => $music
-    //     ]);
-    // }
 }
