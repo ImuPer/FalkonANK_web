@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Controller\Admin;
+
+use App\Entity\Music;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
+class MusicCrudController extends AbstractCrudController
+{
+    public static function getEntityFqcn(): string
+    {
+        return Music::class;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Musique')
+            ->setEntityLabelInPlural('Musiques')
+            ->setPageTitle('index', 'Gestion des musiques');
+    }
+
+    public function configureFields(string $pageName): iterable
+    {
+        return [
+
+            // IdField::new('id')->hideOnForm(),
+            IntegerField::new('track', 'Piste')->setRequired(true),
+
+            TextField::new('title', 'Titre'),
+
+            TextField::new('artist', 'Artiste'),
+
+            TextField::new('composer', 'Compositeur')->setRequired(true)->hideOnIndex(),
+
+            TextEditorField::new('lyrics', 'Paroles')->hideOnIndex(),
+
+            TextField::new('album', 'Album')->hideOnIndex(),
+
+            IntegerField::new('duration', 'Durée (sec)')->hideOnIndex(),
+
+            TextField::new('genre', 'Genre'),
+
+            DateField::new('releaseDate', 'Date de sortie')->hideOnIndex(),
+
+            // =========================
+            // IMAGE UPLOAD + PREVIEW
+            // =========================
+            ImageField::new('coverImage', 'Image')
+                ->setBasePath('/uploads/images')
+                ->onlyOnIndex(),
+
+            TextField::new('coverImageFile', 'Image (upload)')
+                ->setFormType(FileType::class)
+                ->onlyOnForms()
+                ->setHelp('Upload une image (jpg, png, etc.)'),
+
+            // =========================
+            // AUDIO UPLOAD
+            // =========================
+            TextField::new('audioFileFile', 'Fichier MP3')
+                ->setFormType(FileType::class)
+                ->onlyOnForms()
+                ->setHelp('Upload un fichier MP3'),
+
+            TextField::new('audioFile', 'Audio')
+                ->onlyOnIndex()
+                ->formatValue(function ($value) {
+                    if (!$value)
+                        return null;
+
+                    return sprintf(
+                        '<audio controls style="width:180px;">
+                            <source src="/uploads/music/%s" type="audio/mpeg">
+                        </audio>',
+                        $value
+                    );
+                })
+                ->renderAsHtml(),
+
+            IntegerField::new('views', 'Vues'),
+
+            BooleanField::new('isPublished', 'Publié'),
+
+            DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
+
+            AssociationField::new('product', 'Produit')
+                ->autocomplete(),
+        ];
+    }
+
+    public function persistEntity(\Doctrine\ORM\EntityManagerInterface $entityManager, $entityInstance): void
+    {
+
+        if (!$entityInstance instanceof Music)
+            return;
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
+
+        parent::persistEntity($entityManager, $entityInstance);
+
+    }
+}
