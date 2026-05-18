@@ -325,7 +325,6 @@
 			padding: 100px 20px;
 			position: relative;
 			background-image: url("{{ asset('uploads/albums/' ~ music.album.coverImage) }}");
-			{% elseif music.album and music.album.coverImage %}
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
