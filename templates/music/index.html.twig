@@ -3,7 +3,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}🎵 Album -
-	{{ music.album.name }}
+	{{ product.name }}
 {% endblock %}
 
 {% block body %}
@@ -324,7 +324,7 @@
 			text-align: center;
 			padding: 100px 20px;
 			position: relative;
-			background-image: url("{{ asset('uploads/albums/' ~ music.album.coverImage) }}");
+			background-image: url("{{ asset('upload/images/products/' ~ product.img) }}");
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -361,7 +361,7 @@
 			{# 🎵{{ product.name }} #}
 		</h1>
 
-		<h2>💿 Album {{ music.album.name }}</h2>
+		<h2>💿 Album Musical</h2>
 
 	</div>
 
