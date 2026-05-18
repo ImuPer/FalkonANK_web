@@ -46,7 +46,7 @@ class AlbumCrudController extends AbstractCrudController
             // IMAGE UPLOAD + PREVIEW
             // =========================
             ImageField::new('coverImage', 'Image')
-                ->setBasePath('/uploads/images')
+                ->setBasePath('/uploads/albums')
                 ->onlyOnIndex(),
 
             TextField::new('coverImageFile', 'Image (upload)')
