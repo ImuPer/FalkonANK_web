@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 // use App\Controller\Admin\is_granted;
 use App\Entity\Ads;
+use App\Entity\Album;
 use App\Entity\BasketProduct;
 use App\Entity\Carrier;
 use App\Entity\Category;
@@ -114,6 +115,12 @@ class DashboardController extends AbstractDashboardController
                     'fas fa-eye',
                     Category::class
                 ),
+            ]);
+            yield MenuItem::subMenu('Album', 'fa fa-compact-disc')->setSubItems([
+                yield MenuItem::linkToCrud('add', 'fas fa-plus', Album::class)->setAction(Crud::PAGE_NEW),
+                MenuItem::linkToCrud('All albums','fas fa-eye',
+                    Album::class),
+                yield MenuItem::linkToCrud('Musiques', 'fa fa-music', Music::class),
             ]);
             yield MenuItem::linkToCrud($this->translator->trans('menu.products'), 'fas fa-apple-alt', Product::class);
             yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
