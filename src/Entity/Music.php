@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Entity\Album;
 
 #[ORM\Entity(repositoryClass: MusicRepository::class)]
 #[Vich\Uploadable]
@@ -23,8 +24,13 @@ class Music
     #[ORM\Column(length: 255)]
     private ?string $artist = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $album = null;
+    // =====================
+    // ALBUM (RELATION)
+    // =====================
+
+    #[ORM\ManyToOne(targetEntity: Album::class, inversedBy: 'musics')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Album $album = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $duration = null;
@@ -132,12 +138,12 @@ class Music
     // ALBUM
     // =====================
 
-    public function getAlbum(): ?string
+    public function getAlbum(): ?Album
     {
         return $this->album;
     }
 
-    public function setAlbum(?string $album): static
+    public function setAlbum(?Album $album): static
     {
         $this->album = $album;
         return $this;
@@ -189,7 +195,7 @@ class Music
     }
 
     // =====================
-    // IMAGE FILE
+    // COVER IMAGE
     // =====================
 
     public function setCoverImageFile(?File $file = null): void
@@ -321,6 +327,10 @@ class Music
         return $this;
     }
 
+    // =====================
+    // LYRICS
+    // =====================
+
     public function getLyrics(): ?string
     {
         return $this->lyrics;
@@ -329,9 +339,12 @@ class Music
     public function setLyrics(?string $lyrics): static
     {
         $this->lyrics = $lyrics;
-
         return $this;
     }
+
+    // =====================
+    // TRACK
+    // =====================
 
     public function getTrack(): ?int
     {
@@ -341,9 +354,12 @@ class Music
     public function setTrack(int $track): static
     {
         $this->track = $track;
-
         return $this;
     }
+
+    // =====================
+    // COMPOSER
+    // =====================
 
     public function getComposer(): ?string
     {
@@ -353,7 +369,6 @@ class Music
     public function setComposer(string $composer): static
     {
         $this->composer = $composer;
-
         return $this;
     }
 }
