@@ -46,11 +46,11 @@ class MusicCrudController extends AbstractCrudController
 
             TextEditorField::new('lyrics', 'Paroles')->hideOnIndex(),
 
-            AssociationField::new('album', 'Album')->hideOnIndex()->autocomplete(),
+            AssociationField::new('album', 'Album')->setRequired(true)->autocomplete(),
 
             IntegerField::new('duration', 'Durée (sec)')->hideOnIndex(),
 
-            TextField::new('genre', 'Genre'),
+            TextField::new('genre', 'Genre')->hideOnIndex(),
 
             DateField::new('releaseDate', 'Date de sortie')->hideOnIndex(),
 

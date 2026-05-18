@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Repository\AlbumRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[Vich\Uploadable]
+#[UniqueEntity(fields: ['name'], message: 'Un album avec ce nom existe déjà.')]
 class Album
 {
     #[ORM\Id]
