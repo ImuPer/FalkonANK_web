@@ -85,12 +85,16 @@ class Music
 
     #[Vich\UploadableField(mapping: 'music_file', fileNameProperty: 'audioFile')]
     #[Assert\File(
-        maxSize: '20M',
+        maxSize: '50M',
         mimeTypes: [
             'audio/mpeg',
-            'audio/mp3'
+            'audio/mp3',
+            'audio/wav',
+            'audio/x-wav',
+            'audio/ogg',
+            'audio/mp4'
         ],
-        mimeTypesMessage: 'Seuls les fichiers MP3 sont autorisés.'
+        mimeTypesMessage: 'Format audio non supporté.'
     )]
     private ?File $audioFileFile = null;
 
