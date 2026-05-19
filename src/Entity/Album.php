@@ -48,6 +48,21 @@ class Album
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $price = null;
+
+    #[ORM\Column]
+    private ?bool $payed = null;
+
+    #[ORM\Column]
+    private ?bool $isPublished = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $paymentId = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -176,5 +191,65 @@ class Album
     public function __toString(): string
     {
         return $this->name ?? '';
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?string $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function isPayed(): ?bool
+    {
+        return $this->payed;
+    }
+
+    public function setPayed(bool $payed): static
+    {
+        $this->payed = $payed;
+
+        return $this;
+    }
+
+    public function isPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setPublished(bool $isPublished): static
+    {
+        $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    public function getPaymentId(): ?string
+    {
+        return $this->paymentId;
+    }
+
+    public function setPaymentId(?string $paymentId): static
+    {
+        $this->paymentId = $paymentId;
+
+        return $this;
     }
 }

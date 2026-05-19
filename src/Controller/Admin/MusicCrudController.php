@@ -63,7 +63,7 @@ class MusicCrudController extends AbstractCrudController
 
             TextField::new('coverImageFile', 'Image (upload)')
                 ->setFormType(FileType::class)
-                ->onlyOnForms()
+                ->onlyOnForms()->setRequired(true)
                 ->setHelp('Upload une image (jpg, png, etc.)'),
 
             // =========================
