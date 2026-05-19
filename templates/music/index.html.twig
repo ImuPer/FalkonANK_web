@@ -2,12 +2,14 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}🎵 Album - {{ pageTitle }}{% endblock %}
+{% set pageTitle = album is defined ? album.name : product.name %}
+{% set coverImage = album is defined ? asset('uploads/albums/' ~ album.coverImage) : asset('upload/images/products/' ~ product.img) %}
+
+{% block title %}🎵 Album -
+	{{ pageTitle }}
+{% endblock %}
 
 {% block body %}
-
-	{% set pageTitle = album is defined ? album.name : product.name %}
-	{% set coverImage = album is defined ? asset('uploads/albums/' ~ album.coverImage) : asset('upload/images/products/' ~ product.img) %}
 
 	<style>
 
@@ -347,14 +349,14 @@
 	</style>
 
 	{# =========================
-													   USER STATUS
-													========================= #}
+														   USER STATUS
+														========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-													   HEADER
-													========================= #}
+														   HEADER
+														========================= #}
 
 	<div class="album-header">
 
@@ -362,13 +364,14 @@
 			{# 🎵🎵 {{ pageTitle }} #}
 		</h1>
 
-		<h2>💿 {{ pageTitle }}</h2>
+		<h2>💿
+			{{ pageTitle }}</h2>
 
 	</div>
 
 	{# =========================
-													   GLOBAL PLAYER
-													========================= #}
+														   GLOBAL PLAYER
+														========================= #}
 
 	<div class="global-player">
 
@@ -388,20 +391,20 @@
 
 
 	{# =========================
-																   ALBUM GRID
-																========================= #}
+																	   ALBUM GRID
+																	========================= #}
 
 	<div class="album-grid">
 
 		{% for music in musics %}
 
 			{# 
-																																										       RÈGLES :
-																																										       - connecté => accès total
-																																										       - non connecté :
-																																										           * 2 premiers morceaux = complet
-																																										           * reste = seulement 60 secondes
-																																										    #}
+																																													       RÈGLES :
+																																													       - connecté => accès total
+																																													       - non connecté :
+																																													           * 2 premiers morceaux = complet
+																																													           * reste = seulement 60 secondes
+																																													    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
 			{% set canPlayFull = isLoggedIn or isFreeTrack %}
