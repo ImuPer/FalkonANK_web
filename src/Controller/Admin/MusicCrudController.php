@@ -229,26 +229,30 @@ class MusicCrudController extends AbstractCrudController
         }
 
         // =========================
-        // OLD AUDIO DELETE
+        // OLD IMAGE DELETE
         // =========================
 
-        $oldAudio = $originalData['audioFile'] ?? null;
+        $originalData = $entityManager
+            ->getUnitOfWork()
+            ->getOriginalEntityData($entityInstance);
 
+        // ancienne image
+        $oldImage = $originalData['coverImage'] ?? null;
+
+        // nouvelle image uploadée
         if (
-            $entityInstance->getAudioFileFile()
-            && $oldAudio
+            $entityInstance->getCoverImageFile()
+            && $oldImage
+            && $oldImage !== $entityInstance->getCoverImage()
         ) {
 
-            $oldAudioPath = $this->projectDir
-                . '/public/uploads/music/'
-                . $oldAudio;
+            $oldImagePath = $this->projectDir
+                . '/public/uploads/images/'
+                . $oldImage;
 
-            if (file_exists($oldAudioPath)) {
-                unlink($oldAudioPath);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
             }
-
-            // reconvert nouveau fichier
-            $this->convertAudioToMp3($entityInstance);
         }
 
         $entityInstance->setUpdatedAt(new \DateTimeImmutable());
