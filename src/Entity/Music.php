@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Album;
 
 #[ORM\Entity(repositoryClass: MusicRepository::class)]
@@ -83,6 +84,14 @@ class Music
     private ?string $audioFile = null;
 
     #[Vich\UploadableField(mapping: 'music_file', fileNameProperty: 'audioFile')]
+    #[Assert\File(
+        maxSize: '20M',
+        mimeTypes: [
+            'audio/mpeg',
+            'audio/mp3'
+        ],
+        mimeTypesMessage: 'Seuls les fichiers MP3 sont autorisés.'
+    )]
     private ?File $audioFileFile = null;
 
     // =====================

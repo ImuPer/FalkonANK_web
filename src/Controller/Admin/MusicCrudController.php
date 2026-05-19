@@ -15,9 +15,16 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class MusicCrudController extends AbstractCrudController
 {
+    private string $projectDir;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $this->projectDir = $params->get('kernel.project_dir');
+    }
     public static function getEntityFqcn(): string
     {
         return Music::class;
@@ -69,7 +76,10 @@ class MusicCrudController extends AbstractCrudController
             // =========================
             // AUDIO UPLOAD
             // =========================
-            TextField::new('audioFileFile', 'Fichier MP3')
+            TextField::new('audioFileFile', 'Fichier audio')
+                ->setFormType(FileType::class)
+                ->onlyOnForms()
+                ->setHelp('Upload audio (MP3, WAV, etc. - conversion auto)')
                 ->setFormType(FileType::class)
                 ->onlyOnForms()->setRequired(true)
                 ->setHelp('Upload un fichier MP3'),
@@ -102,12 +112,43 @@ class MusicCrudController extends AbstractCrudController
 
     public function persistEntity(\Doctrine\ORM\EntityManagerInterface $entityManager, $entityInstance): void
     {
-
-        if (!$entityInstance instanceof Music)
+        if (!$entityInstance instanceof Music) {
             return;
+        }
+
+        $this->convertAudioToMp3($entityInstance);
+
         $entityInstance->setUpdatedAt(new \DateTimeImmutable());
 
         parent::persistEntity($entityManager, $entityInstance);
-
     }
+
+    private function convertAudioToMp3(Music $music): void
+    {
+        if (!$music->getAudioFileFile()) {
+            return;
+        }
+
+        $file = $music->getAudioFileFile();
+
+        $input = $file->getPathname();
+
+        $outputFile = uniqid() . '.mp3';
+
+        $outputPath = $this->projectDir . '/public/uploads/music/' . $outputFile;
+
+        $ffmpeg = 'ffmpeg';
+
+        $cmd = sprintf(
+            '%s -i %s -b:a 192k %s',
+            $ffmpeg,
+            escapeshellarg($input),
+            escapeshellarg($outputPath)
+        );
+
+        shell_exec($cmd);
+
+        $music->setAudioFile($outputFile);
+    }
+
 }
