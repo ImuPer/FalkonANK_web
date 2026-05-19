@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 class MusicCrudController extends AbstractCrudController
@@ -221,41 +222,11 @@ class MusicCrudController extends AbstractCrudController
             ->getUnitOfWork()
             ->getOriginalEntityData($entityInstance);
 
-        // ancienne image
         $oldImage = $originalData['coverImage'] ?? null;
 
-        // nouvelle image uploadée
         if (
             $entityInstance->getCoverImageFile()
             && $oldImage
-            && $oldImage !== $entityInstance->getCoverImage()
-        ) {
-
-            $oldImagePath = $this->projectDir
-                . '/public/uploads/images/'
-                . $oldImage;
-
-            if (file_exists($oldImagePath)) {
-                unlink($oldImagePath);
-            }
-        }
-
-        // =========================
-        // OLD IMAGE DELETE
-        // =========================
-
-        $originalData = $entityManager
-            ->getUnitOfWork()
-            ->getOriginalEntityData($entityInstance);
-
-        // ancienne image
-        $oldImage = $originalData['coverImage'] ?? null;
-
-        // nouvelle image uploadée
-        if (
-            $entityInstance->getCoverImageFile()
-            && $oldImage
-            && $oldImage !== $entityInstance->getCoverImage()
         ) {
 
             $oldImagePath = $this->projectDir
