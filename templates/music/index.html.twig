@@ -2,11 +2,12 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}🎵 Album -
-	{{ product.name }}
-{% endblock %}
+{% block title %}🎵 Album - {{ pageTitle }}{% endblock %}
 
 {% block body %}
+
+	{% set pageTitle = album is defined ? album.name : product.name %}
+	{% set coverImage = album is defined ? asset('uploads/albums/' ~ album.coverImage) : asset('upload/images/products/' ~ product.img) %}
 
 	<style>
 
@@ -324,7 +325,7 @@
 			text-align: center;
 			padding: 100px 20px;
 			position: relative;
-			background-image: url("{{ asset('upload/images/products/' ~ product.img) }}");
+			background-image: url("{{ coverImage }}");
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
@@ -346,28 +347,28 @@
 	</style>
 
 	{# =========================
-												   USER STATUS
-												========================= #}
+													   USER STATUS
+													========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-												   HEADER
-												========================= #}
+													   HEADER
+													========================= #}
 
 	<div class="album-header">
 
 		<h1>
-			{# 🎵{{ product.name }} #}
+			{# 🎵🎵 {{ pageTitle }} #}
 		</h1>
 
-		<h2>💿 Album Musical</h2>
+		<h2>💿 {{ pageTitle }}</h2>
 
 	</div>
 
 	{# =========================
-												   GLOBAL PLAYER
-												========================= #}
+													   GLOBAL PLAYER
+													========================= #}
 
 	<div class="global-player">
 
@@ -387,20 +388,20 @@
 
 
 	{# =========================
-															   ALBUM GRID
-															========================= #}
+																   ALBUM GRID
+																========================= #}
 
 	<div class="album-grid">
 
 		{% for music in musics %}
 
 			{# 
-																																							       RÈGLES :
-																																							       - connecté => accès total
-																																							       - non connecté :
-																																							           * 2 premiers morceaux = complet
-																																							           * reste = seulement 60 secondes
-																																							    #}
+																																										       RÈGLES :
+																																										       - connecté => accès total
+																																										       - non connecté :
+																																										           * 2 premiers morceaux = complet
+																																										           * reste = seulement 60 secondes
+																																										    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
 			{% set canPlayFull = isLoggedIn or isFreeTrack %}
@@ -441,7 +442,7 @@
 					{% if canPlayFull %}
 						▶ Lire
 					{% else %}
-						<a href="{{ path('app_login', {'id': product.id}) }}">
+						<a href="{{ path('app_login') }}">
 							🔒 Connecte-toi
 						</a>
 					{% endif %}

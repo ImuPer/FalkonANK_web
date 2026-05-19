@@ -65,4 +65,33 @@ class MusicController extends AbstractController
         ]);
     }
 
+    #[Route('/album/{id}/musics', name: 'app_music_by_album', methods: ['GET'])]
+    public function byAlbum(
+        int $id,
+        AlbumRepository $albumRepository,
+        MusicRepository $musicRepository
+    ): Response {
+
+        $album = $albumRepository->find($id);
+
+        if (!$album) {
+            throw $this->createNotFoundException('Album not found');
+        }
+
+        $musics = $musicRepository->findBy(
+            [
+                'album' => $album,
+                'isPublished' => true
+            ],
+            [
+                'track' => 'ASC'
+            ]
+        );
+
+        return $this->render('music/index.html.twig', [
+            'album' => $album,
+            'musics' => $musics,
+        ]);
+    }
+
 }
