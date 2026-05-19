@@ -13,16 +13,27 @@ use App\Entity\Album;
 #[ORM\Entity(repositoryClass: MusicRepository::class)]
 #[ORM\Table(
     uniqueConstraints: [
+
         new ORM\UniqueConstraint(
             name: 'unique_album_track',
             columns: ['album_id', 'track']
+        ),
+
+        new ORM\UniqueConstraint(
+            name: 'unique_album_title',
+            columns: ['album_id', 'title']
         )
+
     ]
 )]
 #[Vich\Uploadable]
 #[UniqueEntity(
     fields: ['album', 'track'],
     message: 'Ce numéro de piste existe déjà dans cet album.'
+)]
+#[UniqueEntity(
+    fields: ['album', 'title'],
+    message: 'Ce titre existe déjà dans cet album.'
 )]
 class Music
 {
