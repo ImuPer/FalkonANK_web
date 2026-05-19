@@ -91,7 +91,8 @@ class MusicCrudController extends AbstractCrudController
             // =========================
             TextField::new('audioFileFile', 'Fichier audio')
                 ->setFormType(FileType::class)
-                ->onlyOnForms()->setRequired(true)
+                ->onlyOnForms()
+                // ->setRequired(true)
                 ->setHelp(
                     'Upload audio (MP3, WAV, etc. - conversion auto)'
                 ),
