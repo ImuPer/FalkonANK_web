@@ -41,6 +41,77 @@
 		}
 
 		/* =========================
+   ZOOM COVER
+========================= */
+
+		.album-header h2 {
+			cursor: pointer;
+			transition: 0.3s;
+		}
+
+		.album-header h2:hover {
+			transform: scale(1.05);
+			color: #1db954;
+		}
+
+		.cover-modal {
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.95);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 99999;
+			backdrop-filter: blur(8px);
+			animation: fadeIn 0.3s ease;
+		}
+
+		.cover-modal img {
+			max-width: 90%;
+			max-height: 90vh;
+			border-radius: 20px;
+			box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+			animation: zoomCover 0.3s ease;
+			object-fit: cover;
+		}
+
+		.close-cover {
+			position: absolute;
+			top: 20px;
+			right: 30px;
+			font-size: 35px;
+			color: white;
+			cursor: pointer;
+			z-index: 2;
+			transition: 0.3s;
+		}
+
+		.close-cover:hover {
+			color: #1db954;
+			transform: scale(1.2);
+		}
+
+		@keyframes zoomCover {
+			from {
+				transform: scale(0.7);
+				opacity: 0;
+			}
+			to {
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		/* =========================
    GLOBAL PLAYER
 ========================= */
 
@@ -349,29 +420,35 @@
 	</style>
 
 	{# =========================
-															   USER STATUS
-															========================= #}
+																	   USER STATUS
+																	========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-															   HEADER
-															========================= #}
+																	   HEADER
+																	========================= #}
 
-	<div class="album-header">
+	<div
+		class="album-header">
 
-		<h1>
-			{# 🎵🎵 {{ pageTitle }} #}
-		</h1>
+		{# <h1>
+							🎵
+						</h1> #}
 
 		<h2>💿
 			{{ pageTitle }}</h2>
 
 	</div>
 
+	<div class="cover-modal" id="coverModal">
+		<span class="close-cover" id="closeCover">✖</span>
+		<img src="{{ coverImage }}" alt="{{ pageTitle }}" id="zoomedCover">
+	</div>
+
 	{# =========================
-															   GLOBAL PLAYER
-															========================= #}
+																	   GLOBAL PLAYER
+																	========================= #}
 
 	<div class="global-player">
 
@@ -393,20 +470,20 @@
 
 
 	{# =========================
-																		   ALBUM GRID
-																		========================= #}
+																				   ALBUM GRID
+																				========================= #}
 
 	<div class="album-grid">
 
 		{% for music in musics %}
 
 			{# 
-																																																       RÈGLES :
-																																																       - connecté => accès total
-																																																       - non connecté :
-																																																           * 2 premiers morceaux = complet
-																																																           * reste = seulement 60 secondes
-																																																    #}
+																																																						       RÈGLES :
+																																																						       - connecté => accès total
+																																																						       - non connecté :
+																																																						           * 2 premiers morceaux = complet
+																																																						           * reste = seulement 60 secondes
+																																																						    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
 			{% set canPlayFull = isLoggedIn or isFreeTrack %}
@@ -751,6 +828,40 @@ lyricsModal.style.display = 'none';
 });
 
 let viewedTracks = [];
+
+/* =========================
+   COVER ZOOM
+========================= */
+
+const albumTitle = document.querySelector('.album-header h2');
+
+const coverModal = document.getElementById('coverModal');
+
+const closeCover = document.getElementById('closeCover');
+
+albumTitle.addEventListener('click', () => {
+
+	coverModal.style.display = 'flex';
+
+});
+
+/* CLOSE */
+
+closeCover.addEventListener('click', () => {
+
+	coverModal.style.display = 'none';
+
+});
+
+coverModal.addEventListener('click', (e) => {
+
+	if (e.target === coverModal) {
+
+		coverModal.style.display = 'none';
+
+	}
+
+});
 	</script>
 
 {% endblock %}
