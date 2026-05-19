@@ -79,8 +79,9 @@ class MusicCrudController extends AbstractCrudController
             TextField::new('audioFileFile', 'Fichier audio')
                 ->setFormType(FileType::class)
                 ->onlyOnForms()->setRequired(true)
-                ->setHelp('Upload audio (MP3, WAV, etc. - conversion auto)'
-            ),
+                ->setHelp(
+                    'Upload audio (MP3, WAV, etc. - conversion auto)'
+                ),
 
             TextField::new('audioFile', 'Audio')
                 ->onlyOnIndex()
@@ -147,6 +148,112 @@ class MusicCrudController extends AbstractCrudController
         shell_exec($cmd);
 
         $music->setAudioFile($outputFile);
+    }
+
+    public function deleteEntity(
+        \Doctrine\ORM\EntityManagerInterface $entityManager,
+        $entityInstance
+    ): void {
+
+        if (!$entityInstance instanceof Music) {
+            return;
+        }
+
+        // =========================
+        // DELETE COVER IMAGE
+        // =========================
+
+        if ($entityInstance->getCoverImage()) {
+
+            $imagePath = $this->projectDir
+                . '/public/uploads/images/'
+                . $entityInstance->getCoverImage();
+
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        // =========================
+        // DELETE AUDIO FILE
+        // =========================
+
+        if ($entityInstance->getAudioFile()) {
+
+            $audioPath = $this->projectDir
+                . '/public/uploads/music/'
+                . $entityInstance->getAudioFile();
+
+            if (file_exists($audioPath)) {
+                unlink($audioPath);
+            }
+        }
+
+        parent::deleteEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(
+        \Doctrine\ORM\EntityManagerInterface $entityManager,
+        $entityInstance
+    ): void {
+
+        if (!$entityInstance instanceof Music) {
+            return;
+        }
+
+        // =========================
+        // OLD IMAGE DELETE
+        // =========================
+
+        $originalData = $entityManager
+            ->getUnitOfWork()
+            ->getOriginalEntityData($entityInstance);
+
+        // ancienne image
+        $oldImage = $originalData['coverImage'] ?? null;
+
+        // nouvelle image uploadée
+        if (
+            $entityInstance->getCoverImageFile()
+            && $oldImage
+            && $oldImage !== $entityInstance->getCoverImage()
+        ) {
+
+            $oldImagePath = $this->projectDir
+                . '/public/uploads/images/'
+                . $oldImage;
+
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
+
+        // =========================
+        // OLD AUDIO DELETE
+        // =========================
+
+        $oldAudio = $originalData['audioFile'] ?? null;
+
+        if (
+            $entityInstance->getAudioFileFile()
+            && $oldAudio
+        ) {
+
+            $oldAudioPath = $this->projectDir
+                . '/public/uploads/music/'
+                . $oldAudio;
+
+            if (file_exists($oldAudioPath)) {
+                unlink($oldAudioPath);
+            }
+
+            // reconvert nouveau fichier
+            $this->convertAudioToMp3($entityInstance);
+        }
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
+
+        parent::updateEntity($entityManager, $entityInstance);
     }
 
 }
