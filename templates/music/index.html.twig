@@ -349,14 +349,14 @@
 	</style>
 
 	{# =========================
-														   USER STATUS
-														========================= #}
+															   USER STATUS
+															========================= #}
 
 	{% set isLoggedIn = app.user ? true : false %}
 
 	{# =========================
-														   HEADER
-														========================= #}
+															   HEADER
+															========================= #}
 
 	<div class="album-header">
 
@@ -370,8 +370,8 @@
 	</div>
 
 	{# =========================
-														   GLOBAL PLAYER
-														========================= #}
+															   GLOBAL PLAYER
+															========================= #}
 
 	<div class="global-player">
 
@@ -385,26 +385,28 @@
 			Aucun morceau
 		</div>
 
-		<audio id="main-player" controls></audio>
+		{# <audio id="main-player" controls></audio> #}
+		{# <audio id="main-player" controls controlsList="nodownload"></audio> #}
+		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
 	</div>
 
 
 	{# =========================
-																	   ALBUM GRID
-																	========================= #}
+																		   ALBUM GRID
+																		========================= #}
 
 	<div class="album-grid">
 
 		{% for music in musics %}
 
 			{# 
-																																													       RÈGLES :
-																																													       - connecté => accès total
-																																													       - non connecté :
-																																													           * 2 premiers morceaux = complet
-																																													           * reste = seulement 60 secondes
-																																													    #}
+																																																       RÈGLES :
+																																																       - connecté => accès total
+																																																       - non connecté :
+																																																           * 2 premiers morceaux = complet
+																																																           * reste = seulement 60 secondes
+																																																    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
 			{% set canPlayFull = isLoggedIn or isFreeTrack %}
