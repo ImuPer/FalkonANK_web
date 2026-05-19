@@ -191,6 +191,69 @@ class MusicCrudController extends AbstractCrudController
 
         parent::deleteEntity($entityManager, $entityInstance);
     }
-    
+
+    public function updateEntity(
+        \Doctrine\ORM\EntityManagerInterface $entityManager,
+        $entityInstance
+    ): void {
+
+        if (!$entityInstance instanceof Music) {
+            return;
+        }
+
+        // =========================
+        // OLD IMAGE DELETE
+        // =========================
+
+        $originalData = $entityManager
+            ->getUnitOfWork()
+            ->getOriginalEntityData($entityInstance);
+
+        // ancienne image
+        $oldImage = $originalData['coverImage'] ?? null;
+
+        // nouvelle image uploadée
+        if (
+            $entityInstance->getCoverImageFile()
+            && $oldImage
+            && $oldImage !== $entityInstance->getCoverImage()
+        ) {
+
+            $oldImagePath = $this->projectDir
+                . '/public/uploads/images/'
+                . $oldImage;
+
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
+
+        // =========================
+        // OLD AUDIO DELETE
+        // =========================
+
+        $oldAudio = $originalData['audioFile'] ?? null;
+
+        if (
+            $entityInstance->getAudioFileFile()
+            && $oldAudio
+        ) {
+
+            $oldAudioPath = $this->projectDir
+                . '/public/uploads/music/'
+                . $oldAudio;
+
+            if (file_exists($oldAudioPath)) {
+                unlink($oldAudioPath);
+            }
+
+            // reconvert nouveau fichier
+            $this->convertAudioToMp3($entityInstance);
+        }
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
+
+        parent::updateEntity($entityManager, $entityInstance);
+    }
 
 }
