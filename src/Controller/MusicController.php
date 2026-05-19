@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Music;
+use App\Repository\AlbumRepository;
 use App\Repository\MusicRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,12 +22,6 @@ class MusicController extends AbstractController
         if (!$product) {
             throw $this->createNotFoundException('Product not found');
         }
-
-        // $musics = $musicRepository->findBy(['product' => $product]);
-        // $musics = $musicRepository->findBy([
-        //     'product' => $product,
-        //     'isPublished' => true
-        // ]);
 
         $musics = $musicRepository->findBy(
             [
@@ -59,6 +54,14 @@ class MusicController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'views' => $music->getViews()
+        ]);
+    }
+    // --------------------ALBUMS------------------------------------------------------------------
+    #[Route('/album', name: 'app_albums_index', methods: ['GET'])]
+    public function index(AlbumRepository $albumRepository): Response
+    {
+        return $this->render('albums/index.html.twig', [
+            'albums' => $albumRepository->findAll(),
         ]);
     }
 
