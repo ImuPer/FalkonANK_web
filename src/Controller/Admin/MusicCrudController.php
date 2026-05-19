@@ -16,7 +16,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Annotation\Route;
 class MusicCrudController extends AbstractCrudController
 {
     private string $projectDir;
@@ -36,6 +38,16 @@ class MusicCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Musique')
             ->setEntityLabelInPlural('Musiques')
             ->setPageTitle('index', 'Gestion des musiques');
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $deleteImage = Action::new('deleteImage', '🗑 Supprimer image')
+            ->linkToCrudAction('deleteImage');
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, $deleteImage)
+            ->add(Crud::PAGE_DETAIL, $deleteImage);
     }
 
     public function configureFields(string $pageName): iterable
@@ -258,6 +270,42 @@ class MusicCrudController extends AbstractCrudController
         $entityInstance->setUpdatedAt(new \DateTimeImmutable());
 
         parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    public function deleteImage(
+        \Doctrine\ORM\EntityManagerInterface $entityManager,
+        \Symfony\Component\HttpFoundation\Request $request
+    ): RedirectResponse {
+
+        $id = $request->query->get('entityId');
+
+        $music = $entityManager
+            ->getRepository(Music::class)
+            ->find($id);
+
+        if (!$music) {
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        if ($music->getCoverImage()) {
+
+            $imagePath = $this->projectDir
+                . '/public/uploads/images/'
+                . $music->getCoverImage();
+
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            $music->setCoverImage(null);
+
+            $entityManager->persist($music);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('success', 'Image supprimée.');
+
+        return $this->redirect($request->headers->get('referer'));
     }
 
 }
