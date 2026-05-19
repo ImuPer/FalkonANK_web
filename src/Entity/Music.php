@@ -5,12 +5,25 @@ namespace App\Entity;
 use App\Repository\MusicRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Entity\Album;
 
 #[ORM\Entity(repositoryClass: MusicRepository::class)]
+#[ORM\Table(
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(
+            name: 'unique_album_track',
+            columns: ['album_id', 'track']
+        )
+    ]
+)]
 #[Vich\Uploadable]
+#[UniqueEntity(
+    fields: ['album', 'track'],
+    message: 'Ce numéro de piste existe déjà dans cet album.'
+)]
 class Music
 {
     #[ORM\Id]
