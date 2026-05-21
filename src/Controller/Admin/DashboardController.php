@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 // use App\Controller\Admin\is_granted;
 use App\Entity\Ads;
 use App\Entity\Album;
+use App\Entity\AlbumPurchase;
 use App\Entity\BasketProduct;
 use App\Entity\Carrier;
 use App\Entity\Category;
@@ -120,6 +121,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('add', 'fas fa-plus', Album::class)->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud('All albums','fas fa-eye', Album::class),
                 MenuItem::linkToCrud('Musiques', 'fa fa-music', Music::class),
+                MenuItem::linkToCrud('Achats', 'fa fa-credit-card', AlbumPurchase::class),
             ]);
             yield MenuItem::linkToCrud($this->translator->trans('menu.products'), 'fas fa-apple-alt', Product::class);
             yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
