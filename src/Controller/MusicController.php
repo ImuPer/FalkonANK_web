@@ -110,46 +110,46 @@ class MusicController extends AbstractController
         ]);
     }
 
-    
-    #[Route('/album/{id}/buy', name: 'app_album_buy')]
-    #[IsGranted('ROLE_USER')]
-    public function buy(
-        Album $album,
-        EntityManagerInterface $em
-    ): Response {
 
-        $user = $this->getUser();
+    // #[Route('/album/{id}/buy', name: 'app_album_buy')]
+    // #[IsGranted('ROLE_USER')]
+    // public function buy(
+    //     Album $album,
+    //     EntityManagerInterface $em
+    // ): Response {
 
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
+    //     $user = $this->getUser();
 
-        // éviter double achat
-        $existing = $em->getRepository(AlbumPurchase::class)->findOneBy([
-            'user' => $user,
-            'album' => $album
-        ]);
+    //     if (!$user) {
+    //         return $this->redirectToRoute('app_login');
+    //     }
 
-        if ($existing) {
-            return $this->redirectToRoute('app_music_by_album', ['id' => $album->getId()]);
-        }
+    //     // éviter double achat
+    //     $existing = $em->getRepository(AlbumPurchase::class)->findOneBy([
+    //         'user' => $user,
+    //         'album' => $album
+    //     ]);
 
-        $purchase = new AlbumPurchase();
-        $purchase->setUser($user);
-        $purchase->setAlbum($album);
-        $purchase->setPurchaseDate(new \DateTime());
-        $purchase->setPurchasePrice($album->getPrice() ?? 0);
-        $purchase->setCurrency('EUR');
-        $purchase->setPaymentStatus('paid'); // ⚠️ ici à adapter si Stripe/PayPal
-        $purchase->setQuantity(1);
-        $purchase->setCreatedAt(new \DateTimeImmutable());
+    //     if ($existing) {
+    //         return $this->redirectToRoute('app_music_by_album', ['id' => $album->getId()]);
+    //     }
 
-        $em->persist($purchase);
-        $em->flush();
+    //     $purchase = new AlbumPurchase();
+    //     $purchase->setUser($user);
+    //     $purchase->setAlbum($album);
+    //     $purchase->setPurchaseDate(new \DateTime());
+    //     $purchase->setPurchasePrice($album->getPrice() ?? 0);
+    //     $purchase->setCurrency('EUR');
+    //     $purchase->setPaymentStatus('paid'); // ⚠️ ici à adapter si Stripe/PayPal
+    //     $purchase->setQuantity(1);
+    //     $purchase->setCreatedAt(new \DateTimeImmutable());
 
-        return $this->redirectToRoute('app_music_by_album', [
-            'id' => $album->getId()
-        ]);
-    }
+    //     $em->persist($purchase);
+    //     $em->flush();
+
+    //     return $this->redirectToRoute('app_music_by_album', [
+    //         'id' => $album->getId()
+    //     ]);
+    // }
 
 }
