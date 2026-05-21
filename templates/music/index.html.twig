@@ -456,6 +456,12 @@
 			background:#18a349 !important;
 			box-shadow:0 0 15px #1db954;
 		}
+
+		.player-active{
+			background:#18a349 !important;
+			box-shadow:0 0 15px #1db954;
+			transform:scale(1.08);
+		}
 	</style>
 
 	{# =========================
@@ -490,6 +496,8 @@
 																	========================= #}
 
 	<div class="global-player">
+
+		<button id="shuffleBtn">🔀</button>
 
 		<button id="prevBtn">⏮</button>
 
@@ -625,21 +633,76 @@ const tracks = document.querySelectorAll('.play-btn');
 
 let currentIndex = 0;
 
+const repeatBtn = document.getElementById('repeatBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+
+/*
+repeatMode :
+0 = off
+1 = repeat all
+2 = repeat one
+*/
+
+let repeatMode = 0;
+
+let shuffleMode = false;
+
 /* =========================
-   REPEAT MODE
+   REPEAT MODES
 ========================= */
 
 repeatBtn.addEventListener('click', () => {
 
-	repeatMode = !repeatMode;
+	repeatMode++;
 
-	if(repeatMode){
+	if(repeatMode > 2){
+		repeatMode = 0;
+	}
 
-		repeatBtn.classList.add('repeat-active');
+	repeatBtn.classList.remove('player-active');
+
+	// OFF
+	if(repeatMode === 0){
+
+		repeatBtn.innerHTML = '🔁';
+
+	}
+
+	// REPEAT ALL
+	if(repeatMode === 1){
+
+		repeatBtn.innerHTML = '🔁';
+
+		repeatBtn.classList.add('player-active');
+
+	}
+
+	// REPEAT ONE
+	if(repeatMode === 2){
+
+		repeatBtn.innerHTML = '🔂';
+
+		repeatBtn.classList.add('player-active');
+
+	}
+
+});
+
+/* =========================
+   SHUFFLE
+========================= */
+
+shuffleBtn.addEventListener('click', () => {
+
+	shuffleMode = !shuffleMode;
+
+	if(shuffleMode){
+
+		shuffleBtn.classList.add('player-active');
 
 	}else{
 
-		repeatBtn.classList.remove('repeat-active');
+		shuffleBtn.classList.remove('player-active');
 
 	}
 
@@ -784,15 +847,24 @@ if (!fullAccess && player.currentTime >= 60) {
 
 nextBtn.addEventListener('click', () => {
 
-currentIndex++;
+	// SHUFFLE
+	if(shuffleMode){
 
-if (currentIndex >= tracks.length) {
-currentIndex = 0;
-}
+		currentIndex = Math.floor(Math.random() * tracks.length);
 
-loadTrack(currentIndex);
+	}else{
 
-player.play();
+		currentIndex++;
+
+		if(currentIndex >= tracks.length){
+			currentIndex = 0;
+		}
+
+	}
+
+	loadTrack(currentIndex);
+
+	player.play();
 
 });
 
@@ -820,8 +892,11 @@ player.play();
 
 player.addEventListener('ended', () => {
 
-	// repeat même musique
-	if(repeatMode){
+	/* =========================
+	   REPEAT ONE
+	========================= */
+
+	if(repeatMode === 2){
 
 		player.currentTime = 0;
 
@@ -830,11 +905,44 @@ player.addEventListener('ended', () => {
 		return;
 	}
 
-	// musique suivante
+	/* =========================
+	   SHUFFLE
+	========================= */
+
+	if(shuffleMode){
+
+		currentIndex = Math.floor(Math.random() * tracks.length);
+
+		loadTrack(currentIndex);
+
+		player.play();
+
+		return;
+	}
+
+	/* =========================
+	   NEXT NORMAL
+	========================= */
+
 	currentIndex++;
 
+	/* =========================
+	   REPEAT ALL
+	========================= */
+
 	if(currentIndex >= tracks.length){
-		currentIndex = 0;
+
+		if(repeatMode === 1){
+
+			currentIndex = 0;
+
+		}else{
+
+			player.pause();
+
+			return;
+		}
+
 	}
 
 	loadTrack(currentIndex);
