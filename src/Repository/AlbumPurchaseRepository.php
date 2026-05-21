@@ -18,14 +18,14 @@ class AlbumPurchaseRepository extends ServiceEntityRepository
 
     public function hasUserBoughtAlbum(int $userId, int $albumId): bool
     {
-        return (bool) $this->createQueryBuilder('ap')
+        return $this->createQueryBuilder('ap')
             ->select('COUNT(ap.id)')
             ->andWhere('ap.user = :user')
             ->andWhere('ap.album = :album')
             ->setParameter('user', $userId)
             ->setParameter('album', $albumId)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult() > 0;
     }
     
 }

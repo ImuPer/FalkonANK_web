@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Album;
+use App\Entity\AlbumPurchase;
 use App\Entity\Music;
 use App\Repository\AlbumPurchaseRepository;
 use App\Repository\AlbumRepository;
@@ -87,18 +89,66 @@ class MusicController extends AbstractController
         $hasBought = false;
 
         if ($user) {
-            $hasBought = $purchaseRepository->hasUserBoughtAlbum($user->getId(), $album->getId());
+
+            $hasBought = $purchaseRepository->hasUserBoughtAlbum(
+                $user->getId(),
+                $album->getId()
+            );
         }
 
         $musics = $musicRepository->findBy([
             'album' => $album,
             'isPublished' => true
-        ], ['track' => 'ASC']);
+        ], [
+            'track' => 'ASC'
+        ]);
 
         return $this->render('music/index.html.twig', [
             'album' => $album,
             'musics' => $musics,
             'hasBought' => $hasBought
+        ]);
+    }
+
+    
+    #[Route('/album/{id}/buy', name: 'app_album_buy')]
+    #[IsGranted('ROLE_USER')]
+    public function buy(
+        Album $album,
+        EntityManagerInterface $em
+    ): Response {
+
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // éviter double achat
+        $existing = $em->getRepository(AlbumPurchase::class)->findOneBy([
+            'user' => $user,
+            'album' => $album
+        ]);
+
+        if ($existing) {
+            return $this->redirectToRoute('app_music_by_album', ['id' => $album->getId()]);
+        }
+
+        $purchase = new AlbumPurchase();
+        $purchase->setUser($user);
+        $purchase->setAlbum($album);
+        $purchase->setPurchaseDate(new \DateTime());
+        $purchase->setPurchasePrice($album->getPrice() ?? 0);
+        $purchase->setCurrency('EUR');
+        $purchase->setPaymentStatus('paid'); // ⚠️ ici à adapter si Stripe/PayPal
+        $purchase->setQuantity(1);
+        $purchase->setCreatedAt(new \DateTimeImmutable());
+
+        $em->persist($purchase);
+        $em->flush();
+
+        return $this->redirectToRoute('app_music_by_album', [
+            'id' => $album->getId()
         ]);
     }
 

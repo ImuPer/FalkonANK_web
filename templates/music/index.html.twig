@@ -423,22 +423,22 @@
 																	   USER STATUS
 																	========================= #}
 
-	{% set canPlayFull = hasBought %}
+	{# {% set canPlayFull = hasBought %} #}
+	{# {% set canPlayFull = hasBought or isFreeTrack %} #}
 
 	{# =========================
 																	   HEADER
 																	========================= #}
-
-	<div
-		class="album-header">
-
-		{# <h1>
-							🎵
-						</h1> #}
-
-		<h2>💿
-			{{ pageTitle }}</h2>
-
+	<div class="album-header">
+		<h2>💿 {{ pageTitle }}</h2>
+		{% if app.user and not hasBought %}
+			<div style="margin-top:20px; position:relative; z-index:2;">
+				<a href="{{ path('app_album_buy', {id: album.id}) }}"
+				class="btn btn-success">
+					🛒 Acheter l'album
+				</a>
+			</div>
+		{% endif %}
 	</div>
 
 	<div class="cover-modal" id="coverModal">
@@ -519,23 +519,22 @@
 					vues
 				</div>
 
-				<button class="play-btn {% if not canPlayFull %}locked-btn{% endif %}" data-id="{{ music.id }}" data-src="{{ asset('uploads/music/' ~ music.audioFile) }}" data-title="{{ music.title }}" data-index="{{ loop.index0 }}" data-full="{{ canPlayFull ? '1' : '0' }}">
-					{% if canPlayFull %}
+				<button class="play-btn {% if not canPlayFullTrack %}locked-btn{% endif %}"
+						data-id="{{ music.id }}"
+						data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
+						data-title="{{ music.title }}"
+						data-index="{{ loop.index0 }}"
+						data-full="{{ canPlayFullTrack ? '1' : '0' }}">
+
+					{% if canPlayFullTrack %}
 						▶ Lire
 					{% else %}
 						<a href="{{ path('app_login', {
 							_target_path: app.request.uri
-							}) }}">
+						}) }}">
 							🔒 Connecte-toi
 						</a>
 					{% endif %}
-
-					{% if app.user and not hasBought %}
-						<a href="{{ path('app_album_buy', {id: album.id}) }}" class="btn btn-success">
-							Acheter l'album
-						</a>
-					{% endif %}
-
 				</button>
 
 				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
