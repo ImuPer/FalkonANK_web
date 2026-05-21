@@ -11,13 +11,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function index(Request $request, AuthenticationUtils $authenticationUtils): Response
-    {
+    public function index(
+        Request $request,
+        AuthenticationUtils $authenticationUtils
+    ): Response {
+
+        // si déjà connecté
         if ($this->getUser()) {
-
-            $redirect = $request->query->get('redirect');
-
-            return $this->redirect($redirect ?? '/');
+            return $this->redirect($request->query->get('redirect') ?? '/');
         }
 
         return $this->render('login/index.html.twig', [
