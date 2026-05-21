@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\AlbumPurchase;
 use App\Repository\AlbumRepository;
 use App\Repository\AlbumPurchaseRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,7 @@ class AlbumPaymentController extends AbstractController
         Request $request,
         AlbumRepository $albumRepository,
         AlbumPurchaseRepository $purchaseRepository,
+        UserRepository $userRepository,
         EntityManagerInterface $em
     ): Response {
 
@@ -44,7 +46,12 @@ class AlbumPaymentController extends AbstractController
         }
 
         $albumId = $session->metadata->album_id;
-        $user = $this->getUser();
+        $userId = $session->metadata->user_id;
+
+        $user = $userRepository->find($userId);
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur introuvable');
+        }
 
         $album = $albumRepository->find($albumId);
 
@@ -84,7 +91,7 @@ class AlbumPaymentController extends AbstractController
             $em->persist($purchase);
             $em->flush();
         }
-
+        $this->addFlash('success', 'Album acheté avec succès 🎵');
         return $this->redirectToRoute('app_music_by_album', [
             'id' => $album->getId()
         ]);
