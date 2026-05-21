@@ -525,7 +525,7 @@
 						▶ Lire
 					{% else %}
 						<a href="{{ path('app_login', {
-								redirect: app.request.uri
+							_target_path: app.request.uri
 							}) }}">
 							🔒 Connecte-toi
 						</a>

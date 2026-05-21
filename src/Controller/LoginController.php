@@ -10,21 +10,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'app_login')]
-    public function index(
-        Request $request,
-        AuthenticationUtils $authenticationUtils
-    ): Response {
-
-        // si déjà connecté
-        if ($this->getUser()) {
-            return $this->redirect($request->query->get('redirect') ?? '/');
-        }
-
-        return $this->render('login/index.html.twig', [
-            'last_username' => $authenticationUtils->getLastUsername(),
-            'error' => $authenticationUtils->getLastAuthenticationError(),
-            'redirect' => $request->query->get('redirect'),
-        ]);
-    }
+   #[Route('/login', name: 'app_login')]
+public function index(AuthenticationUtils $authenticationUtils): Response
+{
+    return $this->render('login/index.html.twig', [
+        'last_username' => $authenticationUtils->getLastUsername(),
+        'error' => $authenticationUtils->getLastAuthenticationError(),
+    ]);
+}
 }
