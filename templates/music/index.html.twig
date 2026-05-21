@@ -451,6 +451,11 @@
 			background:#18a349;
 			color:white;
 		}
+		
+		.repeat-active{
+			background:#18a349 !important;
+			box-shadow:0 0 15px #1db954;
+		}
 	</style>
 
 	{# =========================
@@ -491,6 +496,8 @@
 		<button id="playPauseBtn">▶</button>
 
 		<button id="nextBtn">⏭</button>
+
+		<button id="repeatBtn">🔁</button>
 
 		<div class="now-playing" id="nowPlaying">
 			Aucun morceau
@@ -605,6 +612,9 @@
 
 	<script>
 
+const repeatBtn = document.getElementById('repeatBtn');
+let repeatMode = false;
+
 		const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
@@ -614,6 +624,26 @@ const nowPlaying = document.getElementById('nowPlaying');
 const tracks = document.querySelectorAll('.play-btn');
 
 let currentIndex = 0;
+
+/* =========================
+   REPEAT MODE
+========================= */
+
+repeatBtn.addEventListener('click', () => {
+
+	repeatMode = !repeatMode;
+
+	if(repeatMode){
+
+		repeatBtn.classList.add('repeat-active');
+
+	}else{
+
+		repeatBtn.classList.remove('repeat-active');
+
+	}
+
+});
 
 /* =========================
    LOAD TRACK
@@ -790,15 +820,26 @@ player.play();
 
 player.addEventListener('ended', () => {
 
-currentIndex++;
+	// repeat même musique
+	if(repeatMode){
 
-if (currentIndex >= tracks.length) {
-currentIndex = 0;
-}
+		player.currentTime = 0;
 
-loadTrack(currentIndex);
+		player.play();
 
-player.play();
+		return;
+	}
+
+	// musique suivante
+	currentIndex++;
+
+	if(currentIndex >= tracks.length){
+		currentIndex = 0;
+	}
+
+	loadTrack(currentIndex);
+
+	player.play();
 
 });
 
