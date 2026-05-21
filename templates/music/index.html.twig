@@ -732,11 +732,18 @@ fetch('/music/' + musicId + '/view', {method: 'POST'});
 
 const fullAccess = currentTrack.dataset.full === "1";
 
-if (! fullAccess && player.currentTime >= 60) {
+if (!fullAccess && player.currentTime >= 60) {
+    player.pause();
 
-player.pause();
+    const isLogged = {{ app.user ? 'true' : 'false' }};
 
-alert("🔒 Connecte-toi pour écouter la musique complète.");
+    if (!isLogged) {
+        window.location.href = "{{ path('app_login') }}";
+    } else {
+        if (confirm("🔒 Acheter l'album pour écouter la musique complète ?")) {
+            window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
+        }
+    }
 }
 
 });
