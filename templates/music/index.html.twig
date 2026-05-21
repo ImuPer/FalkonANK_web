@@ -456,12 +456,6 @@
 			background:#18a349 !important;
 			box-shadow:0 0 15px #1db954;
 		}
-
-		.player-active{
-			background:#18a349 !important;
-			box-shadow:0 0 15px #1db954;
-			transform:scale(1.08);
-		}
 	</style>
 
 	{# =========================
@@ -496,8 +490,6 @@
 																	========================= #}
 
 	<div class="global-player">
-
-		<button id="shuffleBtn">🔀</button>
 
 		<button id="prevBtn">⏮</button>
 
@@ -633,76 +625,21 @@ const tracks = document.querySelectorAll('.play-btn');
 
 let currentIndex = 0;
 
-const repeatBtn = document.getElementById('repeatBtn');
-const shuffleBtn = document.getElementById('shuffleBtn');
-
-/*
-repeatMode :
-0 = off
-1 = repeat all
-2 = repeat one
-*/
-
-let repeatMode = 0;
-
-let shuffleMode = false;
-
 /* =========================
-   REPEAT MODES
+   REPEAT MODE
 ========================= */
 
 repeatBtn.addEventListener('click', () => {
 
-	repeatMode++;
+	repeatMode = !repeatMode;
 
-	if(repeatMode > 2){
-		repeatMode = 0;
-	}
+	if(repeatMode){
 
-	repeatBtn.classList.remove('player-active');
-
-	// OFF
-	if(repeatMode === 0){
-
-		repeatBtn.innerHTML = '🔁';
-
-	}
-
-	// REPEAT ALL
-	if(repeatMode === 1){
-
-		repeatBtn.innerHTML = '🔁';
-
-		repeatBtn.classList.add('player-active');
-
-	}
-
-	// REPEAT ONE
-	if(repeatMode === 2){
-
-		repeatBtn.innerHTML = '🔂';
-
-		repeatBtn.classList.add('player-active');
-
-	}
-
-});
-
-/* =========================
-   SHUFFLE
-========================= */
-
-shuffleBtn.addEventListener('click', () => {
-
-	shuffleMode = !shuffleMode;
-
-	if(shuffleMode){
-
-		shuffleBtn.classList.add('player-active');
+		repeatBtn.classList.add('repeat-active');
 
 	}else{
 
-		shuffleBtn.classList.remove('player-active');
+		repeatBtn.classList.remove('repeat-active');
 
 	}
 
@@ -847,24 +784,15 @@ if (!fullAccess && player.currentTime >= 60) {
 
 nextBtn.addEventListener('click', () => {
 
-	// SHUFFLE
-	if(shuffleMode){
+currentIndex++;
 
-		currentIndex = Math.floor(Math.random() * tracks.length);
+if (currentIndex >= tracks.length) {
+currentIndex = 0;
+}
 
-	}else{
+loadTrack(currentIndex);
 
-		currentIndex++;
-
-		if(currentIndex >= tracks.length){
-			currentIndex = 0;
-		}
-
-	}
-
-	loadTrack(currentIndex);
-
-	player.play();
+player.play();
 
 });
 
