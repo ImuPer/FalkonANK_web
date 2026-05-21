@@ -10,6 +10,7 @@ use App\Repository\AlbumRepository;
 use App\Repository\MusicRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\StripeClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MusicController extends AbstractController
 {
+    private StripeClient $stripe;
+    public function __construct()
+    {
+        $this->stripe = new StripeClient($_ENV['STRIPE_SECRETKEY']);
+    }
     #[Route('/product/{id}/music', name: 'app_music_by_product')]
     public function byProduct(int $id, ProductRepository $productRepository, MusicRepository $musicRepository): Response
     {
@@ -110,7 +116,7 @@ class MusicController extends AbstractController
         ]);
     }
 
-     #[Route('/album/{id}/buy', name: 'app_album_buy')]
+    #[Route('/album/{id}/buy', name: 'app_album_buy')]
     #[IsGranted('ROLE_USER')]
     public function buy(
         Album $album,
@@ -136,20 +142,22 @@ class MusicController extends AbstractController
         $session = $this->stripe->checkout->sessions->create([
             'mode' => 'payment',
 
-            'line_items' => [[
-                'quantity' => 1,
+            'line_items' => [
+                [
+                    'quantity' => 1,
 
-                'price_data' => [
-                    'currency' => 'eur',
+                    'price_data' => [
+                        'currency' => 'eur',
 
-                    'product_data' => [
-                        'name' => $album->getName(),
+                        'product_data' => [
+                            'name' => $album->getName(),
+                        ],
+
+                        // Stripe utilise centimes
+                        'unit_amount' => (int) ($album->getPrice() * 100),
                     ],
-
-                    // Stripe utilise centimes
-                    'unit_amount' => (int) ($album->getPrice() * 100),
-                ],
-            ]],
+                ]
+            ],
 
             'success_url' => $baseUrl . '/album/payment/success?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => $baseUrl . '/album/' . $album->getId() . '/musics',
