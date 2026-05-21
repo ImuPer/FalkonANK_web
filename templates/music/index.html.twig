@@ -417,6 +417,40 @@
 			z-index: 2;
 			color: white;
 		}
+
+		.album-header {
+			position: relative;
+			z-index: 1;
+		}
+
+		.album-header::before {
+			z-index: 1;
+		}
+
+		.album-header h1,
+		.album-header h2,
+		.album-header a,
+		.album-header div {
+			position: relative;
+			z-index: 2;
+		}
+		
+		.buy-btn{
+			display:inline-block;
+			padding:15px 25px;
+			background:#1db954;
+			color:white;
+			text-decoration:none;
+			border-radius:12px;
+			font-weight:bold;
+			transition:.3s;
+		}
+
+		.buy-btn:hover{
+			transform:scale(1.05);
+			background:#18a349;
+			color:white;
+		}
 	</style>
 
 	{# =========================
@@ -530,7 +564,7 @@
 						▶ Lire
 					{% else %}
 						{% if isFreeTrack %}
-							▶ Extrait gratuit
+							▶ Lire
 						{% else %}
 							<a href="{{ path('app_login', {
 								_target_path: app.request.uri
