@@ -110,46 +110,58 @@ class MusicController extends AbstractController
         ]);
     }
 
+     #[Route('/album/{id}/buy', name: 'app_album_buy')]
+    #[IsGranted('ROLE_USER')]
+    public function buy(
+        Album $album,
+        AlbumPurchaseRepository $albumPurchaseRepository
+    ): Response {
 
-    // #[Route('/album/{id}/buy', name: 'app_album_buy')]
-    // #[IsGranted('ROLE_USER')]
-    // public function buy(
-    //     Album $album,
-    //     EntityManagerInterface $em
-    // ): Response {
+        $user = $this->getUser();
 
-    //     $user = $this->getUser();
+        // vérifier si déjà acheté
+        $existing = $albumPurchaseRepository->findOneBy([
+            'user' => $user,
+            'album' => $album
+        ]);
 
-    //     if (!$user) {
-    //         return $this->redirectToRoute('app_login');
-    //     }
+        if ($existing) {
+            return $this->redirectToRoute('app_music_by_album', [
+                'id' => $album->getId()
+            ]);
+        }
 
-    //     // éviter double achat
-    //     $existing = $em->getRepository(AlbumPurchase::class)->findOneBy([
-    //         'user' => $user,
-    //         'album' => $album
-    //     ]);
+        $baseUrl = $_ENV['APP_BASE_URL'];
 
-    //     if ($existing) {
-    //         return $this->redirectToRoute('app_music_by_album', ['id' => $album->getId()]);
-    //     }
+        $session = $this->stripe->checkout->sessions->create([
+            'mode' => 'payment',
 
-    //     $purchase = new AlbumPurchase();
-    //     $purchase->setUser($user);
-    //     $purchase->setAlbum($album);
-    //     $purchase->setPurchaseDate(new \DateTime());
-    //     $purchase->setPurchasePrice($album->getPrice() ?? 0);
-    //     $purchase->setCurrency('EUR');
-    //     $purchase->setPaymentStatus('paid'); // ⚠️ ici à adapter si Stripe/PayPal
-    //     $purchase->setQuantity(1);
-    //     $purchase->setCreatedAt(new \DateTimeImmutable());
+            'line_items' => [[
+                'quantity' => 1,
 
-    //     $em->persist($purchase);
-    //     $em->flush();
+                'price_data' => [
+                    'currency' => 'eur',
 
-    //     return $this->redirectToRoute('app_music_by_album', [
-    //         'id' => $album->getId()
-    //     ]);
-    // }
+                    'product_data' => [
+                        'name' => $album->getName(),
+                    ],
+
+                    // Stripe utilise centimes
+                    'unit_amount' => (int) ($album->getPrice() * 100),
+                ],
+            ]],
+
+            'success_url' => $baseUrl . '/album/payment/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $baseUrl . '/album/' . $album->getId() . '/musics',
+
+            // IMPORTANT
+            'metadata' => [
+                'album_id' => $album->getId(),
+                'user_id' => $user->getId(),
+            ],
+        ]);
+
+        return $this->redirect($session->url);
+    }
 
 }
