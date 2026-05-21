@@ -524,7 +524,9 @@
 					{% if canPlayFull %}
 						▶ Lire
 					{% else %}
-						<a href="{{ path('app_login') }}">
+						<a href="{{ path('app_login', {
+								redirect: app.request.uri
+							}) }}">
 							🔒 Connecte-toi
 						</a>
 					{% endif %}
