@@ -16,28 +16,16 @@ class AlbumPurchaseRepository extends ServiceEntityRepository
         parent::__construct($registry, AlbumPurchase::class);
     }
 
-    //    /**
-    //     * @return AlbumPurchase[] Returns an array of AlbumPurchase objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?AlbumPurchase
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function hasUserBoughtAlbum(int $userId, int $albumId): bool
+    {
+        return (bool) $this->createQueryBuilder('ap')
+            ->select('COUNT(ap.id)')
+            ->andWhere('ap.user = :user')
+            ->andWhere('ap.album = :album')
+            ->setParameter('user', $userId)
+            ->setParameter('album', $albumId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    
 }

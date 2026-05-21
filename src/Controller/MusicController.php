@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Music;
+use App\Repository\AlbumPurchaseRepository;
 use App\Repository\AlbumRepository;
 use App\Repository\MusicRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -69,7 +71,9 @@ class MusicController extends AbstractController
     public function byAlbum(
         int $id,
         AlbumRepository $albumRepository,
-        MusicRepository $musicRepository
+        MusicRepository $musicRepository,
+        AlbumPurchaseRepository $purchaseRepository,
+        Security $security
     ): Response {
 
         $album = $albumRepository->find($id);
@@ -78,19 +82,23 @@ class MusicController extends AbstractController
             throw $this->createNotFoundException('Album not found');
         }
 
-        $musics = $musicRepository->findBy(
-            [
-                'album' => $album,
-                'isPublished' => true
-            ],
-            [
-                'track' => 'ASC'
-            ]
-        );
+        $user = $security->getUser();
+
+        $hasBought = false;
+
+        if ($user) {
+            $hasBought = $purchaseRepository->hasUserBoughtAlbum($user->getId(), $album->getId());
+        }
+
+        $musics = $musicRepository->findBy([
+            'album' => $album,
+            'isPublished' => true
+        ], ['track' => 'ASC']);
 
         return $this->render('music/index.html.twig', [
             'album' => $album,
             'musics' => $musics,
+            'hasBought' => $hasBought
         ]);
     }
 

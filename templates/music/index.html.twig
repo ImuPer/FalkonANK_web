@@ -423,7 +423,7 @@
 																	   USER STATUS
 																	========================= #}
 
-	{% set isLoggedIn = app.user ? true : false %}
+	{% set canPlayFull = hasBought %}
 
 	{# =========================
 																	   HEADER
@@ -486,8 +486,7 @@
 																																																						    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
-			{% set canPlayFull = isLoggedIn or isFreeTrack %}
-
+			{% set canPlayFullTrack = hasBought or isFreeTrack %}
 			<div class="music-card" id="card-{{ loop.index0 }}">
 
 				<div class="cd-wrapper">
@@ -528,6 +527,12 @@
 							_target_path: app.request.uri
 							}) }}">
 							🔒 Connecte-toi
+						</a>
+					{% endif %}
+
+					{% if app.user and not hasBought %}
+						<a href="{{ path('app_album_buy', {id: album.id}) }}" class="btn btn-success">
+							Acheter l'album
 						</a>
 					{% endif %}
 
