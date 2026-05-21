@@ -154,7 +154,7 @@ class MusicController extends AbstractController
                         ],
 
                         // Stripe utilise centimes
-                        'unit_amount' => (int) ($album->getPrice() * 100),
+                        'unit_amount' => (int) ($album->getPrice()),
                     ],
                 ]
             ],
