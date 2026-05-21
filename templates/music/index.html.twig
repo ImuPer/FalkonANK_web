@@ -892,11 +892,8 @@ player.play();
 
 player.addEventListener('ended', () => {
 
-	/* =========================
-	   REPEAT ONE
-	========================= */
-
-	if(repeatMode === 2){
+	// repeat même musique
+	if(repeatMode){
 
 		player.currentTime = 0;
 
@@ -905,44 +902,11 @@ player.addEventListener('ended', () => {
 		return;
 	}
 
-	/* =========================
-	   SHUFFLE
-	========================= */
-
-	if(shuffleMode){
-
-		currentIndex = Math.floor(Math.random() * tracks.length);
-
-		loadTrack(currentIndex);
-
-		player.play();
-
-		return;
-	}
-
-	/* =========================
-	   NEXT NORMAL
-	========================= */
-
+	// musique suivante
 	currentIndex++;
 
-	/* =========================
-	   REPEAT ALL
-	========================= */
-
 	if(currentIndex >= tracks.length){
-
-		if(repeatMode === 1){
-
-			currentIndex = 0;
-
-		}else{
-
-			player.pause();
-
-			return;
-		}
-
+		currentIndex = 0;
 	}
 
 	loadTrack(currentIndex);
