@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
@@ -43,6 +44,8 @@ class AlbumCrudController extends AbstractCrudController
                 ->setHelp('prix en Euro'),
 
             TextField::new('recordLabel', 'Maison de disque'),
+
+            TextEditorField::new('description', "description"),
 
             DateTimeField::new('createdAt', 'Créé le')
                 ->hideOnForm(),
