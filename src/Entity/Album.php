@@ -55,9 +55,6 @@ class Album
     private ?string $price = null;
 
     #[ORM\Column]
-    private ?bool $payed = null;
-
-    #[ORM\Column]
     private ?bool $isPublished = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -213,18 +210,6 @@ class Album
     public function setPrice(?string $price): static
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function isPayed(): ?bool
-    {
-        return $this->payed;
-    }
-
-    public function setPayed(bool $payed): static
-    {
-        $this->payed = $payed;
 
         return $this;
     }
