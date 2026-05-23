@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Album;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -60,6 +61,9 @@ class AlbumCrudController extends AbstractCrudController
                 ->setFormType(FileType::class)
                 ->onlyOnForms()
                 ->setHelp('Upload une image (jpg, png, etc.)'),
+            
+             BooleanField::new('isPublished', 'Publié'),
+
         ];
     }
 
