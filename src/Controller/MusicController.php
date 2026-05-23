@@ -68,10 +68,18 @@ class MusicController extends AbstractController
     }
     // --------------------ALBUMS------------------------------------------------------------------
     #[Route('/album', name: 'app_albums_index', methods: ['GET'])]
-    public function index(AlbumRepository $albumRepository): Response
+    public function index(AlbumRepository $albumRepository, Security $security): Response
     {
+        if ($security->isGranted('ROLE_ADMIN')) {
+            $albums = $albumRepository->findAll();
+        } else {
+            $albums = $albumRepository->findBy([
+                'isPublished' => true
+            ]);
+        }
+
         return $this->render('albums/index.html.twig', [
-            'albums' => $albumRepository->findAll(),
+            'albums' => $albums,
         ]);
     }
 
