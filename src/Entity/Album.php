@@ -55,7 +55,7 @@ class Album
     private ?string $price = null;
 
     #[ORM\Column]
-    private ?bool $isPublished = false;
+    private ?bool $isPublished = true;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $paymentId = null;
