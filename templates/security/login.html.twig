@@ -15,14 +15,6 @@
 				{% if error %}
 					<div class="alert alert-danger">
 						{{ error.messageKey|trans(error.messageData, 'security') }}
-
-						{% if "vérifier votre adresse email" in error.messageKey %}
-							<br><br>
-							<a href="{{ path('resend_verification', { email: last_username }) }}"
-							class="btn btn-warning btn-sm">
-								Renvoyer l'email de vérification
-							</a>
-						{% endif %}
 					</div>
 				{% endif %}
 
