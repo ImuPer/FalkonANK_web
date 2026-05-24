@@ -552,7 +552,7 @@
 																																																						    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
-			{% set canPlayFullTrack = hasBought or isFreeTrack or app.user %}
+			{% set canPlayFullTrack = hasBought or isFreeTrack %}
 			<div class="music-card" id="card-{{ loop.index0 }}">
 
 				<div class="cd-wrapper">
