@@ -92,23 +92,29 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request): Response
+   #[Route('/verify/email', name: 'app_verify_email')]
+    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
-        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $id = $request->query->get('id');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        if (!$id) {
+            throw $this->createNotFoundException('Missing user id.');
+        }
+
+        $user = $userRepository->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException('User not found.');
+        }
+
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
+            $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
-            $this->addFlash('error', 'Este e-mail é ivalido.');
-
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Seu endereço de e-mail foi verificado.');
+        $this->addFlash('success', 'Email vérifié avec succès.');
 
         return $this->redirectToRoute('app_home_page');
     }
