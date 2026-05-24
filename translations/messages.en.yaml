@@ -960,3 +960,14 @@ common:
 
 purchase:
     total_minimum: 'The total purchase amount must be greater than %amount% %currency% (escudos).'
+
+music:
+  album: "Album"
+  buy_album: "Buy album"
+  no_track: "No track"
+  views: "views"
+  play: "Play"
+  login_to_listen: "Login to listen"
+  lyrics: "Lyrics"
+  no_lyrics: "No lyrics available."
+  confirm_buy: "🔒 Buy the album to listen to the full track?"

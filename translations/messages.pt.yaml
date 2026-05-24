@@ -948,3 +948,15 @@ common:
 
 purchase:
     total_minimum: 'O valor total da compra deve ser superior a %amount% %currency% (escudos).'
+
+
+music:
+  album: "Álbum"
+  buy_album: "Comprar álbum"
+  no_track: "Nenhuma música"
+  views: "visualizações"
+  play: "Ouvir"
+  login_to_listen: "Entrar"
+  lyrics: "Letras"
+  no_lyrics: "Nenhuma letra disponível."
+  confirm_buy: "🔒 Comprar o álbum para ouvir a música completa?"

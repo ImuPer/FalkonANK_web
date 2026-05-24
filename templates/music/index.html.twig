@@ -5,7 +5,7 @@
 {% set pageTitle = album is defined ? album.name : product.name %}
 {% set coverImage = album is defined ? asset('uploads/albums/' ~ album.coverImage) : asset('upload/images/products/' ~ product.img) %}
 
-{% block title %}🎵 Album -
+{% block title %}🎵 {{ 'music.album'|trans }} -
 	{{ pageTitle }}
 {% endblock %}
 
@@ -499,7 +499,7 @@
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="btn btn-success">
-					🛒 Acheter l'album
+					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 			</div>
 		{% endif %}
@@ -525,7 +525,7 @@
 		<button id="repeatBtn">🔁</button>
 
 		<div class="now-playing" id="nowPlaying">
-			Aucun morceau
+			{{ 'music.no_track'|trans }}
 		</div>
 
 		{# <audio id="main-player" controls></audio> #}
@@ -591,7 +591,7 @@
 				<div class="music-views">
 					👁
 					{{ music.views }}
-					vues
+					{{ 'music.views'|trans }}
 				</div>
 
 				<button class="play-btn {% if not canPlayFullTrack %}locked-btn{% endif %}"
@@ -602,15 +602,15 @@
 					data-full="{{ canPlayFullTrack ? '1' : '0' }}">
 
 					{% if app.user %}
-						▶ Lire
+						▶ {{ 'music.play'|trans }}
 					{% else %}
 						{% if isFreeTrack %}
-							▶ Lire
+							▶ {{ 'music.play'|trans }}
 						{% else %}
 							<a href="{{ path('app_login', {
 								_target_path: app.request.uri
 							}) }}">
-								🔒 Connecte-toi
+								🔒 {{ 'music.login_to_listen'|trans }}
 							</a>
 						{% endif %}
 					{% endif %}
@@ -635,7 +635,7 @@
 			</span>
 
 			<h2 id="lyricsTitle">
-				Lyrics
+				{{ 'music.lyrics'|trans }}
 			</h2>
 
 			<div class="lyrics-text"
@@ -807,7 +807,7 @@ if (!fullAccess && player.currentTime >= 60) {
     if (!isLogged) {
         window.location.href = "{{ path('app_login') }}";
     } else {
-        if (confirm("🔒 Acheter l'album pour écouter la musique complète ?")) {
+        if (confirm("{{ 'music.confirm_buy'|trans }}")) {
             window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
         }
     }
@@ -930,8 +930,9 @@ btn.addEventListener('click', () => {
 
 lyricsTitle.innerHTML = "🎤 " + btn.dataset.title;
 
-lyricsText.innerHTML = btn.dataset.lyrics ? btn.dataset.lyrics : "Aucune parole disponible.";
-
+lyricsText.innerHTML = btn.dataset.lyrics
+    ? btn.dataset.lyrics
+    : "{{ 'music.no_lyrics'|trans }}";
 lyricsModal.style.display = 'flex';
 
 });
