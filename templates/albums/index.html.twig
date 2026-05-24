@@ -60,5 +60,133 @@
 				{% endfor %}
 			</div>
 		</div>
+		<style>
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background: #0f172a;
+			font-family: 'Poppins', sans-serif;
+			color: white;
+		}
+
+		.album-page {
+			padding: 50px 30px;
+			min-height: 100vh;
+		}
+
+		.header {
+			text-align: center;
+			margin-bottom: 50px;
+		}
+
+		.header h1 {
+			font-size: 3rem;
+			margin-bottom: 10px;
+			font-weight: 700;
+		}
+
+		.header p {
+			color: #94a3b8;
+			font-size: 1.1rem;
+		}
+
+		.albums-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 30px;
+		}
+
+		.album-card {
+			background: rgba(255, 255, 255, 0.05);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			backdrop-filter: blur(10px);
+			border-radius: 25px;
+			padding: 30px 20px;
+			transition: 0.4s ease;
+			position: relative;
+			overflow: hidden;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+		}
+
+		.album-card:hover {
+			transform: translateY(-10px) scale(1.02);
+			box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+		}
+
+		.disc-container {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 25px;
+		}
+
+		.album-disc {
+			width: 180px;
+			height: 180px;
+			border-radius: 50%;
+			object-fit: cover;
+			border: 8px solid #111827;
+			box-shadow: 0 0 0 8px #1e293b, 0 15px 30px rgba(0, 0, 0, 0.5);
+			transition: 0.5s ease;
+		}
+
+		.album-card:hover .album-disc {
+			transform: rotate(10deg) scale(1.05);
+		}
+
+		.placeholder {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #1e293b;
+			font-size: 4rem;
+		}
+
+		.album-content {
+			color: #f0d50a;
+			text-align: center;
+		}
+
+		.album-content h2 {
+			font-size: 1.5rem;
+			margin-bottom: 15px;
+			font-weight: 600;
+		}
+
+		.album-info {
+			color: #cbd5e1;
+			margin-bottom: 10px;
+			font-size: 0.95rem;
+		}
+
+		.album-date {
+			color: #94a3b8;
+			font-size: 0.9rem;
+		}
+
+		.empty-state {
+			grid-column: 1/-1;
+			text-align: center;
+			padding: 50px;
+			background: rgba(255, 255, 255, 0.05);
+			border-radius: 20px;
+		}
+
+		@media(max-width:768px) {
+
+			.header h1 {
+				font-size: 2rem;
+			}
+
+			.album-disc {
+				width: 140px;
+				height: 140px;
+			}
+
+		}
+	</style>
 	{% endblock %}
 	
