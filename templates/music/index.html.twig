@@ -561,11 +561,11 @@
 				</div>
 
 				<button class="play-btn {% if not canPlayFullTrack %}locked-btn{% endif %}"
-						data-id="{{ music.id }}"
-						data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
-						data-title="{{ music.title }}"
-						data-index="{{ loop.index0 }}"
-						data-full="{{ hasBought ? '1' : '0' }}">
+					data-id="{{ music.id }}"
+					data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
+					data-title="{{ music.title }}"
+					data-index="{{ loop.index0 }}"
+					data-full="{{ canPlayFullTrack ? '1' : '0' }}">
 
 					{% if app.user %}
 						▶ Lire
