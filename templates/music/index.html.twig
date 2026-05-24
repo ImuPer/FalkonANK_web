@@ -471,6 +471,16 @@
 			background:#18a349 !important;
 			box-shadow:0 0 15px #dbea0d;
 		}
+
+		.zoomable-cover{
+			cursor:pointer;
+			transition:.3s;
+		}
+
+		.zoomable-cover:hover{
+			transform:scale(1.03);
+			box-shadow:0 0 25px rgba(29,185,84,.4);
+		}		
 	</style>
 
 	{# =========================
@@ -547,8 +557,17 @@
 
 				<div class="cd-wrapper">
 
-					<div class="cd-disc" id="disc-{{ loop.index0 }}">
-
+					<div class="cd-disc zoomable-cover"
+					id="disc-{{ loop.index0 }}"
+					data-image="
+					{% if music.coverImage %}
+						{{ asset('uploads/images/' ~ music.coverImage) }}
+					{% elseif music.album and music.album.coverImage %}
+						{{ asset('uploads/albums/' ~ music.album.coverImage) }}
+					{% else %}
+						{{ asset('images/default-music.jpg') }}
+					{% endif %}
+					">
 						{% if music.coverImage %}
 							<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
 						{% elseif music.album and music.album.coverImage %}
@@ -1006,6 +1025,27 @@ document.addEventListener('keydown', (e) => {
 			e.preventDefault();
 		}
 	}
+
+});
+
+/* =========================
+   CARD IMAGE ZOOM
+========================= */
+
+const zoomableCovers = document.querySelectorAll('.zoomable-cover');
+const zoomedCover = document.getElementById('zoomedCover');
+
+zoomableCovers.forEach(cover => {
+
+	cover.addEventListener('click', () => {
+
+		const image = cover.dataset.image;
+
+		zoomedCover.src = image;
+
+		coverModal.style.display = 'flex';
+
+	});
 
 });
 	</script>
