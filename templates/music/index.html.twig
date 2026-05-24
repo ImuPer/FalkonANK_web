@@ -325,6 +325,21 @@
 			transform: scale(1.1);
 		}
 
+		.lyrics-text {
+			white-space: pre-line;
+			line-height: 1.8;
+			color: #ddd;
+			font-size: 18px;
+
+			/* anti copie */
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+
+			-webkit-touch-callout: none;
+		}
+
 		/* =========================
    MODAL LYRICS
 ========================= */
@@ -604,7 +619,10 @@
 				Lyrics
 			</h2>
 
-			<div class="lyrics-text" id="lyricsText"></div>
+			<div class="lyrics-text"
+				id="lyricsText"
+				oncontextmenu="return false">
+			</div>
 
 		</div>
 
@@ -951,6 +969,42 @@ coverModal.addEventListener('click', (e) => {
 
 		coverModal.style.display = 'none';
 
+	}
+
+});
+
+/* =========================
+   BLOCK COPY LYRICS
+========================= */
+
+lyricsText.addEventListener('copy', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('cut', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('contextmenu', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('selectstart', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('dragstart', (e) => {
+	e.preventDefault();
+});
+
+document.addEventListener('keydown', (e) => {
+
+	// Ctrl+C
+	if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+
+		if (lyricsModal.style.display === 'flex') {
+			e.preventDefault();
+		}
 	}
 
 });
