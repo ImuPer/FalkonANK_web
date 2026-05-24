@@ -974,3 +974,10 @@ music:
   lyrics: "Letras"
   no_lyrics: "No hay letras disponibles."
   confirm_buy: "🔒 ¿Comprar el álbum para escuchar la canción completa?"
+
+albums:
+  title: "Álbumes"
+  all_albums: "Todos los Álbumes"
+  discover_collection: "Descubre la colección completa"
+  release_date: "Lanzamiento"
+  no_album: "No hay álbumes disponibles"

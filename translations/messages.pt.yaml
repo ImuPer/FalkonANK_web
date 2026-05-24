@@ -960,3 +960,10 @@ music:
   lyrics: "Letras"
   no_lyrics: "Nenhuma letra disponível."
   confirm_buy: "🔒 Comprar o álbum para ouvir a música completa?"
+
+albums:
+  title: "Álbuns"
+  all_albums: "Todos os Álbuns"
+  discover_collection: "Descubra a coleção completa"
+  release_date: "Lançamento"
+  no_album: "Nenhum álbum disponível"

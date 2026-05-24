@@ -970,3 +970,11 @@ music:
   lyrics: "Paroles"
   no_lyrics: "Aucune parole disponible."
   confirm_buy: "🔒 Acheter l'album pour écouter la musique complète ?"
+
+albums:
+  title: "Albums"
+  all_albums: "Tous les Albums"
+  discover_collection: "Découvrez la collection complète"
+  release_date: "Sortie"
+  no_album: "Aucun album disponible"
+    

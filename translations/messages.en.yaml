@@ -971,3 +971,10 @@ music:
   lyrics: "Lyrics"
   no_lyrics: "No lyrics available."
   confirm_buy: "🔒 Buy the album to listen to the full track?"
+
+albums:
+  title: "Albums"
+  all_albums: "All Albums"
+  discover_collection: "Discover the full collection"
+  release_date: "Release date"
+  no_album: "No albums available"

@@ -1,191 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Albums
+{% block title %}
+    {{ 'albums.title'|trans }}
 {% endblock %}
 
 {% block body %}
 
-	<div class="album-page">
+<div class="album-page">
 
-		<div class="header">
-			<h1>🎵 Tous les Albums</h1>
-			<p>Découvrez la collection complète</p>
-		</div>
+    <div class="header">
+        <h1>🎵 {{ 'albums.all_albums'|trans }}</h1>
+        <p>{{ 'albums.discover_collection'|trans }}</p>
+    </div>
 
-		<div class="albums-grid">
+    <div class="albums-grid">
 
-			{% for album in albums %}
+        {% for album in albums %}
 
-				<a href="{{ path('app_music_by_album', {'id': album.id}) }}" class="album-link">
+            <a href="{{ path('app_music_by_album', {
+                'id': album.id,
+                '_locale': app.request.locale
+            }) }}"
+               class="album-link">
 
-					<div class="album-card">
+                <div class="album-card">
 
-						<div class="disc-container">
-							{% if album.coverImage %}
-								<img src="{{ asset('uploads/albums/' ~ album.coverImage) }}" alt="{{ album.name }}" class="album-disc">
-							{% else %}
-								<div class="album-disc placeholder">
-									🎵
-								</div>
-							{% endif %}
-						</div>
+                    <div class="disc-container">
 
-						<div class="album-content">
-							<h2>{{ album.name }}</h2>
+                        {% if album.coverImage %}
 
-							<div class="album-info">
-								<p>{{ album.description|raw }}</p>
-								<span>📀
-									{{ album.recordLabel }}</span>
-							</div>
+                            <img src="{{ asset('uploads/albums/' ~ album.coverImage) }}"
+                                 alt="{{ album.name }}"
+                                 class="album-disc">
 
-							<div class="album-date">
-								Sortie :
-								{{ album.releaseDate|date('d/m/Y') }}
-							</div>
-						</div>
+                        {% else %}
 
-					</div>
+                            <div class="album-disc placeholder">
+                                🎵
+                            </div>
 
-				</a>
+                        {% endif %}
 
-			{% else %}
-				<div class="empty-state">
-					<p>Aucun album disponible.</p>
-				</div>
-			{% endfor %}
+                    </div>
 
-		</div>
+                    <div class="album-content">
 
-	</div>
+                        <h2>{{ album.name }}</h2>
 
-	<style>
+                        <div class="album-info">
 
-		* {
-			box-sizing: border-box;
-		}
+                            <p>{{ album.description|raw }}</p>
 
-		body {
-			margin: 0;
-			background: #0f172a;
-			font-family: 'Poppins', sans-serif;
-			color: white;
-		}
+                            <span>
+                                📀 {{ album.recordLabel }}
+                            </span>
 
-		.album-page {
-			padding: 50px 30px;
-			min-height: 100vh;
-		}
+                        </div>
 
-		.header {
-			text-align: center;
-			margin-bottom: 50px;
-		}
+                        <div class="album-date">
 
-		.header h1 {
-			font-size: 3rem;
-			margin-bottom: 10px;
-			font-weight: 700;
-		}
+                            {{ 'albums.release_date'|trans }} :
+                            {{ album.releaseDate|date('d/m/Y') }}
 
-		.header p {
-			color: #94a3b8;
-			font-size: 1.1rem;
-		}
+                        </div>
 
-		.albums-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-			gap: 30px;
-		}
+                    </div>
 
-		.album-card {
-			background: rgba(255, 255, 255, 0.05);
-			border: 1px solid rgba(255, 255, 255, 0.08);
-			backdrop-filter: blur(10px);
-			border-radius: 25px;
-			padding: 30px 20px;
-			transition: 0.4s ease;
-			position: relative;
-			overflow: hidden;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-		}
+                </div>
 
-		.album-card:hover {
-			transform: translateY(-10px) scale(1.02);
-			box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-		}
+            </a>
 
-		.disc-container {
-			display: flex;
-			justify-content: center;
-			margin-bottom: 25px;
-		}
+        {% else %}
 
-		.album-disc {
-			width: 180px;
-			height: 180px;
-			border-radius: 50%;
-			object-fit: cover;
-			border: 8px solid #111827;
-			box-shadow: 0 0 0 8px #1e293b, 0 15px 30px rgba(0, 0, 0, 0.5);
-			transition: 0.5s ease;
-		}
+            <div class="empty-state">
 
-		.album-card:hover .album-disc {
-			transform: rotate(10deg) scale(1.05);
-		}
+                <p>
+                    {{ 'albums.no_album'|trans }}
+                </p>
 
-		.placeholder {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #1e293b;
-			font-size: 4rem;
-		}
+            </div>
 
-		.album-content {
-			color: #f0d50a;
-			text-align: center;
-		}
+        {% endfor %}
 
-		.album-content h2 {
-			font-size: 1.5rem;
-			margin-bottom: 15px;
-			font-weight: 600;
-		}
+    </div>
 
-		.album-info {
-			color: #cbd5e1;
-			margin-bottom: 10px;
-			font-size: 0.95rem;
-		}
-
-		.album-date {
-			color: #94a3b8;
-			font-size: 0.9rem;
-		}
-
-		.empty-state {
-			grid-column: 1/-1;
-			text-align: center;
-			padding: 50px;
-			background: rgba(255, 255, 255, 0.05);
-			border-radius: 20px;
-		}
-
-		@media(max-width:768px) {
-
-			.header h1 {
-				font-size: 2rem;
-			}
-
-			.album-disc {
-				width: 140px;
-				height: 140px;
-			}
-
-		}
-	</style>
-
-{% endblock %}
+</div>
