@@ -95,20 +95,21 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
-        $id = $request->query->get('id');
-
-        if (!$id) {
-            throw $this->createNotFoundException('Missing user id.');
-        }
-
-        $user = $userRepository->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException('User not found.');
-        }
-
         try {
+            $id = $request->query->get('id');
+
+            if (!$id) {
+                throw $this->createNotFoundException('Lien invalide.');
+            }
+
+            $user = $userRepository->find($id);
+
+            if (!$user) {
+                throw $this->createNotFoundException('Utilisateur introuvable.');
+            }
+
             $this->emailVerifier->handleEmailConfirmation($request, $user);
+
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
             return $this->redirectToRoute('app_register');
