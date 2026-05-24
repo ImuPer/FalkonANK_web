@@ -96,19 +96,8 @@ class RegistrationController extends AbstractController
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
         try {
-            $id = $request->query->get('id');
-
-            if (!$id) {
-                throw $this->createNotFoundException('Lien invalide.');
-            }
-
-            $user = $userRepository->find($id);
-
-            if (!$user) {
-                throw $this->createNotFoundException('Utilisateur introuvable.');
-            }
-
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            // SymfonyCasts valide signature + récupère user implicitement
+            $this->emailVerifier->handleEmailConfirmation($request);
 
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
