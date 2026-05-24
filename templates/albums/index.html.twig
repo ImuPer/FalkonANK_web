@@ -1,87 +1,64 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}
-    {{ 'albums.title'|trans }}
+	{{ 'albums.title'|trans }}
 {% endblock %}
-
 {% block body %}
-
-<div class="album-page">
-
-    <div class="header">
-        <h1>🎵 {{ 'albums.all_albums'|trans }}</h1>
-        <p>{{ 'albums.discover_collection'|trans }}</p>
-    </div>
-
-    <div class="albums-grid">
-
-        {% for album in albums %}
-
-            <a href="{{ path('app_music_by_album', {
+	<div	class="album-page">
+		<div	class="header">
+			<h1>
+				🎵
+				{{ 'albums.all_albums'|trans }}
+			</h1>
+			<p>
+				{{ 'albums.discover_collection'|trans }}
+			</p>
+		</div>
+		<div	class="albums-grid">
+			{% for album in albums %}
+				<a	href="{{ path('app_music_by_album', {
                 'id': album.id,
                 '_locale': app.request.locale
-            }) }}"
-               class="album-link">
-
-                <div class="album-card">
-
-                    <div class="disc-container">
-
-                        {% if album.coverImage %}
-
-                            <img src="{{ asset('uploads/albums/' ~ album.coverImage) }}"
-                                 alt="{{ album.name }}"
-                                 class="album-disc">
-
-                        {% else %}
-
-                            <div class="album-disc placeholder">
-                                🎵
-                            </div>
-
-                        {% endif %}
-
-                    </div>
-
-                    <div class="album-content">
-
-                        <h2>{{ album.name }}</h2>
-
-                        <div class="album-info">
-
-                            <p>{{ album.description|raw }}</p>
-
-                            <span>
-                                📀 {{ album.recordLabel }}
-                            </span>
-
-                        </div>
-
-                        <div class="album-date">
-
-                            {{ 'albums.release_date'|trans }} :
-                            {{ album.releaseDate|date('d/m/Y') }}
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </a>
-
-        {% else %}
-
-            <div class="empty-state">
-
-                <p>
-                    {{ 'albums.no_album'|trans }}
-                </p>
-
-            </div>
-
-        {% endfor %}
-
-    </div>
-
-</div>
+            }) }}"	class="album-link">
+					<div	class="album-card">
+						<div	class="disc-container">
+							{% if album.coverImage %}
+								<img
+								src="{{ asset('uploads/albums/' ~ album.coverImage) }}"	alt="{{ album.name }}"	class="album-disc">
+									{% else %}
+									<div	class="album-disc placeholder">
+										🎵
+									</div>
+								{% endif %}
+							</div>
+							<div	class="album-content">
+								<h2>
+									{{ album.name }}
+								</h2>
+								<div	class="album-info">
+									<p>
+										{{ album.description|raw }}
+									</p>
+									<span>
+										📀
+										{{ album.recordLabel }}
+									</span>
+								</div>
+								<div	class="album-date">
+									{{ 'albums.release_date'|trans }}
+									:
+									{{ album.releaseDate|date('d/m/Y') }}
+								</div>
+							</div>
+						</div>
+					</a>
+				{% else %}
+					<div	class="empty-state">
+						<p>
+							{{ 'albums.no_album'|trans }}
+						</p>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	{% endblock %}
+	
