@@ -69,6 +69,19 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                // Envoi email confirmation
+                $this->emailVerifier->sendEmailConfirmation(
+                    'app_verify_email',
+                    $user,
+                    (new TemplatedEmail())
+                        ->from(new Address('no-reply@tonsite.com', 'Falkon-ANK'))
+                        ->to((string) $user->getEmail())
+                        ->subject('Confirmez votre adresse e-mail')
+                        ->htmlTemplate('registration/confirmation_email.html.twig')
+                );
+
+                $this->addFlash('success', 'Vérifiez votre email avant de vous connecter.');
+
                 return $this->redirectToRoute('app_login');
             }
         }
@@ -82,7 +95,7 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
