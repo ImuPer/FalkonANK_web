@@ -20,7 +20,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use function Symfony\Component\Clock\now;
 use App\Entity\Response as ResponseEntity; // attention au nom pour éviter conflit
@@ -69,19 +68,6 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                // Envoi email confirmation
-                $this->emailVerifier->sendEmailConfirmation(
-                    'app_verify_email',
-                    $user,
-                    (new TemplatedEmail())
-                        ->from(new Address('no-reply@tonsite.com', 'Falkon-ANK'))
-                        ->to((string) $user->getEmail())
-                        ->subject('Confirmez votre adresse e-mail')
-                        ->htmlTemplate('registration/confirmation_email.html.twig')
-                );
-
-                $this->addFlash('success', 'Vérifiez votre email avant de vous connecter.');
-
                 return $this->redirectToRoute('app_login');
             }
         }
@@ -92,29 +78,23 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-   #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
+    #[Route('/verify/email', name: 'app_verify_email')]
+    public function verifyUserEmail(Request $request): Response
     {
-        $id = $request->query->get('id');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if (!$id) {
-            throw $this->createNotFoundException('Missing user id.');
-        }
-
-        $user = $userRepository->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException('User not found.');
-        }
-
+        // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
+            $this->addFlash('error', 'Este e-mail é ivalido.');
+
             return $this->redirectToRoute('app_register');
         }
 
-        $this->addFlash('success', 'Email vérifié avec succès.');
+        // @TODO Change the redirect on success and handle or remove the flash message in your templates
+        $this->addFlash('success', 'Seu endereço de e-mail foi verificado.');
 
         return $this->redirectToRoute('app_home_page');
     }
@@ -216,14 +196,11 @@ class RegistrationController extends AbstractController
         int $id,
         Request $request,
         EntityManagerInterface $em,
-        MailerInterface $mailer,
-        TranslatorInterface $translator
+        MailerInterface $mailer
     ): Response {
         $contact = $em->getRepository(Contact::class)->find($id);
         if (!$contact) {
-            throw $this->createNotFoundException(
-                $translator->trans('error.contact_not_found')
-            );
+            throw $this->createNotFoundException('Contact non trouvé');
         }
 
         // Chercher si une réponse existe déjà pour ce contact
@@ -246,36 +223,20 @@ class RegistrationController extends AbstractController
                 $em->persist($response);
                 $em->flush();
 
-
                 // Envoi mail
-                $reponseText =
-                    '<strong>' . $translator->trans('email.request') . ' :</strong><br>' .
-                    nl2br(htmlspecialchars($contact->getMessage())) . '<br><br>' .
-                    '<strong>' . $translator->trans('email.response') . ' :</strong><br>' .
-                    nl2br(htmlspecialchars($request->request->get('reponse'))) .
-                    '<br><br>' .
-                    $translator->trans('email.signature');
-
                 $email = (new Email())
                     ->from('no-reply@tondomaine.com')
                     ->to($contact->getEmail())
                     ->subject('Re: ' . $contact->getSubject())
-                    ->html($reponseText);
+                    ->text($reponseText);
 
                 $mailer->send($email);
 
-                $this->addFlash(
-                    'success',
-                    $translator->trans('flash.reply_sent_success')
-                );
-                // return $this->redirectToRoute('reponse', ['id' => $id]);
-                return $this->redirectToRoute('admin');
+                $this->addFlash('success', 'Réponse sauvegardée et envoyée avec succès !');
+
+                return $this->redirectToRoute('reponse', ['id' => $id]);
             } else {
-                if (!$contact) {
-                    throw $this->createNotFoundException(
-                        $translator->trans('error.contact_not_found')
-                    );
-                }
+                $this->addFlash('error', 'Veuillez écrire une réponse.');
             }
         }
 
