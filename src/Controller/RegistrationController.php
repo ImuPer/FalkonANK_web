@@ -92,7 +92,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-   #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, UserRepository $userRepository): Response
     {
         $id = $request->query->get('id');
@@ -119,6 +119,44 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('app_home_page');
     }
 
+    //-------------Verification email - reevoyer link-------------------------------------------------
+
+    #[Route('/resend-verification', name: 'resend_verification')]
+    public function resendVerification(UserRepository $userRepository, MailerInterface $mailer, Request $request): Response
+    {
+        $email = $request->query->get('email');
+
+        if (!$email) {
+            $this->addFlash('error', 'Email manquant.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            $this->addFlash('error', 'Utilisateur introuvable.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($user->isVerified()) {
+            $this->addFlash('info', 'Ce compte est déjà vérifié.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('no-reply@tonsite.com', 'Falkon-ANK'))
+                ->to($user->getEmail())
+                ->subject('Confirmez votre adresse e-mail')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+
+        $this->addFlash('success', 'Email de vérification renvoyé.');
+
+        return $this->redirectToRoute('app_login');
+    }
 
 
     // ---------------------------------MERCHANT--------------------------------------------------------------------------------------------------------------
