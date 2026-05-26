@@ -505,6 +505,41 @@
 			background:#1db954;
 			transform:scale(1.1);
 		}
+
+		@media (max-width: 768px) {
+
+			.global-player{
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				z-index: 9999;
+
+				background: #111;
+				border-top: 1px solid #222;
+				border-bottom: none;
+
+				padding: 10px;
+				gap: 8px;
+
+				box-shadow: 0 -10px 30px rgba(0,0,0,0.6);
+			}
+
+			/* pour éviter que le contenu passe sous le player */
+			body{
+				padding-bottom: 120px;
+			}
+
+			#main-player{
+				max-width: 100%;
+			}
+
+			.global-player button{
+				width: 42px;
+				height: 42px;
+				font-size: 16px;
+			}
+		}
 	</style>
 
 	{# =========================
