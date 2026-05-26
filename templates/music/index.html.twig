@@ -481,7 +481,12 @@
 		.zoomable-cover:hover{
 			transform:scale(1.03);
 			box-shadow:0 0 25px rgba(29,185,84,.4);
-		}		
+		}
+		
+		.shuffle-active{
+			background:#18a349 !important;
+			box-shadow:0 0 15px #00d9ff;
+		}
 	</style>
 
 	{# =========================
@@ -523,10 +528,10 @@
 
 		<button id="nextBtn">⏭</button>
 
+		<button id="shuffleBtn">🔀</button>
+
 		<button id="repeatBtn">🔂</button>
 		{# 🔁 #}
-		{# <i class="bi bi-repeat-1"> #}
-
 		<div class="now-playing" id="nowPlaying">
 			{{ 'music.no_track'|trans }}
 		</div>
@@ -653,6 +658,9 @@
 	<script>
 
 const repeatBtn = document.getElementById('repeatBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+
+let shuffleMode = false;
 let repeatMode = false;
 
 		const player = document.getElementById('main-player');
@@ -824,10 +832,18 @@ if (!fullAccess && player.currentTime >= 60) {
 
 nextBtn.addEventListener('click', () => {
 
-currentIndex++;
+if(shuffleMode){
 
-if (currentIndex >= tracks.length) {
-currentIndex = 0;
+	currentIndex = getRandomTrackIndex();
+
+}else{
+
+	currentIndex++;
+
+	if (currentIndex >= tracks.length) {
+		currentIndex = 0;
+	}
+
 }
 
 loadTrack(currentIndex);
@@ -871,10 +887,18 @@ player.addEventListener('ended', () => {
 	}
 
 	// musique suivante
-	currentIndex++;
+	if(shuffleMode){
 
-	if(currentIndex >= tracks.length){
-		currentIndex = 0;
+		currentIndex = getRandomTrackIndex();
+
+	}else{
+
+		currentIndex++;
+
+		if(currentIndex >= tracks.length){
+			currentIndex = 0;
+		}
+
 	}
 
 	loadTrack(currentIndex);
@@ -1052,6 +1076,40 @@ zoomableCovers.forEach(cover => {
 	});
 
 });
+
+/* =========================
+   SHUFFLE MODE
+========================= */
+
+shuffleBtn.addEventListener('click', () => {
+
+	shuffleMode = !shuffleMode;
+
+	if(shuffleMode){
+
+		shuffleBtn.classList.add('shuffle-active');
+
+	}else{
+
+		shuffleBtn.classList.remove('shuffle-active');
+
+	}
+
+});
+
+function getRandomTrackIndex(){
+
+	let randomIndex;
+
+	do{
+
+		randomIndex = Math.floor(Math.random() * tracks.length);
+
+	}while(randomIndex === currentIndex && tracks.length > 1);
+
+	return randomIndex;
+
+}
 	</script>
 
 {% endblock %}
