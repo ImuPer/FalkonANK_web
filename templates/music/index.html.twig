@@ -642,6 +642,10 @@
 					{% endif %}
 				</button>
 
+				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
+					🎤
+				</button>
+
 				<button class="album-btn"
 					data-image="
 					{% if music.coverImage %}
@@ -653,10 +657,6 @@
 					{% endif %}
 				">
 					💿
-				</button>
-
-				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
-					🎤
 				</button>
 
 			</div>
