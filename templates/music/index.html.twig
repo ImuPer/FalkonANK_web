@@ -487,6 +487,24 @@
 			background:#18a349 !important;
 			box-shadow:0 0 15px #00d9ff;
 		}
+
+		.album-btn{
+			margin-left: 10px;
+			background:#222;
+			color:white;
+			border:none;
+			width:45px;
+			height:45px;
+			border-radius:50%;
+			cursor:pointer;
+			font-size:18px;
+			transition:.3s;
+		}
+
+		.album-btn:hover{
+			background:#1db954;
+			transform:scale(1.1);
+		}
 	</style>
 
 	{# =========================
@@ -622,6 +640,19 @@
 							</a>
 						{% endif %}
 					{% endif %}
+				</button>
+
+				<button class="album-btn"
+					data-image="
+					{% if music.coverImage %}
+						{{ asset('uploads/images/' ~ music.coverImage) }}
+					{% elseif music.album and music.album.coverImage %}
+						{{ asset('uploads/albums/' ~ music.album.coverImage) }}
+					{% else %}
+						{{ asset('images/default-music.jpg') }}
+					{% endif %}
+				">
+					🖼
 				</button>
 
 				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
@@ -1051,17 +1082,18 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* =========================
-   CARD IMAGE ZOOM
+   BUTTON ALBUM ZOOM
 ========================= */
 
-const zoomableCovers = document.querySelectorAll('.zoomable-cover');
 const zoomedCover = document.getElementById('zoomedCover');
 
-zoomableCovers.forEach(cover => {
+const albumButtons = document.querySelectorAll('.album-btn');
 
-	cover.addEventListener('click', () => {
+albumButtons.forEach(btn => {
 
-		const image = cover.dataset.image;
+	btn.addEventListener('click', () => {
+
+		const image = btn.dataset.image;
 
 		zoomedCover.src = image;
 
@@ -1070,6 +1102,7 @@ zoomableCovers.forEach(cover => {
 	});
 
 });
+
 
 /* =========================
    SHUFFLE MODE
