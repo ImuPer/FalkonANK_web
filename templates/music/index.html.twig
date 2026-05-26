@@ -520,7 +520,14 @@
 																	========================= #}
 	<div class="album-header">
 		<h2>💿 {{ pageTitle }}</h2>
-		
+		{% if app.user and not hasBought %}
+			<div style="margin-top:20px; position:relative; z-index:2;">
+				<a href="{{ path('app_album_buy', {id: album.id}) }}"
+				class="btn btn-success">
+					🛒 {{ 'music.buy_album'|trans }}
+				</a>
+			</div>
+		{% endif %}
 	</div>
 
 	<div class="cover-modal" id="coverModal">
@@ -651,15 +658,6 @@
 				">
 					💿
 				</button>
-
-				{% if app.user and not hasBought %}
-					<div style="margin-top:20px; position:relative; z-index:2;">
-						<a href="{{ path('app_album_buy', {id: album.id}) }}"
-						class="btn btn-success">
-							🛒 {{ 'music.buy_album'|trans }}
-						</a>
-					</div>
-				{% endif %}
 
 			</div>
 
