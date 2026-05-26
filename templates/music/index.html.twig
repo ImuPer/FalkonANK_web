@@ -681,6 +681,9 @@ repeatBtn.addEventListener('click', () => {
 
 	repeatMode = !repeatMode;
 
+	// repeat natif HTML5
+	player.loop = repeatMode;
+
 	if(repeatMode){
 
 		repeatBtn.classList.add('repeat-active');
@@ -876,15 +879,6 @@ player.play();
 
 player.addEventListener('ended', () => {
 
-	// repeat même musique
-	if(repeatMode){
-
-		player.currentTime = 0;
-
-		player.play();
-
-		return;
-	}
 
 	// musique suivante
 	if(shuffleMode){
