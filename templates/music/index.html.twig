@@ -506,56 +506,19 @@
 			transform:scale(1.1);
 		}
 
-		@media (max-width: 768px) {
-
-			.global-player{
-				position: fixed;
-				top: 0;
-				left: 0;
-				right: 0;
-
-				z-index: 9999;
-
-				background: rgba(17,17,17,0.98);
-				backdrop-filter: blur(10px);
-
-				border-bottom: 1px solid #222;
-				border-top: none;
-
-				padding: 8px 10px;
-
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 8px;
-
-				height: 60px;
-			}
-
-			/* éviter que le contenu passe sous le player */
-			body{
-				padding-top: 70px;
-			}
-
-			.global-player button{
-				width: 36px;
-				height: 36px;
-				font-size: 14px;
-				border-radius: 50%;
-			}
-
-			.now-playing{
-				font-size: 12px;
-				min-width: 80px;
-				max-width: 120px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-
-			#main-player{
-				display: none; /* optionnel: cache le player natif sur mobile */
-			}
+		.global-player {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 9999;
+			background: #111;
+			border-top: 1px solid #222;
+			padding: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
 		}
 	</style>
 
