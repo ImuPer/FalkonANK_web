@@ -14,7 +14,7 @@ class AlbumPurchase
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist'])]
+   #[ORM\ManyToOne(inversedBy: 'albumPurchases')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

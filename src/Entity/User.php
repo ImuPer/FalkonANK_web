@@ -66,12 +66,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'user')]
     private Collection $categories;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AlbumPurchase::class)]
+    private Collection $albumPurchases;
+
     public function __construct()
     {
         $this->merchants = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->albumPurchases = new ArrayCollection();
     }
-  
+
     public function getId(): ?int
     {
         return $this->id;
@@ -272,44 +276,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function __toString(): string
-{
-    return $this->email;
-}
-
-public function getUserEmail(): ?string
-{
-    return $this->user?->getEmail();
-}
-
-/**
- * @return Collection<int, Merchant>
- */
-public function getMerchants(): Collection
-{
-    return $this->merchants;
-}
-
-public function addMerchant(Merchant $merchant): static
-{
-    if (!$this->merchants->contains($merchant)) {
-        $this->merchants->add($merchant);
-        $merchant->setUser($this);
+    {
+        return $this->email;
     }
 
-    return $this;
-}
+    public function getUserEmail(): ?string
+    {
+        return $this->user?->getEmail();
+    }
 
-public function removeMerchant(Merchant $merchant): static
-{
-    if ($this->merchants->removeElement($merchant)) {
-        // set the owning side to null (unless already changed)
-        if ($merchant->getUser() === $this) {
-            $merchant->setUser(null);
+    /**
+     * @return Collection<int, Merchant>
+     */
+    public function getMerchants(): Collection
+    {
+        return $this->merchants;
+    }
+
+    public function addMerchant(Merchant $merchant): static
+    {
+        if (!$this->merchants->contains($merchant)) {
+            $this->merchants->add($merchant);
+            $merchant->setUser($this);
         }
+
+        return $this;
     }
 
-    return $this;
-}
+    public function removeMerchant(Merchant $merchant): static
+    {
+        if ($this->merchants->removeElement($merchant)) {
+            // set the owning side to null (unless already changed)
+            if ($merchant->getUser() === $this) {
+                $merchant->setUser(null);
+            }
+        }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AlbumPurchase>
+     */
+    public function getAlbumPurchases(): Collection
+    {
+        return $this->albumPurchases;
+    }
+
+    public function addAlbumPurchase(AlbumPurchase $albumPurchase): static
+    {
+        if (!$this->albumPurchases->contains($albumPurchase)) {
+            $this->albumPurchases->add($albumPurchase);
+            $albumPurchase->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlbumPurchase(AlbumPurchase $albumPurchase): static
+    {
+        if ($this->albumPurchases->removeElement($albumPurchase)) {
+            if ($albumPurchase->getUser() === $this) {
+                $albumPurchase->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
 }
