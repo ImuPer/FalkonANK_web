@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Facture {{ invoiceNumber }}</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; color: #111; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .box { margin-bottom: 20px; }
+        h1 { color: #1db954; }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>FACTURE</h1>
+    <p>N° {{ invoiceNumber }}</p>
+</div>
+
+<div class="box">
+    <h3>Client</h3>
+    <p>
+        {{ customerName }}<br>
+        {{ customerEmail }}<br>
+        {{ customerPhone }}
+    </p>
+</div>
+
+<div class="box">
+    <h3>Album</h3>
+    <p>
+        <strong>{{ albumName }}</strong><br>
+        Label : {{ recordLabel }}<br>
+        Date : {{ releaseDate|date('d/m/Y') }}
+    </p>
+</div>
+
+<div class="box">
+    <h3>Paiement</h3>
+    <p>
+        Montant : <strong>{{ amountPaid }} {{ currency }}</strong><br>
+        Stripe ID : {{ paymentIntent }}
+    </p>
+</div>
+
+</body>
+</html>
