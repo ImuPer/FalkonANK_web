@@ -53,6 +53,9 @@ class AlbumPurchase
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $invoiceNumber = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -198,6 +201,18 @@ class AlbumPurchase
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getInvoiceNumber(): ?string
+    {
+        return $this->invoiceNumber;
+    }
+
+    public function setInvoiceNumber(?string $invoiceNumber): static
+    {
+        $this->invoiceNumber = $invoiceNumber;
 
         return $this;
     }

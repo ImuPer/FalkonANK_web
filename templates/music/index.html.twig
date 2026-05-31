@@ -527,6 +527,17 @@
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 			</div>
+
+			{% if purchase and purchase.invoiceFile %}
+				<div style="margin-top:15px;">
+					<a href="{{ path('app_invoice_download', {
+						id: purchase.id
+					}) }}"
+					class="buy-btn">
+						📄 Télécharger ma facture
+					</a>
+				</div>
+			{% endif %}
 		{% endif %}
 	</div>
 

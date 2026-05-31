@@ -5,7 +5,7 @@
 {% set pageTitle = album is defined ? album.name : product.name %}
 {% set coverImage = album is defined ? asset('uploads/albums/' ~ album.coverImage) : asset('upload/images/products/' ~ product.img) %}
 
-{% block title %}🎵 Album -
+{% block title %}🎵 {{ 'music.album'|trans }} -
 	{{ pageTitle }}
 {% endblock %}
 
@@ -325,6 +325,21 @@
 			transform: scale(1.1);
 		}
 
+		.lyrics-text {
+			white-space: pre-line;
+			line-height: 1.8;
+			color: #ddd;
+			font-size: 18px;
+
+			/* anti copie */
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+
+			-webkit-touch-callout: none;
+		}
+
 		/* =========================
    MODAL LYRICS
 ========================= */
@@ -397,13 +412,14 @@
 		.album-header {
 			text-align: center;
 			padding: 100px 20px;
-			position: relative;
+			position:relative;
+			z-index:0;
+			overflow:visible;
 			background-image: url("{{ coverImage }}");
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
 			border-radius: 0 0 30px 30px;
-			overflow: hidden;
 		}
 		.album-header::before {
 			content: "";
@@ -456,6 +472,40 @@
 			background:#18a349 !important;
 			box-shadow:0 0 15px #dbea0d;
 		}
+
+		.zoomable-cover{
+			cursor:pointer;
+			transition:.3s;
+		}
+
+		.zoomable-cover:hover{
+			transform:scale(1.03);
+			box-shadow:0 0 25px rgba(29,185,84,.4);
+		}
+		
+		.shuffle-active{
+			background:#18a349 !important;
+			box-shadow:0 0 15px #00d9ff;
+		}
+
+		.album-btn{
+			margin-left: 10px;
+			background:#222;
+			color:white;
+			border:none;
+			width:45px;
+			height:45px;
+			border-radius:50%;
+			cursor:pointer;
+			font-size:18px;
+			transition:.3s;
+		}
+
+		.album-btn:hover{
+			background:#1db954;
+			transform:scale(1.1);
+		}
+		
 	</style>
 
 	{# =========================
@@ -474,7 +524,7 @@
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="btn btn-success">
-					🛒 Acheter l'album
+					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 			</div>
 		{% endif %}
@@ -497,10 +547,11 @@
 
 		<button id="nextBtn">⏭</button>
 
-		<button id="repeatBtn">🔁</button>
+		<button id="shuffleBtn">🔀</button>
 
+		<button id="repeatBtn">🔂</button>
 		<div class="now-playing" id="nowPlaying">
-			Aucun morceau
+			{{ 'music.no_track'|trans }}
 		</div>
 
 		{# <audio id="main-player" controls></audio> #}
@@ -532,8 +583,17 @@
 
 				<div class="cd-wrapper">
 
-					<div class="cd-disc" id="disc-{{ loop.index0 }}">
-
+					<div class="cd-disc zoomable-cover"
+					id="disc-{{ loop.index0 }}"
+					data-image="
+					{% if music.coverImage %}
+						{{ asset('uploads/images/' ~ music.coverImage) }}
+					{% elseif music.album and music.album.coverImage %}
+						{{ asset('uploads/albums/' ~ music.album.coverImage) }}
+					{% else %}
+						{{ asset('images/default-music.jpg') }}
+					{% endif %}
+					">
 						{% if music.coverImage %}
 							<img src="{{ asset('uploads/images/' ~ music.coverImage) }}" alt="{{ music.title }}">
 						{% elseif music.album and music.album.coverImage %}
@@ -547,35 +607,56 @@
 				</div>
 
 				<div class="music-title">
-					{{ music.title }}
+					{{ music.track }} <br> {{ music.title }}
 				</div>
 
 				<div class="music-artist">
 					{{ music.artist }}
 				</div>
 
-				<div class="music-views">
+				{# <div class="music-views">
 					👁
 					{{ music.views }}
-					vues
-				</div>
+					{{ 'music.views'|trans }}
+				</div> #}
 
 				<button class="play-btn {% if not canPlayFullTrack %}locked-btn{% endif %}"
 					data-id="{{ music.id }}"
 					data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
 					data-title="{{ music.title }}"
 					data-index="{{ loop.index0 }}"
-					data-full="{{ hasBought ? '1' : '0' }}">
+					data-full="{{ canPlayFullTrack ? '1' : '0' }}">
 
-					{% if canPlayFullTrack %}
-						▶ Lire
+					{% if app.user %}
+						▶ {{ 'music.play'|trans }}
 					{% else %}
-						🔒 Acheter l'album
+						{% if isFreeTrack %}
+							▶ {{ 'music.play'|trans }}
+						{% else %}
+							<a href="{{ path('app_login', {
+								_target_path: app.request.uri
+							}) }}">
+								🔒 {{ 'music.login_to_listen'|trans }}
+							</a>
+						{% endif %}
 					{% endif %}
 				</button>
 
 				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
 					🎤
+				</button>
+
+				<button class="album-btn"
+					data-image="
+					{% if music.coverImage %}
+						{{ asset('uploads/images/' ~ music.coverImage) }}
+					{% elseif music.album and music.album.coverImage %}
+						{{ asset('uploads/albums/' ~ music.album.coverImage) }}
+					{% else %}
+						{{ asset('images/default-music.jpg') }}
+					{% endif %}
+				">
+					💿
 				</button>
 
 			</div>
@@ -593,10 +674,13 @@
 			</span>
 
 			<h2 id="lyricsTitle">
-				Lyrics
+				{{ 'music.lyrics'|trans }}
 			</h2>
 
-			<div class="lyrics-text" id="lyricsText"></div>
+			<div class="lyrics-text"
+				id="lyricsText"
+				oncontextmenu="return false">
+			</div>
 
 		</div>
 
@@ -605,6 +689,9 @@
 	<script>
 
 const repeatBtn = document.getElementById('repeatBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+
+let shuffleMode = false;
 let repeatMode = false;
 
 		const player = document.getElementById('main-player');
@@ -624,6 +711,9 @@ let currentIndex = 0;
 repeatBtn.addEventListener('click', () => {
 
 	repeatMode = !repeatMode;
+
+	// repeat natif HTML5
+	player.loop = repeatMode;
 
 	if(repeatMode){
 
@@ -757,9 +847,15 @@ const fullAccess = currentTrack.dataset.full === "1";
 if (!fullAccess && player.currentTime >= 60) {
     player.pause();
 
-    if (confirm("🔒 Acheter l'album pour écouter la musique complète ?")) {
-    window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
-	}
+    const isLogged = {{ app.user ? 'true' : 'false' }};
+
+    if (!isLogged) {
+        window.location.href = "{{ path('app_login') }}";
+    } else {
+        if (confirm("{{ 'music.confirm_buy'|trans }}")) {
+            window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
+        }
+    }
 }
 
 });
@@ -770,10 +866,18 @@ if (!fullAccess && player.currentTime >= 60) {
 
 nextBtn.addEventListener('click', () => {
 
-currentIndex++;
+if(shuffleMode){
 
-if (currentIndex >= tracks.length) {
-currentIndex = 0;
+	currentIndex = getRandomTrackIndex();
+
+}else{
+
+	currentIndex++;
+
+	if (currentIndex >= tracks.length) {
+		currentIndex = 0;
+	}
+
 }
 
 loadTrack(currentIndex);
@@ -806,21 +910,20 @@ player.play();
 
 player.addEventListener('ended', () => {
 
-	// repeat même musique
-	if(repeatMode){
-
-		player.currentTime = 0;
-
-		player.play();
-
-		return;
-	}
 
 	// musique suivante
-	currentIndex++;
+	if(shuffleMode){
 
-	if(currentIndex >= tracks.length){
-		currentIndex = 0;
+		currentIndex = getRandomTrackIndex();
+
+	}else{
+
+		currentIndex++;
+
+		if(currentIndex >= tracks.length){
+			currentIndex = 0;
+		}
+
 	}
 
 	loadTrack(currentIndex);
@@ -879,8 +982,9 @@ btn.addEventListener('click', () => {
 
 lyricsTitle.innerHTML = "🎤 " + btn.dataset.title;
 
-lyricsText.innerHTML = btn.dataset.lyrics ? btn.dataset.lyrics : "Aucune parole disponible.";
-
+lyricsText.innerHTML = btn.dataset.lyrics
+    ? btn.dataset.lyrics
+    : "{{ 'music.no_lyrics'|trans }}";
 lyricsModal.style.display = 'flex';
 
 });
@@ -940,6 +1044,99 @@ coverModal.addEventListener('click', (e) => {
 	}
 
 });
+
+/* =========================
+   BLOCK COPY LYRICS
+========================= */
+
+lyricsText.addEventListener('copy', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('cut', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('contextmenu', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('selectstart', (e) => {
+	e.preventDefault();
+});
+
+lyricsText.addEventListener('dragstart', (e) => {
+	e.preventDefault();
+});
+
+document.addEventListener('keydown', (e) => {
+
+	// Ctrl+C
+	if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+
+		if (lyricsModal.style.display === 'flex') {
+			e.preventDefault();
+		}
+	}
+
+});
+
+/* =========================
+   BUTTON ALBUM ZOOM
+========================= */
+
+const zoomedCover = document.getElementById('zoomedCover');
+
+const albumButtons = document.querySelectorAll('.album-btn');
+
+albumButtons.forEach(btn => {
+
+	btn.addEventListener('click', () => {
+
+		const image = btn.dataset.image;
+
+		zoomedCover.src = image;
+
+		coverModal.style.display = 'flex';
+
+	});
+
+});
+
+
+/* =========================
+   SHUFFLE MODE
+========================= */
+
+shuffleBtn.addEventListener('click', () => {
+
+	shuffleMode = !shuffleMode;
+
+	if(shuffleMode){
+
+		shuffleBtn.classList.add('shuffle-active');
+
+	}else{
+
+		shuffleBtn.classList.remove('shuffle-active');
+
+	}
+
+});
+
+function getRandomTrackIndex(){
+
+	let randomIndex;
+
+	do{
+
+		randomIndex = Math.floor(Math.random() * tracks.length);
+
+	}while(randomIndex === currentIndex && tracks.length > 1);
+
+	return randomIndex;
+
+}
 	</script>
 
 {% endblock %}

@@ -1,0 +1,36 @@
+<h2>Merci pour votre achat 🎵</h2>
+
+<p>
+Bonjour {{ customerName }},
+</p>
+
+<p>
+Votre paiement a été validé avec succès.
+</p>
+
+<p>
+Album :
+<strong>{{ albumName }}</strong>
+</p>
+
+<p>
+Montant payé :
+<strong>{{ amountPaid }} {{ currency }}</strong>
+</p>
+
+<p>
+La facture PDF est jointe à cet email.
+</p>
+<h3>Adresse de facturation</h3>
+
+<p>
+    {{ customerName }}<br>
+    {{ customerAddressLine1 }}<br>
+
+    {% if customerAddressLine2 %}
+        {{ customerAddressLine2 }}<br>
+    {% endif %}
+
+    {{ customerPostalCode }} {{ customerCity }}<br>
+    {{ customerCountry }}
+</p>
