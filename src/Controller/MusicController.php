@@ -117,9 +117,15 @@ class MusicController extends AbstractController
             'track' => 'ASC'
         ]);
 
+        $purchase = $purchaseRepository->findOneBy([
+            'user' => $this->getUser(),
+            'album' => $album
+        ]);
+
         return $this->render('music/index.html.twig', [
             'album' => $album,
             'musics' => $musics,
+            'purchase' => $purchase,
             'hasBought' => $hasBought
         ]);
     }
