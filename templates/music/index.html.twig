@@ -861,7 +861,9 @@ if (!fullAccess && player.currentTime >= 60) {
     const isLogged = {{ app.user ? 'true' : 'false' }};
 
     if (!isLogged) {
-        window.location.href = "{{ path('app_login') }}";
+        window.location.href =
+		"{{ path('app_login') }}?_target_path=" +
+		encodeURIComponent(window.location.pathname + window.location.search);
     } else {
         if (confirm("{{ 'music.confirm_buy'|trans }}")) {
             window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
