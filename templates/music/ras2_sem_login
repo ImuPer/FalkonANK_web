@@ -527,6 +527,17 @@
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 			</div>
+
+			{% if purchase is defined and purchase and purchase.invoiceFile %}
+				<div style="margin-top:15px;">
+					<a href="{{ path('app_invoice_download', {
+						id: purchase.id
+					}) }}"
+					class="buy-btn">
+						📄 Télécharger ma facture
+					</a>
+				</div>
+			{% endif %}
 		{% endif %}
 	</div>
 
@@ -850,7 +861,9 @@ if (!fullAccess && player.currentTime >= 60) {
     const isLogged = {{ app.user ? 'true' : 'false' }};
 
     if (!isLogged) {
-        window.location.href = "{{ path('app_login') }}";
+        window.location.href =
+		"{{ path('app_login') }}?_target_path=" +
+		encodeURIComponent(window.location.pathname + window.location.search);
     } else {
         if (confirm("{{ 'music.confirm_buy'|trans }}")) {
             window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";

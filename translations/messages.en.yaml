@@ -970,7 +970,8 @@ music:
   login_to_listen: "Login to listen"
   lyrics: "Lyrics"
   no_lyrics: "No lyrics available."
-  confirm_buy: "🔒 Buy the album to listen to the full track?"
+  confirm_buy: "🔒 Buy the album to listen to the full track? Streaming access is valid for 1 year from the date of purchase."
+
 
 albums:
   title: "Albums"

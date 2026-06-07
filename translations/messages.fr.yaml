@@ -969,7 +969,7 @@ music:
   login_to_listen: "Connecte-toi"
   lyrics: "Paroles"
   no_lyrics: "Aucune parole disponible."
-  confirm_buy: "🔒 Acheter l'album pour écouter la musique complète ?"
+  confirm_buy: "🔒 Acheter l'album pour écouter la musique en intégralité ? L'accès en streaming est valable pendant 1 an à compter de la date d'achat."
 
 albums:
   title: "Albums"
