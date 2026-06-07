@@ -864,18 +864,18 @@ if (!fullAccess && player.currentTime >= 60) {
 
     const isLogged = {{ app.user ? 'true' : 'false' }};
 
-    if (!isLogged) {
-        window.location.href =
-		"{{ path('app_login') }}?_target_path=" +
-		encodeURIComponent(window.location.pathname + window.location.search);
-    } else {
+	if (!isLogged) {
+		window.location.href =
+			"{{ path('app_login') }}?_target_path=" +
+			encodeURIComponent(window.location.pathname + window.location.search);
+	} else {
 		Swal.fire({
-			title: "{{ 'music.confirm_buy'|trans|e('js') }}",
-			html: '<p class="conf2">{{ "music.confirm_buy2"|trans|lower|e('js') }}</p>',
+			title: "{{ 'music.confirm_buy'|trans }}",
+			html: '<p class="conf2">{{ "music.confirm_buy2"|trans }}</p>',
 			icon: 'question',
 			showCancelButton: true,
-			confirmButtonText: "{{ 'global.yes'|trans|e('js') }}",
-			cancelButtonText: "{{ 'global.no'|trans|e('js') }}"
+			confirmButtonText: 'OK',
+			cancelButtonText: 'Annuler'
 		}).then((result) => {
 			if (result.isConfirmed) {
 				window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
