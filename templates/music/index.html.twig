@@ -506,6 +506,24 @@
 			transform:scale(1.1);
 		}
 		
+		.buy-icon{
+			display:inline-flex;
+			align-items:center;
+			justify-content:center;
+			width:50px;
+			height:50px;
+			border-radius:50%;
+			background:#1db954;
+			color:#fff;
+			text-decoration:none;
+			font-size:22px;
+			transition:.3s;
+		}
+
+		.buy-icon:hover{
+			transform:scale(1.1);
+			color:#fff;
+		}
 	</style>
 
 	{# =========================
@@ -631,27 +649,36 @@
 					{{ 'music.views'|trans }}
 				</div> #}
 
-				<button class="play-btn {% if not canPlayFullTrack %}locked-btn{% endif %}"
-					data-id="{{ music.id }}"
-					data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
-					data-title="{{ music.title }}"
-					data-index="{{ loop.index0 }}"
-					data-full="{{ canPlayFullTrack ? '1' : '0' }}">
+				{% if hasBought or isFreeTrack %}
 
-					{% if app.user %}
+					<button class="play-btn"
+						data-id="{{ music.id }}"
+						data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
+						data-title="{{ music.title }}"
+						data-index="{{ loop.index0 }}"
+						data-full="1">
 						▶ {{ 'music.play'|trans }}
-					{% else %}
-						{% if isFreeTrack %}
-							▶ {{ 'music.play'|trans }}
-						{% else %}
-							<a href="{{ path('app_login', {
-								_target_path: app.request.uri
-							}) }}">
-								🔒 {{ 'music.login_to_listen'|trans }}
-							</a>
-						{% endif %}
-					{% endif %}
-				</button>
+					</button>
+
+				{% elseif app.user %}
+
+					<a href="{{ path('app_album_buy', {id: album.id}) }}"
+					class="buy-icon"
+					title="{{ 'music.buy_album'|trans }}">
+						🛒
+					</a>
+
+				{% else %}
+
+					<a href="{{ path('app_login', {
+						_target_path: app.request.uri
+					}) }}"
+					class="buy-icon"
+					title="{{ 'music.login_to_listen'|trans }}">
+						🔒
+					</a>
+
+				{% endif %}
 
 				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
 					🎤
