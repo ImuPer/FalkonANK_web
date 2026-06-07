@@ -959,8 +959,8 @@ music:
   login_to_listen: "Iniciar sessão"
   lyrics: "Letras"
   no_lyrics: "Nenhuma letra disponível."
-  confirm_buy: "🔒 Comprar o álbum para ouvir a música completa? O acesso em streaming é válido por 1 ano após a data da compra."
-
+  confirm_buy: "🔒 Comprar o álbum para ouvir a música completa?"
+  confirm_buy2: " O acesso em streaming é válido por 1 ano após a data da compra."
 albums:
   title: "Álbuns"
   all_albums: "Todos os Álbuns"
