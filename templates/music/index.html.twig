@@ -869,10 +869,16 @@ if (!fullAccess && player.currentTime >= 60) {
 		"{{ path('app_login') }}?_target_path=" +
 		encodeURIComponent(window.location.pathname + window.location.search);
     } else {
-        if (confirm("{{ 'music.confirm_buy'|trans }}\n
-					<p class="conf2"> {{ 'music.confirm_buy2'|trans|lower }}</p>")) {
-            window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
-        }
+       Swal.fire({
+    title: "{{ 'music.confirm_buy'|trans }}",
+    html: '<p class="conf2">{{ "music.confirm_buy2"|trans|lower }}</p>',
+    showCancelButton: true,
+    confirmButtonText: 'OK'
+}).then((result) => {
+    if (result.isConfirmed) {
+        window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
+    }
+});
     }
 }
 
