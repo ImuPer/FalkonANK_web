@@ -652,28 +652,6 @@
 						{% endif %}
 					{% endif %}
 
-					{# ---------acheter------------------ #}
-							{# {% if app.user and not hasBought %}
-								<div style="margin-top:20px; position:relative; z-index:2;">
-									<a href="{{ path('app_album_buy', {id: album.id}) }}"
-									class="btn btn-success">
-										🛒 {{ 'music.buy_album'|trans }}
-									</a>
-								</div>
-
-								{% if purchase is defined and purchase and purchase.invoiceFile %}
-									<div style="margin-top:15px;">
-										<a href="{{ path('app_invoice_download', {
-											id: purchase.id
-										}) }}"
-										class="buy-btn">
-											📄 Télécharger ma facture
-										</a>
-									</div>
-								{% endif %}
-							{% endif %} #}
-
-					
 				</button>
 
 				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
@@ -692,6 +670,29 @@
 				">
 					💿
 				</button>
+
+				
+
+			{# ---------acheter------------------ #}
+				{% if app.user and not hasBought %}
+					<div style="margin-top:20px; position:relative; z-index:2;">
+						<a href="{{ path('app_album_buy', {id: album.id}) }}"
+						class="btn btn-success">
+							🛒 {{ 'music.buy_album'|trans }}
+						</a>
+					</div>
+
+					{% if purchase is defined and purchase and purchase.invoiceFile %}
+						<div style="margin-top:15px;">
+							<a href="{{ path('app_invoice_download', {
+								id: purchase.id
+							}) }}"
+							class="buy-btn">
+								📄 Télécharger ma facture
+							</a>
+						</div>
+					{% endif %}
+				{% endif %}
 
 			</div>
 
