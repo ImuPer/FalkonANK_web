@@ -643,6 +643,13 @@
 					{% else %}
 						{% if isFreeTrack %}
 							▶ {{ 'music.play'|trans }}
+						{% else %}
+							<a href="{{ path('app_login', {
+								_target_path: app.request.uri
+							}) }}">
+								🔒 {{ 'music.login_to_listen'|trans }}
+							</a>
+
 							{# ---------acheter------------------ #}
 							{% if app.user and not hasBought %}
 								<div style="margin-top:20px; position:relative; z-index:2;">
@@ -663,13 +670,6 @@
 									</div>
 								{% endif %}
 							{% endif %}
-
-						{% else %}
-							<a href="{{ path('app_login', {
-								_target_path: app.request.uri
-							}) }}">
-								🔒 {{ 'music.login_to_listen'|trans }}
-							</a>
 						{% endif %}
 					{% endif %}
 
