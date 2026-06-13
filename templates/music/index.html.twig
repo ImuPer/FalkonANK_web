@@ -649,9 +649,11 @@
 							}) }}">
 								🔒 {{ 'music.login_to_listen'|trans }}
 							</a>
+						{% endif %}
+					{% endif %}
 
-							{# ---------acheter------------------ #}
-							{% if app.user and not hasBought %}
+					{# ---------acheter------------------ #}
+							{# {% if app.user and not hasBought %}
 								<div style="margin-top:20px; position:relative; z-index:2;">
 									<a href="{{ path('app_album_buy', {id: album.id}) }}"
 									class="btn btn-success">
@@ -669,9 +671,7 @@
 										</a>
 									</div>
 								{% endif %}
-							{% endif %}
-						{% endif %}
-					{% endif %}
+							{% endif %} #}
 
 					
 				</button>
