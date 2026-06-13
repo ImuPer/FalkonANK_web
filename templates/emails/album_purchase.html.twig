@@ -23,16 +23,13 @@ La facture PDF est jointe à cet email.
 </p>
 <br>
 <h3>Adresse de facturation</h3>
-<p>
-    {# {{ customerName }}<br> #}
-    {% if customerAddressLine1 %}
+<p>    
+    {# {% if customerAddressLine1 %}
         {{ customerAddressLine1 }}<br>
     {% endif %}
-
     {% if customerAddressLine2 %}
         {{ customerAddressLine2 }}<br>
     {% endif %}
-
-    {{ customerPostalCode }} {{ customerCity }}<br>
+    {{ customerPostalCode }} {{ customerCity }}<br> #}
     {{ customerCountry }}
 </p>
