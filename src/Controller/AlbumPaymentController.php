@@ -250,7 +250,7 @@ class AlbumPaymentController extends AbstractController
         }
 
         $html = $this->renderView(
-            'invoice/album_invoice.html.twig',
+            'music/album_invoice.html.twig',
             [
                 'purchase' => $purchase,
                 'user' => $purchase->getUser(),
