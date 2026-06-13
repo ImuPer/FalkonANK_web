@@ -56,6 +56,15 @@ class AlbumPurchase
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $invoiceNumber = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customerName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customerEmail = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customerPhone = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -213,6 +222,42 @@ class AlbumPurchase
     public function setInvoiceNumber(?string $invoiceNumber): static
     {
         $this->invoiceNumber = $invoiceNumber;
+
+        return $this;
+    }
+
+    public function getCustomerName(): ?string
+    {
+        return $this->customerName;
+    }
+
+    public function setCustomerName(?string $customerName): static
+    {
+        $this->customerName = $customerName;
+
+        return $this;
+    }
+
+    public function getCustomerEmail(): ?string
+    {
+        return $this->customerEmail;
+    }
+
+    public function setCustomerEmail(?string $customerEmail): static
+    {
+        $this->customerEmail = $customerEmail;
+
+        return $this;
+    }
+
+    public function getCustomerPhone(): ?string
+    {
+        return $this->customerPhone;
+    }
+
+    public function setCustomerPhone(?string $customerPhone): static
+    {
+        $this->customerPhone = $customerPhone;
 
         return $this;
     }

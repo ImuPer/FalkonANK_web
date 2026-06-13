@@ -71,6 +71,20 @@ class AlbumPaymentController extends AbstractController
             'album' => $album
         ]);
 
+        $customerName = $session->customer_details->name ?? '';
+        $customerEmail = $session->customer_details->email ?? '';
+        $customerPhone = $session->customer_details->phone ?? '';
+        $billingAddress = $session->customer_details->address ?? null;
+        $customerAddressLine1 = $billingAddress?->line1 ?? '';
+        $customerAddressLine2 = $billingAddress?->line2 ?? '';
+        $customerCity = $billingAddress?->city ?? '';
+        $customerPostalCode = $billingAddress?->postal_code ?? '';
+        $customerCountry = $billingAddress?->country ?? '';
+
+        $amountPaid = $session->amount_total / 100;
+        $currency = strtoupper($session->currency);
+        $paymentIntent = $session->payment_intent;
+
         if (!$existing) {
 
             $purchase = new AlbumPurchase();
@@ -80,9 +94,9 @@ class AlbumPaymentController extends AbstractController
 
             $purchase->setPurchaseDate(new \DateTime());
 
-            $purchase->setPurchasePrice($album->getPrice());
+            $purchase->setPurchasePrice($amountPaid);
 
-            $purchase->setCurrency('EUR');
+            $purchase->setCurrency($currency);
 
             $purchase->setPaymentStatus('paid');
 
@@ -93,6 +107,10 @@ class AlbumPaymentController extends AbstractController
             $purchase->setQuantity(1);
 
             $purchase->setCreatedAt(new \DateTimeImmutable());
+            
+            $purchase->setCustomerName($customerName);
+            $purchase->setCustomerEmail($customerEmail);
+            $purchase->setCustomerPhone($customerPhone);
 
             $em->persist($purchase);
             $em->flush();
@@ -107,20 +125,6 @@ class AlbumPaymentController extends AbstractController
             $em->flush();
 
             //----------facture----------------------------------------------------------
-            $customerName = $session->customer_details->name ?? '';
-            $customerEmail = $session->customer_details->email ?? '';
-            $customerPhone = $session->customer_details->phone ?? '';
-            $billingAddress = $session->customer_details->address ?? null;
-            $customerAddressLine1 = $billingAddress?->line1 ?? '';
-            $customerAddressLine2 = $billingAddress?->line2 ?? '';
-            $customerCity = $billingAddress?->city ?? '';
-            $customerPostalCode = $billingAddress?->postal_code ?? '';
-            $customerCountry = $billingAddress?->country ?? '';
-
-            $amountPaid = $session->amount_total / 100;
-            $currency = strtoupper($session->currency);
-            $paymentIntent = $session->payment_intent;
-
             $invoiceData = [
                 'invoiceNumber' => sprintf(
                     'ALB-%s-%06d',

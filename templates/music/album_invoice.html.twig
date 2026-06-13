@@ -71,7 +71,7 @@
 
 <div class="cover">
     {% if album.coverImage %}
-        <img src="{{ absolute_url(asset('uploads/albums/' ~ album.coverImage)) }}">
+        <img src="{{ asset('uploads/albums/' ~ album.coverImage) }}">
     {% endif %}
 </div>
 
@@ -106,7 +106,7 @@
         <td>{{ album.name }}</td>
         <td>{{ album.recordLabel }}</td>
         <td>{{ album.releaseDate|date('d/m/Y') }}</td>
-        <td>{{ album.price }} €</td>
+        <td>{{ album.price/100 }} €</td>
     </tr>
 </tbody>
 ```

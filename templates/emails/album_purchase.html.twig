@@ -21,11 +21,13 @@ Montant payé :
 <p>
 La facture PDF est jointe à cet email.
 </p>
+<br>
 <h3>Adresse de facturation</h3>
-
 <p>
-    {{ customerName }}<br>
-    {{ customerAddressLine1 }}<br>
+    {# {{ customerName }}<br> #}
+    {% if customerAddressLine1 %}
+        {{ customerAddressLine1 }}<br>
+    {% endif %}
 
     {% if customerAddressLine2 %}
         {{ customerAddressLine2 }}<br>
