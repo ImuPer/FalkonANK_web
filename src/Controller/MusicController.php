@@ -92,8 +92,6 @@ class MusicController extends AbstractController
         Security $security
     ): Response {
 
-        $user = $this->getUser();
-        dd($user);
         $album = $albumRepository->find($id);
 
         if (!$album) {
@@ -101,6 +99,7 @@ class MusicController extends AbstractController
         }
 
         $user = $security->getUser();
+        dd($user);
 
         $hasBought = false;
 
