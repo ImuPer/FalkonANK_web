@@ -99,7 +99,6 @@ class MusicController extends AbstractController
         }
 
         $user = $security->getUser();
-        dd($user);
 
         $hasBought = false;
 
