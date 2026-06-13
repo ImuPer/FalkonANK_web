@@ -94,6 +94,9 @@ class AlbumPaymentController extends AbstractController
 
             $purchase->setCreatedAt(new \DateTimeImmutable());
 
+            $em->persist($purchase);
+            $em->flush();
+
             $purchase->setInvoiceNumber(
                 sprintf(
                     'ALB-%s-%06d',
@@ -101,8 +104,6 @@ class AlbumPaymentController extends AbstractController
                     $purchase->getId()
                 )
             );
-
-            $em->persist($purchase);
             $em->flush();
 
             //----------facture----------------------------------------------------------
