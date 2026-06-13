@@ -121,7 +121,7 @@ class MusicController extends AbstractController
             'user' => $user,
             'album' => $album
         ]);
-        dd($purchase);
+        dd($user, $album);;
 
         return $this->render('music/index.html.twig', [
             'album' => $album,
