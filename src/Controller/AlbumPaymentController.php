@@ -259,6 +259,7 @@ class AlbumPaymentController extends AbstractController
                 'purchase' => $purchase,
                 'user' => $purchase->getUser(),
                 'album' => $purchase->getAlbum(),
+                'projectDir' => $this->getParameter('kernel.project_dir'),
             ]
         );
 
