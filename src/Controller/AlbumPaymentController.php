@@ -107,7 +107,7 @@ class AlbumPaymentController extends AbstractController
             $purchase->setQuantity(1);
 
             $purchase->setCreatedAt(new \DateTimeImmutable());
-
+            
             $purchase->setCustomerName($customerName);
             $purchase->setCustomerEmail($customerEmail);
             $purchase->setCustomerPhone($customerPhone);
@@ -253,12 +253,15 @@ class AlbumPaymentController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $html = $this->renderView('music/album_invoice.html.twig', [
-            'purchase' => $purchase,
-            'user' => $purchase->getUser(),
-            'album' => $purchase->getAlbum(),
-            'public_path' => $this->getParameter('kernel.project_dir') . '/public'
-        ]);
+        $html = $this->renderView(
+            'music/album_invoice.html.twig',
+            [
+                'purchase' => $purchase,
+                'user' => $purchase->getUser(),
+                'album' => $purchase->getAlbum(),
+                'projectDir' => $this->getParameter('kernel.project_dir'),
+            ]
+        );
 
         $options = new Options();
         $dompdf = new Dompdf($options);

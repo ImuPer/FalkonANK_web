@@ -1,29 +1,75 @@
-<h2>Merci pour votre achat 💿</h2>
+```twig
+{% set t = {
+    'fr': {
+        'title': 'Merci pour votre achat 💿',
+        'hello': 'Bonjour',
+        'payment_success': 'Votre paiement a été validé avec succès.',
+        'album': 'Album :',
+        'amount_paid': 'Montant payé :',
+        'invoice_attached': 'La facture PDF est jointe à cet email.',
+        'billing_address': 'Adresse de facturation'
+    },
+    'en': {
+        'title': 'Thank you for your purchase 💿',
+        'hello': 'Hello',
+        'payment_success': 'Your payment has been successfully processed.',
+        'album': 'Album:',
+        'amount_paid': 'Amount paid:',
+        'invoice_attached': 'The PDF invoice is attached to this email.',
+        'billing_address': 'Billing address'
+    },
+    'es': {
+        'title': 'Gracias por tu compra 💿',
+        'hello': 'Hola',
+        'payment_success': 'Tu pago ha sido procesado correctamente.',
+        'album': 'Álbum:',
+        'amount_paid': 'Importe pagado:',
+        'invoice_attached': 'La factura en PDF está adjunta a este correo electrónico.',
+        'billing_address': 'Dirección de facturación'
+    },
+    'pt': {
+        'title': 'Obrigado pela sua compra 💿',
+        'hello': 'Olá',
+        'payment_success': 'O seu pagamento foi processado com sucesso.',
+        'album': 'Álbum:',
+        'amount_paid': 'Valor pago:',
+        'invoice_attached': 'A fatura em PDF está anexada a este e-mail.',
+        'billing_address': 'Endereço de faturação'
+    }
+} %}
+
+{% set lang = locale|default('en') %}
+{% set i18n = t[lang] ?? t['en'] %}
+
+<h2>{{ i18n.title }}</h2>
 
 <p>
-Bonjour {{ customerName }},
+    {{ i18n.hello }} {{ customerName }},
 </p>
 
 <p>
-Votre paiement a été validé avec succès.
+    {{ i18n.payment_success }}
 </p>
 
 <p>
-Album :
-<strong>{{ albumName }}</strong>
+    {{ i18n.album }}
+    <strong>{{ albumName }}</strong>
 </p>
 
 <p>
-Montant payé :
-<strong>{{ amountPaid }} {{ currency }}</strong>
+    {{ i18n.amount_paid }}
+    <strong>{{ amountPaid }} {{ currency }}</strong>
 </p>
 
 <p>
-La facture PDF est jointe à cet email.
+    {{ i18n.invoice_attached }}
 </p>
+
 <br>
-<h3>Adresse de facturation</h3>
-<p>    
+
+<h3>{{ i18n.billing_address }}</h3>
+
+<p>
     {# {% if customerAddressLine1 %}
         {{ customerAddressLine1 }}<br>
     {% endif %}
