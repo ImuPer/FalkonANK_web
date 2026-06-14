@@ -265,7 +265,7 @@
 					✖
 				</span>
 				<h2	id="modalTitle"></h2>
-				<p	id="modalDescription"></p>
+				<p	id="modalDescription">{{ album.description|striptags|e('html_attr') }}</p>
 				<div	class="modal-label">
 					📀
 					<span	id="modalLabel"></span>
