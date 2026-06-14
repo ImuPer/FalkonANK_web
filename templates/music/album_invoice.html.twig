@@ -71,7 +71,7 @@
 
 <div class="cover">
     {% if album.coverImage %}
-        <img src="{{ absolute_url(asset('uploads/albums/' ~ album.coverImage)) }}">
+        <img src="{{ public_path ~ '/uploads/albums/' ~ album.coverImage }}">
     {% endif %}
 </div>
 
