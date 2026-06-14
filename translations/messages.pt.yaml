@@ -840,6 +840,15 @@ email:
   request: "O seu pedido"
   response: "Resposta"
   signature: "Atenciosamente,<br>A equipa Falkon"
+  purchase:
+      title: "Obrigado pela sua compra 💿"
+      hello: "Olá %name%,"
+      payment_success: "O seu pagamento foi processado com sucesso."
+      album: "Álbum:"
+      amount_paid: "Valor pago:"
+      invoice_attached: "A fatura em PDF está anexada a este e-mail."
+      billing_address: "Endereço de faturação"
+
 
 error:
   contact_not_found: "Contacto não encontrado"

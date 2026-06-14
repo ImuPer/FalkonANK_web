@@ -852,6 +852,16 @@ email:
   request: "Votre demande"
   response: "Réponse"
   signature: "Cordialement,<br>L'équipe Falkon"
+  purchase:
+      title: "Merci pour votre achat 💿"
+      hello: "Bonjour %name%,"
+      payment_success: "Votre paiement a été validé avec succès."
+      album: "Album :"
+      amount_paid: "Montant payé :"
+      invoice_attached: "La facture PDF est jointe à cet email."
+      billing_address: "Adresse de facturation"
+
+
 
 error:
   contact_not_found: "Contact non trouvé"

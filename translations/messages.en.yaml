@@ -851,6 +851,15 @@ email:
   request: "Your request"
   response: "Reply"
   signature: "Kind regards,<br>The Falkon Team"
+  purchase:
+      title: "Thank you for your purchase 💿"
+      hello: "Hello %name%,"
+      payment_success: "Your payment has been successfully processed."
+      album: "Album:"
+      amount_paid: "Amount paid:"
+      invoice_attached: "The PDF invoice is attached to this email."
+      billing_address: "Billing address"
+
 
 error:
   contact_not_found: "Contact not found"

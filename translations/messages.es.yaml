@@ -853,6 +853,15 @@ email:
   request: "Su solicitud"
   response: "Respuesta"
   signature: "Saludos cordiales,<br>El equipo Falkon"
+  purchase:
+      title: "Gracias por tu compra 💿"
+      hello: "Hola %name%,"
+      payment_success: "Tu pago ha sido procesado correctamente."
+      album: "Álbum:"
+      amount_paid: "Importe pagado:"
+      invoice_attached: "La factura en PDF está adjunta a este correo electrónico."
+      billing_address: "Dirección de facturación"
+
 
 error:
   contact_not_found: "Contacto no encontrado"
