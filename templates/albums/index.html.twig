@@ -38,7 +38,7 @@
 											class="info-icon"
 											onclick="openAlbumModal(event, this)"
 											data-name="{{ album.name }}"
-											data-description="{{ album.description|striptags|e('html_attr') }}"
+											data-description="{{ album.description|e('html_attr') }}"
 											data-label="{{ album.recordLabel }}"
 											data-date="{{ album.releaseDate|date('d/m/Y') }}"
 										>
