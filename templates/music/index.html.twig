@@ -451,6 +451,17 @@
 			z-index: 2;
 		}
 		
+		.album-info {
+		color: #cbd5e1;
+		margin-bottom: 10px;
+		font-size: 0.95rem;
+		}
+
+		.album-date {
+			color: #94a3b8;
+			font-size: 0.9rem;
+		}
+		
 		.buy-btn{
 			display:inline-block;
 			padding:15px 25px;
@@ -520,6 +531,20 @@
 																	========================= #}
 	<div class="album-header">
 		<h2>💿 {{ pageTitle }}</h2>
+		<div	class="album-info">
+			<p>
+				{{ album.description|raw }}
+			</p>
+			<span>
+				📀
+				{{ album.recordLabel }}
+			</span>
+		</div>
+		<div	class="album-date">
+			{{ 'albums.release_date'|trans }}
+			:
+			{{ album.releaseDate|date('d/m/Y') }}
+		</div>
 		{% if app.user and not hasBought %}
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
@@ -680,16 +705,11 @@
 						</a>
 					</div>
 				{% endif %}
-				{# {% if app.user and hasBought and purchase and purchase.invoiceNumber %}
-					<div style="margin-top:15px;">
-						<a href="{{ path('app_invoice_download', {
-							id: purchase.id
-						}) }}"
-						class="buy-btn">
-							📄 Télécharger ma facture
-						</a>
-					</div>
-				{% endif %} #}
+				{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
+					<a href="{{ path('app_invoice_download', { id: purchase.id }) }}">
+						📄
+					</a>
+				{% endif %}
 
 			</div>
 
