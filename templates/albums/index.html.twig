@@ -16,40 +16,29 @@
 		<div	class="albums-grid">
 			{% for album in albums %}
 				<a	href="{{ path('app_music_by_album', {
-                'id': album.id,
-                '_locale': app.request.locale
-            }) }}"	class="album-link">
-					<div	class="album-card">
-						<div	class="disc-container">
-							{% if album.coverImage %}
-								<img
-								src="{{ asset('uploads/albums/' ~ album.coverImage) }}"	alt="{{ album.name }}"	class="album-disc">
-									{% else %}
-									<div	class="album-disc placeholder">
-										🎵
+						'id': album.id,
+						'_locale': app.request.locale
+					}) }}"	class="album-link">
+							<div	class="album-card">
+								<div	class="disc-container">
+									{% if album.coverImage %}
+										<img
+										src="{{ asset('uploads/albums/' ~ album.coverImage) }}"	alt="{{ album.name }}"	class="album-disc">
+											{% else %}
+											<div	class="album-disc placeholder">
+												🎵
+											</div>
+										{% endif %}
 									</div>
-								{% endif %}
-							</div>
-							<div	class="album-content">
-								<h2>
-									{{ album.name }}
-								</h2>
-								<div	class="album-info">
-									<p>
-										{{ album.description|raw }}
-									</p>
-									<span>
-										📀
-										{{ album.recordLabel }}
-									</span>
+									<div	class="album-content">
+										<h2>
+											{{ album.name }}
+										</h2>
+										<div class="info-icon" onclick="openAlbumModal(event, {{ album|json_encode|e('html_attr') }})">
+											ℹ️
+										</div>
+									</div>
 								</div>
-								<div	class="album-date">
-									{{ 'albums.release_date'|trans }}
-									:
-									{{ album.releaseDate|date('d/m/Y') }}
-								</div>
-							</div>
-						</div>
 					</a>
 				{% else %}
 					<div	class="empty-state">
@@ -188,7 +177,7 @@
 
 		}
 
-		{#-----------modal infos----------------------------------- #}
+		
 		.info-icon {
 			position: absolute;
 			top: 15px;
@@ -243,26 +232,24 @@
 			cursor: pointer;
 			font-size: 1.2rem;
 		}
-	</style>
-
-	<div id="albumModal" class="modal hidden">
-	<div class="modal-content">
-		<span class="close" onclick="closeAlbumModal()">✖</span>
-
-		<h2 id="modalTitle"></h2>
-
-		<p id="modalDescription"></p>
-
-		<div class="modal-label">
-			📀 <span id="modalLabel"></span>
-		</div>
-
-		<div class="modal-date">
-			📅 <span id="modalDate"></span>
-		</div>
-	</div>
-
-	<script>
+	</style>	{#-----------modal infos----------------------------------- #}
+		<div	id="albumModal"	class="modal hidden">
+			<div	class="modal-content">
+				<span	class="close"	onclick="closeAlbumModal()">
+					✖
+				</span>
+				<h2	id="modalTitle"></h2>
+				<p	id="modalDescription"></p>
+				<div	class="modal-label">
+					📀
+					<span	id="modalLabel"></span>
+				</div>
+				<div	class="modal-date">
+					📅
+					<span	id="modalDate"></span>
+				</div>
+			</div>
+			<script>
 		function openAlbumModal(event, album) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -287,6 +274,6 @@
 			}
 		});
 		</script>
-</div>
+		</div>
 	{% endblock %}
 	
