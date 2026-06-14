@@ -253,7 +253,7 @@ class AlbumPaymentController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $html = $this->renderView('pdf/invoice.html.twig', [
+        $html = $this->renderView('music/album_invoice.html.twig', [
             'purchase' => $purchase,
             'user' => $purchase->getUser(),
             'album' => $purchase->getAlbum(),
