@@ -34,7 +34,14 @@
 										<h2>
 											{{ album.name }}
 										</h2>
-										<div class="info-icon" onclick="openAlbumModal(event, {{ album|json_encode|e('html_attr') }})">
+										<div
+											class="info-icon"
+											onclick="openAlbumModal(event, this)"
+											data-name="{{ album.name }}"
+											data-description="{{ album.description|striptags|e('html_attr') }}"
+											data-label="{{ album.recordLabel }}"
+											data-date="{{ album.releaseDate|date('d/m/Y') }}"
+										>
 											ℹ️
 										</div>
 									</div>
@@ -265,7 +272,7 @@
 					✖
 				</span>
 				<h2	id="modalTitle"></h2>
-				<p	id="modalDescription">{{ album.description|striptags|e('html_attr') }}</p>
+				<p	id="modalDescription"></p>
 				<div	class="modal-label">
 					📀
 					<span	id="modalLabel"></span>
