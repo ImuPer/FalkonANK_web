@@ -988,3 +988,30 @@ albums:
   discover_collection: "Discover the full collection"
   release_date: "Release date"
   no_album: "No albums available"
+
+
+invoice:
+    title: "Invoice"
+    invoice: "INVOICE"
+    number: "No."
+    customer: "Customer"
+    album: "Album"
+    label: "Label:"
+    date: "Date:"
+    payment: "Payment"
+    amount: "Amount:"
+    stripe_id: "Stripe ID:"
+
+purchase_invoice:
+    title: "Album Purchase Invoice"
+    invoice: "INVOICE"
+    number: "No."
+    client: "Customer"
+    email: "Email"
+    date: "Date"
+    album: "Album"
+    label: "Label"
+    release_date: "Release date"
+    price: "Price"
+    total: "Total paid"
+    thanks: "Thank you for your purchase."

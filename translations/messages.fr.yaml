@@ -987,4 +987,31 @@ albums:
   discover_collection: "Découvrez la collection complète"
   release_date: "Sortie"
   no_album: "Aucun album disponible"
-    
+
+
+invoice:
+    title: "Facture"
+    invoice: "FACTURE"
+    number: "N°"
+    customer: "Client"
+    album: "Album"
+    label: "Label :"
+    date: "Date :"
+    payment: "Paiement"
+    amount: "Montant :"
+    stripe_id: "Stripe ID :"
+
+
+purchase_invoice:
+    title: "Facture achat album"
+    invoice: "FACTURE"
+    number: "N°"
+    client: "Client"
+    email: "Email"
+    date: "Date"
+    album: "Album"
+    label: "Label"
+    release_date: "Date de sortie"
+    price: "Prix"
+    total: "Total payé"
+    thanks: "Merci pour votre achat."
