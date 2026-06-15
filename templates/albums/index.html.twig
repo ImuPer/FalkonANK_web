@@ -108,8 +108,11 @@
 		.album-disc {
 			width: 120px;
 			height: 120px;
-			border: 5px solid #111827;
-			box-shadow: 0 0 0 5px #1e293b, 0 8px 15px rgba(0, 0, 0, 0.4);
+			border-radius: 50%;
+			object-fit: cover;
+			border: 8px solid #111827;
+			box-shadow: 0 0 0 8px #1e293b, 0 15px 30px rgba(0, 0, 0, 0.5);
+			transition: 0.5s ease;
 		}
 
 		.album-content h2 {
@@ -126,16 +129,6 @@
 			display: flex;
 			justify-content: center;
 			margin-bottom: 25px;
-		}
-
-		.album-disc {
-			width: 180px;
-			height: 180px;
-			border-radius: 50%;
-			object-fit: cover;
-			border: 8px solid #111827;
-			box-shadow: 0 0 0 8px #1e293b, 0 15px 30px rgba(0, 0, 0, 0.5);
-			transition: 0.5s ease;
 		}
 
 		.album-card:hover .album-disc {
@@ -205,8 +198,8 @@
 			}
 
 			.album-disc {
-				width: 90px;
-				height: 90px;
+				width: 60px;
+				height: 60px;
 			}
 
 			.album-content h2 {
