@@ -218,6 +218,9 @@
 				right: 4px;
 			}
 		}
+
+		
+
 		/* MODAL */
 		.modal {
 			position: fixed;
@@ -260,6 +263,26 @@
 			position: relative;
 		}
 
+		.info-icon {
+			position: absolute;
+			top: 12px;
+			right: 12px;
+			z-index: 10;
+			cursor: pointer;
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+			background: rgba(255,255,255,.15);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: .3s;
+		}
+
+		.info-icon:hover {
+			background: #f0d50a;
+			transform: scale(1.1);
+		}
 	</style>	
 	{#-----------modal infos----------------------------------- #}
 		<div	id="albumModal"	class="modal hidden">
