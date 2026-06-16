@@ -34,15 +34,14 @@
 										<h2>
 											{{ album.name }}
 										</h2>
-									
-										<div class="info-icon"
-											onclick="openAlbumModal(event, this)"
-											data-name="{{ album.name }}"
-											data-description="{{ album.description|e('html_attr') }}"
-											data-label="{{ album.recordLabel }}"
-											data-date="{{ album.releaseDate|date('d/m/Y') }}">
-											ℹ️
-										</div>
+									</div>
+									<div class="info-icon"
+										onclick="openAlbumModal(event, this)"
+										data-name="{{ album.name }}"
+										data-description="{{ album.description|e('html_attr') }}"
+										data-label="{{ album.recordLabel }}"
+										data-date="{{ album.releaseDate|date('d/m/Y') }}">
+										ℹ️
 									</div>
 								</div>
 					</a>
@@ -256,15 +255,15 @@
 			}
 
 			.info-icon {
-				width: 10px;
-				height: 10px;
+				width: 20px;
+				height: 20px;
 				font-size: 0.5rem;
 				top: 4px;
 				right: 4px;
 			}
 			
 			.info-icon {
-				position: relative;
+				position: absolute;
 				z-index: 10;
 				cursor: pointer;
 				border-radius: 25%;
