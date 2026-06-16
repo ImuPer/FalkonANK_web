@@ -34,17 +34,16 @@
 										<h2>
 											{{ album.name }}
 										</h2>
+									
+									<div class="info-icon"
+										onclick="openAlbumModal(event, this)"
+										data-name="{{ album.name }}"
+										data-description="{{ album.description|e('html_attr') }}"
+										data-label="{{ album.recordLabel }}"
+										data-date="{{ album.releaseDate|date('d/m/Y') }}">
+										ℹ️
 									</div>
-										<div
-											class="info-icon"
-											onclick="openAlbumModal(event, this)"
-											data-name="{{ album.name }}"
-											data-description="{{ album.description|e('html_attr') }}"
-											data-label="{{ album.recordLabel }}"
-											data-date="{{ album.releaseDate|date('d/m/Y') }}"
-										>
-											ℹ️
-										</div>
+									</div>
 								</div>
 					</a>
 				{% else %}
