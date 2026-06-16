@@ -174,23 +174,20 @@
 		}
 
 		
-	.info-icon {
+		.info-icon {
 			position: relative;
-			top: 12px;
-			right: 12px;
-			z-index: 10;
+			top: 7px;
+			right: 5px;
 			cursor: pointer;
-			width: 36px;
-			height: 36px;
-			border-radius: 50%;
-			background: rgba(255,255,255,.15);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			transition: .3s;
+			font-size: 1rem;
+			background: rgba(255,255,255,0.1);
+			padding: 1px 2px;
+			border-radius: 15%;
+			transition: 0.2s;
 		}
+
 		.info-icon:hover {
-			background: #f0d50a;
+			background: rgba(255,255,255,0.25);
 			transform: scale(1.1);
 		}
 
@@ -212,12 +209,15 @@
 			.album-card {
 				padding: 6px 5px;
 			}
-			
 
+			.info-icon {
+				width: 10px;
+				height: 10px;
+				font-size: 0.5rem;
+				top: 4px;
+				right: 4px;
+			}
 		}
-
-		
-
 		/* MODAL */
 		.modal {
 			position: fixed;
@@ -259,6 +259,7 @@
 		.album-card {
 			position: relative;
 		}
+
 	</style>	
 	{#-----------modal infos----------------------------------- #}
 		<div	id="albumModal"	class="modal hidden">
