@@ -579,6 +579,11 @@
 				</a>
 			</div>
 		{% endif %}
+
+		<a href="{{ path('app_albums_index') }}" class="back-albums-btn">
+			← {{ 'albums.all_albums'|trans }}
+		</a>
+
 	</div>
 
 	<div class="cover-modal" id="coverModal">
@@ -621,11 +626,6 @@
 				📄
 			</a>
 		{% endif %}
-
-		{# <a href="{{ path('app_albums_index') }}" class="back-albums-btn">
-			{{ 'albums.all_albums'|trans|default('Tous les albums') }}
-		</a> #}
-
 	</div>
 
 
