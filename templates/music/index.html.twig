@@ -530,11 +530,6 @@
 																	   HEADER
 																	========================= #}
 	<div class="album-header">
-		{# <div style="margin-bottom:20px;">
-			<a href="{{ path('app_albums_index') }}" class="buy-btn">
-				← {{ 'albums.back_to_list'|trans|default('Tous les albums') }}
-			</a>
-		</div> #}
 
 		<h2>💿 {{ pageTitle }}</h2>
 		<div	class="album-info">
@@ -605,7 +600,6 @@
 				🛒 {{ 'music.buy_album'|trans }}
 			</a>
 		{% endif %}
-		
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
 			<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
@@ -613,6 +607,10 @@
 				📄
 			</a>
 		{% endif %}
+
+		<a href="{{ path('app_albums_index') }}" class="buy-btn">
+			← {{ 'albums.back_to_list'|trans|default('Tous les albums') }}
+		</a>
 
 	</div>
 
