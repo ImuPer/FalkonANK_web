@@ -601,10 +601,10 @@
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
 		{% if app.user and not hasBought %}
-			<a href="{{ path('app_album_buy', {id: album.id}) }}">
-				🛒 {{ 'music.buy_album'|trans }}
-			</a>
-		{% endif %}
+				<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white">
+					🛒 {{ 'music.buy_album'|trans }}
+				</a>
+			{% endif %}
 	</div>
 
 
@@ -795,7 +795,7 @@ const track = tracks[index];
 
 player.src = track.dataset.src;
 
-nowPlaying.innerHTML = "🎵 " + track.dataset.track + " - "+ track.dataset.title;
+nowPlaying.innerHTML = "🎵 " + track.dataset.title;
 
 currentIndex = index;
 
