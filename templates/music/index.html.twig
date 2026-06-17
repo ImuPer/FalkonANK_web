@@ -601,10 +601,19 @@
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
 		{% if app.user and not hasBought %}
-				<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white">
-					🛒 {{ 'music.buy_album'|trans }}
-				</a>
-			{% endif %}
+			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white">
+				🛒 {{ 'music.buy_album'|trans }}
+			</a>
+		{% endif %}
+		
+		{# ---------facture------------------ #}
+		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
+			<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
+				title="download {{ 'invoice.title'|trans }}">
+				📄
+			</a>
+		{% endif %}
+
 	</div>
 
 
@@ -706,16 +715,6 @@
 				">
 					💿
 				</button>
-
-				
-
-			{# ---------facture------------------ #}
-				{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
-				<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
-					title="download {{ 'invoice.title'|trans }}">
-					📄
-				</a>
-								{% endif %}
 
 			</div>
 
