@@ -707,10 +707,11 @@
 					</div>
 				{% endif %} #}
 				{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
-					<a href="{{ path('app_invoice_download', { id: purchase.id }) }}" alt="{{ 'invoice.title'|trans }}">
-						📄
-					</a>
-				{% endif %}
+				<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
+					title="{{ 'invoice.title'|trans }}">
+					📄
+				</a>
+								{% endif %}
 
 			</div>
 
