@@ -582,11 +582,6 @@
 																	========================= #}
 
 	<div class="global-player">
-		{% if app.user and not hasBought %}
-					<a href="{{ path('app_album_buy', {id: album.id}) }}">
-						🛒 {{ 'music.buy_album'|trans }}
-					</a>
-				{% endif %}
 
 		<button id="prevBtn">⏮</button>
 
@@ -605,6 +600,11 @@
 		{# <audio id="main-player" controls controlsList="nodownload"></audio> #}
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
+		{% if app.user and not hasBought %}
+			<a href="{{ path('app_album_buy', {id: album.id}) }}">
+				🛒 {{ 'music.buy_album'|trans }}
+			</a>
+		{% endif %}
 	</div>
 
 
