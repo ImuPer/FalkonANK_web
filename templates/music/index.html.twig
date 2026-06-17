@@ -559,7 +559,7 @@
 					id: purchase.id
 				}) }}"
 				class="buy-btn">
-					📄 {{ 'invoice.title'|trans }}
+					📄 download {{ 'invoice.title'|trans }}
 					{# Télécharger ma facture #}
 				</a>
 			</div>
@@ -708,7 +708,7 @@
 				{% endif %} #}
 				{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
 				<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
-					title="{{ 'invoice.title'|trans }}">
+					title="download {{ 'invoice.title'|trans }}">
 					📄
 				</a>
 								{% endif %}
