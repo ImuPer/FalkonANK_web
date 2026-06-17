@@ -1015,3 +1015,6 @@ purchase_invoice:
     price: "Price"
     total: "Total paid"
     thanks: "Thank you for your purchase."
+
+albums:
+    all_albums: "All Albums"

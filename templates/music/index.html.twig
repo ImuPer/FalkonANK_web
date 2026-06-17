@@ -517,6 +517,20 @@
 			transform:scale(1.1);
 		}
 		
+		.back-albums-btn{
+			display:inline-block;
+			padding:10px 20px;
+			background:#222;
+			color:white;
+			text-decoration:none;
+			border-radius:12px;
+			transition:.3s;
+		}
+
+		.back-albums-btn:hover{
+			background:#1db954;
+			color:white;
+		}
 	</style>
 
 	{# =========================
@@ -608,8 +622,8 @@
 			</a>
 		{% endif %}
 
-		<a href="{{ path('app_albums_index') }}" class="buy-btn">
-			← {{ 'albums.back_to_list'|trans|default('Tous les albums') }}
+		<a href="{{ path('app_albums_index') }}" class="back-albums-btn">
+			{{ 'albums.back_to_list'|trans|default('Tous les albums') }}
 		</a>
 
 	</div>
