@@ -559,7 +559,8 @@
 					id: purchase.id
 				}) }}"
 				class="buy-btn">
-					📄 Télécharger ma facture
+					📄 {{ 'invoice.title'|trans }}
+					{# Télécharger ma facture #}
 				</a>
 			</div>
 		{% endif %}
@@ -698,15 +699,15 @@
 				
 
 			{# ---------acheter------------------ #}
-				{% if app.user and not hasBought %}
+				{# {% if app.user and not hasBought %}
 					<div style="margin-top:20px; position:relative; z-index:2;">
 						<a href="{{ path('app_album_buy', {id: album.id}) }}">
 							🛒 {{ 'music.buy_album'|trans }}
 						</a>
 					</div>
-				{% endif %}
+				{% endif %} #}
 				{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
-					<a href="{{ path('app_invoice_download', { id: purchase.id }) }}">
+					<a href="{{ path('app_invoice_download', { id: purchase.id }) }}" alt="{{ 'invoice.title'|trans }}">
 						📄
 					</a>
 				{% endif %}
