@@ -531,6 +531,36 @@
 			background:#1db954;
 			color:white;
 		}
+
+		{# --------Modo Mobile---------------------- #}
+		@media (max-width: 768px) {
+
+			.album-header {
+				padding: 50px 15px; /* au lieu de 100px 20px */
+				border-radius: 0 0 20px 20px;
+			}
+
+			.album-header h2 {
+				font-size: 24px;
+			}
+
+			.album-info {
+				font-size: 0.85rem;
+			}
+
+			.album-date {
+				font-size: 0.8rem;
+			}
+
+			.cd-wrapper {
+				width: 180px;
+				height: 180px;
+			}
+
+			.album-grid {
+				padding: 15px;
+			}
+		}
 	</style>
 
 	{# =========================
@@ -580,9 +610,11 @@
 			</div>
 		{% endif %}
 
-		<a href="{{ path('app_albums_index') }}" class="back-albums-btn">
-			← {{ 'albums.all_albums'|trans }}
-		</a>
+		<div style="margin-top:15px; font-size:13px;">
+			<a href="{{ path('app_albums_index') }}" class="back-albums-btn">
+				← {{ 'albums.all_albums'|trans }}
+			</a>
+		</div>
 
 	</div>
 
