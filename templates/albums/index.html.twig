@@ -242,68 +242,56 @@
 		}
 
 		
-		@media(max-width:768px) {
+		@media (max-width: 768px) {
+
+			html,
+			body {
+				overflow-x: hidden;
+			}
 
 			.album-page {
-				padding: 20px 10px;
+				padding: 10px 5px;
 			}
 
 			.albums-grid {
 				grid-template-columns: repeat(3, 1fr);
-				gap: 8px;
-				justify-items: center;
+				gap: 2px; /* réduit fortement l'espace */
 			}
 
 			.album-card {
-				width: 100%;
-				text-align: center;
+				padding: 2px;
+				min-width: 0;
 			}
 
-			.header h1 {
-				font-size: 1rem;
+			.disc-container {
+				margin-bottom: 4px;
 			}
 
 			.album-disc {
-				width: 60px;
-				height: 60px;
+				width: 50px;
+				height: 50px;
+				border: 4px solid #111827;
+				box-shadow: 0 0 0 4px #1e293b;
 			}
 
 			.album-content h2 {
-				font-size: 0.6rem;
+				font-size: 0.55rem;
+				margin-bottom: 2px;
+				line-height: 1.1;
 			}
 
-			.album-card {
-				padding: 6px 5px;
-			}
-
-			.info-icon {
-				width: 20px;
-				height: 20px;
-				font-size: 1rem;
-				
-			}
-			
-			.info-icon {
-				cursor: pointer;
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			 .album-title {
-				gap: 3px;
-			}
-
-			.album-title h2 {
-				margin: 0;
-				display: inline;
-				line-height: 1.2;
+			.album-title {
+				gap: 1px;
 			}
 
 			.info-icon {
-				font-size: 0.8rem;
+				font-size: 0.7rem;
 			}
-					
+
+			.album-link {
+				width: 100%;
+				overflow: hidden;
+			}
 		}
 	</style>	
 	{#-----------modal infos----------------------------------- #}
