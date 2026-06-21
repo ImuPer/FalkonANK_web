@@ -244,19 +244,24 @@
 		
 		@media(max-width:768px) {
 
-			.album-page {
-				padding: 20px 10px;
-			}
-
 			.albums-grid {
 				grid-template-columns: repeat(3, 1fr);
 				gap: 8px;
-				justify-items: center;
+			}
+
+			.album-link {
+				display: flex;
+				justify-content: center;
 			}
 
 			.album-card {
-				width: 100%;
+				width: auto;
+				padding: 6px 5px;
 				text-align: center;
+			}
+
+			.album-page {
+				padding: 20px 10px;
 			}
 
 			.header h1 {
