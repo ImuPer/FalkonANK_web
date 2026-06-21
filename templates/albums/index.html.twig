@@ -55,9 +55,8 @@
 				{% endfor %}
 			</div>
 		</div>
-
 		<style>
-			
+
 		* {
 			box-sizing: border-box;
 		}
@@ -284,7 +283,19 @@
 				
 			}
 			
-			.album-title {
+			.info-icon {
+				position: absolute;
+				z-index: 10;
+				cursor: pointer;
+				border-radius: 25%;
+				background: rgba(255,255,255,.15);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: .3s;
+			}
+
+			 .album-title {
 				gap: 3px;
 			}
 
