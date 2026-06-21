@@ -30,18 +30,19 @@
 											</div>
 										{% endif %}
 									</div>
-									<div	class="album-content">
-										<h2>
-											{{ album.name }}
-										</h2>
-									</div>
-									<div class="info-icon"
-										onclick="openAlbumModal(event, this)"
-										data-name="{{ album.name }}"
-										data-description="{{ album.description|e('html_attr') }}"
-										data-label="{{ album.recordLabel }}"
-										data-date="{{ album.releaseDate|date('d/m/Y') }}">
-										ℹ️
+									<div class="album-content">
+										<div class="album-title">
+											<h2>{{ album.name }}</h2>
+
+											<div class="info-icon"
+												onclick="openAlbumModal(event, this)"
+												data-name="{{ album.name }}"
+												data-description="{{ album.description|e('html_attr') }}"
+												data-label="{{ album.recordLabel }}"
+												data-date="{{ album.releaseDate|date('d/m/Y') }}">
+												ℹ️
+											</div>
+										</div>
 									</div>
 								</div>
 					</a>
@@ -171,6 +172,17 @@
 			border-radius: 20px;
 		}	
 
+		.album-title {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+		}
+
+		.album-title h2 {
+			margin: 0;
+		}
+
 		/* MODAL */
 		.modal {
 			position: fixed;
@@ -214,19 +226,14 @@
 		}
 
 		.info-icon {
-			position: absolute;
-			top: 12px;
-			right: 12px;
-			z-index: 10;
+			position: static;
 			cursor: pointer;
-			width: 36px;
-			height: 36px;
-			border-radius: 50%;
-			background: rgba(255,255,255,.15);
+			background: transparent;
+			width: auto;
+			height: auto;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			transition: .3s;
 		}
 
 		.info-icon:hover {
@@ -276,18 +283,14 @@
 				
 			}
 			
-			.info-icon {
-				position: absolute;
-				z-index: 10;
-				cursor: pointer;
-				border-radius: 25%;
-				background: rgba(255,255,255,.15);
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				transition: .3s;
+			.album-title {
+				gap: 3px;
 			}
-			
+
+			.info-icon {
+				font-size: 0.8rem;
+			}
+					
 		}
 	</style>	
 	{#-----------modal infos----------------------------------- #}
