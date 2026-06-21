@@ -21,7 +21,7 @@
 				📀{{ 'albums.all_albums'|trans }}
 			</a>
             <br>
-            <select id="category-select" class="category-menu">
+            {# <select id="category-select" class="category-menu">
                 <option disabled selected>{{ 'header.category'|trans }}</option>
                 {% for category in categories %}
                     {% if category.name is defined and category.name is not empty %}
@@ -30,7 +30,7 @@
                         </option>
                     {% endif %}
                 {% endfor %}
-            </select>
+            </select> #}
 
             <div class="scrolling-text">
                 <div class="ads-wrapper">

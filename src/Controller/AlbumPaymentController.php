@@ -24,7 +24,7 @@ class AlbumPaymentController extends AbstractController
 
     public function __construct()
     {
-        $this->stripe = new StripeClient($_ENV['STRIPE_SECRETKEY']);
+        $this->stripe = new StripeClient($_ENV['STRIPE_SECRETKEY_ALBUM']);
     }
 
     #[Route('/album/payment/success', name: 'app_album_payment_success')]

@@ -22,7 +22,7 @@ class MusicController extends AbstractController
     private StripeClient $stripe;
     public function __construct()
     {
-        $this->stripe = new StripeClient($_ENV['STRIPE_SECRETKEY']);
+        $this->stripe = new StripeClient($_ENV['STRIPE_SECRETKEY_ALBUM']);
     }
     #[Route('/product/{id}/music', name: 'app_music_by_product')]
     public function byProduct(int $id, ProductRepository $productRepository, MusicRepository $musicRepository): Response
