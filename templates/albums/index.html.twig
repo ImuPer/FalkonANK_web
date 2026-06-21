@@ -255,7 +255,14 @@
 
 			.albums-grid {
 				grid-template-columns: repeat(3, 1fr);
-				gap: 2px; /* réduit fortement l'espace */
+				gap: 2px;
+				justify-items: center;
+			}
+
+			.album-link {
+				display: block;
+				width: fit-content;
+				margin: 0 auto;
 			}
 
 			.album-card {
@@ -286,11 +293,6 @@
 
 			.info-icon {
 				font-size: 0.7rem;
-			}
-
-			.album-link {
-				width: 100%;
-				overflow: hidden;
 			}
 		}
 	</style>	
