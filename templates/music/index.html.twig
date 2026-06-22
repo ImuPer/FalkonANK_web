@@ -712,8 +712,9 @@
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
 		{% if app.user and not hasBought %}
-			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white">
-				🛒 {{ 'music.buy_album'|trans }}
+			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white"
+			title="{{ 'music.buy_album'|trans }}">
+				🛒 
 			</a>
 		{% endif %}
 		{# ---------facture------------------ #}
@@ -726,7 +727,7 @@
 
 		<div >
 			<a style="font-size:10px; color:white;" href="{{ path('app_albums_index') }}" title="{{ 'albums.all_albums'|trans }}">
-				📀 {{ 'albums.all_albums'|trans }}
+				← {{ 'albums.all_albums'|trans }}
 			</a>
 		</div>
 	</div>
