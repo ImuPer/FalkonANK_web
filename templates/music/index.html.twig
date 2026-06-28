@@ -881,6 +881,8 @@ async function startMusicSession() {
 
     try {
 
+        console.log("Ancien token :", musicToken);
+
         const res = await fetch('/music/session/start', {
             method: 'POST',
             headers: {
@@ -891,13 +893,18 @@ async function startMusicSession() {
 
         const data = await res.json();
 
+        console.log(data);
+
         if (!data.success) {
             alert(data.message ?? "Impossible de démarrer la session.");
             return;
         }
 
         musicToken = data.token;
+
         localStorage.setItem('music_token', musicToken);
+
+        console.log("Nouveau token :", musicToken);
 
         if (data.already_active) {
             alert(
