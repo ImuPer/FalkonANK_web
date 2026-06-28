@@ -863,19 +863,45 @@
 
 const repeatBtn = document.getElementById('repeatBtn');
 const shuffleBtn = document.getElementById('shuffleBtn');
-
+let musicToken = localStorage.getItem('music_token') || null;
 let shuffleMode = false;
 let repeatMode = false;
-
-		const player = document.getElementById('main-player');
+const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nowPlaying = document.getElementById('nowPlaying');
-
 const tracks = document.querySelectorAll('.play-btn');
-
 let currentIndex = 0;
+
+/* =========================
+    SESSION
+========================= */
+async function startMusicSession() {
+    try {
+        const res = await fetch('/music/session/start', {
+            method: 'POST',
+            headers: {
+                'X-Music-Token': musicToken ?? '',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            musicToken = data.token;
+            localStorage.setItem('music_token', musicToken);
+        }
+
+        if (data.already_active) {
+            alert("Session déjà active sur : " + (data.device ?? 'appareil inconnu'));
+        }
+
+    } catch (e) {
+        console.error('Session start error', e);
+    }
+}
 
 /* =========================
    REPEAT MODE
@@ -1020,7 +1046,9 @@ const fullAccess = currentTrack.dataset.full === "1";
 if (!fullAccess && player.currentTime >= 60) {
     player.pause();
 
-    const isLogged = {{ app.user ? 'true' : 'false' }};
+	stopMusicSession();
+    
+	const isLogged = {{ app.user ? 'true' : 'false' }};
 
     if (!isLogged) {
         window.location.href =
@@ -1134,8 +1162,73 @@ activeDisc.classList.add('playing');
 ========================= */
 
 if (tracks.length > 0) {
-loadTrack(0);
+    loadTrack(0);
 }
+
+startMusicSession();
+
+
+/* =========================
+   STOP SESSION
+========================= */
+async function stopMusicSession() {
+    if (!musicToken) return;
+
+    try {
+        await fetch('/music/session/stop', {
+            method: 'POST',
+            headers: {
+                'X-Music-Token': musicToken,
+                'Content-Type': 'application/json'
+            },
+            keepalive: true
+        });
+
+        localStorage.removeItem('music_token');
+        musicToken = null;
+
+    } catch (e) {
+        console.error('Stop session error', e);
+    }
+}
+
+setInterval(async () => {
+    if (!musicToken) return;
+
+    try {
+        const res = await fetch('/music/session/check', {
+            headers: {
+                'X-Music-Token': musicToken
+            }
+        });
+
+        const data = await res.json();
+
+        if (!data.active) {
+            alert("Session invalidée ailleurs");
+            player.pause();
+            window.location.reload();
+        }
+
+    } catch (e) {
+        console.error(e);
+    }
+
+}, 15000); // toutes 15 sec
+
+window.addEventListener('beforeunload', () => {
+    if (!musicToken) return;
+
+    fetch('/music/session/stop', {
+        method: 'POST',
+        headers: {
+            'X-Music-Token': musicToken
+        },
+        keepalive: true
+    });
+});
+
+
 
 /* =========================
    LYRICS MODAL
