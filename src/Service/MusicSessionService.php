@@ -150,7 +150,11 @@ class MusicSessionService
     {
         $session = $this->getSessionFromRequest($request);
 
-        if (!$session || !$session->isActive()) {
+        if (!$session) {
+            return false;
+        }
+
+        if (!$session->isActive()) {
             return false;
         }
 

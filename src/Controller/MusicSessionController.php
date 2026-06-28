@@ -35,24 +35,35 @@ class MusicSessionController extends AbstractController
 
         $currentToken = $this->musicSessionService->getTokenFromRequest($request);
 
-        // Une autre session est déjà active ?
-        if ($this->musicSessionService->hasAnotherActiveSession($user, $currentToken)) {
+        $oldSession = $this->musicSessionService->getActiveSession($user);
 
-            $session = $this->musicSessionService->getActiveSession($user);
+        $alreadyActive = false;
+        $device = null;
+        $lastActivity = null;
 
-            return $this->json([
-                'success' => false,
-                'already_active' => true,
-                'device' => $session?->getDeviceName(),
-                'lastActivity' => $session?->getLastActivity()?->format('d/m/Y H:i:s')
-            ]);
+        // Une autre session est active ?
+        if (
+            $oldSession &&
+            $oldSession->isActive() &&
+            $oldSession->getToken() !== $currentToken
+        ) {
+            $alreadyActive = true;
+            $device = $oldSession->getDeviceName();
+            $lastActivity = $oldSession->getLastActivity()?->format('d/m/Y H:i:s');
+
+            // On ferme immédiatement l'ancienne session
+            $this->musicSessionService->close($oldSession);
         }
 
+        // Création de la nouvelle session
         $session = $this->musicSessionService->create($user, $request);
 
         return $this->json([
             'success' => true,
-            'token' => $session->getToken()
+            'token' => $session->getToken(),
+            'already_active' => $alreadyActive,
+            'device' => $device,
+            'lastActivity' => $lastActivity
         ]);
     }
 

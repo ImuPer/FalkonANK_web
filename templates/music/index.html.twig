@@ -878,7 +878,9 @@ let currentIndex = 0;
     SESSION
 ========================= */
 async function startMusicSession() {
+
     try {
+
         const res = await fetch('/music/session/start', {
             method: 'POST',
             headers: {
@@ -889,18 +891,26 @@ async function startMusicSession() {
 
         const data = await res.json();
 
-        if (data.success) {
-            musicToken = data.token;
-            localStorage.setItem('music_token', musicToken);
+        if (!data.success) {
+            alert(data.message ?? "Impossible de démarrer la session.");
+            return;
         }
 
+        musicToken = data.token;
+        localStorage.setItem('music_token', musicToken);
+
         if (data.already_active) {
-            alert("Session déjà active sur : " + (data.device ?? 'appareil inconnu'));
+            alert(
+                "Une autre session était active sur " +
+                (data.device ?? "un autre appareil") +
+                ". Elle a été déconnectée."
+            );
         }
 
     } catch (e) {
-        console.error('Session start error', e);
+        console.error(e);
     }
+
 }
 
 /* =========================
@@ -1204,11 +1214,17 @@ setInterval(async () => {
 
         const data = await res.json();
 
-        if (!data.active) {
-            alert("Session invalidée ailleurs");
-            player.pause();
-            window.location.reload();
-        }
+		if (!data.active) {
+
+			player.pause();
+
+			localStorage.removeItem('music_token');
+
+			alert("Votre session a été ouverte sur un autre appareil.");
+
+			location.reload();
+
+		}
 
     } catch (e) {
         console.error(e);
