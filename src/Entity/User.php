@@ -69,11 +69,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AlbumPurchase::class)]
     private Collection $albumPurchases;
 
+    /**
+     * @var Collection<int, MusicSession>
+     */
+    #[ORM\OneToMany(targetEntity: MusicSession::class, mappedBy: 'user')]
+    private Collection $musicSessions;
+
     public function __construct()
     {
         $this->merchants = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->albumPurchases = new ArrayCollection();
+        $this->musicSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -338,6 +345,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->albumPurchases->removeElement($albumPurchase)) {
             if ($albumPurchase->getUser() === $this) {
                 $albumPurchase->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MusicSession>
+     */
+    public function getMusicSessions(): Collection
+    {
+        return $this->musicSessions;
+    }
+
+    public function addMusicSession(MusicSession $musicSession): static
+    {
+        if (!$this->musicSessions->contains($musicSession)) {
+            $this->musicSessions->add($musicSession);
+            $musicSession->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMusicSession(MusicSession $musicSession): static
+    {
+        if ($this->musicSessions->removeElement($musicSession)) {
+            // set the owning side to null (unless already changed)
+            if ($musicSession->getUser() === $this) {
+                $musicSession->setUser(null);
             }
         }
 

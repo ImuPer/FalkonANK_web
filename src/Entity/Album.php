@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AlbumRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -60,10 +62,17 @@ class Album
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $paymentId = null;
 
+    /**
+     * @var Collection<int, MusicSession>
+     */
+    #[ORM\OneToMany(targetEntity: MusicSession::class, mappedBy: 'album', orphanRemoval: true)]
+    private Collection $musicSessions;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->musicSessions = new ArrayCollection();
     }
 
     // =====================
@@ -234,6 +243,36 @@ class Album
     public function setPaymentId(?string $paymentId): static
     {
         $this->paymentId = $paymentId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MusicSession>
+     */
+    public function getMusicSessions(): Collection
+    {
+        return $this->musicSessions;
+    }
+
+    public function addMusicSession(MusicSession $musicSession): static
+    {
+        if (!$this->musicSessions->contains($musicSession)) {
+            $this->musicSessions->add($musicSession);
+            $musicSession->setAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMusicSession(MusicSession $musicSession): static
+    {
+        if ($this->musicSessions->removeElement($musicSession)) {
+            // set the owning side to null (unless already changed)
+            if ($musicSession->getAlbum() === $this) {
+                $musicSession->setAlbum(null);
+            }
+        }
 
         return $this;
     }
