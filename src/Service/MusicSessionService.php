@@ -75,6 +75,8 @@ class MusicSessionService
         $this->em->persist($session);
         $this->em->flush();
 
+        dd('CREATE SESSION CALLED');
+
         return $session;
     }
 
