@@ -904,13 +904,42 @@ async function startMusicSession() {
 		musicToken = data.token;
 		localStorage.setItem('music_token', musicToken);
 
-		if (data.already_active) {
-			alert(
-				"Une autre session était active sur " +
-				(data.device ?? "un autre appareil") +
-				". Elle a été déconnectée."
-			);
+
+		if (data.takeover_required) {
+
+			await fetch('/music/session/takeover/request', {
+				method: 'POST'
+			});
+
+			const code = prompt("Entrez le code reçu par email");
+
+			if (!code) {
+				return;
+			}
+
+			const confirm = await fetch('/music/session/takeover/confirm', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					code: code
+				})
+			});
+
+			const result = await confirm.json();
+
+			if (!result.success) {
+				alert("Code invalide");
+				return;
+			}
+
+			musicToken = result.token;
+			localStorage.setItem('music_token', musicToken);
+
+			return;
 		}
+		
 
     } catch (e) {
         console.error(e);
