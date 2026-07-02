@@ -24,7 +24,7 @@ class MusicSessionController extends AbstractController
     #[Route('/start', name: 'app_music_session_start', methods: ['POST'])]
     public function start(Request $request): JsonResponse
     {
-        $user = $this->security->getUser();
+        $user = $this->getUser();
         dd($user);
 
         if (!$user) {
@@ -76,8 +76,8 @@ class MusicSessionController extends AbstractController
     #[Route('/force', name: 'app_music_session_force', methods: ['POST'])]
     public function force(Request $request): JsonResponse
     {
-        $user = $this->security->getUser();
-
+        $user = $this->getUser();
+        dd($user);
         if (!$user) {
             return $this->json([], 401);
         }
