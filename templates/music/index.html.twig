@@ -883,7 +883,7 @@ async function startMusicSession() {
 
         console.log("Ancien token :", musicToken);
 
-        const res = await fetch('/music/session/start', {
+       const res = await fetch('/music/session/start', {
 			method: 'POST',
 			credentials: 'same-origin',
 			headers: {
@@ -892,30 +892,25 @@ async function startMusicSession() {
 			}
 		});
 
-		console.log(res.status);
+		const data = await res.json();
 
-		const text = await res.text();
+		console.log(data);
 
-		console.log(text);
+		if (!data.success) {
+			alert(data.message ?? "Impossible de démarrer la session.");
+			return;
+		}
 
-        if (!data.success) {
-            alert(data.message ?? "Impossible de démarrer la session.");
-            return;
-        }
+		musicToken = data.token;
+		localStorage.setItem('music_token', musicToken);
 
-        musicToken = data.token;
-
-        localStorage.setItem('music_token', musicToken);
-
-        console.log("Nouveau token :", musicToken);
-
-        if (data.already_active) {
-            alert(
-                "Une autre session était active sur " +
-                (data.device ?? "un autre appareil") +
-                ". Elle a été déconnectée."
-            );
-        }
+		if (data.already_active) {
+			alert(
+				"Une autre session était active sur " +
+				(data.device ?? "un autre appareil") +
+				". Elle a été déconnectée."
+			);
+		}
 
     } catch (e) {
         console.error(e);
