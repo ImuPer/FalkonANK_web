@@ -881,41 +881,67 @@ async function startMusicSession() {
 
     try {
 
-        console.log("Ancien token :", musicToken);
+        const res = await fetch('/music/session/start', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'X-Music-Token': musicToken ?? '',
+                'Content-Type': 'application/json'
+            }
+        });
 
-       const res = await fetch('/music/session/start', {
-			method: 'POST',
-			credentials: 'same-origin',
-			headers: {
-				'X-Music-Token': musicToken ?? '',
-				'Content-Type': 'application/json'
-			}
-		});
+        const data = await res.json();
 
-		const data = await res.json();
+        if (!data.success) {
+            alert(data.message ?? "Impossible de démarrer la session.");
+            return false;
+        }
 
-		console.log(data);
+        // Même appareil ou nouvelle session
+        if (!data.takeover_required) {
 
-		if (!data.success) {
-			alert(data.message ?? "Impossible de démarrer la session.");
-			return;
-		}
+            musicToken = data.token;
+            localStorage.setItem('music_token', musicToken);
 
-		musicToken = data.token;
-		localStorage.setItem('music_token', musicToken);
+            return true;
+        }
 
-		if (data.already_active) {
-			alert(
-				"Une autre session était active sur " +
-				(data.device ?? "un autre appareil") +
-				". Elle a été déconnectée."
-			);
-		}
+        // Une autre session est active
+        const force = confirm(
+            `Une lecture est déjà active sur "${data.device}".\n` +
+            `Dernière activité : ${data.lastActivity}\n\n` +
+            `Voulez-vous reprendre la lecture sur cet appareil ?`
+        );
+
+        if (!force) {
+            return false;
+        }
+
+        const forceRes = await fetch('/music/session/force', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'X-Music-Token': musicToken ?? '',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const forceData = await forceRes.json();
+
+        if (!forceData.success) {
+            alert("Impossible de reprendre la session.");
+            return false;
+        }
+
+        musicToken = forceData.token;
+        localStorage.setItem('music_token', musicToken);
+
+        return true;
 
     } catch (e) {
         console.error(e);
+        return false;
     }
-
 }
 
 /* =========================
@@ -989,13 +1015,22 @@ activeCard.scrollIntoView({behavior: 'smooth', block: 'center'});
 
 tracks.forEach(track => {
 
-track.addEventListener('click', () => {
+track.addEventListener('click', async () => {
 
-currentIndex = parseInt(track.dataset.index);
+    if (!musicToken) {
 
-loadTrack(currentIndex);
+        const ok = await startMusicSession();
 
-player.play();
+        if (!ok) {
+            return;
+        }
+    }
+
+    currentIndex = parseInt(track.dataset.index);
+
+    loadTrack(currentIndex);
+
+    player.play().catch(console.error);
 
 });
 

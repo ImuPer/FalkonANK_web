@@ -25,10 +25,11 @@ class MusicSessionController extends AbstractController
     public function start(Request $request): JsonResponse
     {
         $user = $this->getUser();
+
         if (!$user) {
             return $this->json([
                 'success' => false,
-                'message' => 'Unauthorized'
+                'message' => 'Unauthorized',
             ], 401);
         }
 
@@ -36,35 +37,40 @@ class MusicSessionController extends AbstractController
 
         $oldSession = $this->musicSessionService->getActiveSession($user);
 
-        $alreadyActive = false;
-        $device = null;
-        $lastActivity = null;
+        // L'utilisateur est déjà sur le même appareil
+        if (
+            $oldSession &&
+            $oldSession->isActive() &&
+            $oldSession->getToken() === $currentToken
+        ) {
+            return $this->json([
+                'success' => true,
+                'token' => $oldSession->getToken(),
+                'takeover_required' => false,
+            ]);
+        }
 
-        // Une autre session est active ?
+        // Une autre session est active sur un autre appareil
         if (
             $oldSession &&
             $oldSession->isActive() &&
             $oldSession->getToken() !== $currentToken
         ) {
-            $alreadyActive = true;
-            $device = $oldSession->getDeviceName();
-            $lastActivity = $oldSession->getLastActivity()?->format('d/m/Y H:i:s');
-
-            // On ferme immédiatement l'ancienne session
-            $this->musicSessionService->close($oldSession);
+            return $this->json([
+                'success' => true,
+                'takeover_required' => true,
+                'device' => $oldSession->getDeviceName(),
+                'lastActivity' => $oldSession->getLastActivity()?->format('d/m/Y H:i:s'),
+            ]);
         }
 
-        // Création de la nouvelle session
+        // Aucune session active : création immédiate
         $session = $this->musicSessionService->create($user, $request);
-
-        // dd('ROUTE START CALLED');
 
         return $this->json([
             'success' => true,
             'token' => $session->getToken(),
-            'already_active' => $alreadyActive,
-            'device' => $device,
-            'lastActivity' => $lastActivity
+            'takeover_required' => false,
         ]);
     }
 
