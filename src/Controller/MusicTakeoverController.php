@@ -33,10 +33,11 @@ class MusicTakeoverController extends AbstractController
             return $this->json(['error' => 'no_session'], 404);
         }
 
+        // 🔥 LOCK SESSION + CODE (SERVICE)
         $code = (string) random_int(100000, 999999);
-
         $this->sessionService->lockSessionWithCode($session, $code);
 
+        // 📩 EMAIL
         $this->mailer->sendTakeoverCode($user, $code);
 
         return $this->json([
@@ -61,6 +62,7 @@ class MusicTakeoverController extends AbstractController
             return $this->json(['error' => 'missing_code'], 400);
         }
 
+        // 🔥 FULL LOGIC IN SERVICE
         $newSession = $this->sessionService->confirmTakeover($user, $code, $request);
 
         if (!$newSession) {

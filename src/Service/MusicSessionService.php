@@ -129,14 +129,21 @@ class MusicSessionService
             return null;
         }
 
-        // 🔐 EXPIRATION CHECK (IMPORTANT)
+        // Code expiré
         if (
             !$session->getTakeoverRequestedAt() ||
             $session->getTakeoverRequestedAt() < new \DateTimeImmutable('-10 minutes')
         ) {
+            $session->setTakeoverCode(null);
+            $session->setTakeoverRequestedAt(null);
+            $session->setIsLocked(false);
+
+            $this->em->flush();
+
             return null;
         }
 
+        // Désactiver toutes les anciennes sessions
         $sessions = $this->repository->findAllByUser($user);
 
         foreach ($sessions as $s) {
@@ -148,9 +155,9 @@ class MusicSessionService
 
         $this->em->flush();
 
+        // Créer une nouvelle session propre
         return $this->create($user, $request);
     }
-
     // =========================
     // LIFECYCLE
     // =========================
