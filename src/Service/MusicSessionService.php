@@ -56,8 +56,7 @@ class MusicSessionService
         $session->setToken(Uuid::v4()->toRfc4122());
 
         $session->setDeviceName(
-            $request->headers->get('Sec-CH-UA-Platform')
-            ?? 'Unknown'
+            $request->headers->get('Sec-CH-UA-Platform') ?? 'Unknown'
         );
 
         $session->setUserAgent(
@@ -74,8 +73,6 @@ class MusicSessionService
 
         $this->em->persist($session);
         $this->em->flush();
-
-        dd('CREATE SESSION CALLED');
 
         return $session;
     }

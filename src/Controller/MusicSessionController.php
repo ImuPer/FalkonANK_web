@@ -57,7 +57,7 @@ class MusicSessionController extends AbstractController
         // Création de la nouvelle session
         $session = $this->musicSessionService->create($user, $request);
 
-        dd('ROUTE START CALLED');
+        // dd('ROUTE START CALLED');
 
         return $this->json([
             'success' => true,

@@ -45,18 +45,29 @@ class MusicSessionRepository extends ServiceEntityRepository
     /**
      * Désactive toutes les sessions actives d'un utilisateur.
      */
-    public function deactivateAll(User $user): void
-    {
-        $this->createQueryBuilder('ms')
-            ->update()
-            ->set('ms.isActive', ':inactive')
-            ->where('ms.user = :user')
-            ->andWhere('ms.isActive = true')
-            ->setParameter('inactive', false)
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->execute();
-    }
+    // public function deactivateAll(User $user): void
+    // {
+    //     $this->createQueryBuilder('ms')
+    //         ->update()
+    //         ->set('ms.isActive', ':inactive')
+    //         ->where('ms.user = :user')
+    //         ->andWhere('ms.isActive = true')
+    //         ->setParameter('inactive', false)
+    //         ->setParameter('user', $user)
+    //         ->getQuery()
+    //         ->execute();
+    // }
+    public function deactivateAll(User $user): int
+{
+    return $this->createQueryBuilder('ms')
+        ->update()
+        ->set('ms.isActive', ':inactive')
+        ->where('ms.user = :user')
+        ->setParameter('inactive', false)
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->execute();
+}
 
     /**
      * Retourne toutes les sessions d'un utilisateur.
