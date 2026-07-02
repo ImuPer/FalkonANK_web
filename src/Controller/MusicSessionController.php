@@ -25,11 +25,6 @@ class MusicSessionController extends AbstractController
     public function start(Request $request): JsonResponse
     {
         $user = $this->getUser();
-        dump($user);
-        return $this->json([
-            'ok' => true
-        ]);
-
         if (!$user) {
             return $this->json([
                 'success' => false,
