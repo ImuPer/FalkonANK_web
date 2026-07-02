@@ -892,9 +892,11 @@ async function startMusicSession() {
 			}
 		});
 
-        const data = await res.json();
+		console.log(res.status);
 
-        console.log(data);
+		const text = await res.text();
+
+		console.log(text);
 
         if (!data.success) {
             alert(data.message ?? "Impossible de démarrer la session.");
