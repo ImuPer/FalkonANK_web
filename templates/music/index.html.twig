@@ -1183,7 +1183,9 @@ if (tracks.length > 0) {
     loadTrack(0);
 }
 
-startMusicSession();
+{% if app.user %}
+	startMusicSession();
+{% endif %}
 
 
 /* =========================
@@ -1210,48 +1212,44 @@ async function stopMusicSession() {
     }
 }
 
-setInterval(async () => {
-    if (!musicToken) return;
+{% if app.user %}
+	setInterval(async () => {
+		if (!musicToken) return;
 
-    try {
-        const res = await fetch('/music/session/check', {
-			credentials: 'same-origin',
+		try {
+			const res = await fetch('/music/session/check', {
+				headers: {
+					'X-Music-Token': musicToken
+				}
+			});
+
+			const data = await res.json();
+
+			if (!data.active) {
+				player.pause();
+				localStorage.removeItem('music_token');
+				alert("Votre session a été ouverte sur un autre appareil.");
+				location.reload();
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}, 15000);
+{% endif %}
+
+{% if app.user %}
+	window.addEventListener('beforeunload', () => {
+		if (!musicToken) return;
+
+		fetch('/music/session/stop', {
+			method: 'POST',
 			headers: {
 				'X-Music-Token': musicToken
-			}
+			},
+			keepalive: true
 		});
-        const data = await res.json();
-
-		if (!data.active) {
-
-			player.pause();
-
-			localStorage.removeItem('music_token');
-
-			alert("Votre session a été ouverte sur un autre appareil.");
-
-			location.reload();
-
-		}
-
-    } catch (e) {
-        console.error(e);
-    }
-
-}, 15000); // toutes 15 sec
-
-window.addEventListener('beforeunload', () => {
-    if (!musicToken) return;
-
-    fetch('/music/session/stop', {
-		method: 'POST',
-		credentials: 'same-origin',
-		headers: {
-			'X-Music-Token': musicToken
-		},
-		keepalive: true
 	});
-});
+{% endif %}
 
 
 
