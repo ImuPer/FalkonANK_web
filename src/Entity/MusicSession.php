@@ -18,7 +18,7 @@ class MusicSession
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'musicSessions')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?Album $album = null;
 
     #[ORM\Column(length: 255, unique: true)]
