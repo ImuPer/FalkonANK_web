@@ -884,12 +884,13 @@ async function startMusicSession() {
         console.log("Ancien token :", musicToken);
 
         const res = await fetch('/music/session/start', {
-            method: 'POST',
-            headers: {
-                'X-Music-Token': musicToken ?? '',
-                'Content-Type': 'application/json'
-            }
-        });
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: {
+				'X-Music-Token': musicToken ?? '',
+				'Content-Type': 'application/json'
+			}
+		});
 
         const data = await res.json();
 
@@ -1214,11 +1215,11 @@ setInterval(async () => {
 
     try {
         const res = await fetch('/music/session/check', {
-            headers: {
-                'X-Music-Token': musicToken
-            }
-        });
-
+			credentials: 'same-origin',
+			headers: {
+				'X-Music-Token': musicToken
+			}
+		});
         const data = await res.json();
 
 		if (!data.active) {
@@ -1243,12 +1244,13 @@ window.addEventListener('beforeunload', () => {
     if (!musicToken) return;
 
     fetch('/music/session/stop', {
-        method: 'POST',
-        headers: {
-            'X-Music-Token': musicToken
-        },
-        keepalive: true
-    });
+		method: 'POST',
+		credentials: 'same-origin',
+		headers: {
+			'X-Music-Token': musicToken
+		},
+		keepalive: true
+	});
 });
 
 
