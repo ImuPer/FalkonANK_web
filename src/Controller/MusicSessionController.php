@@ -25,7 +25,10 @@ class MusicSessionController extends AbstractController
     public function start(Request $request): JsonResponse
     {
         $user = $this->getUser();
-        dd($user);
+        dump($user);
+        return $this->json([
+            'ok' => true
+        ]);
 
         if (!$user) {
             return $this->json([
@@ -77,7 +80,6 @@ class MusicSessionController extends AbstractController
     public function force(Request $request): JsonResponse
     {
         $user = $this->getUser();
-        dd($user);
         if (!$user) {
             return $this->json([], 401);
         }
