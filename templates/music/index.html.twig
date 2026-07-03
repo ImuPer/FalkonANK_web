@@ -874,6 +874,7 @@ const prevBtn = document.getElementById('prevBtn');
 const nowPlaying = document.getElementById('nowPlaying');
 const tracks = document.querySelectorAll('.play-btn');
 const globalPlayer = document.querySelector('.global-player');
+const takeoverPending = localStorage.getItem('takeover_pending') === '1';
 
 function lockPlayer() {
 
@@ -948,6 +949,8 @@ async function startMusicSession() {
 		if (data.takeover_required) {
 
 			lockPlayer();
+
+			localStorage.setItem('takeover_pending', '1');
 
 			await fetch('/music/session/takeover/request', {
 				method: 'POST'
@@ -1261,6 +1264,11 @@ activeDisc.classList.add('playing');
 /* =========================
    INIT
 ========================= */
+
+if (takeoverPending) {
+    lockPlayer();
+    resumeTakeoverFlow();
+}
 
 if (tracks.length > 0) {
     loadTrack(0);

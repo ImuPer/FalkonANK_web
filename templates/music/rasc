@@ -277,18 +277,18 @@
    RESPONSIVE
 ========================= */
 
-		@media(max-width:768px) {
+		{# @media(max-width:768px) {
 
 			.cd-wrapper {
-				width: 180px;
-				height: 180px;
+				width: 150px;
+				height: 150px;
 			}
 
 			.album-grid {
 				padding: 15px;
 			}
 
-		}
+		} #}
 
 		/* =========================
    SPIN
@@ -451,6 +451,17 @@
 			z-index: 2;
 		}
 		
+		.album-info {
+		color: #cbd5e1;
+		margin-bottom: 10px;
+		font-size: 0.95rem;
+		}
+
+		.album-date {
+			color: #94a3b8;
+			font-size: 0.9rem;
+		}
+		
 		.buy-btn{
 			display:inline-block;
 			padding:15px 25px;
@@ -506,23 +517,114 @@
 			transform:scale(1.1);
 		}
 		
-		.buy-icon{
-			display:inline-flex;
-			align-items:center;
-			justify-content:center;
-			width:50px;
-			height:50px;
-			border-radius:50%;
-			background:#1db954;
-			color:#fff;
+		.back-albums-btn{
+			display:inline-block;
+			padding:10px 20px;
+			background:#222;
+			color:white;
 			text-decoration:none;
-			font-size:22px;
+			border-radius:12px;
 			transition:.3s;
 		}
 
-		.buy-icon:hover{
-			transform:scale(1.1);
-			color:#fff;
+		.back-albums-btn:hover{
+			background:#1db954;
+			color:white;
+		}
+
+		{# --------Modo Mobile---------------------- #}
+		@media (max-width: 768px) {
+
+			.album-header {
+				padding: 35px 10px;
+			}
+
+			.album-header h2 {
+				font-size: 20px;
+				margin-bottom: 8px;
+			}
+
+			.album-info,
+			.album-date {
+				font-size: 0.8rem;
+			}
+		}
+
+		@media (max-width: 768px) {
+
+			.global-player {
+				padding: 8px;
+				gap: 8px;
+			}
+
+			.global-player button {
+				width: 35px;
+				height: 35px;
+				font-size: 16px;
+			}
+
+			.now-playing {
+				font-size: 13px;
+				min-width: auto;
+				width: 100%;
+				order: -1; /* titre au-dessus des boutons */
+			}
+
+			#main-player {
+				max-width: 100%;
+				width: 100%;
+			}
+
+			.global-player a {
+				font-size: 12px;
+			}
+		}
+		
+		@media (max-width: 768px) {
+
+			.music-card {
+				padding: 8px;
+				border-radius: 12px;
+			}
+
+			.cd-wrapper {
+				width: 200px;
+				height: 200px;
+			}
+
+			.cd-disc::after {
+				width: 22px;
+				height: 22px;
+				border-width: 2px;
+			}
+
+			.music-title {
+				margin-top: 5px;
+				font-size: 15px;
+				line-height: 1.2;
+			}
+
+			.music-artist {
+				font-size: 12px;
+				margin: 4px 0 8px;
+			}
+
+			.play-btn {
+				padding: 6px 10px;
+				font-size: 12px;
+			}
+
+			.lyrics-btn,
+			.album-btn {
+				width: 32px;
+				height: 32px;
+				font-size: 13px;
+			}
+
+			.album-grid {
+				gap: 10px;
+				padding: 8px;
+			}
 		}
 	</style>
 
@@ -537,7 +639,22 @@
 																	   HEADER
 																	========================= #}
 	<div class="album-header">
+
 		<h2>💿 {{ pageTitle }}</h2>
+		<div	class="album-info">
+			<p>
+				{{ album.description|raw }}
+			</p>
+			<span>
+				📀
+				{{ album.recordLabel }}
+			</span>
+		</div>
+		<div	class="album-date">
+			{{ 'albums.release_date'|trans }}
+			:
+			{{ album.releaseDate|date('d/m/Y') }}
+		</div>
 		{% if app.user and not hasBought %}
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
@@ -545,18 +662,25 @@
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 			</div>
-
-			{% if purchase is defined and purchase and purchase.invoiceFile %}
-				<div style="margin-top:15px;">
-					<a href="{{ path('app_invoice_download', {
-						id: purchase.id
-					}) }}"
-					class="buy-btn">
-						📄 Télécharger ma facture
-					</a>
-				</div>
-			{% endif %}
 		{% endif %}
+		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}
+			<div style="margin-top:15px;">
+				<a href="{{ path('app_invoice_download', {
+					id: purchase.id
+				}) }}"
+				class="buy-btn">
+					📄 download {{ 'invoice.title'|trans }}
+					{# Télécharger ma facture #}
+				</a>
+			</div>
+		{% endif %}
+
+		<div style="margin-top:15px; font-size:13px;">
+			<a href="{{ path('app_albums_index') }}" class="back-albums-btn">
+				← {{ 'albums.all_albums'|trans }}
+			</a>
+		</div>
+
 	</div>
 
 	<div class="cover-modal" id="coverModal">
@@ -587,6 +711,25 @@
 		{# <audio id="main-player" controls controlsList="nodownload"></audio> #}
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
+		{% if app.user and not hasBought %}
+			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white"
+			title="{{ 'music.buy_album'|trans }}">
+				🛒 
+			</a>
+		{% endif %}
+		{# ---------facture------------------ #}
+		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
+			<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
+				title="download {{ 'invoice.title'|trans }}">
+				📄
+			</a>
+		{% endif %}
+
+		<div >
+			<a style="font-size:10px; color:white;" href="{{ path('app_albums_index') }}" title="{{ 'albums.all_albums'|trans }}">
+				← {{ 'albums.all_albums'|trans }}
+			</a>
+		</div>
 	</div>
 
 
@@ -649,36 +792,28 @@
 					{{ 'music.views'|trans }}
 				</div> #}
 
-				{% if hasBought or isFreeTrack %}
+				<button class="play-btn {% if not canPlayFullTrack %}locked-btn{% endif %}"
+					data-id="{{ music.id }}"
+					data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
+					data-title="{{ music.title }}"
+					data-index="{{ loop.index0 }}"
+					data-full="{{ canPlayFullTrack ? '1' : '0' }}">
 
-					<button class="play-btn"
-						data-id="{{ music.id }}"
-						data-src="{{ asset('uploads/music/' ~ music.audioFile) }}"
-						data-title="{{ music.title }}"
-						data-index="{{ loop.index0 }}"
-						data-full="1">
+					{% if app.user %}
 						▶ {{ 'music.play'|trans }}
-					</button>
+					{% else %}
+						{% if isFreeTrack %}
+							▶ {{ 'music.play'|trans }}
+						{% else %}
+							<a href="{{ path('app_login', {
+								_target_path: app.request.uri
+							}) }}">
+								🔒 {{ 'music.login_to_listen'|trans }}
+							</a>
+						{% endif %}
+					{% endif %}
 
-				{% elseif app.user %}
-
-					<a href="{{ path('app_album_buy', {id: album.id}) }}"
-					class="buy-icon"
-					title="{{ 'music.buy_album'|trans }}">
-						🛒
-					</a>
-
-				{% else %}
-
-					<a href="{{ path('app_login', {
-						_target_path: app.request.uri
-					}) }}"
-					class="buy-icon"
-					title="{{ 'music.login_to_listen'|trans }}">
-						🔒
-					</a>
-
-				{% endif %}
+				</button>
 
 				<button class="lyrics-btn" data-lyrics="{{ music.lyrics|e('html_attr') }}" data-title="{{ music.title }}">
 					🎤
@@ -728,19 +863,138 @@
 
 const repeatBtn = document.getElementById('repeatBtn');
 const shuffleBtn = document.getElementById('shuffleBtn');
-
+let musicToken = localStorage.getItem('music_token') || null;
 let shuffleMode = false;
 let repeatMode = false;
-
-		const player = document.getElementById('main-player');
+let playerLocked = false;
+const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nowPlaying = document.getElementById('nowPlaying');
-
 const tracks = document.querySelectorAll('.play-btn');
+const globalPlayer = document.querySelector('.global-player');
+
+function lockPlayer() {
+
+	playerLocked = true;
+
+    player.pause();
+
+    // boutons des musiques
+    tracks.forEach(btn => btn.disabled = true);
+
+    // boutons du player
+    globalPlayer.querySelectorAll('button').forEach(btn => {
+        btn.disabled = true;
+    });
+
+    // lecteur audio
+    player.controls = false;
+
+    globalPlayer.style.opacity = "0.4";
+    globalPlayer.style.pointerEvents = "none";
+}
+
+function unlockPlayer() {
+
+    playerLocked = false;
+	
+	tracks.forEach(btn => btn.disabled = false);
+
+    globalPlayer.querySelectorAll('button').forEach(btn => {
+        btn.disabled = false;
+    });
+
+    player.controls = true;
+
+    globalPlayer.style.opacity = "1";
+    globalPlayer.style.pointerEvents = "auto";
+}
 
 let currentIndex = 0;
+
+/* =========================
+    SESSION
+========================= */
+async function startMusicSession() {
+
+    try {
+
+        console.log("Ancien token :", musicToken);
+
+       const res = await fetch('/music/session/start', {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: {
+				'X-Music-Token': musicToken ?? '',
+				'Content-Type': 'application/json'
+			}
+		});
+
+		const data = await res.json();
+
+		console.log(data);
+
+		if (!data.success) {
+			alert(data.message ?? "Impossible de démarrer la session.");
+			return;
+		}
+
+		musicToken = data.token;
+		localStorage.setItem('music_token', musicToken);
+
+
+		if (data.takeover_required) {
+
+			lockPlayer();
+
+			await fetch('/music/session/takeover/request', {
+				method: 'POST'
+			});
+
+			const code = prompt("Entrez le code reçu par email");
+
+			if (!code) {
+				musicToken = null;
+				localStorage.removeItem('music_token');
+				return;
+			}
+
+			const confirm = await fetch('/music/session/takeover/confirm', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					code: code
+				})
+			});
+
+			const result = await confirm.json();
+
+			if (!result.success) {
+				musicToken = null;
+				localStorage.removeItem('music_token');
+				alert("Code invalide");
+				return;
+			}
+			musicToken = result.token;
+			localStorage.setItem('music_token', musicToken);
+
+			tracks.forEach(btn => {
+				btn.disabled = false;
+			});
+
+			return;
+		}
+		
+
+    } catch (e) {
+        console.error(e);
+    }
+
+}
 
 /* =========================
    REPEAT MODE
@@ -830,18 +1084,20 @@ player.play();
 ========================= */
 
 playPauseBtn.addEventListener('click', () => {
+		
+	if (playerLocked) return;
 
-if (player.paused) {
+	if (player.paused) {
 
-player.play();
+	player.play();
 
-} else {
+	} else {
 
-player.pause();
+	player.pause();
 
-}
+	}
 
-});
+	});
 
 /* =========================
    PLAYER EVENTS
@@ -877,6 +1133,8 @@ if (player.currentTime >= 5 && !viewedTracks.includes(musicId)) {
 
 viewedTracks.push(musicId);
 
+console.log("startMusicSession");
+
 fetch('/music/' + musicId + '/view', {method: 'POST'});
 }
 
@@ -885,14 +1143,16 @@ const fullAccess = currentTrack.dataset.full === "1";
 if (!fullAccess && player.currentTime >= 60) {
     player.pause();
 
-    const isLogged = {{ app.user ? 'true' : 'false' }};
+	stopMusicSession();
+    
+	const isLogged = {{ app.user ? 'true' : 'false' }};
 
     if (!isLogged) {
         window.location.href =
 		"{{ path('app_login') }}?_target_path=" +
 		encodeURIComponent(window.location.pathname + window.location.search);
     } else {
-        if (confirm("{{ 'music.confirm_buy'|trans }}")) {
+        if (confirm("{{ 'music.confirm_buy'|trans }}\n {{ 'music.confirm_buy2'|trans|lower }}")) {
             window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
         }
     }
@@ -906,23 +1166,25 @@ if (!fullAccess && player.currentTime >= 60) {
 
 nextBtn.addEventListener('click', () => {
 
-if(shuffleMode){
+	if (playerLocked) return;
+	
+	if(shuffleMode){
 
-	currentIndex = getRandomTrackIndex();
+		currentIndex = getRandomTrackIndex();
 
-}else{
+	}else{
 
-	currentIndex++;
+		currentIndex++;
 
-	if (currentIndex >= tracks.length) {
-		currentIndex = 0;
+		if (currentIndex >= tracks.length) {
+			currentIndex = 0;
+		}
+
 	}
 
-}
+	loadTrack(currentIndex);
 
-loadTrack(currentIndex);
-
-player.play();
+	player.play();
 
 });
 
@@ -931,6 +1193,8 @@ player.play();
 ========================= */
 
 prevBtn.addEventListener('click', () => {
+
+if (playerLocked) return;
 
 currentIndex--;
 
@@ -999,8 +1263,78 @@ activeDisc.classList.add('playing');
 ========================= */
 
 if (tracks.length > 0) {
-loadTrack(0);
+    loadTrack(0);
 }
+
+{% if app.user %}
+	startMusicSession();
+{% endif %}
+
+
+/* =========================
+   STOP SESSION
+========================= */
+async function stopMusicSession() {
+    if (!musicToken) return;
+
+    try {
+        await fetch('/music/session/stop', {
+            method: 'POST',
+            headers: {
+                'X-Music-Token': musicToken,
+                'Content-Type': 'application/json'
+            },
+            keepalive: true
+        });
+
+        localStorage.removeItem('music_token');
+        musicToken = null;
+
+    } catch (e) {
+        console.error('Stop session error', e);
+    }
+}
+
+{% if app.user %}
+	setInterval(async () => {
+		if (!musicToken) return;
+
+		try {
+			const res = await fetch('/music/session/check', {
+				headers: {
+					'X-Music-Token': musicToken
+				}
+			});
+
+			const data = await res.json();
+
+			if (!data.active) {
+				player.pause();
+				localStorage.removeItem('music_token');
+				alert("Votre session a été ouverte sur un autre appareil.");
+				location.reload();
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}, 15000);
+{% endif %}
+
+{% if app.user %}
+	window.addEventListener('beforeunload', () => {
+		if (!musicToken) return;
+
+		fetch('/music/session/stop', {
+			method: 'POST',
+			headers: {
+				'X-Music-Token': musicToken
+			},
+			keepalive: true
+		});
+	});
+{% endif %}
+
+
 
 /* =========================
    LYRICS MODAL
