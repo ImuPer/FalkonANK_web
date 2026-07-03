@@ -874,6 +874,7 @@ const prevBtn = document.getElementById('prevBtn');
 const nowPlaying = document.getElementById('nowPlaying');
 const tracks = document.querySelectorAll('.play-btn');
 const globalPlayer = document.querySelector('.global-player');
+const takeoverPending = localStorage.getItem('takeover_pending') === '1';
 
 function lockPlayer() {
 
@@ -912,7 +913,39 @@ function unlockPlayer() {
     globalPlayer.style.pointerEvents = "auto";
 }
 
+async function resumeTakeoverFlow() {
+
+    const code = prompt("Entrez le code reçu par email");
+
+    if (!code) {
+        lockPlayer();
+        return;
+    }
+
+    const confirm = await fetch('/music/session/takeover/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+    });
+
+    const result = await confirm.json();
+
+    if (!result.success) {
+        alert("Code invalide");
+        lockPlayer();
+        return;
+    }
+
+    musicToken = result.token;
+    localStorage.setItem('music_token', musicToken);
+
+    localStorage.removeItem('takeover_pending');
+
+    unlockPlayer();
+}
+
 let currentIndex = 0;
+
 
 /* =========================
     SESSION
@@ -949,42 +982,13 @@ async function startMusicSession() {
 
 			lockPlayer();
 
+			localStorage.setItem('takeover_pending', '1');
+
 			await fetch('/music/session/takeover/request', {
 				method: 'POST'
 			});
 
-			const code = prompt("Entrez le code reçu par email");
-
-			if (!code) {
-				musicToken = null;
-				localStorage.removeItem('music_token');
-				return;
-			}
-
-			const confirm = await fetch('/music/session/takeover/confirm', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					code: code
-				})
-			});
-
-			const result = await confirm.json();
-
-			if (!result.success) {
-				musicToken = null;
-				localStorage.removeItem('music_token');
-				alert("Code invalide");
-				return;
-			}
-			musicToken = result.token;
-			localStorage.setItem('music_token', musicToken);
-
-			tracks.forEach(btn => {
-				btn.disabled = false;
-			});
+			resumeTakeoverFlow();
 
 			return;
 		}
@@ -1261,6 +1265,15 @@ activeDisc.classList.add('playing');
 /* =========================
    INIT
 ========================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const takeoverPending = localStorage.getItem('takeover_pending') === '1';
+
+    if (takeoverPending) {
+        lockPlayer();
+        resumeTakeoverFlow();
+    }
+});
 
 if (tracks.length > 0) {
     loadTrack(0);
