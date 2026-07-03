@@ -875,6 +875,15 @@ const nowPlaying = document.getElementById('nowPlaying');
 const tracks = document.querySelectorAll('.play-btn');
 const globalPlayer = document.querySelector('.global-player');
 
+const i18n = {
+    sessionStartError: "{{ 'music.session_start_error'|trans|e('js') }}",
+    sessionCodePrompt: "{{ 'music.session_code_prompt'|trans({
+        '%email%': app.user.email|split('@')[0]|slice(0,2) ~ '*****@' ~ app.user.email|split('@')[1]
+    })|e('js') }}",
+    invalidCode: "{{ 'music.invalid_code'|trans|e('js') }}",
+    sessionTakenOver: "{{ 'music.session_taken_over'|trans|e('js') }}"
+};
+
 function lockPlayer() {
 
 	playerLocked = true;
@@ -937,7 +946,7 @@ async function startMusicSession() {
 		console.log(data);
 
 		if (!data.success) {
-			alert(data.message ?? "Impossible de démarrer la session.");
+			alert(data.message ?? i18n.sessionStartError);
 			return;
 		}
 
@@ -953,7 +962,11 @@ async function startMusicSession() {
 				method: 'POST'
 			});
 
-			const code = prompt("Entrez le code reçu par email");
+			const code = prompt(i18n.sessionCodePrompt);
+
+			//const code = prompt(
+			//	"Veuillez saisir le code de confirmation que vous avez reçu par e-mail (" + user.email + ")."
+			//);
 
 			if (!code) {
 				musicToken = null;
@@ -976,7 +989,7 @@ async function startMusicSession() {
 			if (!result.success) {
 				musicToken = null;
 				localStorage.removeItem('music_token');
-				alert("Code invalide");
+				alert(i18n.invalidCode);
 				return;
 			}
 			musicToken = result.token;
@@ -1311,7 +1324,7 @@ async function stopMusicSession() {
 			if (!data.active) {
 				player.pause();
 				localStorage.removeItem('music_token');
-				alert("Votre session a été ouverte sur un autre appareil.");
+				alert(i18n.sessionTakenOver);
 				location.reload();
 			}
 		} catch (e) {

@@ -981,6 +981,10 @@ music:
   no_lyrics: "No lyrics available."
   confirm_buy: "🔒 Buy the album to listen to the full track?"
   confirm_buy2: " Streaming access is valid for 1 year from the date of purchase."
+  session_start_error: "Unable to start your listening session. Please try again."
+  session_code_prompt: "Please enter the confirmation code sent to your email (%email%)."
+  invalid_code: "The confirmation code is invalid."
+  session_taken_over: "Music is currently playing on another device using your account. Since only one session is allowed at a time, playback has been stopped on this device."
 
 albums:
   title: "Albums"
