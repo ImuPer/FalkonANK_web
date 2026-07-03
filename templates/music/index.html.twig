@@ -982,9 +982,9 @@ async function startMusicSession() {
 			musicToken = result.token;
 			localStorage.setItem('music_token', musicToken);
 
-			tracks.forEach(btn => {
-				btn.disabled = false;
-			});
+			// Recharge la page pour réinitialiser complètement le player
+			window.location.reload();
+			//unlockPlayer();
 
 			return;
 		}
