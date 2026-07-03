@@ -907,6 +907,12 @@ async function startMusicSession() {
 
 		if (data.takeover_required) {
 
+			player.pause();
+
+			tracks.forEach(btn => {
+				btn.disabled = true;
+			});
+
 			await fetch('/music/session/takeover/request', {
 				method: 'POST'
 			});
@@ -914,6 +920,8 @@ async function startMusicSession() {
 			const code = prompt("Entrez le code reçu par email");
 
 			if (!code) {
+				musicToken = null;
+				localStorage.removeItem('music_token');
 				return;
 			}
 
@@ -930,12 +938,17 @@ async function startMusicSession() {
 			const result = await confirm.json();
 
 			if (!result.success) {
+				musicToken = null;
+				localStorage.removeItem('music_token');
 				alert("Code invalide");
 				return;
 			}
-
 			musicToken = result.token;
 			localStorage.setItem('music_token', musicToken);
+
+			tracks.forEach(btn => {
+				btn.disabled = false;
+			});
 
 			return;
 		}
