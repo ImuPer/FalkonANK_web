@@ -866,12 +866,52 @@ const shuffleBtn = document.getElementById('shuffleBtn');
 let musicToken = localStorage.getItem('music_token') || null;
 let shuffleMode = false;
 let repeatMode = false;
+let playerLocked = false;
 const player = document.getElementById('main-player');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nowPlaying = document.getElementById('nowPlaying');
 const tracks = document.querySelectorAll('.play-btn');
+const globalPlayer = document.querySelector('.global-player');
+
+function lockPlayer() {
+
+	playerLocked = true;
+
+    player.pause();
+
+    // boutons des musiques
+    tracks.forEach(btn => btn.disabled = true);
+
+    // boutons du player
+    globalPlayer.querySelectorAll('button').forEach(btn => {
+        btn.disabled = true;
+    });
+
+    // lecteur audio
+    player.controls = false;
+
+    globalPlayer.style.opacity = "0.4";
+    globalPlayer.style.pointerEvents = "none";
+}
+
+function unlockPlayer() {
+
+    playerLocked = false;
+	
+	tracks.forEach(btn => btn.disabled = false);
+
+    globalPlayer.querySelectorAll('button').forEach(btn => {
+        btn.disabled = false;
+    });
+
+    player.controls = true;
+
+    globalPlayer.style.opacity = "1";
+    globalPlayer.style.pointerEvents = "auto";
+}
+
 let currentIndex = 0;
 
 /* =========================
@@ -907,11 +947,7 @@ async function startMusicSession() {
 
 		if (data.takeover_required) {
 
-			player.pause();
-
-			tracks.forEach(btn => {
-				btn.disabled = true;
-			});
+			lockPlayer();
 
 			await fetch('/music/session/takeover/request', {
 				method: 'POST'
@@ -1048,18 +1084,20 @@ player.play();
 ========================= */
 
 playPauseBtn.addEventListener('click', () => {
+		
+	if (playerLocked) return;
 
-if (player.paused) {
+	if (player.paused) {
 
-player.play();
+	player.play();
 
-} else {
+	} else {
 
-player.pause();
+	player.pause();
 
-}
+	}
 
-});
+	});
 
 /* =========================
    PLAYER EVENTS
@@ -1128,23 +1166,25 @@ if (!fullAccess && player.currentTime >= 60) {
 
 nextBtn.addEventListener('click', () => {
 
-if(shuffleMode){
+	if (playerLocked) return;
+	
+	if(shuffleMode){
 
-	currentIndex = getRandomTrackIndex();
+		currentIndex = getRandomTrackIndex();
 
-}else{
+	}else{
 
-	currentIndex++;
+		currentIndex++;
 
-	if (currentIndex >= tracks.length) {
-		currentIndex = 0;
+		if (currentIndex >= tracks.length) {
+			currentIndex = 0;
+		}
+
 	}
 
-}
+	loadTrack(currentIndex);
 
-loadTrack(currentIndex);
-
-player.play();
+	player.play();
 
 });
 
@@ -1153,6 +1193,8 @@ player.play();
 ========================= */
 
 prevBtn.addEventListener('click', () => {
+
+if (playerLocked) return;
 
 currentIndex--;
 
