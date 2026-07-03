@@ -122,7 +122,6 @@ class MusicSessionService
         $session = $this->repository->findOneBy([
             'user' => $user,
             'takeoverCode' => $code,
-            'isLocked' => true
         ]);
 
         if (!$session) {
@@ -136,7 +135,6 @@ class MusicSessionService
         ) {
             $session->setTakeoverCode(null);
             $session->setTakeoverRequestedAt(null);
-            $session->setIsLocked(false);
 
             $this->em->flush();
 
@@ -148,16 +146,17 @@ class MusicSessionService
 
         foreach ($sessions as $s) {
             $s->setIsActive(false);
-            $s->setIsLocked(false);
+            $s->setIsLocked(false); // facultatif si tu n'utilises plus isLocked
             $s->setTakeoverCode(null);
             $s->setTakeoverRequestedAt(null);
         }
 
         $this->em->flush();
 
-        // Créer une nouvelle session propre
+        // Créer une nouvelle session
         return $this->create($user, $request);
     }
+
     // =========================
     // LIFECYCLE
     // =========================
@@ -203,7 +202,11 @@ class MusicSessionService
             return false;
         }
 
-        if (!$session->isActive() || $session->isLocked()) {
+        // if (!$session->isActive() || $session->isLocked()) {
+        //     return false;
+        // }
+
+        if (!$session->isActive()) {
             return false;
         }
 
@@ -247,7 +250,9 @@ class MusicSessionService
 
     public function lockSessionWithCode(MusicSession $session, string $code): void
     {
-        $session->setIsLocked(true);
+        // NE PAS verrouiller ici
+        //$session->setIsLocked(true);
+
         $session->setTakeoverCode($code);
         $session->setTakeoverRequestedAt(new \DateTimeImmutable());
 
