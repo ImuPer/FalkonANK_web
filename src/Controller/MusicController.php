@@ -89,6 +89,7 @@ class MusicController extends AbstractController
         AlbumRepository $albumRepository,
         MusicRepository $musicRepository,
         AlbumPurchaseRepository $purchaseRepository,
+        EntityManagerInterface $entityManager,
         Security $security
     ): Response {
 
@@ -101,9 +102,31 @@ class MusicController extends AbstractController
         $user = $security->getUser();
 
         $hasBought = false;
+        $purchase = null;
 
         if ($user) {
 
+            $purchase = $purchaseRepository->findOneBy([
+                'user' => $user,
+                'album' => $album
+            ]);
+
+            if ($purchase) {
+
+                $expirationDate = (clone $purchase->getPurchaseDate())->modify('+1 year');
+
+                if (
+                    $purchase->getPaymentStatus() === 'paid'
+                    && $expirationDate <= new \DateTime()
+                ) {
+                    $purchase->setPaymentStatus('onhold');
+                    $purchase->setUpdatedAt(new \DateTimeImmutable());
+
+                    $entityManager->flush();
+                }
+            }
+
+            // Vérifie après la mise à jour éventuelle
             $hasBought = $purchaseRepository->hasUserBoughtAlbum(
                 $user->getId(),
                 $album->getId()
@@ -115,11 +138,6 @@ class MusicController extends AbstractController
             'isPublished' => true
         ], [
             'track' => 'ASC'
-        ]);
-
-        $purchase = $purchaseRepository->findOneBy([
-            'user' => $user,
-            'album' => $album
         ]);
 
         return $this->render('music/index.html.twig', [
