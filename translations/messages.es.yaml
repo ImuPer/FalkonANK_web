@@ -985,7 +985,7 @@ music:
   confirm_buy: "🔒 ¿Comprar el álbum para escuchar la canción completa?"
   confirm_buy2: " El acceso en streaming es válido durante 1 año a partir de la fecha de compra."
   session_start_error: "No se pudo iniciar la sesión de escucha. Inténtelo de nuevo."
-  session_code_prompt: "Introduzca el código de confirmación que recibió por correo electrónico (%email%)."
+  session_code_prompt: "Tu cuenta ha sido, o está siendo, utilizada en otro dispositivo. Para recuperar el control, introduce el código de confirmación enviado a tu correo electrónico (%email%)."
   invalid_code: "El código de confirmación no es válido."
   session_taken_over: "La música se está reproduciendo en otro dispositivo con su cuenta. Como solo se permite una sesión a la vez, la reproducción se ha detenido en este dispositivo."
 

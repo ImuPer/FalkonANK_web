@@ -971,8 +971,7 @@ music:
   confirm_buy: "🔒 Comprar o álbum para ouvir a música completa?"
   confirm_buy2: " O acesso em streaming é válido por 1 ano após a data da compra."
   session_start_error: "Não foi possível iniciar a sua sessão de escuta. Tente novamente."
-  session_code_prompt: "Introduza o código de confirmação enviado para o seu e-mail (%email%)."
-  invalid_code: "O código de confirmação é inválido."
+  session_code_prompt: "A sua conta foi, ou está a ser utilizada noutro dispositivo. Para retomar o controlo, introduza o código de confirmação enviado para o seu e-mail (%email%)."  invalid_code: "O código de confirmação é inválido."
   session_taken_over: "A música está a ser reproduzida noutro dispositivo com a sua conta. Como apenas é permitida uma sessão de cada vez, a reprodução foi interrompida neste dispositivo."
 
 albums:
