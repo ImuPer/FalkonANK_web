@@ -13,12 +13,20 @@
 				{{ 'albums.discover_collection'|trans }}
 			</p>
 		</div>
+		<div class="search-container">
+			<input
+				type="text"
+				id="albumSearch"
+				placeholder="🔍 Rechercher un album..."
+				autocomplete="off">
+		</div>
 		<div	class="albums-grid">
 			{% for album in albums %}
-				<a	href="{{ path('app_music_by_album', {
+				<a href="{{ path('app_music_by_album', {
 						'id': album.id,
 						'_locale': app.request.locale
-					}) }}"	class="album-link">
+					}) }}" class="album-link"
+					data-name="{{ album.name|lower }}">
 							<div	class="album-card">
 								<div	class="disc-container">
 									{% if album.coverImage %}
@@ -45,7 +53,7 @@
 										</div>
 									</div>
 								</div>
-					</a>
+				</a>
 				{% else %}
 					<div	class="empty-state">
 						<p>
@@ -241,6 +249,28 @@
 			transform: scale(1.1);
 		}
 
+		.search-container {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 25px;
+		}
+
+		.search-container input {
+			width: 100%;
+			max-width: 400px;
+			padding: 12px 18px;
+			border-radius: 30px;
+			border: none;
+			outline: none;
+			font-size: 16px;
+			background: #1e293b;
+			color: white;
+		}
+
+		.search-container input::placeholder {
+			color: #94a3b8;
+		}
+
 		
 		@media (max-width: 768px) {
 
@@ -299,6 +329,17 @@
 				font-size:13px;
 			}
 		}
+
+		@media (max-width:768px) {
+			.search-container {
+				padding: 0 10px;
+			}
+
+			.search-container input {
+				font-size: 14px;
+				padding: 10px 14px;
+			}
+		}
 	</style>	
 	{#-----------modal infos----------------------------------- #}
 		<div	id="albumModal"	class="modal hidden">
@@ -340,6 +381,26 @@
 				function closeAlbumModal() {
 					document.getElementById('albumModal').classList.add('hidden');
 				}
+
+				const search = document.getElementById('albumSearch');
+
+				search.addEventListener('input', function () {
+
+					const value = this.value.toLowerCase();
+
+					document.querySelectorAll('.album-link').forEach(album => {
+
+						const name = album.dataset.name;
+
+						if (name.includes(value)) {
+							album.style.display = '';
+						} else {
+							album.style.display = 'none';
+						}
+
+					});
+
+				});
 				</script>
 		</div>
 	{% endblock %}
