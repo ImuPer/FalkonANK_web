@@ -992,6 +992,7 @@ albums:
   discover_collection: "Découvrez la collection complète"
   release_date: "Sortie"
   no_album: "Aucun album disponible"
+  search_placeholder: "Rechercher un album..."
 
 
 invoice:
