@@ -73,9 +73,14 @@ class MusicController extends AbstractController
         if ($security->isGranted('ROLE_ADMIN')) {
             $albums = $albumRepository->findAll();
         } else {
-            $albums = $albumRepository->findBy([
-                'isPublished' => true
-            ]);
+            $albums = $albumRepository->findBy(
+                [
+                    'isPublished' => true,
+                ],
+                [
+                    'name' => 'ASC',
+                ]
+            );
         }
 
         return $this->render('albums/index.html.twig', [
