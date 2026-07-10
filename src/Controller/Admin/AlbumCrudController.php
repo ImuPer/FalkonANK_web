@@ -39,7 +39,7 @@ class AlbumCrudController extends AbstractCrudController
 
             TextField::new('name', 'Nom de l’album'),
 
-            DateField::new('releaseDate', 'Date de sortie'),
+            DateField::new('releaseDate', 'Date de sortie')->setRequired(true),
 
             MoneyField::new('price', 'Prix')->setRequired(true)->setCurrency('EUR')
                 ->setHelp('prix en Euro'),
