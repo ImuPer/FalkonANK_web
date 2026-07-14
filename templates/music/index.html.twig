@@ -715,7 +715,7 @@
 			{{ album.releaseDate|date('d/m/Y') }}
 		</div>
 		{# //===SUBSCRIPTION======= #}
-		{% if app.user %}
+		{% if app.user and not hasSubscription %}
 			<div	class="album-date">
 				<button class="subscription-btn" id="openSubscription">
 					🌟 Abonnement mensuel
