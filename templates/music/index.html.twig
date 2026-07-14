@@ -648,10 +648,11 @@
 
 
 		.subscription-modal{
+			cursor:pointer;
 			position:fixed;
 			inset:0;
 			background:rgba(0,0,0,.85);
-			display:none;
+			display:flex;
 			justify-content:center;
 			align-items:center;
 			z-index:99999;
@@ -1648,53 +1649,48 @@ function getRandomTrackIndex(){
 /* =========================
    SUBSCRIPTION MODAL
 ========================= */
-console.log("ARRIVE AVANT SUBSCRIPTION");
-
 const subscriptionBtn = document.getElementById('openSubscription');
 const subscriptionModal = document.getElementById('subscriptionModal');
 const closeSubscription = document.getElementById('closeSubscription');
 
-console.log("BTN :", subscriptionBtn);
-console.log("MODAL :", subscriptionModal);
 
+if (subscriptionBtn) {
 
-if (subscriptionBtn && subscriptionModal) {
-
-    subscriptionBtn.addEventListener('click', function(e){
-
-        e.preventDefault();
+    subscriptionBtn.onclick = function () {
 
         console.log("CLICK ABONNEMENT");
 
-        subscriptionModal.style.display = "flex";
+        if(subscriptionModal){
+            subscriptionModal.style.display = "flex";
+        }
 
-    });
+    };
 
 }
 
 
-if (closeSubscription && subscriptionModal) {
+if (closeSubscription) {
 
-    closeSubscription.addEventListener('click', function(){
+    closeSubscription.onclick = function () {
 
         subscriptionModal.style.display = "none";
 
-    });
+    };
 
 }
 
 
-if(subscriptionModal){
+if (subscriptionModal) {
 
-    subscriptionModal.addEventListener('click',(e)=>{
+    subscriptionModal.onclick = function(e){
 
         if(e.target === subscriptionModal){
 
-            subscriptionModal.style.display='none';
+            subscriptionModal.style.display = "none";
 
         }
 
-    });
+    };
 
 }
 	</script>
