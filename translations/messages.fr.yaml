@@ -1043,3 +1043,12 @@ invoiceS:
     amount: "Montant"
     subscription_description: "Abonnement Falkon-ANK Premium mensuel"
     total: "Total"
+
+subscription_email:
+    title: "Merci pour votre abonnement"
+    hello: "Bonjour"
+    active: "Votre abonnement Falkon-ANK Premium est maintenant actif."
+    amount: "Montant"
+    invoice_attached: "Votre facture est jointe à cet email."
+    thanks: "Merci pour votre soutien."
+    signature: "Falkon-ANK Music"

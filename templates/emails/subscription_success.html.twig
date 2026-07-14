@@ -1,28 +1,28 @@
-<h2>Merci pour votre abonnement 🎵</h2>
+<h2>{{ 'subscription_email.title'|trans }} 🎵</h2>
 
 <p>
-Bonjour {{ user.firstName }},
+    {{ 'subscription_email.hello'|trans }} {{ user.firstName }},
 </p>
 
 <p>
-Votre abonnement Falkon-ANK Premium est maintenant actif.
+    {{ 'subscription_email.active'|trans }}
 </p>
 
 <p>
-Montant :
-<strong>
-{{ amount }} {{ currency }}
-</strong>
+    {{ 'subscription_email.amount'|trans }} :
+    <strong>
+        {{ amount }} {{ currency }}
+    </strong>
 </p>
 
 <p>
-Votre facture est jointe à cet email.
+    {{ 'subscription_email.invoice_attached'|trans }}
 </p>
 
 <p>
-Merci pour votre soutien.
+    {{ 'subscription_email.thanks'|trans }}
 </p>
 
 <p>
-Falkon-ANK Music
+    {{ 'subscription_email.signature'|trans }}
 </p>

@@ -1045,3 +1045,13 @@ invoiceS:
     amount: "Importe"
     subscription_description: "Suscripción mensual Falkon-ANK Premium"
     total: "Total"
+
+subscription_email:
+    title: "Gracias por tu suscripción"
+    hello: "Hola"
+    active: "Tu suscripción Falkon-ANK Premium ya está activa."
+    amount: "Importe"
+    invoice_attached: "Tu factura está adjunta a este correo electrónico."
+    thanks: "Gracias por tu apoyo."
+    signature: "Falkon-ANK Music"
+
