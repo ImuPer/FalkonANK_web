@@ -1,47 +1,44 @@
-<h1>Facture abonnement</h1>
+<h1>{{ 'invoiceS.title'|trans }}</h1>
 
 <p>
-Numéro :
-{{ invoice.invoiceNumber }}
+    {{ 'invoiceS.number'|trans }} :
+    {{ invoiceS.invoiceNumber }}
 </p>
 
-
 <p>
-Client :
-{{ user.firstName }}
-{{ user.lastName }}
+    {{ 'invoiceS.client'|trans }} :
+    {{ user.firstName }}
+    {{ user.lastName }}
 </p>
 
-
 <p>
-Email :
-{{ user.email }}
+    {{ 'invoiceS.email'|trans }} :
+    {{ user.email }}
 </p>
 
 
 <table border="1" width="100%">
 
 <tr>
-<th>Description</th>
-<th>Montant</th>
+    <th>{{ 'invoiceS.description'|trans }}</th>
+    <th>{{ 'invoiceS.amount'|trans }}</th>
 </tr>
 
 
 <tr>
-<td>
-Abonnement Falkon-ANK Premium mensuel
-</td>
+    <td>
+        {{ 'invoiceS.subscription_description'|trans }}
+    </td>
 
-<td>
-{{ amount }} {{ currency }}
-</td>
-
+    <td>
+        {{ amount }} {{ currency }}
+    </td>
 </tr>
 
 </table>
 
 
 <h3>
-Total :
-{{ amount }} {{ currency }}
+    {{ 'invoiceS.total'|trans }} :
+    {{ amount }} {{ currency }}
 </h3>

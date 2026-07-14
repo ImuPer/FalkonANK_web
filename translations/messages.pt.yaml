@@ -1021,3 +1021,14 @@ subscription:
         new_albums: "Novos álbuns incluídos"
     renewal: "A assinatura é mensal e renovada automaticamente."
     continue: "Continuar a assinatura"
+
+invoiceS:
+    title: "Fatura de assinatura"
+    number: "Número"
+    client: "Cliente"
+    email: "E-mail"
+    description: "Descrição"
+    amount: "Valor"
+    subscription_description: "Assinatura mensal Falkon-ANK Premium"
+    total: "Total"
+

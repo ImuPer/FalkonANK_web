@@ -1033,3 +1033,13 @@ subscription:
         new_albums: "Nouveaux albums inclus"
     renewal: "L'abonnement est mensuel et renouvelé automatiquement."
     continue: "Continuer l'abonnement"
+
+invoiceS:
+    title: "Facture abonnement"
+    number: "Numéro"
+    client: "Client"
+    email: "Email"
+    description: "Description"
+    amount: "Montant"
+    subscription_description: "Abonnement Falkon-ANK Premium mensuel"
+    total: "Total"

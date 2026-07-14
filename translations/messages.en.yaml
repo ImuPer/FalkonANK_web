@@ -1034,3 +1034,12 @@ subscription:
     renewal: "The subscription is monthly and automatically renewed."
     continue: "Continue subscription"
 
+invoiceS:
+    title: "Subscription invoice"
+    number: "Number"
+    client: "Customer"
+    email: "Email"
+    description: "Description"
+    amount: "Amount"
+    subscription_description: "Falkon-ANK Premium monthly subscription"
+    total: "Total"
