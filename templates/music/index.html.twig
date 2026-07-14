@@ -786,9 +786,11 @@
 		{% endif %}
 		{# //===SUBSCRIPTION======= #}
 		{% if app.user and not hasSubscription %}
-			<button class="subscription-btn" id="openSubscription">
-				🌟 {{ 'subscription.title'|trans }}
-			</button>
+			<div	class="album-date">
+				<button class="subscription-btn" id="openSubscription">
+					🌟 {{ 'subscription.title'|trans }}
+				</button>
+			</div>
 		{% endif %}
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
