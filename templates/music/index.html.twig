@@ -641,8 +641,7 @@
 
 		.subscription-btn:hover{
 			background:#7b3cff;
-			transform:scale(0.5);
-			font-size: 13px;
+			transform:scale(1.05);
 		}
 
 		.subscription-content{
@@ -716,13 +715,13 @@
 			{{ album.releaseDate|date('d/m/Y') }}
 		</div>
 		{# //===SUBSCRIPTION======= #}
-		{# {% if app.user and not hasSubscription %}
+		{% if app.user and not hasSubscription %}
 			<div	class="album-date">
 				<button class="subscription-btn" id="openSubscription">
 					🌟 {{ 'subscription.title'|trans }}
 				</button>
 			</div>
-		{% endif %} #}
+		{% endif %}
 		{% if app.user and not hasBought and not hasSubscription %}
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
@@ -784,14 +783,6 @@
 			title="{{ 'music.buy_album'|trans }}">
 				🛒 
 			</a>
-		{% endif %}
-		{# //===SUBSCRIPTION======= #}
-		{% if app.user and not hasSubscription %}
-			<div class="subscript">
-				<button id="openSubscription">
-					🌟 {{ 'subscription.title'|trans }}
-				</button>
-			</div>
 		{% endif %}
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
