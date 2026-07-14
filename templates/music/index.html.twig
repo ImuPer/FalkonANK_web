@@ -626,6 +626,79 @@
 				padding: 8px;
 			}
 		}
+
+		//=======SUBSCRIPTIONS================================================
+		.subscription-btn{
+			display:inline-block;
+			margin-top:20px;
+			padding:12px 25px;
+			background:#9b5cff;
+			color:white;
+			border:none;
+			border-radius:15px;
+			font-weight:bold;
+			cursor:pointer;
+			transition:.3s;
+		}
+
+		.subscription-btn:hover{
+			background:#7b3cff;
+			transform:scale(1.05);
+		}
+
+
+		.subscription-modal{
+			position:fixed;
+			inset:0;
+			background:rgba(0,0,0,.85);
+			display:none;
+			justify-content:center;
+			align-items:center;
+			z-index:99999;
+		}
+
+
+		.subscription-content{
+			background:#111;
+			color:white;
+			width:min(500px,90%);
+			padding:35px;
+			border-radius:25px;
+			text-align:center;
+			box-shadow:0 0 40px rgba(155,92,255,.5);
+		}
+
+
+		.subscription-content h2{
+			color:#9b5cff;
+		}
+
+
+		.subscription-content p{
+			color:#ddd;
+			line-height:1.7;
+		}
+
+
+		.subscription-close{
+			position:absolute;
+			top:20px;
+			right:30px;
+			font-size:30px;
+			cursor:pointer;
+		}
+
+
+		.subscribe-now{
+			display:inline-block;
+			margin-top:20px;
+			padding:15px 30px;
+			background:#1db954;
+			color:white;
+			text-decoration:none;
+			border-radius:15px;
+			font-weight:bold;
+		}
 	</style>
 
 	{# =========================
@@ -662,6 +735,11 @@
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 			</div>
+		{% endif %}
+		{% if app.user %}
+			<button class="subscription-btn" id="openSubscription">
+				🌟 Abonnement mensuel
+			</button>
 		{% endif %}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}
 			<div style="margin-top:15px;">
@@ -854,6 +932,48 @@
 				id="lyricsText"
 				oncontextmenu="return false">
 			</div>
+
+		</div>
+
+	</div>
+
+	//====MODAL SUBSCRIPTION=============================================
+	<div class="subscription-modal" id="subscriptionModal">
+
+		<div class="subscription-content">
+
+			<span class="subscription-close" id="closeSubscription">
+				✖
+			</span>
+
+			<h2>
+				🌟 Abonnement mensuel
+			</h2>
+
+			<p>
+				Accédez à toute la bibliothèque musicale Falkon-ANK.
+			</p>
+
+			<p>
+				Votre abonnement vous donne accès à :
+			</p>
+
+			<ul style="text-align:left">
+				<li>🎵 Tous les albums</li>
+				<li>🎧 Toutes les musiques</li>
+				<li>▶ Lecture complète sans limitation</li>
+				<li>📀 Nouveaux albums inclus</li>
+			</ul>
+
+			<p>
+				L'abonnement est mensuel et renouvelé automatiquement.
+			</p>
+
+
+			<a href="{{ path('app_subscription') }}"
+			class="subscribe-now">
+				Continuer l'abonnement
+			</a>
 
 		</div>
 
@@ -1522,6 +1642,53 @@ function getRandomTrackIndex(){
 	}while(randomIndex === currentIndex && tracks.length > 1);
 
 	return randomIndex;
+
+}
+
+/* =========================
+   SUBSCRIPTION MODAL
+========================= */
+
+const subscriptionBtn = document.getElementById('openSubscription');
+
+const subscriptionModal = document.getElementById('subscriptionModal');
+
+const closeSubscription = document.getElementById('closeSubscription');
+
+
+if(subscriptionBtn){
+
+    subscriptionBtn.addEventListener('click',()=>{
+
+        subscriptionModal.style.display='flex';
+
+    });
+
+}
+
+
+if(closeSubscription){
+
+    closeSubscription.addEventListener('click',()=>{
+
+        subscriptionModal.style.display='none';
+
+    });
+
+}
+
+
+if(subscriptionModal){
+
+    subscriptionModal.addEventListener('click',(e)=>{
+
+        if(e.target === subscriptionModal){
+
+            subscriptionModal.style.display='none';
+
+        }
+
+    });
 
 }
 	</script>

@@ -75,12 +75,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MusicSession::class, mappedBy: 'user')]
     private Collection $musicSessions;
 
+    /**
+     * @var Collection<int, Subscription>
+     */
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user')]
+    private Collection $status;
+
     public function __construct()
     {
         $this->merchants = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->albumPurchases = new ArrayCollection();
         $this->musicSessions = new ArrayCollection();
+        $this->status = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -375,6 +382,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($musicSession->getUser() === $this) {
                 $musicSession->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subscription>
+     */
+    public function getStatus(): Collection
+    {
+        return $this->status;
+    }
+
+    public function addStatus(Subscription $status): static
+    {
+        if (!$this->status->contains($status)) {
+            $this->status->add($status);
+            $status->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStatus(Subscription $status): static
+    {
+        if ($this->status->removeElement($status)) {
+            // set the owning side to null (unless already changed)
+            if ($status->getUser() === $this) {
+                $status->setUser(null);
             }
         }
 
