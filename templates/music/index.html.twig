@@ -1651,30 +1651,33 @@ function getRandomTrackIndex(){
 console.log("ARRIVE AVANT SUBSCRIPTION");
 
 const subscriptionBtn = document.getElementById('openSubscription');
-
 const subscriptionModal = document.getElementById('subscriptionModal');
+const closeSubscription = document.getElementById('closeSubscription');
+
 console.log("BTN :", subscriptionBtn);
 console.log("MODAL :", subscriptionModal);
 
-const closeSubscription = document.getElementById('closeSubscription');
 
+if (subscriptionBtn && subscriptionModal) {
 
-if(subscriptionBtn){
+    subscriptionBtn.addEventListener('click', function(e){
 
-    subscriptionBtn.addEventListener('click',()=>{
+        e.preventDefault();
 
-        subscriptionModal.style.display='flex';
+        console.log("CLICK ABONNEMENT");
+
+        subscriptionModal.style.display = "flex";
 
     });
 
 }
 
 
-if(closeSubscription){
+if (closeSubscription && subscriptionModal) {
 
-    closeSubscription.addEventListener('click',()=>{
+    closeSubscription.addEventListener('click', function(){
 
-        subscriptionModal.style.display='none';
+        subscriptionModal.style.display = "none";
 
     });
 
