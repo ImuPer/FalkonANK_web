@@ -641,7 +641,8 @@
 
 		.subscription-btn:hover{
 			background:#7b3cff;
-			transform:scale(1.05);
+			transform:scale(1);
+			font-size: 13px;
 		}
 
 		.subscription-content{
@@ -786,11 +787,9 @@
 		{% endif %}
 		{# //===SUBSCRIPTION======= #}
 		{% if app.user and not hasSubscription %}
-			<div	class="album-date">
-				<button class="subscription-btn" id="openSubscription">
-					🌟 {{ 'subscription.title'|trans }}
-				</button>
-			</div>
+			<button class="subscription-btn" id="openSubscription">
+				🌟 {{ 'subscription.title'|trans }}
+			</button>
 		{% endif %}
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
