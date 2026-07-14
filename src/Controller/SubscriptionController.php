@@ -59,10 +59,12 @@ class SubscriptionController extends AbstractController
             $session = $this->stripe->checkout->sessions->create([
                 'mode' => 'subscription',
 
-                'line_items' => [[
-                    'price' => $_ENV['STRIPE_MONTHLY_PRICE_ID'],
-                    'quantity' => 1,
-                ]],
+                'line_items' => [
+                    [
+                        'price' => $_ENV['STRIPE_MONTHLY_PRICE_ID'],
+                        'quantity' => 1,
+                    ]
+                ],
 
                 'metadata' => [
                     'user_id' => $user->getId(),
@@ -76,8 +78,7 @@ class SubscriptionController extends AbstractController
             return $this->redirect($session->url);
 
         } catch (ApiErrorException $e) {
-
-    dd($e->getMessage());
+            // dd($e->getMessage());
 
             $this->addFlash(
                 'danger',

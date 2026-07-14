@@ -16,6 +16,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\SubscriptionRepository;
 
 class MusicController extends AbstractController
 {
@@ -94,6 +95,7 @@ class MusicController extends AbstractController
         AlbumRepository $albumRepository,
         MusicRepository $musicRepository,
         AlbumPurchaseRepository $purchaseRepository,
+        SubscriptionRepository $subscriptionRepository,
         EntityManagerInterface $entityManager,
         Security $security
     ): Response {
@@ -107,22 +109,38 @@ class MusicController extends AbstractController
         $user = $security->getUser();
 
         $hasBought = false;
+        $hasSubscription = false;
         $purchase = null;
 
         if ($user) {
 
+            // Vérifie si l'utilisateur possède un abonnement actif
+            $subscription = $subscriptionRepository->findOneBy([
+                'user' => $user,
+            ]);
+
+            if (
+                $subscription &&
+                $subscription->getStatus() === 'active' &&
+                $subscription->getEndAt() > new \DateTimeImmutable()
+            ) {
+                $hasSubscription = true;
+            }
+
+            // Vérifie si l'utilisateur a acheté cet album
             $purchase = $purchaseRepository->findOneBy([
                 'user' => $user,
-                'album' => $album
+                'album' => $album,
             ]);
 
             if ($purchase) {
 
-                $expirationDate = (clone $purchase->getPurchaseDate())->modify('+1 year');
+                $expirationDate = (clone $purchase->getPurchaseDate())
+                    ->modify('+1 year');
 
                 if (
-                    $purchase->getPaymentStatus() === 'paid'
-                    && $expirationDate <= new \DateTime()
+                    $purchase->getPaymentStatus() === 'paid' &&
+                    $expirationDate <= new \DateTime()
                 ) {
                     $purchase->setPaymentStatus('onhold');
                     $purchase->setUpdatedAt(new \DateTimeImmutable());
@@ -131,25 +149,29 @@ class MusicController extends AbstractController
                 }
             }
 
-            // Vérifie après la mise à jour éventuelle
+            // Vérifie après une éventuelle mise à jour
             $hasBought = $purchaseRepository->hasUserBoughtAlbum(
                 $user->getId(),
                 $album->getId()
             );
         }
 
-        $musics = $musicRepository->findBy([
-            'album' => $album,
-            'isPublished' => true
-        ], [
-            'track' => 'ASC'
-        ]);
+        $musics = $musicRepository->findBy(
+            [
+                'album' => $album,
+                'isPublished' => true,
+            ],
+            [
+                'track' => 'ASC',
+            ]
+        );
 
         return $this->render('music/index.html.twig', [
             'album' => $album,
             'musics' => $musics,
             'purchase' => $purchase,
-            'hasBought' => $hasBought
+            'hasBought' => $hasBought,
+            'hasSubscription' => $hasSubscription,
         ]);
     }
 

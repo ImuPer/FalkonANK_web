@@ -722,7 +722,7 @@
 				</button>
 			</div>
 		{% endif %}
-		{% if app.user and not hasBought %}
+		{% if app.user and not hasBought and not hasSubscription %}
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="btn btn-success">
@@ -778,7 +778,7 @@
 		{# <audio id="main-player" controls controlsList="nodownload"></audio> #}
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
-		{% if app.user and not hasBought %}
+		{% if app.user and not hasBought and not hasSubscription %}
 			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white"
 			title="{{ 'music.buy_album'|trans }}">
 				🛒 
@@ -823,7 +823,7 @@
 																																																						    #}
 
 			{% set isFreeTrack = loop.index0 < 2 %}
-			{% set canPlayFullTrack = hasBought or isFreeTrack %}
+			{% set canPlayFullTrack = hasBought or hasSubscription or isFreeTrack %}
 			<div class="music-card" id="card-{{ loop.index0 }}">
 
 				<div class="cd-wrapper">
