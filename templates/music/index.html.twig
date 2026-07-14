@@ -722,11 +722,6 @@
 				</a>
 			</div>
 		{% endif %}
-		{% if app.user %}
-			<button class="subscription-btn" id="openSubscription">
-				🌟 Abonnement mensuel
-			</button>
-		{% endif %}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}
 			<div style="margin-top:15px;">
 				<a href="{{ path('app_invoice_download', {
@@ -780,6 +775,12 @@
 			title="{{ 'music.buy_album'|trans }}">
 				🛒 
 			</a>
+		{% endif %}
+		//===SUBSCRIPTION=======
+		{% if app.user %}
+			<button class="subscription-btn" id="openSubscription">
+				🌟 Abonnement mensuel
+			</button>
 		{% endif %}
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
