@@ -785,11 +785,11 @@
 			</a>
 		{% endif %}
 		{# //===SUBSCRIPTION======= #}
-		{# {% if app.user %}
+		{% if app.user %}
 			<button class="subscription-btn" id="openSubscription">
 				🌟 {{ 'subscription.title'|trans }}
 			</button>
-		{% endif %} #}
+		{% endif %}
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
 			<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
