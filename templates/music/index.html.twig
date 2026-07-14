@@ -1284,7 +1284,7 @@ if (!fullAccess && player.currentTime >= 60) {
 		encodeURIComponent(window.location.pathname + window.location.search);
     } else {
         if (confirm("{{ 'music.confirm_buy'|trans }}\n {{ 'music.confirm_buy2'|trans|lower }}")) {
-            window.location;
+            window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
         }
     }
 }
