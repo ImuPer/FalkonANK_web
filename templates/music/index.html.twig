@@ -785,7 +785,7 @@
 			</a>
 		{% endif %}
 		{# //===SUBSCRIPTION======= #}
-		{% if app.user %}
+		{% if app.user and not hasSubscription %}
 			<button class="subscription-btn" id="openSubscription">
 				🌟 {{ 'subscription.title'|trans }}
 			</button>
