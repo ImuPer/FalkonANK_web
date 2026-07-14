@@ -628,17 +628,15 @@
 		}
 
 		//=======SUBSCRIPTIONS================================================
-		.subscription-btn{
-			display:inline-block;
-			margin-top:20px;
-			padding:12px 25px;
-			background:#9b5cff;
-			color:white;
-			border:none;
-			border-radius:15px;
-			font-weight:bold;
+		.subscription-modal{
 			cursor:pointer;
-			transition:.3s;
+			position:fixed;
+			inset:0;
+			background:rgba(0,0,0,.85);
+			display:none; /* IMPORTANT */
+			justify-content:center;
+			align-items:center;
+			z-index:99999;
 		}
 
 		.subscription-btn:hover{
