@@ -22,8 +22,8 @@
 		}
 
 		/* =========================
-   HEADER
-========================= */
+		HEADER
+		========================= */
 
 		.album-header {
 			text-align: center;
@@ -41,8 +41,8 @@
 		}
 
 		/* =========================
-   ZOOM COVER
-========================= */
+		ZOOM COVER
+		========================= */
 
 		.album-header h2 {
 			cursor: pointer;
@@ -636,7 +636,7 @@
 			display:none; /* IMPORTANT */
 			justify-content:center;
 			align-items:center;
-			z-index:99999;
+			z-index:9999999999999;
 		}
 
 		.subscription-btn:hover{
@@ -715,13 +715,13 @@
 			{{ album.releaseDate|date('d/m/Y') }}
 		</div>
 		{# //===SUBSCRIPTION======= #}
-		{% if app.user and not hasSubscription %}
+		{# {% if app.user and not hasSubscription %}
 			<div	class="album-date">
 				<button class="subscription-btn" id="openSubscription">
 					🌟 {{ 'subscription.title'|trans }}
 				</button>
 			</div>
-		{% endif %}
+		{% endif %} #}
 		{% if app.user and not hasBought and not hasSubscription %}
 			<div style="margin-top:20px; position:relative; z-index:2;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
