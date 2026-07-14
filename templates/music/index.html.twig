@@ -718,7 +718,7 @@
 		{% if app.user and not hasSubscription %}
 			<div	class="album-date">
 				<button class="subscription-btn" id="openSubscription">
-					🌟 Abonnement mensuel
+					🌟 {{ 'subscription.title'|trans }}
 				</button>
 			</div>
 		{% endif %}
@@ -787,7 +787,7 @@
 		{# //===SUBSCRIPTION======= #}
 		{# {% if app.user %}
 			<button class="subscription-btn" id="openSubscription">
-				🌟
+				🌟 {{ 'subscription.title'|trans }}
 			</button>
 		{% endif %} #}
 		{# ---------facture------------------ #}
@@ -942,37 +942,37 @@
 			</span>
 
 			<h2>
-				🌟 Abonnement mensuel
+				🌟 {{ 'subscription.title'|trans }}
 			</h2>
 
 			<p>
-				Accédez à toute la bibliothèque musicale Falkon-ANK.
+				{{ 'subscription.description'|trans }}
 			</p>
 
 			<p>
-				Votre abonnement vous donne accès à :
+				{{ 'subscription.access_title'|trans }}
 			</p>
 
 			<ul style="text-align:left">
-				<li>🎵 Tous les albums</li>
-				<li>🎧 Toutes les musiques</li>
-				<li>▶ Lecture complète sans limitation</li>
-				<li>📀 Nouveaux albums inclus</li>
+				<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
+				<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
+				<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
+				<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
 			</ul>
 
 			<p>
-				L'abonnement est mensuel et renouvelé automatiquement.
+				{{ 'subscription.renewal'|trans }}
 			</p>
-
 
 			<a href="{{ path('app_subscription') }}"
 			class="subscribe-now">
-				Continuer l'abonnement
+				{{ 'subscription.continue'|trans }}
 			</a>
 
 		</div>
 
 	</div>
+
 
 	<script>
 

@@ -1020,3 +1020,17 @@ purchase_invoice:
     price: "Price"
     total: "Total paid"
     thanks: "Thank you for your purchase."
+
+
+subscription:
+    title: "Monthly subscription"
+    description: "Access the entire Falkon-ANK music library."
+    access_title: "Your subscription gives you access to:"
+    feature:
+        albums: "All albums"
+        music: "All music"
+        unlimited_play: "Full playback with no limits"
+        new_albums: "New albums included"
+    renewal: "The subscription is monthly and automatically renewed."
+    continue: "Continue subscription"
+

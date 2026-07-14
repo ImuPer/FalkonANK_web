@@ -1023,3 +1023,15 @@ purchase_invoice:
     price: "Precio"
     total: "Total pagado"
     thanks: "Gracias por tu compra."
+
+subscription:
+    title: "Suscripción mensual"
+    description: "Accede a toda la biblioteca musical de Falkon-ANK."
+    access_title: "Tu suscripción te da acceso a:"
+    feature:
+        albums: "Todos los álbumes"
+        music: "Toda la música"
+        unlimited_play: "Reproducción completa sin límites"
+        new_albums: "Nuevos álbumes incluidos"
+    renewal: "La suscripción es mensual y se renueva automáticamente."
+    continue: "Continuar con la suscripción"

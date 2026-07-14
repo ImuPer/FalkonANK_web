@@ -1009,3 +1009,15 @@ purchase_invoice:
     price: "Preço"
     total: "Total pago"
     thanks: "Obrigado pela sua compra."
+
+subscription:
+    title: "Assinatura mensal"
+    description: "Aceda a toda a biblioteca musical Falkon-ANK."
+    access_title: "A sua assinatura dá-lhe acesso a:"
+    feature:
+        albums: "Todos os álbuns"
+        music: "Todas as músicas"
+        unlimited_play: "Reprodução completa sem limitações"
+        new_albums: "Novos álbuns incluídos"
+    renewal: "A assinatura é mensal e renovada automaticamente."
+    continue: "Continuar a assinatura"
