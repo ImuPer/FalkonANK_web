@@ -77,6 +77,8 @@ class SubscriptionController extends AbstractController
 
         } catch (ApiErrorException $e) {
 
+    dd($e->getMessage());
+
             $this->addFlash(
                 'danger',
                 'Impossible de créer la session de paiement.'
