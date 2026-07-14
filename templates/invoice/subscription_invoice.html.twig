@@ -1,0 +1,47 @@
+<h1>Facture abonnement</h1>
+
+<p>
+Numéro :
+{{ invoice.invoiceNumber }}
+</p>
+
+
+<p>
+Client :
+{{ user.firstName }}
+{{ user.lastName }}
+</p>
+
+
+<p>
+Email :
+{{ user.email }}
+</p>
+
+
+<table border="1" width="100%">
+
+<tr>
+<th>Description</th>
+<th>Montant</th>
+</tr>
+
+
+<tr>
+<td>
+Abonnement Falkon-ANK Premium mensuel
+</td>
+
+<td>
+{{ amount }} {{ currency }}
+</td>
+
+</tr>
+
+</table>
+
+
+<h3>
+Total :
+{{ amount }} {{ currency }}
+</h3>

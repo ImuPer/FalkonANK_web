@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Subscription;
+use App\Repository\SubscriptionInvoiceRepository;
 use App\Repository\SubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Exception\ApiErrorException;
@@ -12,6 +13,12 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\SubscriptionInvoice;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 class SubscriptionController extends AbstractController
 {
@@ -94,7 +101,9 @@ class SubscriptionController extends AbstractController
         Request $request,
         Security $security,
         EntityManagerInterface $em,
-        SubscriptionRepository $subscriptionRepository
+        SubscriptionRepository $subscriptionRepository,
+        SubscriptionInvoiceRepository $subscriptionInvoiceRepository,
+        MailerInterface $mailer
     ): Response {
 
         $user = $security->getUser();
@@ -103,53 +112,148 @@ class SubscriptionController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
+
         $sessionId = $request->query->get('session_id');
 
         if (!$sessionId) {
             return $this->redirectToRoute('app_albums_index');
         }
 
-        try {
 
-            $session = $this->stripe->checkout->sessions->retrieve($sessionId);
+        // Protection double validation Stripe
+        $existingInvoice = $subscriptionInvoiceRepository->findOneBy([
+            'stripeSessionId' => $sessionId
+        ]);
 
-            if ($session->payment_status !== 'paid') {
 
-                $this->addFlash(
-                    'danger',
-                    'Le paiement n\'a pas été validé.'
-                );
-
-                return $this->redirectToRoute('app_albums_index');
-            }
-
-            if (!$session->subscription) {
-
-                $this->addFlash(
-                    'danger',
-                    'Abonnement Stripe introuvable.'
-                );
-
-                return $this->redirectToRoute('app_albums_index');
-            }
-
-            $stripeSubscription = $this->stripe->subscriptions->retrieve(
-                $session->subscription
-            );
-
-        } catch (ApiErrorException $e) {
+        if ($existingInvoice) {
 
             $this->addFlash(
-                'danger',
-                'Impossible de récupérer les informations Stripe.'
+                'info',
+                'Votre abonnement a déjà été enregistré.'
             );
 
             return $this->redirectToRoute('app_albums_index');
         }
 
-        $subscription = $subscriptionRepository->findOneBy([
-            'user' => $user,
-        ]);
+
+
+        try {
+
+            $session = $this->stripe->checkout->sessions->retrieve(
+                $sessionId
+            );
+
+
+            if (
+                $session->status !== 'complete'
+                ||
+                $session->payment_status !== 'paid'
+            ) {
+
+                $this->addFlash(
+                    'danger',
+                    'Paiement Stripe non validé.'
+                );
+
+                return $this->redirectToRoute('app_albums_index');
+            }
+
+
+
+            if (!$session->subscription) {
+
+                throw new \Exception(
+                    'Subscription Stripe manquante'
+                );
+            }
+
+
+
+            $stripeSubscription =
+                $this->stripe->subscriptions->retrieve(
+                    $session->subscription
+                );
+
+
+
+            if (!isset($stripeSubscription->items->data[0])) {
+
+                throw new \Exception(
+                    'Prix Stripe introuvable'
+                );
+            }
+
+
+
+            $price =
+                $stripeSubscription
+                    ->items
+                    ->data[0]
+                    ->price;
+
+
+
+            $amountPaid =
+                $price->unit_amount / 100;
+
+
+
+            $currency =
+                strtoupper($price->currency);
+
+
+
+            $customer =
+                $this->stripe->customers->retrieve(
+                    $stripeSubscription->customer
+                );
+
+
+
+            $customerName =
+                $customer->name ?? '';
+
+
+
+            $customerEmail =
+                $customer->email
+                ??
+                $user->getEmail();
+
+
+
+        } catch (\Throwable $e) {
+
+
+            $this->addFlash(
+                'danger',
+                'Erreur récupération Stripe : ' . $e->getMessage()
+            );
+
+
+            return $this->redirectToRoute(
+                'app_albums_index'
+            );
+
+        }
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Subscription database
+        |--------------------------------------------------------------------------
+        */
+
+
+        $subscription =
+            $subscriptionRepository->findOneBy([
+                'user' => $user
+            ]);
+
+
 
         if (!$subscription) {
 
@@ -162,42 +266,254 @@ class SubscriptionController extends AbstractController
             );
         }
 
-        $subscription->setUpdatedAt(
-            new \DateTimeImmutable()
-        );
+
 
         $subscription->setStatus(
             $stripeSubscription->status
         );
 
+
         $subscription->setStripeSubscriptionId(
             $stripeSubscription->id
         );
+
 
         $subscription->setStripeCustomerId(
             $stripeSubscription->customer
         );
 
+
         $subscription->setStartAt(
-            (new \DateTimeImmutable())->setTimestamp(
-                $stripeSubscription->current_period_start
-            )
+            (new \DateTimeImmutable())
+                ->setTimestamp(
+                    $stripeSubscription->current_period_start
+                )
         );
+
 
         $subscription->setEndAt(
-            (new \DateTimeImmutable())->setTimestamp(
-                $stripeSubscription->current_period_end
+            (new \DateTimeImmutable())
+                ->setTimestamp(
+                    $stripeSubscription->current_period_end
+                )
+        );
+
+
+        $subscription->setUpdatedAt(
+            new \DateTimeImmutable()
+        );
+
+
+        $em->persist($subscription);
+
+        $em->flush();
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Invoice interne
+        |--------------------------------------------------------------------------
+        */
+
+
+        $invoice = new SubscriptionInvoice();
+
+
+        $invoice->setUser($user);
+
+
+        $invoice->setSubscription(
+            $subscription
+        );
+
+
+        $invoice->setStripeSessionId(
+            $sessionId
+        );
+
+
+        $invoice->setInvoiceNumber(
+            sprintf(
+                'SUB-%s-%06d',
+                date('Y'),
+                random_int(100000, 999999)
             )
         );
 
-        $em->persist($subscription);
+
+        $invoice->setAmount(
+            $amountPaid
+        );
+
+
+        $invoice->setCurrency(
+            $currency
+        );
+
+
+        $invoice->setPaymentStatus(
+            'paid'
+        );
+
+
+        $invoice->setCreatedAt(
+            new \DateTimeImmutable()
+        );
+
+
+        $em->persist($invoice);
+
         $em->flush();
+
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Génération PDF
+        |--------------------------------------------------------------------------
+        */
+
+
+        $html =
+            $this->renderView(
+                'invoice/subscription_invoice.html.twig',
+                [
+                    'invoice' => $invoice,
+                    'user' => $user,
+                    'subscription' => $subscription,
+                    'amount' => $amountPaid,
+                    'currency' => $currency
+                ]
+            );
+
+
+
+        $options = new Options();
+
+        $options->set(
+            'defaultFont',
+            'Arial'
+        );
+
+
+        $dompdf = new Dompdf($options);
+
+
+        $dompdf->loadHtml($html);
+
+
+        $dompdf->setPaper(
+            'A4',
+            'portrait'
+        );
+
+
+        $dompdf->render();
+
+
+
+        $pdfPath =
+            sys_get_temp_dir()
+            .
+            '/subscription_invoice_' . $invoice->getId() . '.pdf';
+
+
+
+        file_put_contents(
+            $pdfPath,
+            $dompdf->output()
+        );
+
+
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Email client
+        |--------------------------------------------------------------------------
+        */
+
+
+        try {
+
+
+            $email =
+                (new Email())
+
+
+                    ->from(
+                        new Address(
+                            'no-reply@falkon.click',
+                            'Falkon-ANK Music'
+                        )
+                    )
+
+
+                    ->to(
+                        $customerEmail
+                    )
+
+
+                    ->subject(
+                        'Confirmation abonnement Falkon-ANK Premium'
+                    )
+
+
+                    ->html(
+                        $this->renderView(
+                            'emails/subscription_success.html.twig',
+                            [
+                                'user' => $user,
+                                'amount' => $amountPaid,
+                                'currency' => $currency
+                            ]
+                        )
+                    )
+
+
+                    ->attachFromPath(
+                        $pdfPath,
+                        'facture-abonnement.pdf'
+                    );
+
+
+
+            $mailer->send($email);
+
+
+
+        } catch (\Throwable $e) {
+
+
+            // Logger possible ici
+
+        }
+
+
+
+
+        if (file_exists($pdfPath)) {
+
+            unlink($pdfPath);
+
+        }
+
+
 
         $this->addFlash(
             'success',
             'Votre abonnement mensuel est maintenant actif.'
         );
 
-        return $this->redirectToRoute('app_albums_index');
+
+
+        return $this->redirectToRoute(
+            'app_albums_index'
+        );
     }
 }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\SubscriptionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 class Subscription
@@ -38,6 +40,17 @@ class Subscription
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(
+        mappedBy: 'subscription',
+        targetEntity: SubscriptionInvoice::class,
+        orphanRemoval: true
+    )]
+    private Collection $subscriptionInvoices;
+
+    public function __construct()
+    {
+        $this->subscriptionInvoices = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +148,37 @@ class Subscription
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getSubscriptionInvoices(): Collection
+    {
+        return $this->subscriptionInvoices;
+    }
+
+    public function addSubscriptionInvoice(
+        SubscriptionInvoice $invoice
+    ): static {
+
+        if (!$this->subscriptionInvoices->contains($invoice)) {
+            $this->subscriptionInvoices->add($invoice);
+            $invoice->setSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscriptionInvoice(
+        SubscriptionInvoice $invoice
+    ): static {
+
+        if ($this->subscriptionInvoices->removeElement($invoice)) {
+
+            if ($invoice->getSubscription() === $this) {
+                $invoice->setSubscription(null);
+            }
+        }
 
         return $this;
     }
