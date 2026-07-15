@@ -803,7 +803,7 @@
 		{# //===SUBSCRIPTION======= #}
 		{% if app.user and not hasSubscription %}
 			<div>
-				<button class="subscription-btn" id="openSubscription" style="font-size:10px; color:white;">
+				<button class="subscription-btn" id="openSubscription" style="font-size:9px; color:white;">
 					🌟 {{ 'subscription.title'|trans }}
 				</button>
 			</div>
@@ -973,6 +973,39 @@
 			class="subscribe-now">
 				{{ 'subscription.continue'|trans }}
 			</a>
+
+		</div>
+
+	</div>
+	{# ====MODAL CHOIX ACHAT ALBUM/SUBSCRIPTION #}
+	<div class="subscription-modal" id="purchaseModal">
+
+		<div class="subscription-content">
+
+			<span class="subscription-close" id="closePurchase">
+				✖
+			</span>
+
+			<h2>🎵 {{ 'music.confirm_buy'|trans }}</h2>
+
+			<p>
+				{{ 'music.confirm_buy2'|trans }}
+			</p>
+
+			<div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:25px;">
+
+				<a href="{{ path('app_album_buy', {id: album.id}) }}"
+				class="subscribe-now">
+					🛒 {{ 'music.buy_album'|trans }}
+				</a>
+
+				<a href="{{ path('app_subscription') }}"
+				class="subscribe-now"
+				style="background:#7b3cff;">
+					🌟 {{ 'subscription.title'|trans }}
+				</a>
+
+			</div>
 
 		</div>
 
@@ -1285,9 +1318,7 @@ if (!fullAccess && player.currentTime >= 60) {
 		"{{ path('app_login') }}?_target_path=" +
 		encodeURIComponent(window.location.pathname + window.location.search);
     } else {
-        if (confirm("{{ 'music.confirm_buy'|trans }}\n {{ 'music.confirm_buy2'|trans|lower }}")) {
-            window.location.href = "{{ path('app_album_buy', {id: album.id}) }}";
-        }
+        document.getElementById('purchaseModal').style.display = 'flex';
     }
 }
 
@@ -1692,6 +1723,29 @@ if(subscriptionModal){
 
             subscriptionModal.style.display = "none";
 
+        }
+
+    });
+
+}
+
+const purchaseModal = document.getElementById('purchaseModal');
+const closePurchase = document.getElementById('closePurchase');
+
+if (closePurchase) {
+
+    closePurchase.addEventListener('click', () => {
+        purchaseModal.style.display = 'none';
+    });
+
+}
+
+if (purchaseModal) {
+
+    purchaseModal.addEventListener('click', (e) => {
+
+        if (e.target === purchaseModal) {
+            purchaseModal.style.display = 'none';
         }
 
     });
