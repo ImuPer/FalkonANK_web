@@ -1012,7 +1012,8 @@
 			</span>
 
 			<!-- Achat de l'album -->
-			<h2>🎵 {{ 'music.confirm_buy'|trans }}</h2>
+			<h2>🎵 {{ 'music.confirm_buy'|trans }} <br> 
+					 {{ album.price/100|number_format(2, ',', ' ') }} €</h2>
 
 			<p>
 				{{ 'music.confirm_buy2'|trans }}
@@ -1023,7 +1024,6 @@
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="subscribe-now">
 					🛒 {{ 'music.buy_album'|trans }}
-					 {{ album.price/100|number_format(2, ',', ' ') }} €
 				</a>
 
 			</div>
@@ -1037,7 +1037,7 @@
 
 			<!-- Abonnement -->
 			<h2>
-				🌟 {{ 'subscription.title'|trans }} 3,99 €
+				🌟 {{ 'subscription.title'|trans }} <br> 3,99 €
 			</h2>
 
 			<p>
