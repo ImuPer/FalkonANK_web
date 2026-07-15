@@ -986,39 +986,66 @@
 				✖
 			</span>
 
+			<!-- Achat de l'album -->
 			<h2>🎵 {{ 'music.confirm_buy'|trans }}</h2>
 
 			<p>
 				{{ 'music.confirm_buy2'|trans }}
 			</p>
 
-			<div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:15px;">
+			<div style="display:flex;justify-content:center;margin-top:20px;">
 
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="subscribe-now">
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
+
 			</div>
 
-			<hr>
+			<hr style="
+				border:0;
+				height:1px;
+				background:linear-gradient(to right, transparent, #9b5cff, transparent);
+				margin:35px 0;
+			">
 
-			<div style="display:flex;gap:25px;justify-content:center;flex-wrap:wrap;margin-top:15px;">
-				<a href="{{ path('app_subscription') }}" class="subscribe-now" style="background:#7b3cff;">
-					🌟 {{ 'subscription.title'|trans }}
+			<!-- Abonnement -->
+			<h2>
+				🌟 {{ 'subscription.title'|trans }}
+			</h2>
+
+			<p>
+				{{ 'subscription.description'|trans }}
+			</p>
+
+			<p>
+				<strong>{{ 'subscription.access_title'|trans }}</strong>
+			</p>
+
+			<ul style="
+				text-align:left;
+				max-width:320px;
+				margin:20px auto;
+				line-height:1.9;
+			">
+				<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
+				<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
+				<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
+				<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
+			</ul>
+
+			<p style="margin-top:15px;">
+				{{ 'subscription.renewal'|trans }}
+			</p>
+
+			<div style="display:flex;justify-content:center;margin-top:20px;">
+
+				<a href="{{ path('app_subscription') }}"
+				class="subscribe-now"
+				style="background:#7b3cff;">
+					🌟 {{ 'subscription.continue'|trans }}
 				</a>
-				<h2>
-					{{ 'subscription.access_title'|trans }}
-				</h2>
-				<ul style="text-align:left">
-					<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
-					<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
-					<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
-					<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
-				</ul>
-				<p>
-					{{ 'subscription.renewal'|trans }}
-				</p>
-				
+
 			</div>
 
 		</div>
