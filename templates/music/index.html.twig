@@ -795,8 +795,10 @@
 		{% endif %}
 
 		<div >
-			<a style="font-size:10px; color:white;" href="{{ path('app_albums_index') }}" title="{{ 'music.confirm_buy2'|trans }}">
-				📀{{ 'albums.all_albums'|trans }}
+			<a style="font-size:10px; color:white;"
+			href="{{ path('app_albums_index') }}"
+			title="{{ ('albums.all_albums'|trans) ~ ' - ' ~ ('music.confirm_buy2'|trans) }}">
+				📀 {{ 'albums.all_albums'|trans }}
 			</a>
 		</div>
 		
