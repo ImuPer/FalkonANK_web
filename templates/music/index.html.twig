@@ -999,9 +999,15 @@
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
 
+				
+				<a href="{{ path('app_subscription') }}"
+				class="subscribe-now"
+				style="background:#7b3cff;">
+					🌟 {{ 'subscription.title'|trans }}
+				</a>
 				<p>
-				{{ 'subscription.access_title'|trans }}
-			</p>
+					{{ 'subscription.access_title'|trans }}
+				</p>
 
 			<ul style="text-align:left">
 				<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
@@ -1013,11 +1019,10 @@
 			<p>
 				{{ 'subscription.renewal'|trans }}
 			</p>
-				<a href="{{ path('app_subscription') }}"
-				class="subscribe-now"
-				style="background:#7b3cff;">
+
+				<button class="subscription-btn" id="openSubscription">
 					🌟 {{ 'subscription.title'|trans }}
-				</a>
+				</button>
 
 			</div>
 
