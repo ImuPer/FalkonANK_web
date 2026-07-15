@@ -998,7 +998,7 @@
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="subscribe-now">
 					🛒 {{ 'music.buy_album'|trans }}
-					<br> {{ music.album.price }} €
+					<br> {{ album.price|number_format(2, ',', ' ') }} € €
 				</a>
 
 			</div>
