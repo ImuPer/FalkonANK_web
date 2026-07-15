@@ -992,38 +992,30 @@
 				{{ 'music.confirm_buy2'|trans }}
 			</p>
 
-			<div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:5px;">
+			<div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:15px;">
 
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="subscribe-now">
 					🛒 {{ 'music.buy_album'|trans }}
 				</a>
+			</div>
+			<div>
+				<h2>
+					{{ 'subscription.access_title'|trans }}
+				</h2>
 
-				
-				<a href="{{ path('app_subscription') }}"
-				class="subscribe-now"
-				style="background:#7b3cff;">
+				<ul style="text-align:left">
+					<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
+					<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
+					<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
+					<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
+				</ul>
+				<p>
+					{{ 'subscription.renewal'|trans }}
+				</p>
+				<a href="{{ path('app_subscription') }}" class="subscribe-now" style="background:#7b3cff;">
 					🌟 {{ 'subscription.title'|trans }}
 				</a>
-				<p>
-					{{ 'subscription.access_title'|trans }}
-				</p>
-
-			<ul style="text-align:left">
-				<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
-				<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
-				<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
-				<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
-			</ul>
-
-			<p>
-				{{ 'subscription.renewal'|trans }}
-			</p>
-
-				<button class="subscription-btn" id="openSubscription">
-					🌟 {{ 'subscription.title'|trans }}
-				</button>
-
 			</div>
 
 		</div>
