@@ -627,64 +627,52 @@
 			}
 		}
 
-		{# //=======SUBSCRIPTIONS================================================ #}
-		.subscription-modal{
-			cursor:pointer;
-			position:fixed;
-			inset:0;
-			background:rgba(0,0,0,.85);
-			display:none; /* IMPORTANT */
-			justify-content:center;
-			align-items:center;
-			z-index:9999999999999;
-		}
+		/* =========================
+   PURCHASE MODAL MOBILE
+========================= */
 
-		.subscription-btn:hover{
-			background:#7b3cff;
-			transform:scale(1.05);
-		}
+.purchase-btn{
+    display:block;
+    width:100%;
+    max-width:300px;
+    margin:auto;
+    text-align:center;
+    line-height:1.5;
+    white-space:normal;
+    word-break:break-word;
+}
 
-		.subscription-content{
-			background:#111;
-			color:white;
-			width:min(500px,90%);
-			padding:35px;
-			border-radius:25px;
-			text-align:center;
-			box-shadow:0 0 40px rgba(155,92,255,.5);
-		}
+.purchase-list{
+    text-align:left;
+    max-width:320px;
+    margin:20px auto;
+    line-height:1.8;
+}
 
+@media (max-width:768px){
 
-		.subscription-content h2{
-			color:#9b5cff;
-		}
+    .subscription-content{
+        width:95%;
+        padding:20px;
+        max-height:90vh;
+        overflow-y:auto;
+    }
 
+    .subscription-content h2{
+        font-size:1.2rem;
+    }
 
-		.subscription-content p{
-			color:#ddd;
-			line-height:1.7;
-		}
+    .subscription-content p,
+    .subscription-content li{
+        font-size:.92rem;
+    }
 
-
-		.subscription-close{
-			position:absolute;
-			top:20px;
-			right:30px;
-			font-size:30px;
-			cursor:pointer;
-		}
-
-
-		.subscribe-now{
-			display:inline-block;
-			margin-top:20px;
-			padding:15px 30px;
-			background:#1db954;
-			color:white;
-			text-decoration:none;
-			border-radius:15px;
-			font-weight:bold;
-		}
+    .purchase-btn{
+        max-width:100%;
+        padding:14px 18px;
+        font-size:.95rem;
+    }
+}
 	</style>
 
 	{# =========================
@@ -998,7 +986,7 @@
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="subscribe-now">
 					🛒 {{ 'music.buy_album'|trans }}
-					<br> {{ album.price/100|number_format(2, ',', ' ') }} €
+					 {{ album.price/100|number_format(2, ',', ' ') }} €
 				</a>
 
 			</div>
@@ -1014,10 +1002,6 @@
 			<h2>
 				🌟 {{ 'subscription.title'|trans }}
 			</h2>
-
-			<div style="margin-top:8px;font-size:1.1rem;font-weight:normal;">
-				3,99 €
-			</div>
 
 			<p>
 				{{ 'subscription.description'|trans }}
@@ -1048,8 +1032,7 @@
 				<a href="{{ path('app_subscription') }}"
 				class="subscribe-now"
 				style="background:#7b3cff;">
-					🌟 {{ 'subscription.continue'|trans }}
-					{# <br> 3,99 € #}
+					🌟 {{ 'subscription.continue'|trans }}  3,99 €
 				</a>
 
 			</div>
