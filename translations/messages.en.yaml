@@ -972,7 +972,7 @@ purchase:
 
 music:
   album: "Album"
-  buy_album: "Buy album"
+  buy_album: "Buy this album"
   no_track: "No track"
   views: "views"
   play: "Play"

@@ -975,7 +975,7 @@ purchase:
 
 music:
   album: "Álbum"
-  buy_album: "Comprar álbum"
+  buy_album: "Comprar este álbum"
   no_track: "No track"
   views: "vistas"
   play: "Escuchar"
