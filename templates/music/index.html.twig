@@ -998,13 +998,14 @@
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
 				class="subscribe-now">
 					🛒 {{ 'music.buy_album'|trans }}
+					{{ music.price }} €
 				</a>
 
 			</div>
 
 			<hr style="
 				border:0;
-				height:1px;
+				height:2px;
 				background:linear-gradient(to right, transparent, #9b5cff, transparent);
 				margin:35px 0;
 			">
@@ -1044,6 +1045,7 @@
 				class="subscribe-now"
 				style="background:#7b3cff;">
 					🌟 {{ 'subscription.continue'|trans }}
+					3,99 €
 				</a>
 
 			</div>
