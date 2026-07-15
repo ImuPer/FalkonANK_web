@@ -805,7 +805,7 @@
 		<audio id="main-player" controls controlslist="nodownload noplaybackrate" disablepictureinpicture></audio>
 
 		{% if app.user and not hasBought and not hasSubscription %}
-			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white"
+			<a href="{{ path('app_album_buy', {id: album.id}) }}" style="color:white; font-size:10px;"
 			title="{{ 'music.buy_album'|trans }}">
 				🛒 {{ 'music.buy_album'|trans }}
 			</a>
