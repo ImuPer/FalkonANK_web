@@ -740,14 +740,14 @@
 			</a>
 		</div>
 		{# //===SUBSCRIPTION======= #}
-		{% if app.user and not hasSubscription %}
+		{# {% if app.user and not hasSubscription %}
 			<div	class="album-date">
 				<button class="subscription-btn" id="openSubscription">
 					🌟 {{ 'subscription.title'|trans }}
 				</button>
 			</div>
 		{% endif %}
-		
+		 #}
 
 	</div>
 
@@ -785,14 +785,7 @@
 				🛒 {{ 'music.buy_album'|trans }}
 			</a>
 		{% endif %}
-		{# //===SUBSCRIPTION======= #}
-		{# {% if app.user and not hasSubscription %}
-			<div	class="album-date">
-				<button class="subscription-btn" id="openSubscription">
-					🌟 {{ 'subscription.title'|trans }}
-				</button>
-			</div>
-		{% endif %} #}
+		
 		{# ---------facture------------------ #}
 		{% if app.user and hasBought and purchase and purchase.invoiceNumber %}					
 			<a href="{{ path('app_invoice_download', { id: purchase.id }) }}"
@@ -806,6 +799,15 @@
 				📀{{ 'albums.all_albums'|trans }}
 			</a>
 		</div>
+		
+		{# //===SUBSCRIPTION======= #}
+		{% if app.user and not hasSubscription %}
+			<div>
+				<button class="subscription-btn" id="openSubscription" style="font-size:10px; color:white;">
+					🌟 {{ 'subscription.title'|trans }}
+				</button>
+			</div>
+		{% endif %}
 	</div>
 
 
