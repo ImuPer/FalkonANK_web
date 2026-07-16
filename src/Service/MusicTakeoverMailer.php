@@ -20,7 +20,7 @@ class MusicTakeoverMailer
         $email = (new Email())
             ->from('no-reply@falkon.click')
             ->to($user->getEmail())
-            ->subject($this->translator->trans('music.email.takeover.subject'))
+            ->subject($this->translator->trans('music.email.takeover.description'+" "+'music.email.takeover.subject'))
             ->html("
             <div style='font-family:Arial'>
                 <h2>{$this->translator->trans('music.email.takeover.title')}</h2>
