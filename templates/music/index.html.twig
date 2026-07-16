@@ -1076,8 +1076,92 @@
 
 	</div>
 
+	{# ===MODAL SESSION====================================== #}
+	<div class="subscription-modal" id="sessionCodeModal">
+
+		<div class="subscription-content">
+
+			<h2>🔐 Confirmation</h2>
+
+			<p id="sessionCodeMessage"></p>
+
+			<input
+				id="sessionCodeInput"
+				type="text"
+				maxlength="6"
+				placeholder="Code"
+				style="
+					width:100%;
+					padding:12px;
+					margin-top:20px;
+					border-radius:10px;
+					border:none;
+					text-align:center;
+					font-size:20px;
+				"
+			>
+
+			<div style="margin-top:25px;display:flex;justify-content:center;gap:15px;">
+
+				<button
+					id="confirmSessionCode"
+					class="subscribe-now">
+					Valider
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
 
 	<script>
+
+const sessionCodeModal = document.getElementById("sessionCodeModal");
+const sessionCodeMessage = document.getElementById("sessionCodeMessage");
+const sessionCodeInput = document.getElementById("sessionCodeInput");
+const confirmSessionCode = document.getElementById("confirmSessionCode");
+
+function askSessionCode(message){
+
+    return new Promise(resolve => {
+
+        sessionCodeMessage.innerHTML = message;
+
+        sessionCodeInput.value = "";
+
+        sessionCodeModal.style.display = "flex";
+
+        sessionCodeInput.focus();
+
+        function validate(){
+
+            sessionCodeModal.style.display = "none";
+
+            confirmSessionCode.removeEventListener("click", validate);
+
+            sessionCodeInput.removeEventListener("keydown", onKey);
+
+            resolve(sessionCodeInput.value.trim());
+
+        }
+
+        function onKey(e){
+
+            if(e.key === "Enter"){
+                validate();
+            }
+
+        }
+
+        confirmSessionCode.addEventListener("click", validate);
+
+        sessionCodeInput.addEventListener("keydown", onKey);
+
+    });
+
+}
 
 const repeatBtn = document.getElementById('repeatBtn');
 const shuffleBtn = document.getElementById('shuffleBtn');
@@ -1180,7 +1264,7 @@ async function startMusicSession() {
 				method: 'POST'
 			});
 
-			const code = prompt(i18n.sessionCodePrompt);
+			const code = await askSessionCode(i18n.sessionCodePrompt);
 
 			//const code = prompt(
 			//	"Veuillez saisir le code de confirmation que vous avez reçu par e-mail (" + user.email + ")."
