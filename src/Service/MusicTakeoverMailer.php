@@ -19,7 +19,7 @@ class MusicTakeoverMailer
     {
         $subject = sprintf(
             '%s %s',
-            $this->translator->trans('music.email.takeover.description'),
+            $this->translator->trans('music.email.takeover.code_label'),
             $this->translator->trans('music.email.takeover.subject')
         );
 
