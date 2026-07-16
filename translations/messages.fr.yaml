@@ -965,6 +965,7 @@ common:
   not_available: "—"
   back_to_orders: "Retour aux commande"
   view: "Voir"
+  validate: "Valider"
 
 
 purchase:
@@ -985,6 +986,15 @@ music:
   session_code_prompt: "Votre compte a été, ou est actuellement, utilisé sur un autre appareil. Pour reprendre le contrôle, saisissez le code de confirmation envoyé à votre adresse e-mail (%email%). Si vous ne le trouvez pas, vérifiez également votre dossier Courrier indésirable (Spam)."
   invalid_code: "Le code de confirmation est invalide."
   session_taken_over: "La musique est en cours de lecture sur un autre appareil avec votre compte. Comme une seule session est autorisée à la fois, la lecture a été arrêtée sur cet appareil."
+  session_confirmation: "Confirmation"
+  code_placeholder: "Code"
+  email:
+      takeover:
+          subject: "Nouvelle connexion détectée"
+          title: "Nouvelle connexion détectée"
+          description: "Un nouvel appareil tente d’accéder à votre session musicale."
+          code_label: "Code de validation :"
+          ignore: "Si ce n’est pas vous, ignorez cet e-mail."
 
 albums:
   title: "Albums"

@@ -5,30 +5,35 @@ namespace App\Service;
 use App\Entity\User;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MusicTakeoverMailer
 {
     public function __construct(
+        private TranslatorInterface $translator,
         private MailerInterface $mailer
-    ) {}
+    ) {
+    }
 
     public function sendTakeoverCode(User $user, string $code): void
     {
         $email = (new Email())
             ->from('no-reply@falkon.click')
             ->to($user->getEmail())
-            ->subject(' Nouvelle connexion détectée')
+            ->subject($this->translator->trans('music.email.takeover.subject'))
             ->html("
-                <div style='font-family:Arial'>
-                    <h2>Nouvelle connexion détectée</h2>
-                    <p>Un nouvel appareil tente d’accéder à votre session musicale.</p>
+            <div style='font-family:Arial'>
+                <h2>{$this->translator->trans('music.email.takeover.title')}</h2>
 
-                    <p><strong>Code de validation :</strong></p>
-                    <h1 style='letter-spacing:4px'>{$code}</h1>
+                <p>{$this->translator->trans('music.email.takeover.description')}</p>
 
-                    <p>Si ce n’est pas vous, ignorez cet email.</p>
-                </div>
-            ");
+                <p><strong>{$this->translator->trans('music.email.takeover.code_label')}</strong></p>
+
+                <h1 style='letter-spacing:4px'>{$code}</h1>
+
+                <p>{$this->translator->trans('music.email.takeover.ignore')}</p>
+            </div>
+        ");
 
         $this->mailer->send($email);
     }

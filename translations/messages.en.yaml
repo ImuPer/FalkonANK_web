@@ -965,7 +965,7 @@ common:
   not_available: "—"
   back_to_orders: "Back to order"
   view: "View"
-
+  validate: "Validate"
 
 purchase:
     total_minimum: 'The total purchase amount must be greater than %amount% %currency% (escudos).'
@@ -985,7 +985,16 @@ music:
   session_code_prompt: "Your account has been, or is currently being, used on another device. To regain control, enter the confirmation code sent to your email address (%email%). If you can't find it, please check your Spam or Junk folder."
   invalid_code: "The confirmation code is invalid."
   session_taken_over: "Music is currently playing on another device using your account. Since only one session is allowed at a time, playback has been stopped on this device."
-
+  session_confirmation: "Confirmation"
+  code_placeholder: "Code"
+  email:
+      takeover:
+          subject: "New login detected"
+          title: "New login detected"
+          description: "A new device is attempting to access your music session."
+          code_label: "Verification code:"
+          ignore: "If this wasn't you, you can safely ignore this email."
+    
 albums:
   title: "Albums"
   all_albums: "All Albums"

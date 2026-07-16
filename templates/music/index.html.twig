@@ -1078,18 +1078,16 @@
 
 	{# ===MODAL SESSION====================================== #}
 	<div class="subscription-modal" id="sessionCodeModal">
-
 		<div class="subscription-content">
-
-			<h2>🔐 Confirmation</h2>
-
+			<h2>
+				<span style="color:#1db954;">🔐</span> {{ 'music.session_confirmation'|trans }}
+			</h2>
 			<p id="sessionCodeMessage"></p>
-
 			<input
 				id="sessionCodeInput"
 				type="text"
 				maxlength="6"
-				placeholder="Code"
+				placeholder="{{ 'music.code_placeholder'|trans }}"
 				style="
 					width:100%;
 					padding:12px;
@@ -1100,18 +1098,16 @@
 					font-size:20px;
 				"
 			>
-
 			<div style="margin-top:25px;display:flex;justify-content:center;gap:15px;">
 
 				<button
 					id="confirmSessionCode"
 					class="subscribe-now">
-					Valider
+					{{ 'common.validate'|trans }}
 				</button>
-
 			</div>
-
-			<div id="sessionCodeError"
+			<div
+				id="sessionCodeError"
 				style="
 					color:#ff5b5b;
 					margin-top:12px;
@@ -1119,9 +1115,7 @@
 					font-weight:bold;
 				">
 			</div>
-
 		</div>
-
 	</div>
 
 
