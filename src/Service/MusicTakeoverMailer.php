@@ -17,10 +17,16 @@ class MusicTakeoverMailer
 
     public function sendTakeoverCode(User $user, string $code): void
     {
+        $subject = sprintf(
+            '%s %s',
+            $this->translator->trans('music.email.takeover.description'),
+            $this->translator->trans('music.email.takeover.subject')
+        );
+
         $email = (new Email())
             ->from('no-reply@falkon.click')
             ->to($user->getEmail())
-            ->subject($this->translator->trans('music.email.takeover.description'+" "+'music.email.takeover.subject'))
+            ->subject($subject)
             ->html("
             <div style='font-family:Arial'>
                 <h2>{$this->translator->trans('music.email.takeover.title')}</h2>
