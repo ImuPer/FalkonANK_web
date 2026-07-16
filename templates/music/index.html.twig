@@ -1111,6 +1111,15 @@
 
 			</div>
 
+			<div id="sessionCodeError"
+				style="
+					color:#ff5b5b;
+					margin-top:12px;
+					min-height:22px;
+					font-weight:bold;
+				">
+			</div>
+
 		</div>
 
 	</div>
@@ -1122,6 +1131,7 @@ const sessionCodeModal = document.getElementById("sessionCodeModal");
 const sessionCodeMessage = document.getElementById("sessionCodeMessage");
 const sessionCodeInput = document.getElementById("sessionCodeInput");
 const confirmSessionCode = document.getElementById("confirmSessionCode");
+const sessionCodeError = document.getElementById('sessionCodeError');
 
 function askSessionCode(message){
 
@@ -1137,7 +1147,7 @@ function askSessionCode(message){
 
         function validate(){
 
-            sessionCodeModal.style.display = "none";
+            /* sessionCodeModal.style.display = "none"; */
 
             confirmSessionCode.removeEventListener("click", validate);
 
@@ -1146,6 +1156,13 @@ function askSessionCode(message){
             resolve(sessionCodeInput.value.trim());
 
         }
+
+		function closeSessionCodeModal(){
+			sessionCodeModal.style.display = "none";
+			sessionCodeError.textContent = "";
+			sessionCodeInput.value = "";
+		}
+				
 
         function onKey(e){
 
@@ -1291,7 +1308,9 @@ async function startMusicSession() {
 			if (!result.success) {
 				musicToken = null;
 				localStorage.removeItem('music_token');
-				alert(i18n.invalidCode);
+				sessionCodeError.textContent = i18n.invalidCode;
+				sessionCodeInput.focus();
+				sessionCodeInput.select();
 				return;
 			}
 			musicToken = result.token;

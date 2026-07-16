@@ -17,7 +17,7 @@ class MusicTakeoverMailer
         $email = (new Email())
             ->from('no-reply@falkon.click')
             ->to($user->getEmail())
-            ->subject('🔐 Nouvelle connexion détectée')
+            ->subject(' Nouvelle connexion détectée')
             ->html("
                 <div style='font-family:Arial'>
                     <h2>Nouvelle connexion détectée</h2>
