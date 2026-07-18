@@ -17,6 +17,7 @@ use App\Entity\Music;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Shop;
+use App\Entity\Subscription;
 use App\Entity\User;
 use App\Repository\ContactRepository;
 use App\Repository\MerchantRepository;
@@ -121,6 +122,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('add', 'fas fa-plus', Album::class)->setAction(Crud::PAGE_NEW),
                 MenuItem::linkToCrud('All albums','fas fa-eye', Album::class),
                 MenuItem::linkToCrud('Musiques', 'fa fa-music', Music::class),
+                MenuItem::linkToCrud('Subscriptions', 'fas fa-sync-alt', Subscription::class),
                 MenuItem::linkToCrud('Achats', 'fa fa-credit-card', AlbumPurchase::class),
             ]);
             yield MenuItem::linkToCrud($this->translator->trans('menu.products'), 'fas fa-apple-alt', Product::class);
