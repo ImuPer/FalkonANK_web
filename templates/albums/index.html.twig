@@ -12,6 +12,15 @@
 			<p>
 				{{ 'albums.discover_collection'|trans }}
 			</p>
+			{% if app.user and not hasSubscription %}
+				<div style="margin-top:20px;">
+					<button id="openSubscription"
+							class="subscription-btn">
+						🌟 {{ 'subscription.title'|trans }}
+					</button>
+				</div>
+			{% endif %}
+
 		</div>
 		<div class="search-container">
 			<input
@@ -345,6 +354,80 @@
 				padding: 10px 14px;
 			}
 		}
+		{# -----------subscription----------------- #}
+		.subscription-btn{
+			background:#7b3cff;
+			color:#fff;
+			border:none;
+			padding:14px 28px;
+			border-radius:14px;
+			font-size:16px;
+			font-weight:bold;
+			cursor:pointer;
+			transition:.3s;
+		}
+
+		.subscription-btn:hover{
+			transform:scale(1.05);
+			background:#8f55ff;
+		}
+
+		.subscription-modal{
+			position:fixed;
+			inset:0;
+			background:rgba(0,0,0,.85);
+			display:none;
+			justify-content:center;
+			align-items:center;
+			z-index:999999999;
+		}
+
+		.subscription-content{
+			background:#111;
+			color:white;
+			width:min(520px,92%);
+			padding:35px;
+			border-radius:22px;
+			box-shadow:0 0 40px rgba(123,60,255,.45);
+			position:relative;
+			text-align:center;
+		}
+
+		.subscription-close{
+			position:absolute;
+			top:18px;
+			right:22px;
+			cursor:pointer;
+			font-size:28px;
+		}
+
+		.subscribe-now{
+			display:inline-block;
+			margin-top:20px;
+			padding:14px 30px;
+			background:#7b3cff;
+			color:white;
+			text-decoration:none;
+			border-radius:14px;
+			font-weight:bold;
+		}
+
+		.subscribe-now:hover{
+			color:white;
+			background:#9259ff;
+		}
+
+		@media(max-width:768px){
+
+			.subscription-content{
+				width:95%;
+				padding:20px;
+				max-height:90vh;
+				overflow:auto;
+			}
+
+		}
+
 	</style>	
 	{#-----------modal infos----------------------------------- #}
 		<div	id="albumModal"	class="modal hidden">
@@ -406,7 +489,67 @@
 					});
 
 				});
-				</script>
+
+				{# Pour Subscription #}
+				const subscriptionModal = document.getElementById("subscriptionModal");
+				const openSubscription = document.getElementById("openSubscription");
+				const closeSubscription = document.getElementById("closeSubscription");
+				if(openSubscription){
+					openSubscription.onclick = () => {
+						subscriptionModal.style.display = "flex";
+					};
+				}
+				if(closeSubscription){
+					closeSubscription.onclick = () => {
+						subscriptionModal.style.display = "none";
+					};
+				}
+				window.addEventListener("click",(e)=>{
+					if(e.target===subscriptionModal){
+						subscriptionModal.style.display="none";
+					}
+				});
+				
+			</script>
 		</div>
+		{# ---------Mode Subscription------------- #}
+		<div class="subscription-modal" id="subscriptionModal">
+
+			<div class="subscription-content">
+
+				<span class="subscription-close" id="closeSubscription">
+					✖
+				</span>
+
+				<h2>
+					🌟 {{ 'subscription.title'|trans }}
+					<br>
+					3,99 €
+				</h2>
+
+				<p>
+					<strong>{{ 'subscription.access_title'|trans }}</strong>
+				</p>
+
+				<ul style="text-align:left;max-width:300px;margin:20px auto;line-height:1.8;">
+					<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
+					<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
+					<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
+					<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
+				</ul>
+
+				<p>
+					{{ 'subscription.renewal'|trans }}
+				</p>
+
+				<a href="{{ path('app_subscription') }}"
+				class="subscribe-now">
+					🌟 {{ 'subscription.continue'|trans }}
+				</a>
+
+			</div>
+
+		</div>
+
 	{% endblock %}
 	
