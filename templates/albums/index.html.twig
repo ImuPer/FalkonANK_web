@@ -456,71 +456,6 @@
 					<span	id="modalDate"></span>
 				</div>
 			</div>
-			<script>
-				function openAlbumModal(event, element) {
-					event.preventDefault();
-					event.stopPropagation();
-
-					document.getElementById('albumModal').classList.remove('hidden');
-
-					document.getElementById('modalTitle').textContent =
-						element.dataset.name;
-
-					document.getElementById('modalDescription').innerHTML =
-						element.dataset.description;
-
-					document.getElementById('modalLabel').textContent =
-						element.dataset.label;
-
-					document.getElementById('modalDate').textContent =
-						element.dataset.date;
-				}
-
-				function closeAlbumModal() {
-					document.getElementById('albumModal').classList.add('hidden');
-				}
-
-				const search = document.getElementById('albumSearch');
-
-				search.addEventListener('input', function () {
-
-					const value = this.value.toLowerCase();
-
-					document.querySelectorAll('.album-link').forEach(album => {
-
-						const name = album.dataset.name;
-
-						if (name.includes(value)) {
-							album.style.display = '';
-						} else {
-							album.style.display = 'none';
-						}
-
-					});
-
-				});
-
-				{# Pour Subscription #}
-				const subscriptionModal = document.getElementById("subscriptionModal");
-				const openSubscription = document.getElementById("openSubscription");
-				const closeSubscription = document.getElementById("closeSubscription");
-				if(openSubscription){
-					openSubscription.onclick = () => {
-						subscriptionModal.style.display = "flex";
-					};
-				}
-				if(closeSubscription){
-					closeSubscription.onclick = () => {
-						subscriptionModal.style.display = "none";
-					};
-				}
-				window.addEventListener("click",(e)=>{
-					if(e.target===subscriptionModal){
-						subscriptionModal.style.display="none";
-					}
-				});
-				
-			</script>
 		</div>
 		{# ---------Mode Subscription------------- #}
 		<div class="subscription-modal" id="subscriptionModal">
@@ -560,6 +495,70 @@
 			</div>
 
 		</div>
+
+		<script>
+			function openAlbumModal(event, element) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				document.getElementById('albumModal').classList.remove('hidden');
+
+				document.getElementById('modalTitle').textContent =
+					element.dataset.name;
+
+				document.getElementById('modalDescription').innerHTML =
+					element.dataset.description;
+
+				document.getElementById('modalLabel').textContent =
+					element.dataset.label;
+
+				document.getElementById('modalDate').textContent =
+					element.dataset.date;
+			}
+
+			function closeAlbumModal() {
+				document.getElementById('albumModal').classList.add('hidden');
+			}
+
+			const search = document.getElementById('albumSearch');
+			search.addEventListener('input', function () {
+
+				const value = this.value.toLowerCase();
+
+				document.querySelectorAll('.album-link').forEach(album => {
+
+					const name = album.dataset.name;
+
+					if (name.includes(value)) {
+						album.style.display = '';
+					} else {
+						album.style.display = 'none';
+					}
+
+				});
+
+			});
+
+			{# Pour Subscription #}
+			const subscriptionModal = document.getElementById("subscriptionModal");
+			const openSubscription = document.getElementById("openSubscription");
+			const closeSubscription = document.getElementById("closeSubscription");
+			if(openSubscription){
+				openSubscription.onclick = () => {
+					subscriptionModal.style.display = "flex";
+				};
+			}
+			if(closeSubscription){
+				closeSubscription.onclick = () => {
+					subscriptionModal.style.display = "none";
+				};
+			}
+			window.addEventListener("click",(e)=>{
+				if(e.target===subscriptionModal){
+					subscriptionModal.style.display="none";
+				}
+			});				
+		</script>
 
 	{% endblock %}
 	
