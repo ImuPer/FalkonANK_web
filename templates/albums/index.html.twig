@@ -12,15 +12,25 @@
 			<p>
 				{{ 'albums.discover_collection'|trans }}
 			</p>
-			{% if app.user and not hasSubscription %}
+			{% if not hasSubscription %}
 				<div style="margin-top:20px;">
-					<button id="openSubscription"
-							class="subscription-btn">
-						🌟 {{ 'subscription.title'|trans }}
-					</button>
+
+					{% if app.user %}
+						<button id="openSubscription"
+								class="subscription-btn">
+							🌟 {{ 'subscription.title'|trans }}
+						</button>
+					{% else %}
+						<a href="{{ path('app_login', {
+							_target_path: app.request.uri
+						}) }}"
+						class="subscription-btn"
+						style="display:inline-block;text-decoration:none;">
+							🌟 {{ 'subscription.title'|trans }}
+						</a>
+					{% endif %}
 				</div>
 			{% endif %}
-
 		</div>
 		<div class="search-container">
 			<input

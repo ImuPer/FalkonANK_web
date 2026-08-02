@@ -69,8 +69,12 @@ class MusicController extends AbstractController
     }
     // --------------------ALBUMS------------------------------------------------------------------
     #[Route('/album', name: 'app_albums_index', methods: ['GET'])]
-    public function index(AlbumRepository $albumRepository, Security $security): Response
-    {
+    public function index(
+        AlbumRepository $albumRepository,
+        SubscriptionRepository $subscriptionRepository,
+        Security $security
+    ): Response {
+
         if ($security->isGranted('ROLE_ADMIN')) {
             $albums = $albumRepository->findAll();
         } else {
@@ -84,8 +88,28 @@ class MusicController extends AbstractController
             );
         }
 
+        $hasSubscription = false;
+
+        $user = $security->getUser();
+
+        if ($user) {
+
+            $subscription = $subscriptionRepository->findOneBy([
+                'user' => $user,
+            ]);
+
+            if (
+                $subscription &&
+                $subscription->getStatus() === 'active' &&
+                $subscription->getEndAt() > new \DateTimeImmutable()
+            ) {
+                $hasSubscription = true;
+            }
+        }
+
         return $this->render('albums/index.html.twig', [
             'albums' => $albums,
+            'hasSubscription' => $hasSubscription,
         ]);
     }
 
