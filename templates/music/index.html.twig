@@ -710,59 +710,6 @@
 			font-size:.95rem;
 		}
 	}
-
-	.purchase-grid{
-		display:grid;
-		grid-template-columns:repeat(2,1fr);
-		gap:25px;
-		margin-top:20px;
-	}
-
-	.purchase-card{
-		background:#181818;
-		border:1px solid #2a2a2a;
-		border-radius:18px;
-		padding:25px 20px;
-		display:flex;
-		flex-direction:column;
-		justify-content:space-between;
-		text-align:center;
-	}
-
-	.purchase-card h2{
-		color:#9b5cff;
-		margin-top:0;
-		margin-bottom:15px;
-	}
-
-	.purchase-card p{
-		color:#ddd;
-	}
-
-	.purchase-card ul{
-		text-align:left;
-		max-width:280px;
-		margin:20px auto;
-		line-height:1.8;
-		padding-left:18px;
-	}
-
-	.purchase-card.album{
-		border-color:#1db954;
-	}
-
-	.purchase-card.subscription{
-		border-color:#9b5cff;
-	}
-
-	@media(max-width:768px){
-
-		.purchase-grid{
-			grid-template-columns:1fr;
-		}
-
-	}
-
 	</style>
 
 	{# =========================
@@ -1054,74 +1001,81 @@
 
 		</div>
 
-		</div>
-		{# ====MODAL CHOIX ACHAT ALBUM/SUBSCRIPTION #}
-		<div class="subscription-modal" id="purchaseModal">
+	</div>
+	{# ====MODAL CHOIX ACHAT ALBUM/SUBSCRIPTION #}
+	<div class="subscription-modal" id="purchaseModal">
 
-		<div class="subscription-content" style="width:min(950px,95%);">
+		<div class="subscription-content">
 
 			<span class="subscription-close" id="closePurchase">
 				✖
 			</span>
 
-			<div class="purchase-grid">
+			<!-- Abonnement -->
+			<h2>
+				🌟 {{ 'subscription.title'|trans }} <br> 3,99 €
+			</h2>
 
-				<!-- Achat Album -->
-				<div class="purchase-card album">
+			{# <p>
+				{{ 'subscription.description'|trans }}
+			</p> #}
 
-					<h2>
-						🎵 {{ 'music.confirm_buy'|trans }}<br>
-						{{ album.price/100|number_format(2, ',', ' ') }} €
-					</h2>
+			<p>
+				<strong>{{ 'subscription.access_title'|trans }}</strong>
+			</p>
 
-					<p>
-						{{ 'music.confirm_buy2'|trans }}
-					</p>
+			<ul style="
+				text-align:left;
+				max-width:320px;
+				margin:20px auto;
+				line-height:1.9;
+			">
+				<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
+				<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
+				<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
+				<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
+			</ul>
 
-					<a href="{{ path('app_album_buy',{id:album.id}) }}"
-					class="subscribe-now">
-						🛒 {{ 'music.buy_album'|trans }}
-					</a>
+			<p style="margin-top:15px;">
+				{{ 'subscription.renewal'|trans }}
+			</p>
 
-				</div>
+			<div style="display:flex;justify-content:center;margin-top:20px;">
 
-				<!-- Abonnement -->
-				<div class="purchase-card subscription">
-
-					<h2>
-						🌟 {{ 'subscription.title'|trans }}<br>
-						3,99 €
-					</h2>
-
-					<p>
-						<strong>{{ 'subscription.access_title'|trans }}</strong>
-					</p>
-
-					<ul>
-						<li>🎵 {{ 'subscription.feature.albums'|trans }}</li>
-						<li>🎧 {{ 'subscription.feature.music'|trans }}</li>
-						<li>▶ {{ 'subscription.feature.unlimited_play'|trans }}</li>
-						<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
-					</ul>
-
-					<p>
-						{{ 'subscription.renewal'|trans }}
-					</p>
-
-					<a href="{{ path('app_subscription') }}"
-					class="subscribe-now"
-					style="background:#7b3cff;">
-						🌟 {{ 'subscription.continue'|trans }}
-					</a>
-
-				</div>
+				<a href="{{ path('app_subscription') }}"
+				class="subscribe-now"
+				style="background:#7b3cff;">
+					🌟 {{ 'subscription.continue'|trans }}  
+				</a>
 
 			</div>
 
+			<hr style="
+				border:0;
+				height:4px;
+				background:linear-gradient(to right, transparent, #9b5cff, transparent);
+				{# margin:35px 0; #}
+			">
+
+			<!-- Achat de l'album -->
+			<h2>🎵 {{ 'music.confirm_buy'|trans }} <br> 
+					 {{ album.price/100|number_format(2, ',', ' ') }} €</h2>
+
+			<p>
+				{{ 'music.confirm_buy2'|trans }}
+			</p>
+
+			<div style="display:flex;justify-content:center;margin-top:0px;">
+				<a href="{{ path('app_album_buy', {id: album.id}) }}"
+				class="subscribe-now">
+					🛒 {{ 'music.buy_album'|trans }}
+				</a>
+			</div>
+
+			
 		</div>
 
 	</div>
-
 
 	{# ===MODAL SESSION====================================== #}
 	<div class="subscription-modal" id="sessionCodeModal">
