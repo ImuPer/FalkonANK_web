@@ -990,7 +990,7 @@
 				<li>📀 {{ 'subscription.feature.new_albums'|trans }}</li>
 			</ul>
 
-			<p>
+			<p <p style="font-size:10px;">>
 				{{ 'subscription.renewal'|trans }}
 			</p>
 
@@ -1061,9 +1061,9 @@
 			<h2>🎵 {{ 'music.confirm_buy'|trans }} <br> 
 					 {{ album.price/100|number_format(2, ',', ' ') }} €</h2>
 
-			<p style = "font-size:8px;">
+			<p style="font-size:8px;">
 				{{ 'music.confirm_buy2'|trans }}
-			</p>
+			</p>>
 
 			<div style="display:flex;justify-content:center;margin-top:0px;">
 				<a href="{{ path('app_album_buy', {id: album.id}) }}"
