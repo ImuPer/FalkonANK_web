@@ -223,24 +223,30 @@ class MusicController extends AbstractController
         $baseUrl = $_ENV['APP_BASE_URL'];
 
         $session = $this->stripe->checkout->sessions->create([
-            'mode' => 'subscription',
+            'mode' => 'payment',
 
             'payment_method_types' => ['card'],
 
             'line_items' => [
                 [
-                    'price' => $_ENV['STRIPE_MONTHLY_PRICE_ID'],
                     'quantity' => 1,
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => $album->getName(),
+                        ],
+                        'unit_amount' => (int) $album->getPrice(),
+                    ],
                 ]
             ],
 
+            'success_url' => $baseUrl . '/album/payment/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $baseUrl . '/album/' . $album->getId() . '/musics',
+
             'metadata' => [
+                'album_id' => $album->getId(),
                 'user_id' => $user->getId(),
             ],
-
-            'success_url' => $baseUrl . '/subscription/success?session_id={CHECKOUT_SESSION_ID}',
-
-            'cancel_url' => $baseUrl . '/album',
         ]);
         return $this->redirect($session->url);
     }

@@ -66,6 +66,8 @@ class SubscriptionController extends AbstractController
             $session = $this->stripe->checkout->sessions->create([
                 'mode' => 'subscription',
 
+                'payment_method_types' => ['card'],
+
                 'line_items' => [
                     [
                         'price' => $_ENV['STRIPE_MONTHLY_PRICE_ID'],
