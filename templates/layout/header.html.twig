@@ -121,7 +121,9 @@
             </a>
         {% endif %}
 
-        {# Menu Langue Desktop #}
+    </nav>
+
+    {# Menu Langue Desktop #}
         <div class="nav-item dropdown ms-auto d-none d-lg-block text-end position-relative">
             <a class="nav-link dropdown-toggle text-white" href="#" id="langDropdownDesktop" role="button" data-bs-toggle="dropdown">
                 🌐 {{ app.request.locale|upper }}
@@ -133,8 +135,7 @@
                 <li><a class="dropdown-item" href="{{ path('lang_switch', {'_locale': 'es'}) }}">🇪🇸 Español</a></li>
             </ul>
         </div>
-    </nav>
-
+        
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const menuButton = document.querySelector('.hamburger');
