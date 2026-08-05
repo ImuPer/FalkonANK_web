@@ -225,19 +225,17 @@ class MusicController extends AbstractController
         $session = $this->stripe->checkout->sessions->create([
             'mode' => 'payment',
 
+            'payment_method_types' => ['card'],
+
             'line_items' => [
                 [
                     'quantity' => 1,
-
                     'price_data' => [
                         'currency' => 'eur',
-
                         'product_data' => [
                             'name' => $album->getName(),
                         ],
-
-                        // Stripe utilise centimes
-                        'unit_amount' => (int) ($album->getPrice()),
+                        'unit_amount' => (int) $album->getPrice(),
                     ],
                 ]
             ],
@@ -245,13 +243,11 @@ class MusicController extends AbstractController
             'success_url' => $baseUrl . '/album/payment/success?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => $baseUrl . '/album/' . $album->getId() . '/musics',
 
-            // IMPORTANT
             'metadata' => [
                 'album_id' => $album->getId(),
                 'user_id' => $user->getId(),
             ],
         ]);
-
         return $this->redirect($session->url);
     }
 
